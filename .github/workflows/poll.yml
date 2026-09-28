@@ -43,5 +43,10 @@ jobs:
             echo "状态无变化，跳过提交"
           else
             git commit -m "chore(state): $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
-            git push
+            if git push; then
+              echo "✓ 状态已提交回仓库"
+            else
+              echo "::error::推送状态失败。多半是仓库把 GITHUB_TOKEN 设成了只读：Settings → Actions → General → Workflow permissions → 选 Read and write permissions"
+              exit 1
+            fi
           fi
