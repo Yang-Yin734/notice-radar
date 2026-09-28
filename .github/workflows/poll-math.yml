@@ -30,6 +30,8 @@ permissions:
 
 jobs:
   math:
+    # 应用里的「微信推送」开关 = 这个仓库变量；关掉就整个跳过（连浏览器都不启动）
+    if: vars.PUSH_ENABLED != 'false'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:

@@ -79,8 +79,53 @@ test('应用：没有数据也能渲染出界面（不是空白页）', () => {
   assert.equal(boot.total, 0);
   assert.deepEqual(boot.items, []);
   assert.match(html, /id="q"/, '搜索框仍在');
-  assert.match(html, /关于这个应用/, '"关于"里写了安装方法');
+  assert.match(html, /安装到手机/, '设置里有安装说明');
   assert.match(html, /添加到主屏幕/);
+});
+
+test('应用：设置页能开关微信推送（读写仓库变量 PUSH_ENABLED）', () => {
+  const history = emptyHistory();
+  appendHistory(history, [notice({ id: 'a' })]);
+  const html = renderDashboard(history, { repo: 'me/my-radar' });
+  const boot = bootstrapOf(html);
+
+  assert.equal(boot.repo, 'me/my-radar', '仓库信息进 bootstrap（推送开关要用）');
+  assert.match(html, /id="view-settings"/, '有设置页');
+  assert.match(html, /data-view="settings"/, '标签栏有"设置"');
+  assert.match(html, /id="push-toggle"/, '推送开关');
+  assert.match(html, /role="switch"/, '开关有无障碍语义');
+  assert.match(html, /actions\/variables\/PUSH_ENABLED/, '读仓库变量');
+  assert.match(html, /PUSH_ENABLED', value:/, '写仓库变量');
+  assert.match(html, /id="gh-token" type="password"/, '令牌只存本机');
+  assert.match(html, /Fine-grained tokens/, '告诉用户该建哪种令牌');
+  assert.match(html, /settings\/variables\/actions/, '也给"不想给令牌"的手动路径');
+});
+
+test('应用：能检测并提示新版本（应用内更新）', () => {
+  const history = emptyHistory();
+  appendHistory(history, [notice({ id: 'a' })]);
+  const html = renderDashboard(history, { version: '1.2.3' });
+  const boot = bootstrapOf(html);
+
+  assert.equal(boot.version, '1.2.3', '当前版本进 bootstrap');
+  assert.equal(boot.versionFile, 'version.json', '版本清单路径');
+  assert.match(html, /id="update-banner"/, '有"有新版本"横幅');
+  assert.match(html, /id="check-update"/, '设置里有"检查更新"按钮');
+  assert.match(html, /function cmpVersion/, '会做版本比较');
+  assert.match(html, /updatefound/, '监听 Service Worker 新版本');
+  assert.match(html, /SKIP_WAITING/, '点更新时让新 SW 立即接管');
+  assert.match(html, /当前版本 v1\.2\.3/, '设置页显示当前版本');
+});
+
+test('应用：iOS 引导"添加到主屏幕"而不是下载 APK', () => {
+  const history = emptyHistory();
+  appendHistory(history, [notice({ id: 'a' })]);
+  const html = renderDashboard(history);
+
+  assert.match(html, /iPhone\|iPad\|iPod/, '能识别 iOS');
+  assert.match(html, /装成 iPhone 应用/, 'iOS 上换文案');
+  assert.match(html, /用 <b>Safari<\/b> 打开本页/, '设置里写清 iOS 步骤');
+  assert.match(html, /iOS 不允许像 Android 那样直接装安装包/, '如实说明 iOS 的限制');
 });
 
 test('应用：APK 下载入口在显眼位置（顶部横幅 + 关于里的大按钮）', () => {
@@ -93,6 +138,6 @@ test('应用：APK 下载入口在显眼位置（顶部横幅 + 关于里的大�
   assert.match(html, /id="install-banner"/, '列表顶部有安装横幅');
   assert.match(html, /id="apk-download-top" href="https:\/\/example\.com\/notice-radar\.apk"/, '横幅里的下载按钮');
   assert.match(html, /id="apk-download-about"/, '"关于"里的大按钮');
-  assert.match(html, /Android\/i\.test\(navigator\.userAgent\)/, '只在 Android 上弹出横幅');
-  assert.match(html, /notice-radar:apk-dismissed/, '关掉后不再打扰（记在本机）');
+  assert.match(html, /Android\/i\.test\(ua\)/, '只在 Android 上弹出 APK 横幅');
+  assert.match(html, /notice-radar:install-dismissed/, '关掉后不再打扰（记在本机）');
 });

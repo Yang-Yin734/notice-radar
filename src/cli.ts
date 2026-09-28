@@ -289,7 +289,8 @@ function cmdDashboard(flags: Flags): number {
   const generatedAt = new Date().toISOString();
 
   fs.mkdirSync(path.dirname(outFile), { recursive: true });
-  fs.writeFileSync(outFile, renderDashboard(history, { generatedAt }), 'utf8');
+  const pkgVersion = (JSON.parse(fs.readFileSync('package.json', 'utf8')) as { version: string }).version;
+  fs.writeFileSync(outFile, renderDashboard(history, { generatedAt, version: pkgVersion }), 'utf8');
 
   // 顺手把原始数据也放进 Pages 目录，方便别人二次利用（自己做图表、接别的工具）
   const dataFile = path.join(path.dirname(outFile), 'dashboard-data.json');
@@ -301,6 +302,26 @@ function cmdDashboard(flags: Flags): number {
 
   console.log(`▸ 仪表盘已生成：${outFile}（归档 ${history.items.length} 条）`);
   console.log(`▸ 原始数据：${dataFile}`);
+
+  // 版本清单：应用靠它判断"线上是不是有比我更新的版本"，从而在应用内提示升级
+  const versionFile = path.join(path.dirname(outFile), 'version.json');
+  fs.writeFileSync(
+    versionFile,
+    `${JSON.stringify(
+      {
+        app: 'notice-radar',
+        version: pkgVersion,
+        apkUrl: 'https://github.com/Yang-Yin734/notice-radar/releases/download/android-latest/notice-radar.apk',
+        publishedAt: generatedAt,
+        notes: `https://github.com/Yang-Yin734/notice-radar/releases/tag/v${pkgVersion}`,
+      },
+      null,
+      2,
+    )}\n`,
+    'utf8',
+  );
+  console.log(`▸ 版本清单：${versionFile}（v${pkgVersion}）`);
+
   if (history.items.length === 0) console.log('  （历史还是空的：等第一次抓到新通知后就会有内容）');
   return 0;
 }

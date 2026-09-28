@@ -22,6 +22,12 @@ export interface DashboardOptions {
   dataPath?: string;
   /** Android 安装包（APK）下载地址 —— 指向滚动 Release，链接固定不变 */
   apkUrl?: string;
+  /** 应用版本（构建时写入；用来判断线上有没有更新版本） */
+  version?: string;
+  /** owner/repo（应用里的"微信推送"开关要调 GitHub API 改仓库变量） */
+  repo?: string;
+  /** 版本清单路径（网络优先，实时反映线上版本） */
+  versionFile?: string;
 }
 
 const HTML_ESCAPES: Record<string, string> = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
@@ -39,6 +45,9 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     repoUrl = 'https://github.com/Yang-Yin734/notice-radar',
     dataPath = 'dashboard-data.json',
     apkUrl = 'https://github.com/Yang-Yin734/notice-radar/releases/download/android-latest/notice-radar.apk',
+    version = '0.0.0',
+    repo = 'Yang-Yin734/notice-radar',
+    versionFile = 'version.json',
   } = options;
 
   const bootstrap = {
@@ -47,6 +56,9 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     repoUrl,
     dataPath,
     apkUrl,
+    version,
+    repo,
+    versionFile,
     total: history.items.length,
     bySource: countBySource(history),
     items: history.items.slice(0, maxItems),
@@ -161,6 +173,28 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
   .kbd { background:var(--bar); border-radius:6px; padding:1px 7px; font-size:12.5px; color:var(--ink); }
   .empty { text-align:center; color:var(--muted); font-size:13.5px; padding:34px 10px; }
 
+  /* 设置页 */
+  .card h3 { margin:0 0 10px; }
+  .view > .card { margin-bottom:12px; }
+  .row { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
+  .row-main { flex:1; min-width:0; display:flex; flex-direction:column; gap:3px; }
+  .row-main b { font-size:14.5px; }
+  .row-main span { font-size:11.5px; color:var(--muted); }
+  .hint { font-size:12.5px; color:var(--muted); line-height:1.75; margin:8px 0 0; }
+  .hint a { color:var(--accent); }
+  .btn.ghost { background:transparent; border:1px solid var(--line); color:var(--ink); }
+  .setup { margin-top:12px; }
+  .setup summary { font-size:13px; color:var(--accent); cursor:pointer; }
+  .setup input { flex:1; min-width:150px; padding:9px 12px; border:1px solid var(--line); border-radius:10px;
+    font-size:13.5px; background:var(--bg); color:var(--ink); }
+  .switch { flex:0 0 auto; width:52px; height:30px; border-radius:999px; border:1px solid var(--line);
+    background:var(--bar); position:relative; cursor:pointer; transition:background .18s; padding:0; }
+  .switch i { position:absolute; top:3px; left:3px; width:22px; height:22px; border-radius:50%;
+    background:#fff; box-shadow:0 1px 3px rgba(0,0,0,.25); transition:left .18s; }
+  .switch.on { background:var(--ok,#2f9e44); border-color:transparent; }
+  .switch.on i { left:26px; }
+  .switch:disabled { opacity:.45; cursor:not-allowed; }
+
   .tabbar { position:fixed; left:0; right:0; bottom:0; z-index:30; display:flex;
     background:var(--card); border-top:1px solid var(--line); padding-bottom:env(safe-area-inset-bottom); }
   .tabbar button { flex:1; border:none; background:transparent; color:var(--muted); font-size:12px;
@@ -200,8 +234,13 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
 
 <main>
   <section class="view" id="view-list">
+    <div class="installbanner" id="update-banner" hidden>
+      <div class="ib-text"><b id="update-title">发现新版本</b><span id="update-desc">更新后即可用上新功能</span></div>
+      <button class="btn primary" id="update-action">立即更新</button>
+      <button class="ib-close" id="update-dismiss" aria-label="稍后再说">✕</button>
+    </div>
     <div class="installbanner" id="install-banner" hidden>
-      <div class="ib-text"><b>装成手机应用更方便</b><span>下载安装包后不用每次找浏览器</span></div>
+      <div class="ib-text"><b id="install-title">装成手机应用更方便</b><span id="install-desc">下载安装包后不用每次找浏览器</span></div>
       <a class="btn primary" id="apk-download-top" href="${escapeHtml(apkUrl)}">下载 APK</a>
       <button class="ib-close" id="apk-dismiss" aria-label="不再提示">✕</button>
     </div>
@@ -218,16 +257,61 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     <div id="sources"></div>
   </section>
 
-  <section class="view card about" id="view-about" hidden>
-    <h3>关于这个应用</h3>
-    <p>它把学校官网的通知自动抓下来、按关键词过滤、归档成可检索的列表 —— <b>只抓公开页面，不登录、不存储个人信息</b>。</p>
-    <a class="btn primary big" href="${escapeHtml(apkUrl)}" id="apk-download-about">⬇ 下载 Android 安装包（APK）</a>
-    <p>安装包是把本页套壳成原生应用（TWA），打开的还是同一个网址、内容永远是最新的。
-      首次安装需在系统提示时允许"安装未知来源应用"；更新包用同一把密钥签名，可以直接覆盖安装。</p>
-    <p><b>不想装 APK 也行：</b>Android 用 Chrome 菜单 → <span class="kbd">安装应用 / 添加到主屏幕</span>；iPhone 用 Safari 点 <span class="kbd">分享</span> → <span class="kbd">添加到主屏幕</span>。装好后离线也能翻已缓存的通知。</p>
-    <p><b>收藏与已读只存在你这台设备</b>（localStorage），不会上传；清浏览器数据会一起清掉。</p>
-    <p>数据由 <a href="${escapeHtml(repoUrl)}">notice-radar</a> 定时抓取并提交到仓库。站点结构变更可能导致漏抓，<b>请以学校官网原文为准</b>。</p>
-    <p id="meta-line"></p>
+  <section class="view" id="view-settings" hidden>
+    <div class="card">
+      <h3>微信推送</h3>
+      <div class="row">
+        <div class="row-main"><b id="push-state">读取中…</b><span id="push-hint">推送由云端定时抓取后发出，开关即仓库变量 PUSH_ENABLED</span></div>
+        <button class="switch" id="push-toggle" role="switch" aria-checked="false" disabled><i></i></button>
+      </div>
+      <details class="setup">
+        <summary>需要一次令牌设置（只保存在你这台设备）</summary>
+        <p>应用要改的是仓库变量，所以需要一个能改 Variables 的令牌：GitHub → Settings → Developer settings →
+          Personal access tokens → <b>Fine-grained tokens</b> → 只授权本仓库，权限勾 <span class="kbd">Variables: Read and write</span>。</p>
+        <div class="row">
+          <input id="gh-token" type="password" placeholder="粘贴令牌（只存本机 localStorage）" autocomplete="off">
+          <button class="btn" id="gh-token-save">保存</button>
+          <button class="btn ghost" id="gh-token-clear">清除</button>
+        </div>
+        <p class="hint">⚠️ 令牌只写进你这台设备的 localStorage，不会上传，也不会进仓库；公共电脑上别用，用完点「清除」。
+          不想给令牌也可以到 <a href="https://github.com/${escapeHtml(repo)}/settings/variables/actions">Settings → Variables</a>
+          手动把 <span class="kbd">PUSH_ENABLED</span> 改成 true / false。</p>
+      </details>
+    </div>
+
+    <div class="card">
+      <h3>应用更新</h3>
+      <div class="row">
+        <div class="row-main"><b id="ver-state">当前版本 v${escapeHtml(version)}</b><span id="ver-hint">打开应用时会自动检查线上版本</span></div>
+        <button class="btn" id="check-update">检查更新</button>
+      </div>
+      <p class="hint">通知内容本身始终是实时的（每次打开都拉最新）；这里检查的是「应用外壳」有没有新版。</p>
+    </div>
+
+    <div class="card">
+      <h3>安装到手机</h3>
+      <a class="btn primary big" href="${escapeHtml(apkUrl)}" id="apk-download-about">⬇ 下载 Android 安装包（APK）</a>
+      <p class="hint"><b>Android：</b>下载后按提示安装（首次需允许「安装未知来源应用」）；也可以 Chrome 菜单 → 安装应用。</p>
+      <p class="hint"><b>iPhone / iPad：</b>用 <b>Safari</b> 打开本页 → 点底部 <span class="kbd">分享</span> →
+        <span class="kbd">添加到主屏幕</span>。iOS 不允许像 Android 那样直接装安装包（必须有 Apple 开发者账号签名），
+        「添加到主屏幕」就是苹果官方给网页应用的安装方式：同样有独立图标、全屏显示、可离线。</p>
+    </div>
+
+    <div class="card">
+      <h3>本机数据</h3>
+      <p class="hint">收藏与已读只存在这台设备（localStorage），不会上传。</p>
+      <div class="row">
+        <button class="btn ghost" id="clear-read">清除已读标记</button>
+        <button class="btn ghost" id="clear-fav">清除收藏</button>
+      </div>
+    </div>
+
+    <div class="card about">
+      <h3>关于</h3>
+      <p>它把学校官网的通知自动抓下来、按关键词过滤、归档成可检索的列表 —— <b>只抓公开页面，不登录、不存储个人信息</b>。</p>
+      <p>数据由 <a href="${escapeHtml(repoUrl)}">notice-radar</a> 定时抓取并提交到仓库。站点结构变更可能导致漏抓，<b>请以学校官网原文为准</b>。</p>
+      <p id="meta-line"></p>
+    </div>
   </section>
 </main>
 
@@ -235,7 +319,7 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
   <button data-view="list" data-filter="all" class="active"><span class="dot"></span>通知 <span class="badge" id="badge-unread" hidden></span></button>
   <button data-view="list" data-filter="fav"><span class="dot"></span>收藏 <span class="badge" id="badge-fav" hidden></span></button>
   <button data-view="stats"><span class="dot"></span>统计</button>
-  <button data-view="about"><span class="dot"></span>关于</button>
+  <button data-view="settings"><span class="dot"></span>设置</button>
 </nav>
 
 <div class="toast" id="toast"></div>
@@ -252,6 +336,11 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
 
   function lsRead(key) { try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch (e) { return []; } }
   function lsWrite(key, arr) { try { localStorage.setItem(key, JSON.stringify(arr)); } catch (e) {} }
+  // 是否"以应用形式"运行（装到主屏幕 / 套壳 APK）——决定更新方式是刷新外壳还是下载新 APK
+  function isStandalone() {
+    return (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) ||
+      navigator.standalone === true || location.search.indexOf('app=1') >= 0;
+  }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
     return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]; }); }
   function host(url) { try { return new URL(url).host; } catch (e) { return ''; } }
@@ -352,11 +441,12 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     state.view = view;
     document.getElementById('view-list').hidden = view !== 'list';
     document.getElementById('view-stats').hidden = view !== 'stats';
-    document.getElementById('view-about').hidden = view !== 'about';
+    document.getElementById('view-settings').hidden = view !== 'settings';
     Array.prototype.forEach.call(document.querySelectorAll('#tabbar button'), function (b) {
       b.classList.toggle('active', b.dataset.view === view && (view !== 'list' || b.dataset.filter === state.filter));
     });
     if (view === 'stats') renderStats();
+    if (view === 'settings') { loadPushState(); checkVersion(false); }
   }
 
   function renderAll() { renderChips(); renderList(); renderChrome(); }
@@ -452,25 +542,203 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
   });
 
   if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
-    navigator.serviceWorker.register('sw.js').catch(function () { /* 离线是加分项，失败不影响使用 */ });
+    navigator.serviceWorker.register('sw.js').then(function (reg) {
+      // 已有新版在等待接管 → 提示用户更新
+      if (reg.waiting && navigator.serviceWorker.controller) showUpdate('shell', BOOT.version, null);
+      reg.addEventListener('updatefound', function () {
+        var installing = reg.installing;
+        if (!installing) return;
+        installing.addEventListener('statechange', function () {
+          if (installing.state === 'installed' && navigator.serviceWorker.controller) {
+            showUpdate('shell', BOOT.version, null);
+          }
+        });
+      });
+      // 长时间挂着的应用也定期去看看有没有新版
+      setInterval(function () { reg.update().catch(function () {}); }, 30 * 60 * 1000);
+    }).catch(function () { /* 离线是加分项，失败不影响使用 */ });
   }
 
-  // Android 用户把"下载安装包"顶到最上面（点过 ✕ 就不再打扰）
+  // Android：引导下载 APK；iOS：引导"添加到主屏幕"（苹果官方给网页应用的安装方式）
   (function installBanner() {
-    var KEY = 'notice-radar:apk-dismissed';
-    var isAndroid = /Android/i.test(navigator.userAgent);
+    var KEY = 'notice-radar:install-dismissed';
+    var ua = navigator.userAgent;
+    var isAndroid = /Android/i.test(ua);
+    var isIOS = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    if (!isAndroid && !isIOS) return;
+    if (lsRead(KEY)[0] === '1') return;
     var banner = document.getElementById('install-banner');
-    if (!isAndroid || lsRead(KEY)[0] === '1') return;
+    if (isIOS) {
+      document.getElementById('install-title').textContent = '装成 iPhone 应用';
+      document.getElementById('install-desc').textContent = 'Safari → 分享 → 添加到主屏幕';
+      var btn = document.getElementById('apk-download-top');
+      btn.textContent = '看步骤';
+      btn.setAttribute('href', '#');
+      btn.addEventListener('click', function (ev) { ev.preventDefault(); showView('settings'); });
+    }
     banner.hidden = false;
     document.getElementById('apk-dismiss').addEventListener('click', function () {
       banner.hidden = true;
       lsWrite(KEY, ['1']);
     });
-    // 下载按钮带上来源标记，方便在 Release 的下载统计里区分入口
-    document.getElementById('apk-download-top').addEventListener('click', function () {
-      lsWrite(KEY, ['1']);
-    });
   })();
+
+  // ---------- 版本检查与"应用内提示更新" ----------
+  var updateBanner = document.getElementById('update-banner');
+  var pendingUpdate = null;
+  function showUpdate(kind, version, url) {
+    if (pendingUpdate && pendingUpdate.kind === kind && pendingUpdate.version === version) return;
+    pendingUpdate = { kind: kind, version: version, url: url };
+    document.getElementById('update-title').textContent = '有新版本 v' + version;
+    document.getElementById('update-desc').textContent = kind === 'apk'
+      ? '点右侧下载新安装包，可直接覆盖安装'
+      : '新版界面已就绪，点右侧立即生效';
+    updateBanner.hidden = false;
+  }
+  document.getElementById('update-action').addEventListener('click', function () {
+    if (!pendingUpdate) return;
+    if (pendingUpdate.kind === 'apk') {
+      location.href = pendingUpdate.url || BOOT.apkUrl;
+      return;
+    }
+    if (navigator.serviceWorker && navigator.serviceWorker.controller) {
+      navigator.serviceWorker.getRegistration().then(function (reg) {
+        if (reg && reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+        setTimeout(function () { location.reload(); }, 300);
+      });
+    } else {
+      location.reload();
+    }
+  });
+  document.getElementById('update-dismiss').addEventListener('click', function () { updateBanner.hidden = true; });
+
+  function cmpVersion(a, b) {
+    var pa = String(a).replace(/^v/, '').split('.').map(Number);
+    var pb = String(b).replace(/^v/, '').split('.').map(Number);
+    for (var i = 0; i < 3; i++) {
+      var x = pa[i] || 0, y = pb[i] || 0;
+      if (x !== y) return x > y;
+    }
+    return false;
+  }
+  function checkVersion(manual) {
+    var stateEl = document.getElementById('ver-state');
+    var hintEl = document.getElementById('ver-hint');
+    if (manual) hintEl.textContent = '检查中…';
+    fetch(BOOT.versionFile + '?t=' + Date.now(), { cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function (v) {
+        if (v.version && cmpVersion(v.version, BOOT.version)) {
+          stateEl.textContent = '发现新版本 v' + v.version + '（当前 v' + BOOT.version + '）';
+          hintEl.textContent = '用上方横幅里的按钮更新';
+          showUpdate(isStandalone() ? 'apk' : 'shell', v.version, v.apkUrl);
+        } else {
+          stateEl.textContent = '当前版本 v' + BOOT.version + '，已是最新';
+          hintEl.textContent = '检查时间：' + new Date().toLocaleTimeString();
+        }
+      })
+      .catch(function (e) {
+        if (manual) hintEl.textContent = '检查失败：' + e.message;
+      });
+  }
+  document.getElementById('check-update').addEventListener('click', function () { checkVersion(true); });
+
+  // ---------- 微信推送开关：读写仓库变量 PUSH_ENABLED ----------
+  var KEY_TOKEN = 'notice-radar:gh-token';
+  function ghFetch(path, opts) {
+    var token = lsRead(KEY_TOKEN)[0] || '';
+    if (!token) return Promise.reject(new Error('还没设置令牌'));
+    var init = {
+      method: (opts && opts.method) || 'GET',
+      headers: {
+        accept: 'application/vnd.github+json',
+        authorization: 'Bearer ' + token,
+        'content-type': 'application/json',
+      },
+      body: opts && opts.body,
+    };
+    return fetch('https://api.github.com/repos/' + BOOT.repo + path, init).then(function (r) {
+      return r.text().then(function (text) {
+        var json = null;
+        try { json = text ? JSON.parse(text) : null; } catch (e) {}
+        if (!r.ok) throw new Error('HTTP ' + r.status + (json && json.message ? '：' + json.message : ''));
+        return json;
+      });
+    });
+  }
+  function setPushUi(enabled, known) {
+    var sw = document.getElementById('push-toggle');
+    sw.setAttribute('aria-checked', enabled ? 'true' : 'false');
+    sw.classList.toggle('on', !!enabled);
+    sw.disabled = !known;
+  }
+  function loadPushState() {
+    setPushUi(false, false);
+    document.getElementById('push-state').textContent = '微信推送：读取中…';
+    ghFetch('/actions/variables/PUSH_ENABLED')
+      .then(function (v) {
+        var on = String(v && v.value) !== 'false';
+        setPushUi(on, true);
+        document.getElementById('push-state').textContent = on ? '微信推送：已开启' : '微信推送：已关闭';
+        document.getElementById('push-hint').textContent = '开关即仓库变量 PUSH_ENABLED，关掉后云端连抓取都跳过';
+      })
+      .catch(function (e) {
+        document.getElementById('push-state').textContent = '微信推送：状态未知';
+        document.getElementById('push-hint').textContent = lsRead(KEY_TOKEN)[0]
+          ? '读取失败：' + e.message
+          : '默认开启。设置令牌后可在这里开关；也可以直接改仓库变量 PUSH_ENABLED';
+        setPushUi(false, false);
+      });
+  }
+  document.getElementById('push-toggle').addEventListener('click', function () {
+    var sw = this;
+    var next = sw.getAttribute('aria-checked') !== 'true';
+    sw.disabled = true;
+    var payload = JSON.stringify({ name: 'PUSH_ENABLED', value: next ? 'true' : 'false' });
+    ghFetch('/actions/variables/PUSH_ENABLED', { method: 'PATCH', body: payload })
+      .catch(function (e) {
+        if (/HTTP 404/.test(e.message)) return ghFetch('/actions/variables', { method: 'POST', body: payload });
+        throw e;
+      })
+      .then(function () {
+        setPushUi(next, true);
+        document.getElementById('push-state').textContent = next ? '微信推送：已开启' : '微信推送：已关闭';
+        toast(next ? '已开启微信推送' : '已关闭微信推送（云端会跳过抓取）');
+      })
+      .catch(function (e) {
+        sw.disabled = false;
+        toast('设置失败：' + e.message);
+      });
+  });
+  document.getElementById('gh-token-save').addEventListener('click', function () {
+    var value = document.getElementById('gh-token').value.trim();
+    if (!value) { toast('请先粘贴令牌'); return; }
+    lsWrite(KEY_TOKEN, [value]);
+    document.getElementById('gh-token').value = '';
+    toast('令牌已保存在本机');
+    loadPushState();
+  });
+  document.getElementById('gh-token-clear').addEventListener('click', function () {
+    lsWrite(KEY_TOKEN, []);
+    toast('已清除本机令牌');
+    loadPushState();
+  });
+
+  // ---------- 本机数据 ----------
+  document.getElementById('clear-read').addEventListener('click', function () {
+    state.read = new Set();
+    lsWrite(KEY_READ, []);
+    renderList(); renderChrome();
+    toast('已清除已读标记');
+  });
+  document.getElementById('clear-fav').addEventListener('click', function () {
+    state.fav = new Set();
+    lsWrite(KEY_FAV, []);
+    renderList(); renderChrome();
+    toast('已清除收藏');
+  });
+
+  checkVersion(false);
 })();
 </script>
 </body></html>

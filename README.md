@@ -340,7 +340,38 @@ config/
 - 零依赖：内联 CSS + 原生 JS，不引任何 CDN；`sw.js` 只做外壳缓存 + 数据"网络优先、离线回落"
 - 原始数据也放了一份：`docs/dashboard-data.json`，自己做图表、接别的工具随便用
 
-本地重建：`npm run dashboard`（产物是 `docs/index.html` + `docs/dashboard-data.json`）。
+本地重建：`npm run dashboard`（产物是 `docs/index.html` + `docs/dashboard-data.json` + `docs/version.json`）。
+
+## 在应用里控制推送与更新
+
+![设置页](docs/app-settings.png)
+
+**微信推送开关**：设置 → 微信推送。开关写的是仓库变量 `PUSH_ENABLED`，两个抓取工作流都读它
+（`if: vars.PUSH_ENABLED != 'false'`）——**关掉后云端连抓取都跳过**，不会有任何推送。
+
+- 应用要改仓库变量，所以需要一次性令牌：GitHub → Settings → Developer settings → Personal access tokens →
+  **Fine-grained tokens** → 只授权本仓库、权限勾 `Variables: Read and write`，粘贴到设置页即可。
+  令牌**只写进你这台设备的 localStorage**，不上传、不进仓库；用完点「清除」。
+- 不想给令牌也行：到仓库 Settings → Secrets and variables → Actions → Variables 手动改 `PUSH_ENABLED`。
+
+**应用内更新提示**：`docs/version.json` 是版本清单（构建时写入，`sw.js` 对它走"网络优先"，所以永远是最新的）。
+应用每次打开、以及点「设置 → 检查更新」时会比对版本：
+
+- **网页/PWA 版**：Service Worker 检测到新版外壳 → 顶部出现「有新版本，点右侧立即生效」→ 点一下 `skipWaiting` + 刷新
+- **APK 版**：检测到线上版本更高 → 顶部提示「有新版本 → 下载新安装包」（APK 用同一把密钥签名，可直接覆盖安装）
+- 通知**内容**本身始终实时（每次打开都拉 `dashboard-data.json`），不必为此重装
+
+## iOS（iPhone / iPad）
+
+iOS **没有**"下载安装包直接装"这回事，Apple 只允许两条路，详见 [docs/ios.md](docs/ios.md)：
+
+| 方式 | 需要什么 | 现在能用吗 |
+|---|---|---|
+| **Safari → 分享 → 添加到主屏幕**（推荐） | 什么都不用 | ✅ 立即可用：独立图标、全屏、可离线、永不过期 |
+| App Store / TestFlight | Apple 开发者账号（$99/年）+ Mac + 签名证书 | ❌ 本项目没有账号，无法签名 |
+| 侧载未签名 IPA（AltStore/Sideloadly） | 一台 Mac 或 Windows + 你自己的 Apple ID | ⚠️ 可行但每 7 天要重新签名，体验远不如上面那条 |
+
+应用里会认 UA：**Android 提示下载 APK，iOS 提示"添加到主屏幕"**，文案与步骤都不同。
 
 ## 推送通道
 

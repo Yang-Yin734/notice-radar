@@ -24,6 +24,9 @@ permissions:
 
 jobs:
   poll:
+    # 应用里的「微信推送」开关就是改这个仓库变量（Settings → Secrets and variables → Actions → Variables）。
+    # 关掉后整个 job 直接跳过，连抓取都不做 —— 不消耗额度，也不会有误推。
+    if: vars.PUSH_ENABLED != 'false'
     runs-on: ubuntu-latest
     # 防止某个源卡住导致 job 一直挂着（默认上限是 6 小时，太宽松）
     timeout-minutes: 15
