@@ -4,6 +4,14 @@
 
 ## 未发布
 
+- **故障判定分级**：`poll` 不再因偶发网络抖动就报红——连续"所有源都抓不到"1–2 次只记 warning，
+  **第 3 次**才判真故障并报一次，之后静默到恢复（`tools/health.ts` + 4 个单元测试）
+- **本机每日任务改为"能同步就跑全量"**：`tools/run-daily.ps1` 先 `git pull` 同步云端状态，
+  成功则跑全部 6 个源；同步失败（代理没开）则降级为只跑学院 2 个源 —— 两种情况都不会与云端重复推送
+  （本地与云端各记一份"已见"状态，不同步就跑全量会推两次）。计划任务名相应改为 `notice-radar-daily`
+  - 新增可选开关 `$startProxy`：需要每天自动拉起代理客户端时打开
+- 测试 15 → 19
+
 - **新增浏览器渲染抓取**（零依赖：走 CDP，用本机已装的 Chrome/Edge，不引入 puppeteer）
   - 新增命令 `radr fetch <url> [--window] [--out=文件]`：渲染任意页面并导出 DOM，用于给"必须执行 JS"的站点摸结构、写选择器
   - 源配置新增 `requiresBrowser` / `browserHeadless` / `browserExpect`；这类源默认**跳过**，需显式 `--allow-browser`

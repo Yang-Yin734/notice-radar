@@ -108,22 +108,33 @@ Linux/macOS 用 `SERVERCHAN_KEY=... npm run run`，Windows PowerShell 用 `$env:
 
 | 文件 | 作用 |
 |---|---|
-| `config/schools/uestc-math.yaml` | **只含学院两个源**的预设 |
-| `tools/run-math-daily.ps1` | 计划任务入口：抓取 + 写日志 + 提交状态 |
+| `tools/run-daily.ps1` | 计划任务入口：同步状态 → 抓取 → 写日志 → 提交状态 |
+| `config/schools/uestc.yaml` | 全量预设（6 个源，含学院）—— 同步成功时用它 |
+| `config/schools/uestc-math.yaml` | 只含学院两个源 —— 同步失败时的降级预设 |
 
-**为什么单独一个"只有学院源"的预设**：教务处/新闻网/研究生院云端已经在抓了。本地再抓一遍，同一条通知会推两次（本地状态与云端状态各记一份）。所以分工是——**云端抓 4 个源，本机抓云端抓不到的那 2 个**。
+**它每天怎么决策**（这一步是关键，直接决定你会不会收到重复推送）：
+
+```
+git pull 同步云端状态 ──成功──► 跑全部 6 个源（本地状态与云端一致，不会重复推）
+        │
+        └──失败（代理没开）──► 只跑学院 2 个源（云端追不到的那两个，仍然不会重复推）
+```
+
+本地和云端各记一份"已见通知"状态，所以**不同步就跑全量 = 同一条通知推两次**。降级成"只跑学院"就避开了这个陷阱，而且学院那部分恰恰是云端永远抓不到的。
+
+> 想每天都拿到全量日报？把 `tools/run-daily.ps1` 里的 `$startProxy` 改成 `$true`（脚本会自己拉起代理客户端再同步），或者更省事——在代理客户端里打开"开机自启"。
 
 注册计划任务（每天 08:00）：
 
 ```powershell
 $repo = 'D:\Y\Documents\ds\notice-radar'
 $action = New-ScheduledTaskAction -Execute 'powershell.exe' `
-  -Argument ('-NoProfile -ExecutionPolicy Bypass -File "{0}"' -f (Join-Path $repo 'tools\run-math-daily.ps1')) `
+  -Argument ('-NoProfile -ExecutionPolicy Bypass -File "{0}"' -f (Join-Path $repo 'tools\run-daily.ps1')) `
   -WorkingDirectory $repo
 $trigger = New-ScheduledTaskTrigger -Daily -At '08:00'
 $settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -AllowStartIfOnBatteries `
   -DontStopIfGoingOnBatteries -MultipleInstances IgnoreNew -ExecutionTimeLimit (New-TimeSpan -Minutes 15)
-Register-ScheduledTask -TaskName 'notice-radar-math-daily' -Action $action -Trigger $trigger `
+Register-ScheduledTask -TaskName 'notice-radar-daily' -Action $action -Trigger $trigger `
   -Settings $settings -Force
 ```
 
@@ -131,15 +142,15 @@ Register-ScheduledTask -TaskName 'notice-radar-math-daily' -Action $action -Trig
 
 - **必须"仅在用户登录时运行"**（不加 `-User`/`-Password` 就是这种）。学院站点会拒绝无头浏览器，抓取时要弹一个可见浏览器窗口，会话 0 里没有桌面，任务会失败。
 - **`-StartWhenAvailable` 别省**：08:00 电脑没开（或睡眠），开机后会自动补跑，通知照收。
-- **脚本必须存成 UTF-8 with BOM**。Windows PowerShell 5.1 读无 BOM 的 UTF-8 脚本会按 GBK 解码，中文注释直接让解析报错——这个坑我们撞过。检查：`[System.IO.File]::ReadAllBytes('tools\run-math-daily.ps1')[0..2]` 应该是 `239 187 191`。
+- **脚本必须存成 UTF-8 with BOM**。Windows PowerShell 5.1 读无 BOM 的 UTF-8 脚本会按 GBK 解码，中文注释直接让解析报错——这个坑我们撞过。检查：`[System.IO.File]::ReadAllBytes('tools\run-daily.ps1')[0..2]` 应该是 `239 187 191`。
 - 抓取时会短暂弹出浏览器窗口（几秒自动关），所以别把这个时间点设在你开会/演示的时间。
 
 查状态、看日志、删任务：
 
 ```powershell
-Get-ScheduledTaskInfo -TaskName 'notice-radar-math-daily' | Select NextRunTime, LastTaskResult
-Get-Content 'D:\Y\Documents\ds\notice-radar\logs\math-daily.log' -Tail 30 -Encoding UTF8
-Unregister-ScheduledTask -TaskName 'notice-radar-math-daily' -Confirm:$false   # 不想要了就删
+Get-ScheduledTaskInfo -TaskName 'notice-radar-daily' | Select NextRunTime, LastTaskResult
+Get-Content 'D:\Y\Documents\ds\notice-radar\logs\daily.log' -Tail 30 -Encoding UTF8
+Unregister-ScheduledTask -TaskName 'notice-radar-daily' -Confirm:$false   # 不想要了就删
 ```
 
 > 脚本每次会把 `data/state.json` 的变更**提交到本地仓库（不推送）**，这样工作区保持干净，
@@ -182,6 +193,21 @@ sources:
 两个必须知道的限制：
 - GitHub 的 cron 用 UTC，最小间隔 5 分钟，且**实际执行会延迟几分钟**；仓库 60 天无提交时定时任务会被自动停用。
 - 想更实时就把 workflow 的 cron 改密一点，或在本机用系统计划任务跑同一条命令（`radr run`）。
+
+### 境外 runner 抓不到怎么办：故障判定是分级的
+
+宿主机在境外时，抓境内学校站点会**偶发整体不可达**（实测约每 3 次有 1 次）。如果每次都让 CI 变红，你的邮箱会被 GitHub 的失败通知淹没；但一律放过又会让真故障（站点改版、解析全废）没人发现。
+
+所以判定是分级的（`tools/health.ts`，有单元测试）：
+
+| 连续"所有源都抓不到" | 结果 |
+|---|---|
+| 1–2 次 | 只记 `::warning::`，CI 仍是绿的 —— 当作网络天气 |
+| **第 3 次** | 判为真故障，CI 变红（`::error::`），这次会发邮件 |
+| 第 4 次及以后 | 静默（同一个故障期只打扰你一次） |
+| 任意一次成功 | 计数清零，下个故障期重新报 |
+
+失败不会导致**漏报**：失败的那次不写状态，下一次成功运行时会把期间所有新通知一起推给你。
 
 关于状态提交的权限：`poll` 需要把"见过哪些通知"提交回仓库，工作流里已经声明了 `permissions: contents: write`，**实测开箱可用，不用改仓库设置**。
 

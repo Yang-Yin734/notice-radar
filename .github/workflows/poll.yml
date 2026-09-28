@@ -7,7 +7,7 @@ on:
   schedule:
     - cron: '*/20 * * * *'
   # 改了源配置推上来立刻验证一次，不必等定时；首次部署也能马上确认权限是否配好。
-  # 限定 paths，避免每次改 README 都触发一轮；状态提交带 [skip ci]，不会形成循环。
+  # 限定 paths，避免每次改文档都触发一轮；状态提交带 [skip ci]，不会形成循环。
   push:
     branches: [main]
     paths:
@@ -26,7 +26,7 @@ jobs:
   poll:
     runs-on: ubuntu-latest
     # 防止某个源卡住导致 job 一直挂着（默认上限是 6 小时，太宽松）
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
 
@@ -38,26 +38,30 @@ jobs:
       - run: npm ci
 
       - name: 抓取并推送
+        id: fetch
         env:
           # 在想用这个仓库的人自己的 Settings → Secrets 里配
           SERVERCHAN_KEY: ${{ secrets.SERVERCHAN_KEY }}
         run: |
-          # 境内学校站点在境外 runner 上偶发整体不可达（跨境网络抖动，实测过两次）。
+          # 境内学校站点在境外 runner 上偶发整体不可达（跨境网络抖动，实测约每 3 次 1 次）。
           # 单源失败不影响退出码，只有全部源都失败才返回非零，所以重试放在这一层。
-          # 退避逐步拉长：30s / 45s / 60s，覆盖几分钟级别的网络 weather。
-          delays=(30 45 60)
           for attempt in 1 2 3 4; do
             if node src/cli.ts run --json=data/latest.json --delay=1500; then
+              echo "outcome=ok" >> "$GITHUB_OUTPUT"
               exit 0
             fi
             if [ "$attempt" -lt 4 ]; then
-              wait="${delays[$((attempt-1))]}"
+              wait=$((attempt * 20 + 10))   # 30 / 50 / 70 秒
               echo "::warning::第 ${attempt} 次抓取失败（可能所有源都不可达），${wait} 秒后重试"
               sleep "$wait"
             fi
           done
-          echo "::error::连续 4 次抓取全部失败。多半是 runner 到境内站点的网络问题（本站点在境外会偶发抖动）；若长期如此，看下一步 doctor 输出判断是否站点改版。"
-          exit 1
+          # 这里不直接判红：到底算"网络天气"还是"真故障"，交给下一步按连续次数决定
+          echo "outcome=fail" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: 故障判定（连续 3 次全失败才报红）
+        run: node tools/health.ts --outcome=${{ steps.fetch.outputs.outcome }}
 
       - name: 失败时打印体检表（便于定位）
         if: failure()
