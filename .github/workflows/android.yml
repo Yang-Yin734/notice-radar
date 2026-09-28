@@ -45,19 +45,42 @@ jobs:
       - name: 安装 bubblewrap
         run: npm install -g @bubblewrap/cli
 
-      # 不写这个配置，bubblewrap 会交互式问"要不要由它安装 JDK"，CI 里会直接崩
-      - name: 预置 bubblewrap 配置（跳过交互式提问）
+      # 不写这个配置，bubblewrap 会交互式问"要不要由它安装 JDK"，CI 里会直接崩。
+      # 另外 bubblewrap 只认 $SDK/tools 或 $SDK/bin（并从这里找 sdkmanager），
+      # 而现代 Android SDK 布局里这两个目录都不存在（命令行工具在 cmdline-tools/latest/bin），
+      # 不补一个软链它会一直说 "The provided androidSdk isn't correct."
+      - name: 预置 bubblewrap 配置 + 补齐它要求的 SDK 结构
         run: |
+          echo "ANDROID_HOME=[$ANDROID_HOME]  ANDROID_SDK_ROOT=[$ANDROID_SDK_ROOT]"
+          SDK="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
+          if [ ! -d "$SDK" ]; then
+            echo "::error::找不到 Android SDK"
+            exit 1
+          fi
+          echo "使用 SDK：$SDK"
+          ls "$SDK"
+          if [ ! -d "$SDK/tools" ] && [ ! -d "$SDK/bin" ]; then
+            sudo ln -sfn "$SDK/cmdline-tools/latest/bin" "$SDK/bin"
+            echo "已补软链：$SDK/bin → cmdline-tools/latest/bin"
+          fi
+          ls -l "$SDK/bin/sdkmanager"
           mkdir -p ~/.bubblewrap
-          printf '{"jdkPath":"%s","androidSdkPath":"%s"}\n' "$JAVA_HOME" "$ANDROID_HOME" > ~/.bubblewrap/config.json
+          printf '{"jdkPath":"%s","androidSdkPath":"%s"}\n' "$JAVA_HOME" "$SDK" > ~/.bubblewrap/config.json
           cat ~/.bubblewrap/config.json
-          bubblewrap doctor || true
+          {
+            echo "ANDROID_HOME=$SDK"
+            echo "ANDROID_SDK_ROOT=$SDK"
+          } >> "$GITHUB_ENV"
 
-      - name: 接受 Android SDK 许可（缺的组件顺手装上）
+      - name: 接受许可证 + 装构建所需组件
         run: |
-          SDKMANAGER="$(command -v sdkmanager || echo "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager")"
+          SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
           yes | "$SDKMANAGER" --licenses >/dev/null 2>&1 || true
-          yes | "$SDKMANAGER" "platforms;android-34" "build-tools;34.0.0" >/dev/null 2>&1 || true
+          # 工程 compileSdk/targetSdk = 36；bubblewrap 这个版本硬编码要 build-tools 36.1.0
+          yes | "$SDKMANAGER" "platform-tools" "platforms;android-36" "build-tools;36.1.0" || true
+          echo "--- platforms ---"; ls "$ANDROID_HOME/platforms" || true
+          echo "--- build-tools ---"; ls "$ANDROID_HOME/build-tools" || true
+          bubblewrap doctor || true
 
       - name: 写入版本号（versionCode 递增才允许覆盖安装）
         working-directory: android
