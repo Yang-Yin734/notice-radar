@@ -14,7 +14,7 @@
     "run": "node src/cli.ts run",
     "doctor": "node src/cli.ts doctor",
     "list": "node src/cli.ts list",
-    "test": "node --test tests/",
+    "test": "node tools/run-tests.mjs",
     "capture": "node tools/capture-fixtures.mjs"
   },
   "keywords": [

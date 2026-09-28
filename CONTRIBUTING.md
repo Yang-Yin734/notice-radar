@@ -37,10 +37,12 @@ npm test              # 测试跑在真实页面快照上，不需要网络
 ## 提交前自查
 
 ```bash
-npm test
+npm test            # 测试入口是 tools/run-tests.mjs（自动发现 tests/**/*.test.ts）
 npx tsc --noEmit
 npm run doctor
 ```
+
+> 为什么测试入口要多一层脚本：`node --test tests/` 在不同 Node 版本里对 `.ts` 文件的默认匹配行为不一致（本地 Node 26 能匹配、CI 的 Node 24 匹配不到，job 直接失败）。显式传路径则任何版本都稳。
 
 ## 行为准则
 
