@@ -2,7 +2,38 @@
 
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
-## 未发布
+## v0.2.0 — 2026-09-28
+
+M2：**有了归档和仪表盘**——推送解决"新通知"，仪表盘解决"我想找上个月那条"。
+
+### 新增
+
+- **通知归档 + GitHub Pages 仪表盘**
+  - 新增 `src/core/history.ts`：`state.json` 只记 ID（去重），`history.json` 才留内容；
+    按 id 去重、按日期倒序、上限 3000 条，仓库不会无限膨胀（7 个单元测试）
+  - 新增 `src/dashboard.ts` + `radr dashboard`：渲染**自包含**的静态页（内联 CSS + 原生 JS，无 CDN），
+    支持标题搜索、按来源筛选、按日期分组、最近 14 天趋势、按来源统计；
+    同时导出 `docs/dashboard-data.json` 供二次利用（7 个单元测试，含 XSS 转义断言）
+  - 两个抓取工作流在提交状态时顺带重建仪表盘并提交
+  - 在线地址：https://yang-yin734.github.io/notice-radar/
+- **邮件推送通道**（`type: email`）：读 `SMTP_URL` / `MAIL_TO` / `MAIL_FROM`；
+  `nodemailer` 是**可选依赖**（核心保持零额外依赖），没装时给出安装提示而不是静默失败
+- **`radr test-notify`**：只发一条测试消息，用来确认推送密钥配好了没有；
+  结果写进 `data/last-notify.json`（脱敏 `readkey`），可从提交记录查证，不必翻 Actions 日志
+- **`data/last-notify.json`**：每次真实推送的结果都留档，排查"云端到底推出去没有"时很有用
+
+### 修复
+
+- `test-notify` 的判定忽略 `stdout` 通道：它永远"成功"，会让自检永远显示通过
+- `tools/gh-setup.mjs` 设置 Actions secret 改用 **libsodium** 官方实现
+  （曾用 tweetnacl 原语手写 sealed box，GitHub 回 `422 improperly encrypted secret`）——密码学不自己写
+
+### 变更
+
+- 测试 19 → 33（新增 history / dashboard / notify 三组）
+- CI 增加"仪表盘能构建"一步：构建产物坏了不必等到部署才发现
+
+## v0.1.0 之后、v0.2.0 之前
 
 - **学院通知也能在云端抓了（电脑关机照样推）**：新增 `.github/workflows/poll-math.yml`，
   每天 UTC 00:00（北京 08:00）在 runner 上挂虚拟显示器（Xvfb）跑**真实、非无头**的 Chrome
@@ -10,15 +41,10 @@
   这是"用真浏览器访问公开页面"，**没有伪造 UA、也没有隐藏 `navigator.webdriver`**；
   因为性质敏感，刻意低频：**一天只跑一次**，不跟着 `poll` 每 20 分钟打。
   - `src/core/browser.ts`：Linux 上自动加 `--disable-dev-shm-usage`，CI 里加 `--no-sandbox`
-- 本机计划任务降级为**兜底**，时间从 08:00 改到 **09:00**（云端先跑，本地补漏；避免同时抓）
-  - `run-daily.ps1` 的同步改用 `git pull --rebase --autostash`：工作区有未提交改动时也能同步
-    （之前会直接失败并退化成只跑学院源）
 - **故障判定分级**：`poll` 不再因偶发网络抖动就报红——连续"所有源都抓不到"1–2 次只记 warning，
   **第 3 次**才判真故障并报一次，之后静默到恢复（`tools/health.ts` + 4 个单元测试）
-- **本机每日任务改为"能同步就跑全量"**：`tools/run-daily.ps1` 先 `git pull` 同步云端状态，
-  成功则跑全部 6 个源；同步失败（代理没开）则降级为只跑学院 2 个源 —— 两种情况都不会与云端重复推送
-  （本地与云端各记一份"已见"状态，不同步就跑全量会推两次）。计划任务名相应改为 `notice-radar-daily`
-  - 新增可选开关 `$startProxy`：需要每天自动拉起代理客户端时打开
+- 本机计划任务改为"能同步就跑全量"、时间 09:00、可选 `$startProxy`；
+  `run-daily.ps1` 的同步改用 `git pull --rebase --autostash`
 - 测试 15 → 19
 
 - **新增浏览器渲染抓取**（零依赖：走 CDP，用本机已装的 Chrome/Edge，不引入 puppeteer）

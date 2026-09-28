@@ -41,6 +41,32 @@ async function sendWebhook(url: string, title: string, markdown: string): Promis
   }
 }
 
+/** 邮件通道：走 SMTP，读环境变量 SMTP_URL / MAIL_TO / MAIL_FROM。
+ *  nodemailer 是可选依赖（核心保持尽量少的依赖），没装就给出安装提示。 */
+async function sendEmail(title: string, markdown: string): Promise<NotifyOutcome> {
+  const channel = 'email';
+  const smtpUrl = process.env.SMTP_URL ?? '';
+  const to = process.env.MAIL_TO ?? '';
+  const from = process.env.MAIL_FROM ?? process.env.MAIL_TO ?? '';
+  if (!smtpUrl) return { channel, ok: false, detail: '缺少 SMTP_URL（形如 smtps://user:pass@smtp.example.com:465）' };
+  if (!to) return { channel, ok: false, detail: '缺少 MAIL_TO（收件人地址）' };
+
+  try {
+    const { createRequire } = await import('node:module');
+    const require = createRequire(import.meta.url);
+    const nodemailer = require('nodemailer');
+    const transport = nodemailer.createTransport(smtpUrl);
+    const info = await transport.sendMail({ from, to, subject: title, text: markdown });
+    return { channel, ok: true, detail: `已发送（${info?.messageId ?? 'ok'}）` };
+  } catch (e) {
+    const message = String((e as Error)?.message ?? e);
+    if (/Cannot find module|MODULE_NOT_FOUND/.test(message)) {
+      return { channel, ok: false, detail: '需要先装可选依赖：npm i nodemailer' };
+    }
+    return { channel, ok: false, detail: message.slice(0, 200) };
+  }
+}
+
 export async function notifyAll(channels: NotifyConfig[], title: string, markdown: string): Promise<NotifyOutcome[]> {
   const outcomes: NotifyOutcome[] = [];
   for (const cfg of channels) {
@@ -52,6 +78,10 @@ export async function notifyAll(channels: NotifyConfig[], title: string, markdow
     if (cfg.type === 'serverchan') {
       const key = process.env[cfg.keyEnv ?? 'SERVERCHAN_KEY'] ?? '';
       outcomes.push(await sendServerChan(key, title, markdown));
+      continue;
+    }
+    if (cfg.type === 'email') {
+      outcomes.push(await sendEmail(title, markdown));
       continue;
     }
     if (cfg.type === 'webhook') {

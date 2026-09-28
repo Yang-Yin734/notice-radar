@@ -67,11 +67,14 @@ jobs:
         if: failure()
         run: xvfb-run -a node src/cli.ts doctor --config=config/schools/uestc-math.yaml --allow-browser || true
 
-      - name: 提交状态（下次只报新增）
+      - name: 重建通知归档仪表盘（GitHub Pages）
+        run: node src/cli.ts dashboard
+
+      - name: 提交状态（下次只报新增）+ 仪表盘
         run: |
           git config user.name "notice-radar-bot"
           git config user.email "notice-radar-bot@users.noreply.github.com"
-          git add -A data
+          git add -A data docs
           if git diff --cached --quiet; then
             echo "状态无变化，跳过提交"
           else

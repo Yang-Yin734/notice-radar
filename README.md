@@ -71,6 +71,8 @@ Linux/macOS 用 `SERVERCHAN_KEY=... npm run run`，Windows PowerShell 用 `$env:
 | `radr run --write-always` | 即使没有新通知也写状态与产物（默认只在有新通知时写） |
 | `radr run --allow-browser` | 允许抓「需要浏览器渲染」的源（学院站点会短暂弹出浏览器窗口，几秒后自动关闭） |
 | `radr fetch <url> [--window] [--out=文件]` | 用浏览器渲染任意页面并导出 DOM —— 给 WAF 站点写选择器时用它 |
+| `radr dashboard` | 把历史归档渲染成静态仪表盘（`docs/index.html`，GitHub Pages 用） |
+| `radr test-notify` | 只发一条测试消息，验证推送密钥配好没有 |
 
 ## 已支持
 
@@ -281,8 +283,35 @@ config/
 
 - [x] **M0** 骨架 + 教务处/新闻网/研究生院适配器 + fixture 测试 + Actions 定时 + Server酱推送
 - [x] **M1** 跨源去重、日报预览图、Release v0.1.0、[good first issue 清单](docs/good-first-issues.md)
-- [ ] **M2** GitHub Pages 仪表盘（历史日报可视化）+ 邮件通道 + 更多学校预设
+- [x] **M2** 通知归档仪表盘（GitHub Pages，可搜索/按来源筛选）+ 邮件通道 + 归档原始数据 + [Release v0.2.0](../../releases)
 - [ ] **M3** 发布到 npm（`npx notice-radar`）+ 通知频次统计 + 适配器市场（谁维护哪个学校）
+
+## 通知归档仪表盘
+
+推送只告诉你"有什么新的"，想翻旧通知就得靠归档。每次抓到新通知都会追加进 `data/history.json`，
+并自动重建一个静态页面（两个抓取工作流都会在提交状态时顺带重建）：
+
+![仪表盘](docs/dashboard.png)
+
+- **在线看**：[yang-yin734.github.io/notice-radar](https://yang-yin734.github.io/notice-radar/)（构建产物就是 `docs/index.html`）
+- **可搜索**（标题关键词，如"退课""四六级""推免"）、**可按来源筛选**、**按日期分组**
+- 顶部有「最近 14 天发现量」与「按来源统计」，一眼看出哪个栏目最活跃
+- 页面**自包含**：内联 CSS + 原生 JS，不依赖任何 CDN，关掉 JS 也能读
+- 原始数据也放了一份：`docs/dashboard-data.json`，想自己做图表、接别的工具随便用
+
+本地重建：`npm run dashboard`。
+
+## 推送通道
+
+| 通道 | 配置 | 说明 |
+|---|---|---|
+| Server酱 | `type: serverchan`，密钥放 `SERVERCHAN_KEY` | 推到微信，国内最省事 |
+| 邮件 | `type: email` | 读环境变量 `SMTP_URL`（形如 `smtps://user:pass@smtp.example.com:465`）、`MAIL_TO`、`MAIL_FROM`；需要 `npm i nodemailer` |
+| 通用 webhook | `type: webhook` | 飞书/钉钉/自建服务都行 |
+| stdout | `type: stdout` | 只打印到终端（本地调试用；它永远"成功"，所以不算真正的通道） |
+
+想确认密钥配好没有：`npm run run -- --no-notify` 不推送；直接跑 **`node src/cli.ts test-notify`** 会发一条测试消息，
+结果同时写进 `data/last-notify.json`（已脱敏），可以从提交记录里查证——这比翻 Actions 日志方便得多。
 
 ## 许可
 

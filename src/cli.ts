@@ -8,6 +8,8 @@ import { renderHtml } from './core/browser.ts';
 import { getAdapter, listAdapters } from './adapters/index.ts';
 import { evaluate } from './core/filter.ts';
 import { loadState, markSeen, saveState, splitNew, dedupeAcrossSources } from './core/dedupe.ts';
+import { appendHistory, countBySource, loadHistory, saveHistory } from './core/history.ts';
+import { renderDashboard } from './dashboard.ts';
 import { renderDoctor, renderJson, renderMarkdown } from './core/report.ts';
 import { notifyAll } from './notify/index.ts';
 import type { Notice, SourceResult } from './types.ts';
@@ -262,13 +264,45 @@ async function cmdRun(flags: Flags): Promise<number> {
   } else if (shouldWrite) {
     markSeen(matched, state);
     saveState(flags.state, state);
+
+    // 同时归档到 history.json —— state 只记"见过哪些 ID"，历史才留下内容，供 Pages 仪表盘用
+    const historyFile = path.join(path.dirname(flags.state), 'history.json');
+    const history = loadHistory(historyFile);
+    const { added } = appendHistory(history, filtered);
+    saveHistory(history, historyFile);
+
     console.log(`\n▸ 状态已更新：${flags.state}（下次只报新增）`);
+    console.log(`▸ 历史归档：${historyFile}（本次新增 ${added} 条，累计 ${history.items.length} 条）`);
   } else {
     console.log('\n▸ 没有新通知：不写状态文件（要强制写加 --write-always）');
   }
 
   const okCount = results.filter((r) => r.ok).length;
   return okCount === 0 ? 1 : 0;
+}
+
+/** 把历史归档渲染成静态仪表盘（给 GitHub Pages 用）。 */
+function cmdDashboard(flags: Flags): number {
+  const historyFile = path.join(path.dirname(flags.state), 'history.json');
+  const outFile = flags.out ?? path.join('docs', 'index.html');
+  const history = loadHistory(historyFile);
+  const generatedAt = new Date().toISOString();
+
+  fs.mkdirSync(path.dirname(outFile), { recursive: true });
+  fs.writeFileSync(outFile, renderDashboard(history, { generatedAt }), 'utf8');
+
+  // 顺手把原始数据也放进 Pages 目录，方便别人二次利用（自己做图表、接别的工具）
+  const dataFile = path.join(path.dirname(outFile), 'dashboard-data.json');
+  fs.writeFileSync(
+    dataFile,
+    `${JSON.stringify({ generatedAt, total: history.items.length, bySource: countBySource(history), items: history.items }, null, 2)}\n`,
+    'utf8',
+  );
+
+  console.log(`▸ 仪表盘已生成：${outFile}（归档 ${history.items.length} 条）`);
+  console.log(`▸ 原始数据：${dataFile}`);
+  if (history.items.length === 0) console.log('  （历史还是空的：等第一次抓到新通知后就会有内容）');
+  return 0;
 }
 
 async function cmdDoctor(flags: Flags): Promise<number> {
@@ -327,6 +361,7 @@ function usage(): void {
   radr doctor   [--config=路径] [--allow-browser]      体检：每个源能不能抓、解析出几条
   radr list     [--config=路径]                        列出配置里的源
   radr test-notify [--config=路径]                     只发一条测试消息，验证推送密钥配好没有
+  radr dashboard [--out=docs/index.html]               把历史归档渲染成静态仪表盘（GitHub Pages 用）
   radr fetch    <url> [--out=文件] [--expect=关键字]    用真浏览器渲染页面并导出 DOM（摸 WAF 站点的结构用）
   radr --version                                       打印版本
 
@@ -348,6 +383,7 @@ try {
   else if (command === 'doctor') code = await cmdDoctor(flags);
   else if (command === 'list') code = cmdList(flags);
   else if (command === 'test-notify') code = await cmdTestNotify(flags);
+  else if (command === 'dashboard') code = cmdDashboard(flags);
   else if (command === 'fetch') code = await cmdFetch(flags, rest.find((a) => /^https?:\/\//.test(a)) ?? '');
   else if (command === '--version' || command === '-v' || command === 'version') console.log(VERSION);
   else if (command === 'help' || command === '--help' || command === '-h') usage();

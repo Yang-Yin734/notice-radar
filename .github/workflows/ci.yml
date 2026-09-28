@@ -25,3 +25,7 @@ jobs:
 
       - name: 类型检查
         run: npx tsc --noEmit
+
+      # 仪表盘是构建产物，坏了不该等到部署时才发现
+      - name: 仪表盘能构建
+        run: npm run dashboard
