@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-28T03:50:10.864Z",
+  "generatedAt": "2026-09-28T06:55:54.158Z",
   "results": [
     {
       "sourceId": "jwc-important",
@@ -10,7 +10,7 @@
       "error": null,
       "status": 200,
       "bytes": 28693,
-      "tookMs": 2583,
+      "tookMs": 1685,
       "items": [
         {
           "id": "393edb8d41cfee20",
@@ -173,7 +173,7 @@
       "error": null,
       "status": 200,
       "bytes": 31566,
-      "tookMs": 322,
+      "tookMs": 303,
       "items": [
         {
           "id": "46e2a04970a512bc",
@@ -335,8 +335,8 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 98565,
-      "tookMs": 3822,
+      "bytes": 98531,
+      "tookMs": 1797,
       "items": [
         {
           "id": "8f9c670f22bec8f3",
@@ -385,13 +385,263 @@
       "sourceName": "研究生院·通知",
       "url": "https://gr.uestc.edu.cn/tongzhi/",
       "adapter": "uestc/gr",
+      "ok": true,
+      "error": null,
+      "status": 200,
+      "bytes": 34573,
+      "tookMs": 2567,
+      "items": [
+        {
+          "id": "3e5b2e445b6f2d58",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于电子科技大学2025年度研究生教育先进单位和个人评选结果的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/14381",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "bb8b9c668667b9da",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于开展电子科技大学2025年度研究生教育先进单位和个人评选的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/14320",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "9c198abc0ab5b2e2",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于电子科技大学2024年度研究生教育先进单位和个人评选结果的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/13381",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "d5de8e53958010d5",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于开展电子科技大学2024年度研究生教育先进单位和个人评选的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/13315",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "9cde5231b7f4c079",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于电子科技大学2023年研究生教育先进单位和个人评选结果的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/12164",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "cbcdfb7d2392e0a4",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于开展电子科技大学2023年研究生教育先进单位和个人评选的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/12106",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "edae5893fa787d29",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于电子科技大学2022年研究生教育先进单位和个人评选结果的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/11349",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "5831979a5305ae18",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于开展电子科技大学2022年研究生教育先进单位和个人评选的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/11320",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "3ab0853140ac66fd",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于电子科技大学2021年研究生教育先进单位和个人评选结果的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/10610",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "49e0779df4d29bf0",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于电子科技大学2021年研究生教育先进单位和个人评选的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/10540",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "eb434d2c47fe27dd",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于开展2021年电子科技大学研究生“科技创新先进个人（集体）”奖评选的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/10511",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "28e1bc944498bf10",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于开展2021年电子科技大学研究生“基层挂职先进个人”奖评选的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/10510",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "e4d9b9220f4e4665",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于开展2021年电子科技大学研究生“优秀社会实践”奖评选的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/10508",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "3d89ab642b016e44",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "申报职称涉及研究生院相关材料签字盖章流程",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/9857",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "0b05a9a2f47115ea",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于电子科技大学2020年研究生教育先进单位和个人评选结果的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/9590",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "4db64697f3b3f9c1",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于电子科技大学2020年研究生教育先进单位和个人评选的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/9506",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "557a645b40afafbf",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于召开电子科技大学研究生教育会议的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/9398",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "ae3354eee2e6d9bc",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于调整2020年度GFKJ“引领”基金申报工作安排的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/8738",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "0d28746572fe3ea8",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于新冠肺炎疫情防控期间加强导师对研究生指导的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/8691",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "053aaae3b326daf6",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "致研究生导师的一封信",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/8681",
+          "date": null,
+          "tag": null
+        }
+      ]
+    },
+    {
+      "sourceId": "math-jwgg",
+      "sourceName": "数学科学学院·教务公告",
+      "url": "https://www.math.uestc.edu.cn/tzgg1/jwgg.htm",
+      "adapter": "html-list",
       "ok": false,
-      "error": "fetch failed",
+      "error": "需要浏览器渲染：加 --allow-browser（本机有 Chrome/Edge 时）才会抓这个源",
       "status": null,
       "bytes": 0,
-      "tookMs": 3417,
-      "items": []
+      "tookMs": 0,
+      "items": [],
+      "skipped": true
+    },
+    {
+      "sourceId": "math-xsgz",
+      "sourceName": "数学科学学院·学生工作",
+      "url": "https://www.math.uestc.edu.cn/tzgg1/xsgz.htm",
+      "adapter": "html-list",
+      "ok": false,
+      "error": "需要浏览器渲染：加 --allow-browser（本机有 Chrome/Edge 时）才会抓这个源",
+      "status": null,
+      "bytes": 0,
+      "tookMs": 0,
+      "items": [],
+      "skipped": true
     }
   ],
-  "fresh": []
+  "fresh": [
+    {
+      "id": "46e2a04970a512bc",
+      "sourceId": "jwc-student",
+      "sourceName": "教务处·学生事务公告",
+      "school": "uestc",
+      "title": "关于2026-2027-1学期本科生退课及补选课的通知",
+      "url": "https://www.jwc.uestc.edu.cn/info/a6c974d61855132589f852b5ad5ff97c",
+      "date": "2026-09-02",
+      "tag": "教管",
+      "alsoIn": []
+    },
+    {
+      "id": "fa4fd9559a3c408e",
+      "sourceId": "jwc-student",
+      "sourceName": "教务处·学生事务公告",
+      "school": "uestc",
+      "title": "关于大面积课程开学缓补考安排的通知",
+      "url": "https://www.jwc.uestc.edu.cn/info/30d196608fe3a20ae08ada0b22a573a4",
+      "date": "2026-01-20",
+      "tag": "考试",
+      "alsoIn": []
+    }
+  ]
 }
