@@ -21,7 +21,7 @@
     "alias": "notice-radar"
   },
   "appVersionName": "0.4.0",
-  "appVersionCode": 4,
+  "appVersionCode": 6,
   "shortcuts": [],
   "generatorApp": "bubblewrap-cli",
   "webManifestUrl": "https://yang-yin734.github.io/notice-radar/manifest.webmanifest",

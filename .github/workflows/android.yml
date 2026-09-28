@@ -124,7 +124,22 @@ jobs:
           ls -lh notice-radar.apk
           BT=$(ls -d "$ANDROID_HOME/build-tools"/* | sort -V | tail -1)
           echo "--- 包信息 ---"
-          "$BT/aapt2" dump badging notice-radar.apk | head -4 || true
+          BADGING=$("$BT/aapt2" dump badging notice-radar.apk | head -1)
+          echo "$BADGING"
+
+          # 断言包名与配置一致：bubblewrap 会把 twa-manifest.json 内联进 build.gradle，
+          # 只改 manifest 不改 build.gradle 时 APK 里会还是旧包名（踩过），这里拦住
+          EXPECTED_PKG=$(node -p "require('./android/twa-manifest.json').packageId")
+          EXPECTED_CODE=$(node -p "require('./android/twa-manifest.json').appVersionCode")
+          case "$BADGING" in
+            *"package: name='$EXPECTED_PKG'"*) echo "✓ 包名一致：$EXPECTED_PKG" ;;
+            *) echo "::error::APK 包名与 twa-manifest.json 不一致（期望 $EXPECTED_PKG）：$BADGING"; exit 1 ;;
+          esac
+          case "$BADGING" in
+            *"versionCode='$EXPECTED_CODE'"*) echo "✓ versionCode 一致：$EXPECTED_CODE" ;;
+            *) echo "::error::APK versionCode 与配置不一致（期望 $EXPECTED_CODE）：$BADGING"; exit 1 ;;
+          esac
+
           echo "--- 内容抽样 ---"
           unzip -l notice-radar.apk | head -10
 

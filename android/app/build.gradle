@@ -21,7 +21,7 @@ plugins {
 }
 
 def twaManifest = [
-    applicationId: 'io.github.yang_yin734.twa',
+    applicationId: 'io.github.yangyin734.noticeradar', // 包名（Android 应用的唯一标识）
     hostName: 'yang-yin734.github.io', // The domain being opened in the TWA.
     launchUrl: '/notice-radar/', // The start path for the TWA. Must be relative to the domain.
     name: '校园通知雷达', // The application name.
@@ -33,18 +33,10 @@ def twaManifest = [
     navigationDividerColor: '#000000', // The navbar divider color.
     navigationDividerColorDark: '#000000', // The dark navbar divider color.
     backgroundColor: '#EEF1F6', // The color used for the splash screen background.
-    enableNotifications: true, // Set to true to enable notification delegation.
-    // Every shortcut must include the following fields:
-    // - name: String that will show up in the shortcut.
-    // - short_name: Shorter string used if |name| is too long.
-    // - url: Absolute path of the URL to launch the app with (e.g '/create').
-    // - icon: Name of the resource in the drawable folder to use as an icon.
+    enableNotifications: false, // 通知（没有 Firebase 配置时关掉）
     shortcuts: [],
-    // The duration of fade out animation in milliseconds to be played when removing splash screen.
     splashScreenFadeOutDuration: 300,
     generatorApp: 'bubblewrap-cli', // Application that generated the Android Project
-    // The fallback strategy for when Trusted Web Activity is not available. Possible values are
-    // 'customtabs' and 'webview'.
     fallbackType: 'customtabs',
     enableSiteSettingsShortcut: 'true',
     orientation: 'portrait-primary',
@@ -52,13 +44,13 @@ def twaManifest = [
 
 android {
     compileSdkVersion 36
-    namespace "io.github.yang_yin734.twa"
+    namespace "io.github.yangyin734.noticeradar"
     defaultConfig {
         applicationId "io.github.yang_yin734.twa"
         minSdkVersion 21
         targetSdkVersion 36
-        versionCode 1
-        versionName "1"
+        versionCode 6
+        versionName "0.4.0"
 
         // The name for the application
         resValue "string", "appName", twaManifest.name
