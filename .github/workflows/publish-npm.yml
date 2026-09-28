@@ -37,22 +37,26 @@ jobs:
       - name: 测试
         run: npm test
 
+      - name: 构建（npm 包发的是编译产物 dist/）
+        run: npm run build
+
       - name: 打包自检（永远执行，能提前发现 files 配置漏文件）
         run: |
-          npm pack --dry-run 2>&1 | tail -25
-          echo "--- 包内关键文件（发布的是编译后的 dist，不是 src）---"
-          npm pack --json | node -e "
+          # --ignore-scripts：上面已经构建过，这里要的是干净的 JSON 输出
+          # （不跳过脚本的话，prepack 的构建日志会和 JSON 混在 stdout 里）
+          npm pack --dry-run --ignore-scripts 2>&1 | tail -25
+          echo "--- 包内关键文件 ---"
+          npm pack --json --ignore-scripts | node -e "
             let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{
               const info=JSON.parse(s)[0];
               const files=info.files.map(f=>f.path);
               const need=['dist/cli.js','dist/core/history.js','config/schools/uestc.yaml','config/schools/registry.json','package.json'];
-              const forbidden=['src/cli.ts'];
               let bad=0;
               for(const n of need){const ok=files.includes(n);if(!ok)bad++;console.log((ok?'  ✓ ':'  ✗ 缺 ')+n);}
-              for(const n of forbidden){const hit=files.includes(n);if(hit)bad++;console.log((hit?'  ✗ 不该带 ':'  ✓ 不含 ')+n);}
-              const shebangOk = files.includes('dist/cli.js');
+              const leak=files.filter(f=>/^(src\/|tests\/|tools\/|data\/|docs\/|android\/|\.env)/.test(f));
+              console.log(leak.length?('  ✗ 不该带：'+leak.slice(0,5).join(', ')):'  ✓ 没带源码/测试/文档/数据等无关文件');
+              if(leak.length)bad++;
               console.log('  共 '+files.length+' 个文件，压缩后 '+Math.round(info.size/1024)+' KB，解包 '+Math.round(info.unpackedSize/1024)+' KB');
-              if(!shebangOk) console.log('  ! 注意：dist/cli.js 缺失，bin 会指向不存在的文件');
               process.exit(bad?1:0);
             });
           "
@@ -73,10 +77,10 @@ jobs:
           fi
           if [ "$DRY" != "false" ]; then
             echo "▸ dry-run：只验证发布流程（要真发请把 dry-run 设为 false，或打 v* 标签）"
-            npm publish --dry-run --provenance
+            npm publish --dry-run --provenance --ignore-scripts
             exit 0
           fi
           echo "▸ 正式发布 ${GITHUB_REF_NAME}"
-          npm publish --provenance --access public
+          npm publish --provenance --access public --ignore-scripts
           echo "### 已发布到 npm" >> "$GITHUB_STEP_SUMMARY"
           echo "安装：\`npx notice-radar --help\`" >> "$GITHUB_STEP_SUMMARY"
