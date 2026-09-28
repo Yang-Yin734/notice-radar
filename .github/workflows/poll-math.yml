@@ -1,0 +1,85 @@
+name: poll-math
+
+# 数学科学学院通知：云端抓取（每天一次）
+#
+# 为什么单独一个工作流、而且一天只跑一次：
+#   学院官网部署了瑞数类 JS 机器人挑战，会识别并拒绝**无头**浏览器（实测回 HTTP 400）。
+#   所以这里给 runner 挂一个虚拟显示器（Xvfb），跑**真实的、非无头**的 Chrome
+#   —— 不是伪造 UA、也不隐藏 navigator.webdriver，就是用一个真的浏览器访问公开页面。
+#   但它毕竟是"绕过站点的无头检测"，所以刻意低频：一天一次，不跟着 poll 每 20 分钟打。
+#
+# 这样安排之后：电脑关着也能收到学院通知（抓取跑在 GitHub 服务器上）。
+on:
+  schedule:
+    # UTC 00:00 = 北京时间 08:00
+    - cron: '0 0 * * *'
+  # 改配置推上来立刻验证一次，不用等到第二天早上
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/poll-math.yml'
+      - 'config/schools/uestc-math.yaml'
+  workflow_dispatch:
+
+concurrency:
+  group: poll-math
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  math:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+
+      - run: npm ci
+
+      - name: 准备虚拟显示器与浏览器
+        run: |
+          # runner 自带 Chrome；xvfb 若缺失则装上
+          if ! command -v xvfb-run >/dev/null 2>&1; then
+            sudo apt-get update -qq
+            sudo apt-get install -y -qq xvfb
+          fi
+          BROWSER="$(command -v google-chrome || command -v google-chrome-stable || command -v chromium || command -v chromium-browser || true)"
+          if [ -z "$BROWSER" ]; then
+            echo "::error::runner 上找不到 Chrome/Chromium，无法渲染学院站点"
+            exit 1
+          fi
+          echo "NOTICE_RADAR_BROWSER=$BROWSER" >> "$GITHUB_ENV"
+          echo "使用浏览器：$BROWSER"
+          xvfb-run --help >/dev/null && echo "xvfb-run 可用"
+
+      - name: 抓学院通知并推送（真实浏览器窗口跑在虚拟显示器里）
+        env:
+          SERVERCHAN_KEY: ${{ secrets.SERVERCHAN_KEY }}
+        run: xvfb-run -a node src/cli.ts run --config=config/schools/uestc-math.yaml --allow-browser --json=data/latest-math.json
+
+      - name: 失败时打印体检表（便于定位）
+        if: failure()
+        run: xvfb-run -a node src/cli.ts doctor --config=config/schools/uestc-math.yaml --allow-browser || true
+
+      - name: 提交状态（下次只报新增）
+        run: |
+          git config user.name "notice-radar-bot"
+          git config user.email "notice-radar-bot@users.noreply.github.com"
+          git add -A data
+          if git diff --cached --quiet; then
+            echo "状态无变化，跳过提交"
+          else
+            git commit -m "chore(state): math $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
+            if git push; then
+              echo "✓ 状态已提交回仓库"
+            else
+              echo "::error::推送状态失败。多半是仓库把 GITHUB_TOKEN 设成了只读：Settings → Actions → General → Workflow permissions → 选 Read and write permissions"
+              exit 1
+            fi
+          fi

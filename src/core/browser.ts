@@ -134,6 +134,10 @@ export async function renderHtml(url: string, options: RenderOptions = {}): Prom
     executablePath,
     [
       ...(headless ? ['--headless=new', '--disable-gpu'] : []),
+      // Linux 上 /dev/shm 常常很小（容器/CI 尤其），不加这个 Chrome 会莫名崩
+      ...(process.platform === 'linux' ? ['--disable-dev-shm-usage'] : []),
+      // CI 里跑 Chrome 的常规做法；本地保留沙箱
+      ...(process.platform === 'linux' && process.env.CI ? ['--no-sandbox'] : []),
       '--no-first-run',
       '--no-default-browser-check',
       '--disable-extensions',

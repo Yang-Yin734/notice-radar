@@ -4,6 +4,15 @@
 
 ## 未发布
 
+- **学院通知也能在云端抓了（电脑关机照样推）**：新增 `.github/workflows/poll-math.yml`，
+  每天 UTC 00:00（北京 08:00）在 runner 上挂虚拟显示器（Xvfb）跑**真实、非无头**的 Chrome
+  —— 学院站点识别并拒绝无头浏览器（实测回 400），但不拒绝真浏览器窗口。
+  这是"用真浏览器访问公开页面"，**没有伪造 UA、也没有隐藏 `navigator.webdriver`**；
+  因为性质敏感，刻意低频：**一天只跑一次**，不跟着 `poll` 每 20 分钟打。
+  - `src/core/browser.ts`：Linux 上自动加 `--disable-dev-shm-usage`，CI 里加 `--no-sandbox`
+- 本机计划任务降级为**兜底**，时间从 08:00 改到 **09:00**（云端先跑，本地补漏；避免同时抓）
+  - `run-daily.ps1` 的同步改用 `git pull --rebase --autostash`：工作区有未提交改动时也能同步
+    （之前会直接失败并退化成只跑学院源）
 - **故障判定分级**：`poll` 不再因偶发网络抖动就报红——连续"所有源都抓不到"1–2 次只记 warning，
   **第 3 次**才判真故障并报一次，之后静默到恢复（`tools/health.ts` + 4 个单元测试）
 - **本机每日任务改为"能同步就跑全量"**：`tools/run-daily.ps1` 先 `git pull` 同步云端状态，

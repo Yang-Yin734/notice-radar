@@ -1,4 +1,4 @@
-﻿# 每天早上由 Windows 计划任务调用：抓取 + 推送 + 提交状态。
+# 每天早上由 Windows 计划任务调用：抓取 + 推送 + 提交状态。
 #
 # ⚠️ 本文件必须保存为「UTF-8 with BOM」。Windows PowerShell 5.1 读无 BOM 的 UTF-8 脚本时
 #    会按系统 OEM 代码页（简中是 GBK）解码，中文注释会让解析直接报错。
@@ -85,7 +85,9 @@ if (-not (Test-Path $node)) {
 
 # 1) 同步云端状态；失败不致命，但要换用"只跑学院"的预设
 git checkout -- data/state.json 2>&1 | Out-Null
-git pull --rebase --quiet 2>&1 | Out-Null
+# --autostash：工作区有未提交改动时也能 pull（否则 rebase 直接拒绝：
+# "cannot pull with rebase: You have unstaged changes"），拉完自动还原改动
+git pull --rebase --autostash --quiet 2>&1 | Out-Null
 $config = 'config/schools/uestc-math.yaml'
 if ($LASTEXITCODE -eq 0) {
   $config = 'config/schools/uestc.yaml'
