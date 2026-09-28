@@ -6,6 +6,10 @@ name: poll
 on:
   schedule:
     - cron: '*/20 * * * *'
+  # 改完配置推上来立刻跑一次，不用等定时；也方便首次部署时验证权限是否配好。
+  # 状态提交带 [skip ci]，不会因此形成循环。
+  push:
+    branches: [main]
   workflow_dispatch:
 
 concurrency:
