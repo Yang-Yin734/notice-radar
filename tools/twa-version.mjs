@@ -76,6 +76,17 @@ gradle = gradle.replace(/namespace\s+"[^"]*"/, `namespace "${manifest.packageId}
 
 fs.writeFileSync(gradleFile, gradle, 'utf8');
 
+// ---- 清理源码 AndroidManifest.xml 里的 package 属性 ----
+// AGP 8+ 要求包名只由 build.gradle 的 namespace 决定；源码 manifest 里留着旧的 package
+// 会导致 "Incorrect package=... found in source AndroidManifest.xml" 直接构建失败。
+const srcManifestFile = path.join(dir, 'app', 'src', 'main', 'AndroidManifest.xml');
+const srcManifest = fs.readFileSync(srcManifestFile, 'utf8');
+const srcManifestFixed = srcManifest.replace(/\s*package="[^"]*"/, '');
+if (srcManifestFixed !== srcManifest) {
+  fs.writeFileSync(srcManifestFile, srcManifestFixed, 'utf8');
+  console.log(`✓ ${path.relative(process.cwd(), srcManifestFile)}：已移除旧的 package 属性（改由 namespace 决定）`);
+}
+
 // 自检：确认关键字段真的写进去了
 const check = fs.readFileSync(gradleFile, 'utf8');
 const problems = [];
