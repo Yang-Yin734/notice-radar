@@ -104,16 +104,46 @@ Linux/macOS 用 `SERVERCHAN_KEY=... npm run run`，Windows PowerShell 用 `$env:
 
 ## 本机每天自动跑（含学院通知）
 
-Windows 计划任务示例（每天 08:00、12:30、18:00 各一次）：
+仓库里已经带好了这套东西，不用自己拼命令：
+
+| 文件 | 作用 |
+|---|---|
+| `config/schools/uestc-math.yaml` | **只含学院两个源**的预设 |
+| `tools/run-math-daily.ps1` | 计划任务入口：抓取 + 写日志 + 提交状态 |
+
+**为什么单独一个"只有学院源"的预设**：教务处/新闻网/研究生院云端已经在抓了。本地再抓一遍，同一条通知会推两次（本地状态与云端状态各记一份）。所以分工是——**云端抓 4 个源，本机抓云端抓不到的那 2 个**。
+
+注册计划任务（每天 08:00）：
 
 ```powershell
-$action  = New-ScheduledTaskAction -Execute 'node' `
-  -Argument 'src/cli.ts run --allow-browser' -WorkingDirectory 'D:\Y\Documents\ds\notice-radar'
-$trigger = New-ScheduledTaskTrigger -Daily -At 8:00am
-Register-ScheduledTask -TaskName 'notice-radar' -Action $action -Trigger $trigger
+$repo = 'D:\Y\Documents\ds\notice-radar'
+$action = New-ScheduledTaskAction -Execute 'powershell.exe' `
+  -Argument ('-NoProfile -ExecutionPolicy Bypass -File "{0}"' -f (Join-Path $repo 'tools\run-math-daily.ps1')) `
+  -WorkingDirectory $repo
+$trigger = New-ScheduledTaskTrigger -Daily -At '08:00'
+$settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -AllowStartIfOnBatteries `
+  -DontStopIfGoingOnBatteries -MultipleInstances IgnoreNew -ExecutionTimeLimit (New-TimeSpan -Minutes 15)
+Register-ScheduledTask -TaskName 'notice-radar-math-daily' -Action $action -Trigger $trigger `
+  -Settings $settings -Force
 ```
 
-抓学院站点时会短暂弹出浏览器窗口（几秒后自动关闭），所以建议安排在你不怎么用电脑的时段。
+几个已经踩过的坑，写在这里省得你再撞：
+
+- **必须"仅在用户登录时运行"**（不加 `-User`/`-Password` 就是这种）。学院站点会拒绝无头浏览器，抓取时要弹一个可见浏览器窗口，会话 0 里没有桌面，任务会失败。
+- **`-StartWhenAvailable` 别省**：08:00 电脑没开（或睡眠），开机后会自动补跑，通知照收。
+- **脚本必须存成 UTF-8 with BOM**。Windows PowerShell 5.1 读无 BOM 的 UTF-8 脚本会按 GBK 解码，中文注释直接让解析报错——这个坑我们撞过。检查：`[System.IO.File]::ReadAllBytes('tools\run-math-daily.ps1')[0..2]` 应该是 `239 187 191`。
+- 抓取时会短暂弹出浏览器窗口（几秒自动关），所以别把这个时间点设在你开会/演示的时间。
+
+查状态、看日志、删任务：
+
+```powershell
+Get-ScheduledTaskInfo -TaskName 'notice-radar-math-daily' | Select NextRunTime, LastTaskResult
+Get-Content 'D:\Y\Documents\ds\notice-radar\logs\math-daily.log' -Tail 30 -Encoding UTF8
+Unregister-ScheduledTask -TaskName 'notice-radar-math-daily' -Confirm:$false   # 不想要了就删
+```
+
+> 脚本每次会把 `data/state.json` 的变更**提交到本地仓库（不推送）**，这样工作区保持干净，
+> 下次 `git pull --rebase` 不会被"本地已修改的状态文件"挡住。
 
 ## 接自己学校：两条路
 

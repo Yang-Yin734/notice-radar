@@ -1,0 +1,118 @@
+# 只抓「数学科学学院」的预设 —— 给本机每天 08:00 的计划任务用。
+#
+# 为什么不带上教务处/新闻网：
+#   那三个源云端 poll 已经在抓了，本地再抓一遍会导致同一条通知推两次
+#   （本地状态与云端状态各记一份）。分工是：
+#     云端 → 教务处 ×2 + 新闻网 + 研究生院
+#     本机 → 数学科学学院 ×2（云端抓不到，因为学院站点拦无头浏览器）
+#
+# 用法：node src/cli.ts run --config=config/schools/uestc-math.yaml --allow-browser
+
+school: uestc
+name: 数学科学学院
+
+notify:
+  - type: serverchan
+    keyEnv: SERVERCHAN_KEY
+
+sources:
+  - id: math-jwgg
+    name: 数学科学学院·教务公告
+    url: https://www.math.uestc.edu.cn/tzgg1/jwgg.htm
+    adapter: html-list
+    requiresBrowser: true
+    browserHeadless: false
+    browserExpect: 数学
+    baseUrl: https://www.math.uestc.edu.cn/tzgg1/jwgg.htm
+    note: 推免细则、免听免修、讲座、毕设安排都在这里
+    selectors:
+      item: div.ArticleList table tr
+      title: td.fw_t a@title
+      link: td.fw_t a@href
+      date: td.fw_s
+    include:
+      - 推免
+      - 保研
+      - 免试
+      - 免听
+      - 免修
+      - 选课
+      - 退课
+      - 补选
+      - 重修
+      - 考试
+      - 补考
+      - 缓考
+      - 讲座
+      - 竞赛
+      - 建模
+      - 数学建模
+      - 奖学金
+      - 荣誉
+      - 学分
+      - 毕业设计
+      - 答辩
+      - 助教
+      - 成绩
+      - 公示
+      - 名单
+      - 报名
+      - 培养方案
+      - 转专业
+      - 分流
+      - 微积分
+      - 线性代数
+      - 概率
+    exclude:
+      - 教师荣获
+      - 教职工
+      - 人才招聘
+      - 招标
+      - 采购
+      - 中标
+      - 成交
+      - 校友
+      - 捐赠
+      - 座谈
+      - 来访
+
+  - id: math-xsgz
+    name: 数学科学学院·学生工作
+    url: https://www.math.uestc.edu.cn/tzgg1/xsgz.htm
+    adapter: html-list
+    requiresBrowser: true
+    browserHeadless: false
+    browserExpect: 数学
+    baseUrl: https://www.math.uestc.edu.cn/tzgg1/xsgz.htm
+    note: 奖学金/评优/助学/就业实习类通常落在这个栏目
+    selectors:
+      item: div.ArticleList table tr
+      title: td.fw_t a@title
+      link: td.fw_t a@href
+      date: td.fw_s
+    include:
+      - 奖学金
+      - 助学金
+      - 助学
+      - 评优
+      - 评奖
+      - 困难认定
+      - 勤工
+      - 贷款
+      - 名单
+      - 公示
+      - 报名
+      - 竞赛
+      - 就业
+      - 实习
+      - 宣讲
+      - 心理
+      - 综测
+      - 德育
+    exclude:
+      - 招标
+      - 采购
+      - 中标
+      - 成交
+      - 校友
+      - 捐赠

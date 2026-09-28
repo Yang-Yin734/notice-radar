@@ -193,7 +193,7 @@ async function cmdRun(flags: Flags): Promise<number> {
   }
 
   if (flags.notify && fresh.length > 0) {
-    const outcomes = await notifyAll(cfg.notify, `校园通知雷达 · 新增 ${fresh.length} 条`, markdown);
+    const outcomes = await notifyAll(cfg.notify, `${cfg.name} · 新增 ${fresh.length} 条`, markdown);
     for (const o of outcomes) console.log(`  ${o.ok ? '✓' : '✗'} 通知[${o.channel}] ${o.detail}`);
   } else if (fresh.length === 0) {
     console.log('\n▸ 没有新通知，跳过推送。');
