@@ -83,12 +83,15 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
   .topbar { position:sticky; top:0; z-index:20; display:flex; align-items:center; gap:9px;
     padding:calc(10px + env(safe-area-inset-top)) 14px 10px;
     background:var(--card); border-bottom:1px solid var(--line); }
-  .brand { font-weight:700; font-size:16px; }
-  .pill { font-size:11.5px; color:var(--muted); background:var(--bar); padding:3px 9px; border-radius:999px; white-space:nowrap; }
-  .grow { flex:1; }
-  .iconbtn { border:1px solid var(--line); background:var(--card); color:var(--ink);
+  .brand { font-weight:700; font-size:16px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; }
+  .pill { font-size:11.5px; color:var(--muted); background:var(--bar); padding:3px 9px; border-radius:999px;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .grow { flex:1 1 auto; min-width:0; }
+  .iconbtn { border:1px solid var(--line); background:var(--card); color:var(--ink); white-space:nowrap;
     border-radius:10px; padding:7px 11px; font-size:13px; cursor:pointer; }
   .iconbtn:active { transform:scale(.97); }
+  /* 窄屏顶栏放不下时收起统计药丸（未读数在标签栏也有），保证品牌与按钮不折行 */
+  @media (max-width:440px) { .pill { display:none; } }
 
   main { max-width:760px; margin:0 auto; padding:12px 12px 20px; }
   .view[hidden] { display:none; }
