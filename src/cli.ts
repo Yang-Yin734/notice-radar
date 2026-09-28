@@ -142,8 +142,7 @@ async function collectOne(cfg: RadarConfig, source: SourceConfig, flags: Flags):
   }
 }
 
-function filterItems(results: SourceResult[], cfg: RadarConfig): Notice[] {
-  const byId = new Map(cfg.sources.map((s) => [s.id, s]));
+function filterItems(results: SourceResult[], cfg: RadarConfig): Notice[] {  const byId = new Map(cfg.sources.map((s) => [s.id, s]));
   const kept: Notice[] = [];
   for (const r of results) {
     const source = byId.get(r.sourceId);
@@ -153,6 +152,53 @@ function filterItems(results: SourceResult[], cfg: RadarConfig): Notice[] {
     }
   }
   return kept;
+}
+
+/**
+ * 把推送结果写进 data/last-notify.json。
+ * 为什么值得单独落盘：Actions 的日志接口需要 token，而"云端到底推出去没有"是部署时最容易卡住的问题。
+ * 写进仓库后，任何人都能从提交记录里直接查证（`data/last-notify.json`）。
+ * 必须脱敏：Server酱 返回里带 readkey（能用来读/删那条消息），不能进公开仓库。
+ */
+function writeNotifyLog(statePath: string, title: string, count: number, outcomes: { channel: string; ok: boolean; detail: string }[]): string {
+  const sanitize = (detail: string) =>
+    detail.replace(/"readkey"\s*:\s*"[^"]*"/g, '"readkey":"***"').replace(/SCT[A-Za-z0-9]{10,}/g, 'SCT***').slice(0, 400);
+  const file = path.join(path.dirname(statePath), 'last-notify.json');
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(
+    file,
+    `${JSON.stringify({ at: new Date().toISOString(), title, count, outcomes: outcomes.map((o) => ({ ...o, detail: sanitize(o.detail) })) }, null, 2)}\n`,
+    'utf8',
+  );
+  return file;
+}
+
+/** 只测推送通道，不抓任何站点 —— 用来确认 SERVERCHAN_KEY 之类配好了没有。 */
+async function cmdTestNotify(flags: Flags): Promise<number> {
+  const cfg = loadConfig(flags.config);
+  const channels = cfg.notify.filter((n) => n.enabled).map((n) => n.type).join(', ') || '(未配置任何通道)';
+  console.log(`▸ 推送通道测试：${cfg.name}（${channels}）`);
+
+  const now = new Date();
+  const markdown = [
+    `# ${cfg.name} · 推送通道测试`,
+    '',
+    '这条消息用来验证推送密钥（如 `SERVERCHAN_KEY`）是否配置正确 —— 收到就说明云端/本机都能推到你的手机。',
+    '',
+    `- 配置文件：\`${flags.config}\``,
+    `- 发送时间：${now.toISOString()}`,
+    `- 通道：${channels}`,
+    '',
+    '如果这条能收到，但通知日报收不到，那问题在抓取或关键词，不在推送。',
+  ].join('\n');
+
+  const outcomes = await notifyAll(cfg.notify, `${cfg.name} · 推送通道测试`, markdown);
+  for (const o of outcomes) console.log(`  ${o.ok ? '✓' : '✗'} 通知[${o.channel}] ${o.detail}`);
+  if (!flags.dry) console.log(`  · 结果已记录到 ${writeNotifyLog(flags.state, `${cfg.name} · 推送通道测试`, 0, outcomes)}`);
+
+  const anyOk = outcomes.some((o) => o.ok);
+  console.log(anyOk ? '\n▸ 至少一个通道推送成功。' : '\n▸ 所有通道都失败了 —— 检查密钥/网络。');
+  return anyOk ? 0 : 1;
 }
 
 async function cmdRun(flags: Flags): Promise<number> {
@@ -196,22 +242,7 @@ async function cmdRun(flags: Flags): Promise<number> {
     const title = `${cfg.name} · 新增 ${fresh.length} 条`;
     const outcomes = await notifyAll(cfg.notify, title, markdown);
     for (const o of outcomes) console.log(`  ${o.ok ? '✓' : '✗'} 通知[${o.channel}] ${o.detail}`);
-
-    // 把推送结果落盘（会被 poll 一并提交）——这样"云端到底推出去没有"可以直接从仓库查证，
-    // 不用翻 Actions 日志（日志接口要 token）。注意脱敏：Server酱 返回里带 readkey，
-    // 它能用来读/删那条消息，不该进公开仓库。
-    if (!flags.dry) {
-      const sanitize = (detail: string) =>
-        detail.replace(/"readkey"\s*:\s*"[^"]*"/g, '"readkey":"***"').replace(/SCT[A-Za-z0-9]{10,}/g, 'SCT***').slice(0, 400);
-      const notifyLog = path.join(path.dirname(flags.state), 'last-notify.json');
-      fs.mkdirSync(path.dirname(notifyLog), { recursive: true });
-      fs.writeFileSync(
-        notifyLog,
-        `${JSON.stringify({ at: new Date().toISOString(), title, count: fresh.length, outcomes: outcomes.map((o) => ({ ...o, detail: sanitize(o.detail) })) }, null, 2)}\n`,
-        'utf8',
-      );
-      console.log(`  · 推送结果已记录到 ${notifyLog}`);
-    }
+    if (!flags.dry) console.log(`  · 推送结果已记录到 ${writeNotifyLog(flags.state, title, fresh.length, outcomes)}`);
   } else if (fresh.length === 0) {
     console.log('\n▸ 没有新通知，跳过推送。');
   }
@@ -285,6 +316,7 @@ function usage(): void {
   radr run      [--config=路径] [--dry] [--no-notify] [--json=路径] [--delay=毫秒] [--max=条数] [--write-always] [--allow-browser]
   radr doctor   [--config=路径] [--allow-browser]      体检：每个源能不能抓、解析出几条
   radr list     [--config=路径]                        列出配置里的源
+  radr test-notify [--config=路径]                     只发一条测试消息，验证推送密钥配好没有
   radr fetch    <url> [--out=文件] [--expect=关键字]    用真浏览器渲染页面并导出 DOM（摸 WAF 站点的结构用）
   radr --version                                       打印版本
 
@@ -305,6 +337,7 @@ try {
   if (command === 'run') code = await cmdRun(flags);
   else if (command === 'doctor') code = await cmdDoctor(flags);
   else if (command === 'list') code = cmdList(flags);
+  else if (command === 'test-notify') code = await cmdTestNotify(flags);
   else if (command === 'fetch') code = await cmdFetch(flags, rest.find((a) => /^https?:\/\//.test(a)) ?? '');
   else if (command === '--version' || command === '-v' || command === 'version') console.log(VERSION);
   else if (command === 'help' || command === '--help' || command === '-h') usage();

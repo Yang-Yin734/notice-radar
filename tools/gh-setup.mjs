@@ -4,7 +4,7 @@
 //   $env:GH_TOKEN = 'github_pat_xxx'      # PowerShell
 //   node tools/gh-setup.mjs
 //   node tools/gh-setup.mjs --pages        # 顺带开启 GitHub Pages（从 /docs 提供）
-//   node tools/gh-setup.mjs --secret=SERVERCHAN_KEY=SCTxxx   # 设置 Actions secret（需要 tweetnacl）
+//   node tools/gh-setup.mjs --secret=SERVERCHAN_KEY=SCTxxx   # 设置 Actions secret（需要 libsodium-wrappers）
 //
 // 需要的 fine-grained PAT 权限：
 //   Contents: Read and write（建 Release）
@@ -183,24 +183,47 @@ if (secretSpec) {
   const eq = secretSpec.indexOf('=');
   const name = secretSpec.slice(0, eq);
   const value = secretSpec.slice(eq + 1);
+  let failed = false;
   try {
-    const nacl = await import('tweetnacl');
+    // 用 libsodium 官方实现加密（GitHub 文档推荐的做法）。
+    // 曾经想省依赖、拿 tweetnacl 原语自己拼 crypto_box_seal，结果 GitHub 回
+    // 422 "improperly encrypted secret" —— 密码学这块不自己写。
+    const { createRequire } = await import('node:module');
+    const require = createRequire(import.meta.url);
+    const sodium = require('libsodium-wrappers');
+    await sodium.ready;
+
     const keyRes = await call('GET', `/repos/${owner}/${repo}/actions/secrets/public-key`);
     if (!keyRes.ok) {
+      failed = true;
       warn(`取公钥失败：HTTP ${keyRes.status}（token 需要 Secrets 或 Administration 权限）`);
     } else {
       const { key, key_id } = keyRes.json;
-      const binKey = Buffer.from(key, 'base64');
-      const binValue = Buffer.from(value, 'utf8');
-      const sealed = nacl.default.box.seal(binValue, binKey);
+      const sealed = sodium.crypto_box_seal(Buffer.from(value, 'utf8'), Buffer.from(key, 'base64'));
       const encrypted_value = Buffer.from(sealed).toString('base64');
       const put = await call('PUT', `/repos/${owner}/${repo}/actions/secrets/${name}`, { encrypted_value, key_id });
-      put.ok ? ok(`secret ${name} 已设置（值不会回显）`) : warn(`设置失败：HTTP ${put.status}`);
+      if (!put.ok) {
+        failed = true;
+        warn(`设置失败：HTTP ${put.status} ${put.text.slice(0, 160)}`);
+      } else {
+        // 回读确认真的写进去了（列表接口只给名字，不给值）
+        const check = await call('GET', `/repos/${owner}/${repo}/actions/secrets?per_page=100`);
+        const names = (check.json?.secrets ?? []).map((s) => s.name);
+        if (names.includes(name)) ok(`secret ${name} 已设置并回读确认（仓库现有 ${names.length} 个：${names.join(', ')}）`);
+        else {
+          failed = true;
+          warn(`已提交但回读没看到 ${name}，请到 Settings → Secrets and variables → Actions 人工确认`);
+        }
+      }
     }
-  } catch {
-    warn('需要 tweetnacl 才能加密 secret。先在仓库里执行 `npm i -D tweetnacl`，或直接在网页上添加：');
+  } catch (e) {
+    failed = true;
+    warn(`加密或调用失败：${e?.message ?? e}`);
+    warn('需要 libsodium-wrappers 才能加密 secret。先在仓库里执行 `npm i -D libsodium-wrappers`，或直接在网页上添加：');
     console.log(`     Settings → Secrets and variables → Actions → New repository secret → ${name}`);
   }
+  if (failed) process.exitCode = 1;
 }
 
 console.log('\n完成。仓库：https://github.com/' + owner + '/' + repo);
+if (process.exitCode === 1) console.log('注意：有步骤失败（见上面的 ! 行），退出码为 1。');
