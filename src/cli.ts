@@ -42,6 +42,7 @@ interface Flags {
   json: string | null;
   delayMs: number;
   max: number;
+  writeAlways: boolean;
 }
 
 function parseFlags(argv: string[]): Flags {
@@ -60,6 +61,7 @@ function parseFlags(argv: string[]): Flags {
     json: get('json'),
     delayMs: Number(get('delay') ?? 1200),
     max: Number(get('max') ?? 20),
+    writeAlways: argv.includes('--write-always'),
   };
 }
 
@@ -141,10 +143,19 @@ async function cmdRun(flags: Flags): Promise<number> {
   const markdown = renderMarkdown(results, fresh, { maxPerSource: flags.max });
   console.log(`\n${markdown}`);
 
+  // 只在真有新通知时才写文件。
+  // 否则 poll 每 20 分钟都会因为 lastRun 变化而产生一次无意义的提交（一天 72 个），
+  // 把提交历史淹掉，也会让本地推送老是撞上"远端已更新"。
+  const shouldWrite = !flags.dry && (fresh.length > 0 || flags.writeAlways);
+
   if (flags.json) {
-    fs.mkdirSync(path.dirname(flags.json), { recursive: true });
-    fs.writeFileSync(flags.json, renderJson(results, fresh), 'utf8');
-    console.log(`\n▸ JSON 已写入 ${flags.json}`);
+    if (shouldWrite) {
+      fs.mkdirSync(path.dirname(flags.json), { recursive: true });
+      fs.writeFileSync(flags.json, renderJson(results, fresh), 'utf8');
+      console.log(`\n▸ JSON 已写入 ${flags.json}`);
+    } else {
+      console.log('\n▸ 没有新通知，跳过 JSON 产物（要强制写加 --write-always）');
+    }
   }
 
   if (flags.notify && fresh.length > 0) {
@@ -156,10 +167,12 @@ async function cmdRun(flags: Flags): Promise<number> {
 
   if (flags.dry) {
     console.log('\n▸ --dry：未写入状态文件。');
-  } else {
+  } else if (shouldWrite) {
     markSeen(matched, state);
     saveState(flags.state, state);
     console.log(`\n▸ 状态已更新：${flags.state}（下次只报新增）`);
+  } else {
+    console.log('\n▸ 没有新通知：不写状态文件（要强制写加 --write-always）');
   }
 
   const okCount = results.filter((r) => r.ok).length;
@@ -191,10 +204,13 @@ function usage(): void {
   console.log(`notice-radar v${VERSION} —— 把高校官网通知变成能推到手机的信息流
 
 用法：
-  radr run      [--config=路径] [--dry] [--no-notify] [--json=路径] [--delay=毫秒] [--max=条数]
+  radr run      [--config=路径] [--dry] [--no-notify] [--json=路径] [--delay=毫秒] [--max=条数] [--write-always]
   radr doctor   [--config=路径]          体检：每个源能不能抓、解析出几条
   radr list     [--config=路径]          列出配置里的源
   radr --version                         打印版本
+
+说明：默认只在「有新通知」时才写状态与 JSON 产物 —— 这样跑在 GitHub Actions 上不会每轮
+都产生一次无意义提交。要每次都写，加 --write-always。
 
 默认配置：${DEFAULT_CONFIG}
 默认状态：${DEFAULT_STATE}（只记"见过哪些通知"，不含正文与个人信息）

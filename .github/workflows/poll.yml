@@ -6,10 +6,13 @@ name: poll
 on:
   schedule:
     - cron: '*/20 * * * *'
-  # 改完配置推上来立刻跑一次，不用等定时；也方便首次部署时验证权限是否配好。
-  # 状态提交带 [skip ci]，不会因此形成循环。
+  # 改了源配置推上来立刻验证一次，不必等定时；首次部署也能马上确认权限是否配好。
+  # 限定 paths，避免每次改 README 都触发一轮；状态提交带 [skip ci]，不会形成循环。
   push:
     branches: [main]
+    paths:
+      - 'config/**'
+      - '.github/workflows/poll.yml'
   workflow_dispatch:
 
 concurrency:

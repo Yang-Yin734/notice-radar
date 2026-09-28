@@ -68,6 +68,7 @@ Linux/macOS 用 `SERVERCHAN_KEY=... npm run run`，Windows PowerShell 用 `$env:
 | `radr run --dry` | 不写状态、不推送（调试用） |
 | `radr run --no-notify` | 只出日报不推送 |
 | `radr run --json=data/latest.json` | 同时导出结构化 JSON，方便二次开发 |
+| `radr run --write-always` | 即使没有新通知也写状态与产物（默认只在有新通知时写） |
 
 ## 已支持
 
@@ -111,6 +112,8 @@ sources:
 3. 完事。`.github/workflows/poll.yml` 每 20 分钟跑一次
 
 它靠把"见过哪些通知 ID"提交回 `data/state.json` 实现增量推送——**不需要服务器、不需要数据库**。
+
+只在**真有新通知**时才写状态与产物，所以不会每 20 分钟空转出一个提交（否则一天 72 个，提交历史会被淹掉）。也正因如此：**本地要推之前先 `git pull --rebase`**，不然容易撞上机器人刚提交的状态。
 
 两个必须知道的限制：
 - GitHub 的 cron 用 UTC，最小间隔 5 分钟，且**实际执行会延迟几分钟**；仓库 60 天无提交时定时任务会被自动停用。
