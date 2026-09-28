@@ -29,3 +29,13 @@ jobs:
       # 仪表盘是构建产物，坏了不该等到部署时才发现
       - name: 仪表盘能构建
         run: npm run dashboard
+
+      # docs/ 下是构建产物，本地与云端都会重建，合并时极易冲突。
+      # 万一没处理好，冲突标记会被提交上去并把线上页面搞坏 —— 这里拦住。
+      - name: 提交内容里不能有冲突标记
+        run: |
+          if git grep -n '^<<<<<<< ' -- docs data; then
+            echo "::error::构建产物里出现了 git 冲突标记（<<<<<<<）。请重新生成：npm run dashboard"
+            exit 1
+          fi
+          echo "✓ 没有冲突标记"

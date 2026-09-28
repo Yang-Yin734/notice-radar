@@ -4,6 +4,18 @@
 
 > 推送前先 `git pull --rebase origin main`：`poll` 工作流会把抓取状态提交回 main，
 > 你本地落后时 `git push` 会被拒（这是正常现象，不是权限问题）。
+>
+> **`docs/` 与 `data/` 里是构建产物/状态文件，别做文本合并。** 它们由你本地和云端各自重建，
+> 一撞必冲突。冲突时不要手工合并，直接重新生成再提交：
+>
+> ```bash
+> git fetch origin main
+> git merge -X ours --no-edit origin/main   # 产物以你刚重建的为准
+> npm run dashboard                          # 基于合并后的数据重新生成
+> git add -A && git commit -m "chore: 重建产物" && git push
+> ```
+>
+> 提交 `<<<<<<<` 冲突标记进 `docs/` 会把线上页面搞坏（真发生过），CI 现在会拦住它。
 
 ## 首次跑起来
 

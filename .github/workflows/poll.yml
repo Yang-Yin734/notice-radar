@@ -37,6 +37,14 @@ jobs:
 
       - run: npm ci
 
+      # 开工前先同步远端：本地与云端都会重建 docs 下的产物，不同步就必然撞车。
+      # 冲突时用 -X ours 自动以本地为准（产物由本次构建重新生成，不该做文本合并）。
+      - name: 同步远端状态
+        run: |
+          git config merge.ours.driver true
+          git fetch origin main
+          git merge -X ours --no-edit origin/main || { echo "::warning::同步失败，继续（提交时会再试）"; git merge --abort || true; }
+
       - name: 抓取并推送
         id: fetch
         env:
@@ -74,17 +82,24 @@ jobs:
         run: |
           git config user.name "notice-radar-bot"
           git config user.email "notice-radar-bot@users.noreply.github.com"
-          # 先同步远端再提交：否则会和本地/别的提交撞车（docs 下的构建产物尤其容易冲突）
-          git pull --rebase --autostash origin main || echo "::warning::同步失败，继续尝试提交"
+          git config merge.ours.driver true
           git add -A data docs
           if git diff --cached --quiet; then
             echo "状态无变化，跳过提交"
+            exit 0
+          fi
+          git commit -m "chore(state): $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
+          # 先合并远端再推：docs 下是构建产物，冲突必须自动解决（-X ours），
+          # 绝不能让 <<<<<<< 这类冲突标记被提交上去（曾经这么坏过线上页面）
+          git fetch origin main
+          if ! git merge -X ours --no-edit origin/main; then
+            git merge --abort || true
+            echo "::error::与远端合并失败，本次不提交（下次运行会重试）"
+            exit 1
+          fi
+          if git push; then
+            echo "✓ 状态已提交回仓库"
           else
-            git commit -m "chore(state): $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
-            if git push || (git pull --rebase --autostash origin main && git push); then
-              echo "✓ 状态已提交回仓库"
-            else
-              echo "::error::推送状态失败。多半是仓库把 GITHUB_TOKEN 设成了只读：Settings → Actions → General → Workflow permissions → 选 Read and write permissions"
-              exit 1
-            fi
+            echo "::error::推送状态失败。多半是仓库把 GITHUB_TOKEN 设成了只读：Settings → Actions → General → Workflow permissions → 选 Read and write permissions"
+            exit 1
           fi
