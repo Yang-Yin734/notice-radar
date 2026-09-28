@@ -7,11 +7,29 @@
 配置驱动 · 零服务器 · 不登录 · 任何学校 5 分钟接入
 
 [![ci](https://github.com/Yang-Yin734/notice-radar/actions/workflows/ci.yml/badge.svg)](https://github.com/Yang-Yin734/notice-radar/actions/workflows/ci.yml)
+[![android-apk](https://github.com/Yang-Yin734/notice-radar/actions/workflows/android.yml/badge.svg)](https://github.com/Yang-Yin734/notice-radar/actions/workflows/android.yml)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![node](https://img.shields.io/badge/node-%3E%3D22.18-339933.svg)](package.json)
-[![version](https://img.shields.io/badge/version-v0.1.0-4d6bfe.svg)](CHANGELOG.md)
+[![version](https://img.shields.io/badge/version-v0.4.0-4d6bfe.svg)](CHANGELOG.md)
+
+### 📲 [**下载 Android 安装包（APK）**](https://github.com/Yang-Yin734/notice-radar/releases/download/android-latest/notice-radar.apk)
+
+装到手机上就是独立应用；也可以直接用网页版 → **<https://yang-yin734.github.io/notice-radar/>**
 
 </div>
+
+---
+
+## 两种用法，选一个
+
+| | 怎么用 | 适合 |
+|---|---|---|
+| **下载 APK** | [点这里下载](https://github.com/Yang-Yin734/notice-radar/releases/download/android-latest/notice-radar.apk) → 手机上安装。首次会提示"允许安装未知来源应用" | 想把它当成一个正常 App（桌面图标、点开即用） |
+| **直接用网页** | 打开 <https://yang-yin734.github.io/notice-radar/>，可"添加到主屏幕" | 不想装东西，或者用 iPhone |
+
+> APK 是把网页套壳成原生应用（TWA，Trusted Web Activity）——打开的还是同一个网址，所以内容永远是最新的，
+> 也不用为每次更新重新下载。它由 [android.yml](.github/workflows/android.yml) 在 GitHub 上自动构建并用固定密钥签名，
+> 同一把密钥才能覆盖安装（密钥生成见 [`tools/make-android-keystore.mjs`](tools/make-android-keystore.mjs)）。
 
 ---
 

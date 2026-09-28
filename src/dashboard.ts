@@ -20,6 +20,8 @@ export interface DashboardOptions {
   repoUrl?: string;
   /** 点"刷新"时拉的数据接口路径 */
   dataPath?: string;
+  /** Android 安装包（APK）下载地址 —— 指向滚动 Release，链接固定不变 */
+  apkUrl?: string;
 }
 
 const HTML_ESCAPES: Record<string, string> = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
@@ -36,6 +38,7 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     generatedAt = new Date().toISOString(),
     repoUrl = 'https://github.com/Yang-Yin734/notice-radar',
     dataPath = 'dashboard-data.json',
+    apkUrl = 'https://github.com/Yang-Yin734/notice-radar/releases/download/android-latest/notice-radar.apk',
   } = options;
 
   const bootstrap = {
@@ -43,6 +46,7 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     title,
     repoUrl,
     dataPath,
+    apkUrl,
     total: history.items.length,
     bySource: countBySource(history),
     items: history.items.slice(0, maxItems),
@@ -95,6 +99,19 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
 
   main { max-width:760px; margin:0 auto; padding:12px 12px 20px; }
   .view[hidden] { display:none; }
+
+  /* 安装横幅：只在 Android 上出现，可关掉（选择记在本机） */
+  .installbanner { display:flex; align-items:center; gap:10px; margin-bottom:10px; padding:11px 13px;
+    border-radius:14px; background:linear-gradient(135deg,#2b3a55,#1f2a3d); color:#fff; }
+  .installbanner[hidden] { display:none; }
+  .installbanner .ib-text { flex:1; min-width:0; display:flex; flex-direction:column; gap:2px; }
+  .installbanner .ib-text b { font-size:14px; }
+  .installbanner .ib-text span { font-size:11.5px; opacity:.72; }
+  .ib-close { border:none; background:transparent; color:#fff; opacity:.6; font-size:14px; cursor:pointer; padding:6px; }
+  .btn { display:inline-block; text-decoration:none; border:none; cursor:pointer; font-size:13.5px;
+    padding:9px 16px; border-radius:10px; white-space:nowrap; }
+  .btn.primary { background:#4dabf7; color:#0b2033; font-weight:600; }
+  .btn.big { display:block; text-align:center; font-size:15px; padding:14px; margin:12px 0 8px; }
 
   .controls { display:flex; gap:8px; margin-bottom:10px; min-width:0; }
   /* min-width:0 是关键：flex 子项默认 min-width:auto，输入框的固有宽度会把整页撑出屏幕 */
@@ -183,6 +200,11 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
 
 <main>
   <section class="view" id="view-list">
+    <div class="installbanner" id="install-banner" hidden>
+      <div class="ib-text"><b>装成手机应用更方便</b><span>下载安装包后不用每次找浏览器</span></div>
+      <a class="btn primary" id="apk-download-top" href="${escapeHtml(apkUrl)}">下载 APK</a>
+      <button class="ib-close" id="apk-dismiss" aria-label="不再提示">✕</button>
+    </div>
     <div class="controls"><input id="q" type="search" placeholder="搜索标题，例如：退课 / 四六级 / 推免" enterkeyhint="search"></div>
     <div class="chips" id="chips"></div>
     <div id="list"></div>
@@ -199,7 +221,10 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
   <section class="view card about" id="view-about" hidden>
     <h3>关于这个应用</h3>
     <p>它把学校官网的通知自动抓下来、按关键词过滤、归档成可检索的列表 —— <b>只抓公开页面，不登录、不存储个人信息</b>。</p>
-    <p><b>装到手机上：</b>Android 的 Chrome 打开菜单选 <span class="kbd">安装应用 / 添加到主屏幕</span>；iPhone 的 Safari 点 <span class="kbd">分享</span> → <span class="kbd">添加到主屏幕</span>。装好后离线也能翻已缓存的通知。</p>
+    <a class="btn primary big" href="${escapeHtml(apkUrl)}" id="apk-download-about">⬇ 下载 Android 安装包（APK）</a>
+    <p>安装包是把本页套壳成原生应用（TWA），打开的还是同一个网址、内容永远是最新的。
+      首次安装需在系统提示时允许"安装未知来源应用"；更新包用同一把密钥签名，可以直接覆盖安装。</p>
+    <p><b>不想装 APK 也行：</b>Android 用 Chrome 菜单 → <span class="kbd">安装应用 / 添加到主屏幕</span>；iPhone 用 Safari 点 <span class="kbd">分享</span> → <span class="kbd">添加到主屏幕</span>。装好后离线也能翻已缓存的通知。</p>
     <p><b>收藏与已读只存在你这台设备</b>（localStorage），不会上传；清浏览器数据会一起清掉。</p>
     <p>数据由 <a href="${escapeHtml(repoUrl)}">notice-radar</a> 定时抓取并提交到仓库。站点结构变更可能导致漏抓，<b>请以学校官网原文为准</b>。</p>
     <p id="meta-line"></p>
@@ -429,6 +454,23 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
   if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
     navigator.serviceWorker.register('sw.js').catch(function () { /* 离线是加分项，失败不影响使用 */ });
   }
+
+  // Android 用户把"下载安装包"顶到最上面（点过 ✕ 就不再打扰）
+  (function installBanner() {
+    var KEY = 'notice-radar:apk-dismissed';
+    var isAndroid = /Android/i.test(navigator.userAgent);
+    var banner = document.getElementById('install-banner');
+    if (!isAndroid || lsRead(KEY)[0] === '1') return;
+    banner.hidden = false;
+    document.getElementById('apk-dismiss').addEventListener('click', function () {
+      banner.hidden = true;
+      lsWrite(KEY, ['1']);
+    });
+    // 下载按钮带上来源标记，方便在 Release 的下载统计里区分入口
+    document.getElementById('apk-download-top').addEventListener('click', function () {
+      lsWrite(KEY, ['1']);
+    });
+  })();
 })();
 </script>
 </body></html>

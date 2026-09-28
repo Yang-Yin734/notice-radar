@@ -2,6 +2,31 @@
 
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## v0.4.0 — 2026-09-28
+
+**有了手机安装包（APK）**：一条固定链接下载安装，不用再教用户"添加到主屏幕"。
+
+### 新增
+
+- **Android APK（TWA 套壳）**，固定下载地址：
+  <https://github.com/Yang-Yin734/notice-radar/releases/download/android-latest/notice-radar.apk>
+  - [`.github/workflows/android.yml`](.github/workflows/android.yml)：在 runner 上（自带 JDK 17 + Android SDK）
+    用 Bubblewrap 构建并用固定密钥签名，发布到滚动 Release 标签 `android-latest`，同时保留构建产物
+  - `android/`：Bubblewrap 生成的 TWA 工程。**本地 `init` 一次后提交**，CI 只做构建
+    （`init` 全是交互式提问，CI 里没有 TTY 会直接崩）
+  - `tools/make-android-keystore.mjs`：本机没有 JDK/keytool 也能生成 PKCS#12 签名密钥（纯 JS），并输出 SHA-256 指纹；
+    `tools/gh-set-secrets.mjs`：只写 secrets，不触发任何"仓库装修"
+  - 应用内下载入口：Android 用户打开时**列表顶部出现安装横幅**（可关闭，记在本机），"关于"标签里也有大按钮
+  - `docs/.well-known/assetlinks.json`：记下签名指纹
+
+### 说明（诚实交代）
+
+- 因为没有 Firebase 配置，APK 内**关闭了通知**（推送仍走 Server酱 → 微信，不依赖应用内通知）
+- **没有做 Digital Asset Links 校验**：Android 只会在**域名根**找 `assetlinks.json`
+  （`https://yang-yin734.github.io/.well-known/assetlinks.json`），而本项目位于 `github.io` 的子路径下，无法提供根路径文件。
+  所以 APK 打开后顶部会显示地址栏（Custom Tabs 模式）。想全屏需要另建 `Yang-Yin734.github.io` 仓库把该文件放到根路径，或换自定义域名
+- 本机没有 Android 设备，**无法真机安装验证**；能验证的是：构建成功、APK 结构合法、签名指纹与本机密钥一致
+
 ## v0.3.0 — 2026-09-28
 
 把归档页升级成**手机、电脑都能用的应用**（PWA）：能装到主屏幕、能离线翻、收藏和已读只存本机。

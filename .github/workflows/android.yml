@@ -1,10 +1,12 @@
 name: android-apk
 
-# 把 PWA 打包成**可以下载安装的 Android APK**（TWA：Trusted Web Activity —— 本质是套壳的原生应用，
-# 打开的就是同一个网址，但能进桌面图标列表、点开即用、不用手动"添加到主屏幕"）。
+# 把 PWA 打包成**可以直接下载安装的 Android APK**（TWA：Trusted Web Activity —— 套壳的原生应用，
+# 打开的就是同一个网页，但会出现在桌面图标列表里，点开即用，不需要手动"添加到主屏幕"）。
 #
 # 为什么在 CI 里打：本地要装 JDK + Android SDK（1GB+），runner 上现成。
-# 签名密钥来自 Secrets（同一把密钥才能覆盖安装，见 tools/make-android-keystore.mjs）。
+# 为什么不在 CI 里 bubblewrap init：init 全是交互式提问（Domain/URL path/图标…），
+# 没有 TTY 会崩。所以工程在本地 init 一次后提交到 android/，CI 只负责构建 + 签名。
+# 签名密钥来自 Secrets：同一把密钥才能覆盖安装（见 tools/make-android-keystore.mjs）。
 on:
   workflow_dispatch:
   push:
@@ -38,84 +40,89 @@ jobs:
           printf '%s' "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > android-signing/notice-radar.p12
           echo "keystore 大小：$(stat -c%s android-signing/notice-radar.p12) 字节"
           keytool -list -keystore android-signing/notice-radar.p12 -storetype PKCS12 \
-            -storepass "${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" | tail -3
+            -storepass "${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" | tail -2
 
       - name: 安装 bubblewrap
         run: npm install -g @bubblewrap/cli
 
-      - name: 接受 Android SDK 许可（缺失的组件顺手装上）
+      # 不写这个配置，bubblewrap 会交互式问"要不要由它安装 JDK"，CI 里会直接崩
+      - name: 预置 bubblewrap 配置（跳过交互式提问）
+        run: |
+          mkdir -p ~/.bubblewrap
+          printf '{"jdkPath":"%s","androidSdkPath":"%s"}\n' "$JAVA_HOME" "$ANDROID_HOME" > ~/.bubblewrap/config.json
+          cat ~/.bubblewrap/config.json
+          bubblewrap doctor || true
+
+      - name: 接受 Android SDK 许可（缺的组件顺手装上）
         run: |
           SDKMANAGER="$(command -v sdkmanager || echo "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager")"
           yes | "$SDKMANAGER" --licenses >/dev/null 2>&1 || true
           yes | "$SDKMANAGER" "platforms;android-34" "build-tools;34.0.0" >/dev/null 2>&1 || true
-          echo "ANDROID_HOME=$ANDROID_HOME"
 
-      - name: 生成 TWA 工程
+      - name: 写入版本号（versionCode 递增才允许覆盖安装）
+        working-directory: android
+        env:
+          RUN_NUMBER: ${{ github.run_number }}
+        run: |
+          node - <<'NODE'
+          const fs = require('fs');
+          const pkg = JSON.parse(fs.readFileSync('../package.json', 'utf8'));
+          const m = JSON.parse(fs.readFileSync('twa-manifest.json', 'utf8'));
+          m.appVersionName = pkg.version;
+          m.appVersion = pkg.version;
+          m.appVersionCode = Number(process.env.RUN_NUMBER);
+          fs.writeFileSync('twa-manifest.json', JSON.stringify(m, null, 2) + '\n');
+          console.log(`版本：${m.appVersionName}（code ${m.appVersionCode}）`);
+          NODE
+
+      - name: 构建并签名 APK
+        working-directory: android
         env:
           BUBBLEWRAP_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           BUBBLEWRAP_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
-          VERSION=$(node -p "require('./package.json').version")
-          bubblewrap init \
-            --manifest=https://yang-yin734.github.io/notice-radar/manifest.webmanifest \
-            --directory=android-app \
-            --name="校园通知雷达" \
-            --shortName="通知雷达" \
-            --launcherName="通知雷达" \
-            --packageId=io.github.yangyin734.noticeradar \
-            --appVersion="$VERSION" \
-            --appVersionCode="${{ github.run_number }}" \
-            --startUrl=/notice-radar/ \
-            --iconUrl=https://yang-yin734.github.io/notice-radar/icon-512.png \
-            --maskableIconUrl=https://yang-yin734.github.io/notice-radar/icon-512.png \
-            --themeColor=#1f2a3d \
-            --backgroundColor=#eef1f6 \
-            --display=standalone \
-            --orientation=portrait-primary \
-            --enableNotifications=false \
-            --enableSiteSettingsShortcut=true \
-            --fallbackType=customtabs \
-            --minSdkVersion=23 \
-            --signingKeyPath="$PWD/android-signing/notice-radar.p12" \
-            --signingKeyAlias="${{ secrets.ANDROID_KEY_ALIAS }}" \
-            --skipPwaValidation
+          bubblewrap build --skipPwaValidation \
+            --signingKeyPath="$GITHUB_WORKSPACE/android-signing/notice-radar.p12" \
+            --signingKeyAlias="${{ secrets.ANDROID_KEY_ALIAS }}"
 
-      - name: 构建 APK
-        working-directory: android-app
-        env:
-          BUBBLEWRAP_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          BUBBLEWRAP_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-        run: bubblewrap build --skipPwaValidation
-
-      - name: 检查产物
-        run: |
-          APK=$(find android-app -name '*.apk' -type f | head -1)
-          echo "APK=$APK"
-          ls -lh "$APK"
-          cp "$APK" notice-radar.apk
-          echo "sha256=$(sha256sum notice-radar.apk | cut -d' ' -f1)" >> "$GITHUB_OUTPUT"
-          echo "### APK 构建成功" >> "$GITHUB_STEP_SUMMARY"
-          echo "- 大小：$(du -h notice-radar.apk | cut -f1)" >> "$GITHUB_STEP_SUMMARY"
-          echo "- sha256：$(sha256sum notice-radar.apk | cut -d' ' -f1)" >> "$GITHUB_STEP_SUMMARY"
-          unzip -l notice-radar.apk | head -12
-          if [ -f android-app/assetlinks.json ]; then
-            echo "--- Bubblewrap 生成的 assetlinks.json ---"
-            cat android-app/assetlinks.json
-          fi
+      - name: 校验产物（签名、包名、体积）
         id: pack
+        run: |
+          APK=$(find android/app/build/outputs -name '*.apk' | head -1)
+          if [ -z "$APK" ]; then echo "::error::没找到 APK"; exit 1; fi
+          cp "$APK" notice-radar.apk
+          ls -lh notice-radar.apk
 
-      - name: 发布到 Release（滚动标签 android-latest）
+          APKSIGNER=$(find "$ANDROID_HOME/build-tools" -name apksigner -type f | sort | tail -1)
+          echo "--- 签名校验 ---"
+          "$APKSIGNER" verify --print-certs notice-radar.apk | head -8 || true
+
+          AAPT=$(find "$ANDROID_HOME/build-tools" -name aapt2 -type f | sort | tail -1)
+          echo "--- 包信息 ---"
+          unzip -l notice-radar.apk | head -8
+
+          SHA=$(sha256sum notice-radar.apk | cut -d' ' -f1)
+          SIZE=$(du -h notice-radar.apk | cut -f1)
+          echo "sha256=$SHA" >> "$GITHUB_OUTPUT"
+          {
+            echo "### Android APK 构建成功"
+            echo ""
+            echo "- 大小：$SIZE"
+            echo "- sha256：\`$SHA\`"
+            echo "- 下载：https://github.com/${{ github.repository }}/releases/download/android-latest/notice-radar.apk"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: 发布到 Release（滚动标签 android-latest，下载链接固定）
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           gh release view android-latest >/dev/null 2>&1 || \
             gh release create android-latest \
               --title "Android 安装包（滚动更新）" \
-              --notes "直接下载 notice-radar.apk 安装即可。这个 Release 每次构建都会被覆盖更新，下载链接固定不变。" \
+              --notes "下载 **notice-radar.apk** 安装即可（首次需在系统设置里允许安装未知来源应用）。这个 Release 每次构建都会被覆盖，下载地址固定不变。" \
               --prerelease
           gh release upload android-latest notice-radar.apk --clobber
-          echo "### 下载地址" >> "$GITHUB_STEP_SUMMARY"
-          echo "https://github.com/${{ github.repository }}/releases/download/android-latest/notice-radar.apk" >> "$GITHUB_STEP_SUMMARY"
+          echo "已发布：https://github.com/${{ github.repository }}/releases/download/android-latest/notice-radar.apk"
 
       - name: 上传 APK 作为构建产物（保留 90 天）
         uses: actions/upload-artifact@v4

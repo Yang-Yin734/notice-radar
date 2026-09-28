@@ -82,3 +82,17 @@ test('应用：没有数据也能渲染出界面（不是空白页）', () => {
   assert.match(html, /关于这个应用/, '"关于"里写了安装方法');
   assert.match(html, /添加到主屏幕/);
 });
+
+test('应用：APK 下载入口在显眼位置（顶部横幅 + 关于里的大按钮）', () => {
+  const history = emptyHistory();
+  appendHistory(history, [notice({ id: 'a' })]);
+  const html = renderDashboard(history, { apkUrl: 'https://example.com/notice-radar.apk' });
+  const boot = bootstrapOf(html);
+
+  assert.equal(boot.apkUrl, 'https://example.com/notice-radar.apk', '下载地址进 bootstrap（fork 可改）');
+  assert.match(html, /id="install-banner"/, '列表顶部有安装横幅');
+  assert.match(html, /id="apk-download-top" href="https:\/\/example\.com\/notice-radar\.apk"/, '横幅里的下载按钮');
+  assert.match(html, /id="apk-download-about"/, '"关于"里的大按钮');
+  assert.match(html, /Android\/i\.test\(navigator\.userAgent\)/, '只在 Android 上弹出横幅');
+  assert.match(html, /notice-radar:apk-dismissed/, '关掉后不再打扰（记在本机）');
+});
