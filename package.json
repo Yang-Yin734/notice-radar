@@ -35,7 +35,7 @@
     "stats": "node src/cli.ts stats",
     "schools": "node src/cli.ts schools",
     "test": "node tools/run-tests.mjs",
-    "build": "tsc -p tsconfig.build.json && node tools/postbuild.mjs",
+    "build": "node tools/tsc.mjs && node tools/postbuild.mjs",
     "dashboard": "node src/cli.ts dashboard",
     "make-keystore": "node tools/make-android-keystore.mjs",
     "capture": "node tools/capture-fixtures.mjs",
