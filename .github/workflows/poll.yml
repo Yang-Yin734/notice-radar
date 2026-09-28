@@ -22,6 +22,8 @@ permissions:
 jobs:
   poll:
     runs-on: ubuntu-latest
+    # 防止某个源卡住导致 job 一直挂着（默认上限是 6 小时，太宽松）
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
 
