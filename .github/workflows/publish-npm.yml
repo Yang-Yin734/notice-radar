@@ -56,14 +56,19 @@ jobs:
       - name: 发布到 npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry-run || 'false' }}
         run: |
           if [ -z "$NODE_AUTH_TOKEN" ]; then
             echo "::warning::仓库里没配 NPM_TOKEN，跳过真实发布。配置方法见 docs/publish.md"
             exit 0
           fi
-          if [ "$DRY_RUN" = "true" ]; then
-            echo "▸ dry-run：只验证发布流程"
+          # 安全默认：手动触发只有把 dry-run 明确设为 false 才真正发布；打 tag 才默认真发
+          if [ "${{ github.event_name }}" = "push" ]; then
+            DRY=false
+          else
+            DRY="${{ inputs.dry-run }}"
+          fi
+          if [ "$DRY" != "false" ]; then
+            echo "▸ dry-run：只验证发布流程（要真发请把 dry-run 设为 false，或打 v* 标签）"
             npm publish --dry-run --provenance
             exit 0
           fi
