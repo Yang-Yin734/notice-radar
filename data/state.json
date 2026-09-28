@@ -1,5 +1,32 @@
 {
   "version": 1,
-  "seen": {},
-  "lastRun": null
+  "seen": {
+    "jwc-important": [
+      "5fc43373c222abbd",
+      "1a38b516299bdb84",
+      "9d2b7f5b9282d4fd",
+      "e6cfa046f94ff798"
+    ],
+    "jwc-student": [
+      "46e2a04970a512bc",
+      "0c5f024343c65473",
+      "5c97fb7c21e12ef0",
+      "fd3d8c4ec14eac8f",
+      "d675c2a22e5102c0",
+      "d25dcb85a19fe41e",
+      "cf91ea89165f9f33",
+      "f95b3426d1dc2187",
+      "e7dba21c5a50d4d9",
+      "ae03a633e819626e",
+      "ed1e7a3799841756",
+      "ec30688fe317b9e9",
+      "fa4fd9559a3c408e"
+    ],
+    "news-notice": [
+      "8f9c670f22bec8f3",
+      "24cd74c243c20b98",
+      "6a460cf85bc22591"
+    ]
+  },
+  "lastRun": "2026-09-28T03:46:07.795Z"
 }

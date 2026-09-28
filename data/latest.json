@@ -1,0 +1,819 @@
+{
+  "generatedAt": "2026-09-28T03:46:07.794Z",
+  "results": [
+    {
+      "sourceId": "jwc-important",
+      "sourceName": "教务处·重要公告",
+      "url": "https://www.jwc.uestc.edu.cn/hard/?page=1",
+      "adapter": "uestc/jwc",
+      "ok": true,
+      "error": null,
+      "status": 200,
+      "bytes": 28693,
+      "tookMs": 1760,
+      "items": [
+        {
+          "id": "393edb8d41cfee20",
+          "sourceId": "jwc-important",
+          "sourceName": "教务处·重要公告",
+          "school": "uestc",
+          "title": "教授开放日安排表(2026年度秋季学期）",
+          "url": "https://www.jwc.uestc.edu.cn/info/35cb8ee590be28f64bf50a05dab94736",
+          "date": "2026-09-15",
+          "tag": "教授开放日"
+        },
+        {
+          "id": "85a162b44f7d7ede",
+          "sourceId": "jwc-important",
+          "sourceName": "教务处·重要公告",
+          "school": "uestc",
+          "title": "教授开放日安排表(2026年度春季学期）",
+          "url": "https://www.jwc.uestc.edu.cn/info/f079772b8bc95f6106b8d4c49b4e5b99",
+          "date": "2026-03-11",
+          "tag": "教授开放日"
+        },
+        {
+          "id": "a02d79b234897cb5",
+          "sourceId": "jwc-important",
+          "sourceName": "教务处·重要公告",
+          "school": "uestc",
+          "title": "2025级“电子和计算机（ECE）关键核心领域科技创新领军人才培养计划”春季校内遴选通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/9a09b2f3031a6a2abbd4ba85c1e1eca5",
+          "date": "2026-01-07",
+          "tag": "教管"
+        },
+        {
+          "id": "41e7f8b8efcf67c1",
+          "sourceId": "jwc-important",
+          "sourceName": "教务处·重要公告",
+          "school": "uestc",
+          "title": "关于开展2025-2026-1学期中期教学检查工作的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/46c418585907347ae5dbbede63f6dd4c",
+          "date": "2025-10-14",
+          "tag": "教师事务公告"
+        },
+        {
+          "id": "2c71d2f04d96b0db",
+          "sourceId": "jwc-important",
+          "sourceName": "教务处·重要公告",
+          "school": "uestc",
+          "title": "教授开放日安排表(2025年度秋季学期）",
+          "url": "https://www.jwc.uestc.edu.cn/info/ccf7a588aeb6b76ffac1cd08f711f5bc",
+          "date": "2025-09-08",
+          "tag": "学生事务公告"
+        },
+        {
+          "id": "ae093dc63aed3902",
+          "sourceId": "jwc-important",
+          "sourceName": "教务处·重要公告",
+          "school": "uestc",
+          "title": "电子科技大学第二批人工智能技术赋能本科教学改革项目申报通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/c9a14ad76b5c761fcd3945fcf2d1fa56",
+          "date": "2025-03-12",
+          "tag": "教师事务公告"
+        },
+        {
+          "id": "5fc43373c222abbd",
+          "sourceId": "jwc-important",
+          "sourceName": "教务处·重要公告",
+          "school": "uestc",
+          "title": "关于2024-2025-2学期本科生选课工作的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/a47aeba515a6f801e469f62ef0f08569",
+          "date": "2024-12-17",
+          "tag": "教管"
+        },
+        {
+          "id": "784e08ce7837c18c",
+          "sourceId": "jwc-important",
+          "sourceName": "教务处·重要公告",
+          "school": "uestc",
+          "title": "关于组织四川省2024—2026年高等教育人才培养质量和教学改革项目申报工作的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/4b4f260f1f945382bd44d26d857aadbe",
+          "date": "2024-10-22",
+          "tag": "教师事务公告"
+        },
+        {
+          "id": "96924be8f01777f1",
+          "sourceId": "jwc-important",
+          "sourceName": "教务处·重要公告",
+          "school": "uestc",
+          "title": "教授开放日安排表(2024年度秋季学期）",
+          "url": "https://www.jwc.uestc.edu.cn/info/518a1ff1b2fd55113ff58e8755ec183c",
+          "date": "2024-09-06",
+          "tag": "学生事务公告"
+        },
+        {
+          "id": "85400e9c87d51ead",
+          "sourceId": "jwc-important",
+          "sourceName": "教务处·重要公告",
+          "school": "uestc",
+          "title": "关于开展电子科技大学第十届教学成果奖（本科）申报工作的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/7425d2c0690c7f6f0679513a9a9739a3",
+          "date": "2024-09-06",
+          "tag": "教研"
+        },
+        {
+          "id": "1a38b516299bdb84",
+          "sourceId": "jwc-important",
+          "sourceName": "教务处·重要公告",
+          "school": "uestc",
+          "title": "关于大面积课程开学缓补考安排的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/628d16a7ceee724d8a19607bc800241c",
+          "date": "2024-07-17",
+          "tag": "考试"
+        },
+        {
+          "id": "9d2b7f5b9282d4fd",
+          "sourceId": "jwc-important",
+          "sourceName": "教务处·重要公告",
+          "school": "uestc",
+          "title": "关于2024-2025-1学期重新学习报名相关工作的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/14e456d1b1c7339202d69b3c19c1d7bf",
+          "date": "2024-07-16",
+          "tag": "教管"
+        },
+        {
+          "id": "be967ba8eb026219",
+          "sourceId": "jwc-important",
+          "sourceName": "教务处·重要公告",
+          "school": "uestc",
+          "title": "关于公布电子科技大学2024年“本科生高峰体验项目（课程）”和“新生项目式课程”立项名单的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/8c59c905eaf3a187a3d3fd73d43db263",
+          "date": "2024-05-21",
+          "tag": "教研"
+        },
+        {
+          "id": "5110c1f557fd59ce",
+          "sourceId": "jwc-important",
+          "sourceName": "教务处·重要公告",
+          "school": "uestc",
+          "title": "关于公布电子科技大学2024年\"挑战性学习课程\"\"新生研讨课\"和\"'专业写作基础’课程\"建设与改革项目立项名单的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/333f762df1722462768351bbd217d066",
+          "date": "2024-05-20",
+          "tag": "教研"
+        },
+        {
+          "id": "e6cfa046f94ff798",
+          "sourceId": "jwc-important",
+          "sourceName": "教务处·重要公告",
+          "school": "uestc",
+          "title": "关于开展2023届本科毕业生培养质量问卷调查的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/4d209efc9ffb943b0103f6a166408f3f",
+          "date": "2024-05-16",
+          "tag": "学生事务公告"
+        }
+      ]
+    },
+    {
+      "sourceId": "jwc-student",
+      "sourceName": "教务处·学生事务公告",
+      "url": "https://www.jwc.uestc.edu.cn/list/256/?page=1",
+      "adapter": "uestc/jwc",
+      "ok": true,
+      "error": null,
+      "status": 200,
+      "bytes": 31566,
+      "tookMs": 419,
+      "items": [
+        {
+          "id": "46e2a04970a512bc",
+          "sourceId": "jwc-student",
+          "sourceName": "教务处·学生事务公告",
+          "school": "uestc",
+          "title": "关于2026-2027-1学期本科生退课及补选课的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/a6c974d61855132589f852b5ad5ff97c",
+          "date": "2026-09-02",
+          "tag": "教管"
+        },
+        {
+          "id": "0c5f024343c65473",
+          "sourceId": "jwc-student",
+          "sourceName": "教务处·学生事务公告",
+          "school": "uestc",
+          "title": "关于本学期学生证、火车票优惠卡（含2026级新生）办理工作的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/8e1791da4a9163bc0e3650838dab7f60",
+          "date": "2026-08-27",
+          "tag": "教管"
+        },
+        {
+          "id": "5c97fb7c21e12ef0",
+          "sourceId": "jwc-student",
+          "sourceName": "教务处·学生事务公告",
+          "school": "uestc",
+          "title": "关于2026-2027-1学期重新学习报名相关工作的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/aa14c951d48ad5eb4696ca85accea85a",
+          "date": "2026-07-13",
+          "tag": "教管"
+        },
+        {
+          "id": "fd3d8c4ec14eac8f",
+          "sourceId": "jwc-student",
+          "sourceName": "教务处·学生事务公告",
+          "school": "uestc",
+          "title": "关于大面积课程开学缓补考安排的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/a774817870dc5a53b3a3b1069f2f2d08",
+          "date": "2026-07-13",
+          "tag": "考试"
+        },
+        {
+          "id": "d675c2a22e5102c0",
+          "sourceId": "jwc-student",
+          "sourceName": "教务处·学生事务公告",
+          "school": "uestc",
+          "title": "关于2026-2027-1学期本科生选课工作的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/926bb11d748e2d10925297371c13e14c",
+          "date": "2026-06-17",
+          "tag": "教管"
+        },
+        {
+          "id": "d25dcb85a19fe41e",
+          "sourceId": "jwc-student",
+          "sourceName": "教务处·学生事务公告",
+          "school": "uestc",
+          "title": "关于本学期大面积课程期末及重新学习考试安排的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/93308ee8d7982f4970482f0551a6b9d9",
+          "date": "2026-06-01",
+          "tag": "考试"
+        },
+        {
+          "id": "cf91ea89165f9f33",
+          "sourceId": "jwc-student",
+          "sourceName": "教务处·学生事务公告",
+          "school": "uestc",
+          "title": "关于第八届中关村百校联盟人才创客大赛参赛报名的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/bcf98d2126e5ae10442c6fc301cbf612",
+          "date": "2026-05-08",
+          "tag": "实践"
+        },
+        {
+          "id": "f95b3426d1dc2187",
+          "sourceId": "jwc-student",
+          "sourceName": "教务处·学生事务公告",
+          "school": "uestc",
+          "title": "关于2025-2026-2学期中期退课及补选课的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/f6566f91bad43401f78af8062c67650b",
+          "date": "2026-04-27",
+          "tag": "教管"
+        },
+        {
+          "id": "e7dba21c5a50d4d9",
+          "sourceId": "jwc-student",
+          "sourceName": "教务处·学生事务公告",
+          "school": "uestc",
+          "title": "关于本学期大面积课程期中考试安排的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/78ca81c2549659a4eac4ee66e6886e62",
+          "date": "2026-03-31",
+          "tag": "考试"
+        },
+        {
+          "id": "d41fa4db883719f5",
+          "sourceId": "jwc-student",
+          "sourceName": "教务处·学生事务公告",
+          "school": "uestc",
+          "title": "关于2026届本科毕业生教师资格认定材料审核工作的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/8bd275d9c9fed92ce3c3430993605133",
+          "date": "2026-03-30",
+          "tag": "教管"
+        },
+        {
+          "id": "ae03a633e819626e",
+          "sourceId": "jwc-student",
+          "sourceName": "教务处·学生事务公告",
+          "school": "uestc",
+          "title": "关于2025-2026-2学期本科生退课及补选课的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/88739ad2e71ea13a536229dc7071f6f6",
+          "date": "2026-03-03",
+          "tag": "教管"
+        },
+        {
+          "id": "ed1e7a3799841756",
+          "sourceId": "jwc-student",
+          "sourceName": "教务处·学生事务公告",
+          "school": "uestc",
+          "title": "关于本学期学生证、火车票优惠卡办理工作的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/1d560d774f3632eeaee186eafb800c03",
+          "date": "2026-02-27",
+          "tag": "教管"
+        },
+        {
+          "id": "ec30688fe317b9e9",
+          "sourceId": "jwc-student",
+          "sourceName": "教务处·学生事务公告",
+          "school": "uestc",
+          "title": "关于2025-2026-2学期重新学习报名相关工作的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/3818952895a3cd0f3b5f92b7e5d316ad",
+          "date": "2026-02-26",
+          "tag": "学生事务公告"
+        },
+        {
+          "id": "fa4fd9559a3c408e",
+          "sourceId": "jwc-student",
+          "sourceName": "教务处·学生事务公告",
+          "school": "uestc",
+          "title": "关于大面积课程开学缓补考安排的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/30d196608fe3a20ae08ada0b22a573a4",
+          "date": "2026-01-20",
+          "tag": "考试"
+        },
+        {
+          "id": "a204de2e288a7bf5",
+          "sourceId": "jwc-student",
+          "sourceName": "教务处·学生事务公告",
+          "school": "uestc",
+          "title": "2025级“电子和计算机（ECE）关键核心领域科技创新领军人才培养计划”春季校内遴选通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/9a09b2f3031a6a2abbd4ba85c1e1eca5",
+          "date": "2026-01-07",
+          "tag": "教管"
+        }
+      ]
+    },
+    {
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
+      "url": "https://news.uestc.edu.cn/?n=UestcNews.Front.CategoryV2.Page&CatId=68",
+      "adapter": "html-list",
+      "ok": true,
+      "error": null,
+      "status": 200,
+      "bytes": 98598,
+      "tookMs": 2795,
+      "items": [
+        {
+          "id": "8f9c670f22bec8f3",
+          "sourceId": "news-notice",
+          "sourceName": "新闻网·公告",
+          "school": "uestc",
+          "title": "学者论坛：超导百年：材料、强关联机理与 AI 逆向设计",
+          "url": "https://news.uestc.edu.cn/info/1015/43921.htm",
+          "date": "2026-09-25",
+          "tag": "学术"
+        },
+        {
+          "id": "24cd74c243c20b98",
+          "sourceId": "news-notice",
+          "sourceName": "新闻网·公告",
+          "school": "uestc",
+          "title": "名师讲堂：Geometry, Mesh, and Higher-Order Finite Elements",
+          "url": "https://news.uestc.edu.cn/info/1015/43893.htm",
+          "date": "2026-09-24",
+          "tag": "学术"
+        },
+        {
+          "id": "0edfd3b717b54776",
+          "sourceId": "news-notice",
+          "sourceName": "新闻网·公告",
+          "school": "uestc",
+          "title": "电子科技大学校史馆试运行公告",
+          "url": "https://news.uestc.edu.cn/info/1017/43867.htm",
+          "date": "2026-09-24",
+          "tag": "公告"
+        },
+        {
+          "id": "6a460cf85bc22591",
+          "sourceId": "news-notice",
+          "sourceName": "新闻网·公告",
+          "school": "uestc",
+          "title": "成电讲坛 | The Human Edge — Why the World Needs You More Than Ever 人之优势 —— 为何世界比以往更需要你",
+          "url": "https://news.uestc.edu.cn/info/1015/43797.htm",
+          "date": "2026-09-22",
+          "tag": "学术"
+        }
+      ]
+    },
+    {
+      "sourceId": "gr-notice",
+      "sourceName": "研究生院·通知",
+      "url": "https://gr.uestc.edu.cn/tongzhi/",
+      "adapter": "uestc/gr",
+      "ok": true,
+      "error": null,
+      "status": 200,
+      "bytes": 34585,
+      "tookMs": 5160,
+      "items": [
+        {
+          "id": "3e5b2e445b6f2d58",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于电子科技大学2025年度研究生教育先进单位和个人评选结果的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/14381",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "bb8b9c668667b9da",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于开展电子科技大学2025年度研究生教育先进单位和个人评选的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/14320",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "9c198abc0ab5b2e2",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于电子科技大学2024年度研究生教育先进单位和个人评选结果的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/13381",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "d5de8e53958010d5",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于开展电子科技大学2024年度研究生教育先进单位和个人评选的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/13315",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "9cde5231b7f4c079",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于电子科技大学2023年研究生教育先进单位和个人评选结果的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/12164",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "cbcdfb7d2392e0a4",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于开展电子科技大学2023年研究生教育先进单位和个人评选的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/12106",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "edae5893fa787d29",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于电子科技大学2022年研究生教育先进单位和个人评选结果的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/11349",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "5831979a5305ae18",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于开展电子科技大学2022年研究生教育先进单位和个人评选的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/11320",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "3ab0853140ac66fd",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于电子科技大学2021年研究生教育先进单位和个人评选结果的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/10610",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "49e0779df4d29bf0",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于电子科技大学2021年研究生教育先进单位和个人评选的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/10540",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "eb434d2c47fe27dd",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于开展2021年电子科技大学研究生“科技创新先进个人（集体）”奖评选的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/10511",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "28e1bc944498bf10",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于开展2021年电子科技大学研究生“基层挂职先进个人”奖评选的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/10510",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "e4d9b9220f4e4665",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于开展2021年电子科技大学研究生“优秀社会实践”奖评选的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/10508",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "3d89ab642b016e44",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "申报职称涉及研究生院相关材料签字盖章流程",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/9857",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "0b05a9a2f47115ea",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于电子科技大学2020年研究生教育先进单位和个人评选结果的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/9590",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "4db64697f3b3f9c1",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于电子科技大学2020年研究生教育先进单位和个人评选的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/9506",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "557a645b40afafbf",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于召开电子科技大学研究生教育会议的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/9398",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "ae3354eee2e6d9bc",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于调整2020年度GFKJ“引领”基金申报工作安排的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/8738",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "0d28746572fe3ea8",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于新冠肺炎疫情防控期间加强导师对研究生指导的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/8691",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "053aaae3b326daf6",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "致研究生导师的一封信",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/8681",
+          "date": null,
+          "tag": null
+        }
+      ]
+    }
+  ],
+  "fresh": [
+    {
+      "id": "5fc43373c222abbd",
+      "sourceId": "jwc-important",
+      "sourceName": "教务处·重要公告",
+      "school": "uestc",
+      "title": "关于2024-2025-2学期本科生选课工作的通知",
+      "url": "https://www.jwc.uestc.edu.cn/info/a47aeba515a6f801e469f62ef0f08569",
+      "date": "2024-12-17",
+      "tag": "教管",
+      "alsoIn": []
+    },
+    {
+      "id": "1a38b516299bdb84",
+      "sourceId": "jwc-important",
+      "sourceName": "教务处·重要公告",
+      "school": "uestc",
+      "title": "关于大面积课程开学缓补考安排的通知",
+      "url": "https://www.jwc.uestc.edu.cn/info/628d16a7ceee724d8a19607bc800241c",
+      "date": "2024-07-17",
+      "tag": "考试",
+      "alsoIn": []
+    },
+    {
+      "id": "9d2b7f5b9282d4fd",
+      "sourceId": "jwc-important",
+      "sourceName": "教务处·重要公告",
+      "school": "uestc",
+      "title": "关于2024-2025-1学期重新学习报名相关工作的通知",
+      "url": "https://www.jwc.uestc.edu.cn/info/14e456d1b1c7339202d69b3c19c1d7bf",
+      "date": "2024-07-16",
+      "tag": "教管",
+      "alsoIn": []
+    },
+    {
+      "id": "e6cfa046f94ff798",
+      "sourceId": "jwc-important",
+      "sourceName": "教务处·重要公告",
+      "school": "uestc",
+      "title": "关于开展2023届本科毕业生培养质量问卷调查的通知",
+      "url": "https://www.jwc.uestc.edu.cn/info/4d209efc9ffb943b0103f6a166408f3f",
+      "date": "2024-05-16",
+      "tag": "学生事务公告",
+      "alsoIn": []
+    },
+    {
+      "id": "46e2a04970a512bc",
+      "sourceId": "jwc-student",
+      "sourceName": "教务处·学生事务公告",
+      "school": "uestc",
+      "title": "关于2026-2027-1学期本科生退课及补选课的通知",
+      "url": "https://www.jwc.uestc.edu.cn/info/a6c974d61855132589f852b5ad5ff97c",
+      "date": "2026-09-02",
+      "tag": "教管",
+      "alsoIn": []
+    },
+    {
+      "id": "0c5f024343c65473",
+      "sourceId": "jwc-student",
+      "sourceName": "教务处·学生事务公告",
+      "school": "uestc",
+      "title": "关于本学期学生证、火车票优惠卡（含2026级新生）办理工作的通知",
+      "url": "https://www.jwc.uestc.edu.cn/info/8e1791da4a9163bc0e3650838dab7f60",
+      "date": "2026-08-27",
+      "tag": "教管",
+      "alsoIn": []
+    },
+    {
+      "id": "5c97fb7c21e12ef0",
+      "sourceId": "jwc-student",
+      "sourceName": "教务处·学生事务公告",
+      "school": "uestc",
+      "title": "关于2026-2027-1学期重新学习报名相关工作的通知",
+      "url": "https://www.jwc.uestc.edu.cn/info/aa14c951d48ad5eb4696ca85accea85a",
+      "date": "2026-07-13",
+      "tag": "教管",
+      "alsoIn": []
+    },
+    {
+      "id": "fd3d8c4ec14eac8f",
+      "sourceId": "jwc-student",
+      "sourceName": "教务处·学生事务公告",
+      "school": "uestc",
+      "title": "关于大面积课程开学缓补考安排的通知",
+      "url": "https://www.jwc.uestc.edu.cn/info/a774817870dc5a53b3a3b1069f2f2d08",
+      "date": "2026-07-13",
+      "tag": "考试",
+      "alsoIn": []
+    },
+    {
+      "id": "d675c2a22e5102c0",
+      "sourceId": "jwc-student",
+      "sourceName": "教务处·学生事务公告",
+      "school": "uestc",
+      "title": "关于2026-2027-1学期本科生选课工作的通知",
+      "url": "https://www.jwc.uestc.edu.cn/info/926bb11d748e2d10925297371c13e14c",
+      "date": "2026-06-17",
+      "tag": "教管",
+      "alsoIn": []
+    },
+    {
+      "id": "d25dcb85a19fe41e",
+      "sourceId": "jwc-student",
+      "sourceName": "教务处·学生事务公告",
+      "school": "uestc",
+      "title": "关于本学期大面积课程期末及重新学习考试安排的通知",
+      "url": "https://www.jwc.uestc.edu.cn/info/93308ee8d7982f4970482f0551a6b9d9",
+      "date": "2026-06-01",
+      "tag": "考试",
+      "alsoIn": []
+    },
+    {
+      "id": "cf91ea89165f9f33",
+      "sourceId": "jwc-student",
+      "sourceName": "教务处·学生事务公告",
+      "school": "uestc",
+      "title": "关于第八届中关村百校联盟人才创客大赛参赛报名的通知",
+      "url": "https://www.jwc.uestc.edu.cn/info/bcf98d2126e5ae10442c6fc301cbf612",
+      "date": "2026-05-08",
+      "tag": "实践",
+      "alsoIn": []
+    },
+    {
+      "id": "f95b3426d1dc2187",
+      "sourceId": "jwc-student",
+      "sourceName": "教务处·学生事务公告",
+      "school": "uestc",
+      "title": "关于2025-2026-2学期中期退课及补选课的通知",
+      "url": "https://www.jwc.uestc.edu.cn/info/f6566f91bad43401f78af8062c67650b",
+      "date": "2026-04-27",
+      "tag": "教管",
+      "alsoIn": []
+    },
+    {
+      "id": "e7dba21c5a50d4d9",
+      "sourceId": "jwc-student",
+      "sourceName": "教务处·学生事务公告",
+      "school": "uestc",
+      "title": "关于本学期大面积课程期中考试安排的通知",
+      "url": "https://www.jwc.uestc.edu.cn/info/78ca81c2549659a4eac4ee66e6886e62",
+      "date": "2026-03-31",
+      "tag": "考试",
+      "alsoIn": []
+    },
+    {
+      "id": "ae03a633e819626e",
+      "sourceId": "jwc-student",
+      "sourceName": "教务处·学生事务公告",
+      "school": "uestc",
+      "title": "关于2025-2026-2学期本科生退课及补选课的通知",
+      "url": "https://www.jwc.uestc.edu.cn/info/88739ad2e71ea13a536229dc7071f6f6",
+      "date": "2026-03-03",
+      "tag": "教管",
+      "alsoIn": []
+    },
+    {
+      "id": "ed1e7a3799841756",
+      "sourceId": "jwc-student",
+      "sourceName": "教务处·学生事务公告",
+      "school": "uestc",
+      "title": "关于本学期学生证、火车票优惠卡办理工作的通知",
+      "url": "https://www.jwc.uestc.edu.cn/info/1d560d774f3632eeaee186eafb800c03",
+      "date": "2026-02-27",
+      "tag": "教管",
+      "alsoIn": []
+    },
+    {
+      "id": "ec30688fe317b9e9",
+      "sourceId": "jwc-student",
+      "sourceName": "教务处·学生事务公告",
+      "school": "uestc",
+      "title": "关于2025-2026-2学期重新学习报名相关工作的通知",
+      "url": "https://www.jwc.uestc.edu.cn/info/3818952895a3cd0f3b5f92b7e5d316ad",
+      "date": "2026-02-26",
+      "tag": "学生事务公告",
+      "alsoIn": []
+    },
+    {
+      "id": "fa4fd9559a3c408e",
+      "sourceId": "jwc-student",
+      "sourceName": "教务处·学生事务公告",
+      "school": "uestc",
+      "title": "关于大面积课程开学缓补考安排的通知",
+      "url": "https://www.jwc.uestc.edu.cn/info/30d196608fe3a20ae08ada0b22a573a4",
+      "date": "2026-01-20",
+      "tag": "考试",
+      "alsoIn": []
+    },
+    {
+      "id": "8f9c670f22bec8f3",
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
+      "school": "uestc",
+      "title": "学者论坛：超导百年：材料、强关联机理与 AI 逆向设计",
+      "url": "https://news.uestc.edu.cn/info/1015/43921.htm",
+      "date": "2026-09-25",
+      "tag": "学术",
+      "alsoIn": []
+    },
+    {
+      "id": "24cd74c243c20b98",
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
+      "school": "uestc",
+      "title": "名师讲堂：Geometry, Mesh, and Higher-Order Finite Elements",
+      "url": "https://news.uestc.edu.cn/info/1015/43893.htm",
+      "date": "2026-09-24",
+      "tag": "学术",
+      "alsoIn": []
+    },
+    {
+      "id": "6a460cf85bc22591",
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
+      "school": "uestc",
+      "title": "成电讲坛 | The Human Edge — Why the World Needs You More Than Ever 人之优势 —— 为何世界比以往更需要你",
+      "url": "https://news.uestc.edu.cn/info/1015/43797.htm",
+      "date": "2026-09-22",
+      "tag": "学术",
+      "alsoIn": []
+    }
+  ]
+}
