@@ -59,7 +59,20 @@
 
 ## 30 秒上手
 
-需要 Node ≥ 22.18（利用 Node 原生的 TypeScript 支持，无需编译步骤）。
+需要 Node ≥ 22.18（利用 Node 原生的 TypeScript 支持，仓库里跑无需编译步骤）。
+
+**只想试试看**（不用 clone，直接跑 npm 包）：
+
+```bash
+npx notice-radar list       # 看内置的学校预设
+npx notice-radar schools    # 适配器市场：谁维护哪个学校
+npx notice-radar doctor     # 体检：每个源能不能抓、解析出几条
+npx notice-radar stats      # 归档频次统计（来源/标签/周/星期分布）
+```
+
+> 包发的是编译后的 JS：Node 不允许对 `node_modules` 里的文件做类型剥离，细节见 [docs/publish.md](docs/publish.md)。
+
+**要改配置、加自己学校**（推荐 clone）：
 
 ```bash
 git clone https://github.com/Yang-Yin734/notice-radar.git
@@ -91,6 +104,8 @@ Linux/macOS 用 `SERVERCHAN_KEY=... npm run run`，Windows PowerShell 用 `$env:
 | `radr fetch <url> [--window] [--out=文件]` | 用浏览器渲染任意页面并导出 DOM —— 给 WAF 站点写选择器时用它 |
 | `radr dashboard` | 把历史归档渲染成静态仪表盘（`docs/index.html`，GitHub Pages 用） |
 | `radr test-notify` | 只发一条测试消息，验证推送密钥配好没有 |
+| `radr stats [--json=文件]` | 通知频次统计：来源/标签/最近 12 周/星期分布/单日最多 |
+| `radr schools [--json=文件]` | 适配器市场：列出已知学校预设与维护者 |
 
 ## 已支持
 
@@ -315,7 +330,8 @@ config/
 - [x] **M1** 跨源去重、日报预览图、Release v0.1.0、[good first issue 清单](docs/good-first-issues.md)
 - [x] **M2** 通知归档仪表盘（GitHub Pages，可搜索/按来源筛选）+ 邮件通道 + 归档原始数据 + [Release v0.2.0](../../releases)
 - [x] **M2.5** 升级为**手机/电脑都能用的 PWA 应用**：底部标签栏、收藏与已读、深色模式、可添加到主屏幕、离线可用（[Release v0.3.0](../../releases)）
-- [ ] **M3** 发布到 npm（`npx notice-radar`）+ 通知频次统计 + 适配器市场（谁维护哪个学校）
+- [x] **M3** 发布到 npm（`npx notice-radar`）+ 通知频次统计（`radr stats`）+ 适配器市场（[registry.json](config/schools/registry.json)，CI 校验"不许有野生预设"）
+- [ ] **M4** 多校聚合（一个订阅里混多所学校）+ 主题订阅（按关键词而不是按学校）+ iOS Web Push
 
 ## 应用：手机、电脑都能用
 
@@ -360,6 +376,30 @@ config/
 - **网页/PWA 版**：Service Worker 检测到新版外壳 → 顶部出现「有新版本，点右侧立即生效」→ 点一下 `skipWaiting` + 刷新
 - **APK 版**：检测到线上版本更高 → 顶部提示「有新版本 → 下载新安装包」（APK 用同一把密钥签名，可直接覆盖安装）
 - 通知**内容**本身始终实时（每次打开都拉 `dashboard-data.json`），不必为此重装
+
+## 通知频次统计
+
+![统计页](docs/app-stats.png)
+
+应用「统计」页与命令行 `radr stats` 用同一份归档算：总览（累计 / 最近 7 天 / 最近 30 天 / 有新增天数 / 单日最多 / 覆盖来源）、
+最近 14 天与 12 周趋势、按来源、**按标签**、**星期分布**（学校习惯哪天发通知）。
+
+```bash
+npm run stats                                  # 终端报告（带条形图）
+node src/cli.ts stats --json=stats.json        # 同时导出 JSON
+```
+
+## 适配器市场：谁维护哪个学校
+
+`config/schools/registry.json` 登记每个学校预设的**维护者**、状态（`verified` / `community` / `broken`）
+与最后验证日期：
+
+```bash
+npx notice-radar schools
+```
+
+CI 会拦住三种让"市场"和现实脱节的情况：登记的预设文件不存在、`config/schools/` 下有**没登记的野生预设**、
+`sources` 数量与主预设对不上。字段说明、接手失效学校的流程见 [docs/adapters.md](docs/adapters.md)。
 
 ## iOS（iPhone / iPad）
 

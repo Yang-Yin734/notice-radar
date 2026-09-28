@@ -1,31 +1,58 @@
 {
   "name": "notice-radar",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "把高校官网通知变成可订阅、可关键词过滤、能推到手机的信息流 —— 配置驱动，任何学校都能接",
   "type": "module",
   "license": "MIT",
+  "author": "Yang-Yin734",
+  "homepage": "https://yang-yin734.github.io/notice-radar/",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yang-Yin734/notice-radar.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Yang-Yin734/notice-radar/issues"
+  },
   "engines": {
     "node": ">=22.18"
   },
   "bin": {
-    "radr": "./src/cli.ts"
+    "radr": "./dist/cli.js",
+    "notice-radar": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "config",
+    "CHANGELOG.md"
+  ],
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "run": "node src/cli.ts run",
     "doctor": "node src/cli.ts doctor",
     "list": "node src/cli.ts list",
+    "stats": "node src/cli.ts stats",
+    "schools": "node src/cli.ts schools",
     "test": "node tools/run-tests.mjs",
+    "build": "tsc -p tsconfig.build.json && node tools/postbuild.mjs",
     "dashboard": "node src/cli.ts dashboard",
     "make-keystore": "node tools/make-android-keystore.mjs",
-    "capture": "node tools/capture-fixtures.mjs"
+    "capture": "node tools/capture-fixtures.mjs",
+    "prepack": "npm run build"
   },
   "keywords": [
     "campus",
     "notice",
     "university",
-    "github-actions",
+    "rss",
     "rss-alternative",
-    "uestc"
+    "github-actions",
+    "crawler",
+    "pwa",
+    "uestc",
+    "通知",
+    "校园"
   ],
   "dependencies": {
     "cheerio": "^1.0.0",

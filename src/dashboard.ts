@@ -194,6 +194,11 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
   .switch.on { background:var(--ok,#2f9e44); border-color:transparent; }
   .switch.on i { left:26px; }
   .switch:disabled { opacity:.45; cursor:not-allowed; }
+  .stats-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+  .stats-grid > div { background:var(--bar); border-radius:10px; padding:10px 12px; }
+  .stats-grid b { display:block; font-size:20px; line-height:1.3; }
+  .stats-grid span { font-size:11.5px; color:var(--muted); }
+  @media (min-width:600px) { .stats-grid { grid-template-columns:repeat(3,1fr); } }
 
   .tabbar { position:fixed; left:0; right:0; bottom:0; z-index:30; display:flex;
     background:var(--card); border-top:1px solid var(--line); padding-bottom:env(safe-area-inset-bottom); }
@@ -249,12 +254,27 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     <div id="list"></div>
   </section>
 
-  <section class="view card" id="view-stats" hidden>
-    <h3>最近 14 天发现量</h3>
-    <div class="trend" id="trend"></div>
-    <div style="height:18px"></div>
-    <h3>按来源统计</h3>
-    <div id="sources"></div>
+  <section class="view" id="view-stats" hidden>
+    <div class="card">
+      <h3>总览</h3>
+      <div class="stats-grid" id="stats-overview"></div>
+    </div>
+    <div class="card">
+      <h3>最近 14 天发现量</h3>
+      <div class="trend" id="trend"></div>
+    </div>
+    <div class="card">
+      <h3>按来源</h3>
+      <div id="sources"></div>
+    </div>
+    <div class="card">
+      <h3>按标签</h3>
+      <div id="tags"></div>
+    </div>
+    <div class="card">
+      <h3>星期分布（学校习惯哪天发通知）</h3>
+      <div class="trend" id="weekdays"></div>
+    </div>
   </section>
 
   <section class="view" id="view-settings" hidden>
@@ -412,6 +432,39 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
   }
 
   function renderStats() {
+    var items = state.items;
+    var now = Date.now(), dayMs = 86400000;
+
+    // 总览：累计 / 最近 7 天 / 最近 30 天 / 有新增天数 / 单日最多
+    var recent = function (days) {
+      return items.filter(function (it) {
+        var t = Date.parse(it.firstSeenAt || '');
+        return t && t >= now - days * dayMs;
+      }).length;
+    };
+    var perDay = {};
+    items.forEach(function (it) {
+      var d = String(it.firstSeenAt || '').slice(0, 10);
+      if (d) perDay[d] = (perDay[d] || 0) + 1;
+    });
+    var dayKeys = Object.keys(perDay).sort();
+    var busiest = dayKeys.slice().sort(function (a, b) { return perDay[b] - perDay[a]; })[0];
+    var span = dayKeys.length
+      ? Math.max(1, Math.round((Date.parse(dayKeys[dayKeys.length - 1]) - Date.parse(dayKeys[0])) / dayMs) + 1)
+      : 0;
+    document.getElementById('stats-overview').innerHTML = [
+      [items.length, '累计归档'],
+      [recent(7), '最近 7 天'],
+      [recent(30), '最近 30 天'],
+      [dayKeys.length + ' / ' + span, '有新增天数 / 跨度'],
+      [busiest ? perDay[busiest] : 0, busiest ? '单日最多（' + busiest + '）' : '单日最多'],
+      [BOOT.bySource.length, '覆盖来源'],
+    ]
+      .map(function (r) {
+        return '<div><b>' + esc(String(r[0])) + '</b><span>' + esc(String(r[1])) + '</span></div>';
+      })
+      .join('');
+
     var trend = BOOT.__trend || [];
     var max = Math.max.apply(null, [1].concat(trend.map(function (t) { return t.count; })));
     document.getElementById('trend').innerHTML = trend.map(function (t) {
@@ -424,6 +477,32 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
       return '<div class="src"><span class="src-name">' + esc(s.sourceName) + '</span><span class="src-bar"><i style="width:' +
         Math.round(s.count / maxSrc * 100) + '%"></i></span><b>' + s.count + '</b></div>';
     }).join('') || '<div class="empty">还没有数据</div>';
+
+    // 按标签
+    var tagCounts = {};
+    items.forEach(function (it) { if (it.tag) tagCounts[it.tag] = (tagCounts[it.tag] || 0) + 1; });
+    var tagRows = Object.keys(tagCounts).map(function (t) { return [t, tagCounts[t]]; })
+      .sort(function (a, b) { return b[1] - a[1]; });
+    var maxTag = Math.max.apply(null, [1].concat(tagRows.map(function (r) { return r[1]; })));
+    document.getElementById('tags').innerHTML = tagRows.length
+      ? tagRows.map(function (r) {
+          return '<div class="src"><span class="src-name">' + esc(r[0]) + '</span><span class="src-bar"><i style="width:' +
+            Math.round(r[1] / maxTag * 100) + '%"></i></span><b>' + r[1] + '</b></div>';
+        }).join('')
+      : '<div class="empty">还没有带标签的通知</div>';
+
+    // 星期分布（用"第一次看到"的日期，看学校发布习惯）
+    var weekdays = [0, 0, 0, 0, 0, 0, 0];
+    items.forEach(function (it) {
+      var t = Date.parse(it.firstSeenAt || '');
+      if (t) weekdays[new Date(t).getUTCDay()]++;
+    });
+    var maxWeekday = Math.max.apply(null, [1].concat(weekdays));
+    var names = ['日', '一', '二', '三', '四', '五', '六'];
+    document.getElementById('weekdays').innerHTML = weekdays.map(function (count, i) {
+      return '<div class="bar" title="周' + names[i] + '：' + count + ' 条"><span style="height:' +
+        Math.round(count / maxWeekday * 100) + '%"></span><em>' + names[i] + '</em></div>';
+    }).join('');
   }
 
   function renderChrome() {

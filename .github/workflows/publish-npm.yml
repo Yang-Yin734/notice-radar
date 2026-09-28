@@ -1,0 +1,73 @@
+name: publish-npm
+
+# 发布到 npm（`npx notice-radar`）。
+# 触发方式：
+#   - 手动：Actions → publish-npm → Run workflow（可先选 dry-run 只做打包自检）
+#   - 打 tag：push v* 标签时自动发（前提是仓库里配了 NPM_TOKEN）
+# 没配 NPM_TOKEN 时不会失败，只会提示并做一次 npm pack 自检。
+on:
+  workflow_dispatch:
+    inputs:
+      dry-run:
+        description: '只做打包自检，不真正发布'
+        type: boolean
+        default: true
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+  id-token: write # npm provenance（供应链签名）
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          registry-url: 'https://registry.npmjs.org'
+          cache: npm
+
+      - run: npm ci
+
+      - name: 测试
+        run: npm test
+
+      - name: 打包自检（永远执行，能提前发现 files 配置漏文件）
+        run: |
+          npm pack --dry-run 2>&1 | tail -25
+          echo "--- 包内是否带上了学校预设与登记表 ---"
+          npm pack --json | node -e "
+            let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{
+              const info=JSON.parse(s)[0];
+              const files=info.files.map(f=>f.path);
+              const need=['src/cli.ts','config/schools/uestc.yaml','config/schools/registry.json','package.json'];
+              let bad=0;
+              for(const n of need){const ok=files.includes(n);if(!ok)bad++;console.log((ok?'  ✓ ':'  ✗ ')+n);}
+              console.log('  共 '+files.length+' 个文件，'+Math.round(info.size/1024)+' KB');
+              process.exit(bad?1:0);
+            });
+          "
+
+      - name: 发布到 npm
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          DRY_RUN: ${{ github.event_name == 'workflow_dispatch' && inputs.dry-run || 'false' }}
+        run: |
+          if [ -z "$NODE_AUTH_TOKEN" ]; then
+            echo "::warning::仓库里没配 NPM_TOKEN，跳过真实发布。配置方法见 docs/publish.md"
+            exit 0
+          fi
+          if [ "$DRY_RUN" = "true" ]; then
+            echo "▸ dry-run：只验证发布流程"
+            npm publish --dry-run --provenance
+            exit 0
+          fi
+          echo "▸ 正式发布 ${GITHUB_REF_NAME}"
+          npm publish --provenance --access public
+          echo "### 已发布到 npm" >> "$GITHUB_STEP_SUMMARY"
+          echo "安装：\`npx notice-radar --help\`" >> "$GITHUB_STEP_SUMMARY"

@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import fs from 'node:fs';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { loadConfig } from './core/config.ts';
 import type { RadarConfig, SourceConfig } from './core/config.ts';
 import { fetchHtml } from './core/fetch.ts';
@@ -8,7 +9,7 @@ import { renderHtml } from './core/browser.ts';
 import { getAdapter, listAdapters } from './adapters/index.ts';
 import { evaluate } from './core/filter.ts';
 import { loadState, markSeen, saveState, splitNew, dedupeAcrossSources } from './core/dedupe.ts';
-import { appendHistory, countBySource, loadHistory, saveHistory } from './core/history.ts';
+import { appendHistory, countBySource, loadHistory, renderStats, saveHistory, summarize } from './core/history.ts';
 import { renderDashboard } from './dashboard.ts';
 import { renderDoctor, renderJson, renderMarkdown } from './core/report.ts';
 import { notifyAll } from './notify/index.ts';
@@ -34,8 +35,23 @@ const VERSION = (() => {
   }
 })();
 
+/** 包根目录（本文件在 <root>/src/cli.ts）。
+ *  为什么要它：装成 npm 包后，用户是在**自己的目录**里执行 `npx notice-radar`，
+ *  此时配置/登记表这些随包发布的文件必须相对包根找，而不是相对当前目录。 */
+const PKG_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+
 const DEFAULT_CONFIG = path.join('config', 'schools', 'uestc.yaml');
 const DEFAULT_STATE = path.join('data', 'state.json');
+
+/** 解析配置文件路径：当前目录找不到就退回包内置的学校预设（npm 全局安装场景）。 */
+function resolveConfigPath(given: string): string {
+  if (fs.existsSync(given)) return given;
+  const inPackage = path.join(PKG_ROOT, given);
+  if (fs.existsSync(inPackage)) return inPackage;
+  return given; // 让 loadConfig 报出原始路径，错误信息更好懂
+}
+
+const loadCfg = (flags: Flags) => loadConfig(resolveConfigPath(flags.config));
 
 interface Flags {
   config: string;
@@ -177,7 +193,7 @@ function writeNotifyLog(statePath: string, title: string, count: number, outcome
 
 /** 只测推送通道，不抓任何站点 —— 用来确认 SERVERCHAN_KEY 之类配好了没有。 */
 async function cmdTestNotify(flags: Flags): Promise<number> {
-  const cfg = loadConfig(flags.config);
+  const cfg = loadCfg(flags);
   const channels = cfg.notify.filter((n) => n.enabled).map((n) => n.type).join(', ') || '(未配置任何通道)';
   console.log(`▸ 推送通道测试：${cfg.name}（${channels}）`);
 
@@ -213,8 +229,78 @@ async function cmdTestNotify(flags: Flags): Promise<number> {
   return anyRemoteOk ? 0 : 1;
 }
 
+/** 通知频次统计：读归档，输出总览 + 来源/标签/周/星期分布。 */
+function cmdStats(flags: Flags): number {
+  const historyFile = path.join(path.dirname(flags.state), 'history.json');
+  const history = loadHistory(historyFile);
+  const stats = summarize(history);
+
+  if (flags.json) {
+    fs.mkdirSync(path.dirname(flags.json), { recursive: true });
+    fs.writeFileSync(flags.json, `${JSON.stringify(stats, null, 2)}\n`, 'utf8');
+    console.log(`▸ 统计 JSON 已写入 ${flags.json}`);
+  }
+
+  let name = '通知雷达';
+  try {
+    name = loadCfg(flags).name;
+  } catch {
+    /* 配置坏了也不该影响看统计 */
+  }
+  console.log(renderStats(stats, name));
+  if (stats.total === 0) console.log('\n  （归档还是空的：跑一次 `radr run` 就会开始积累）');
+  return 0;
+}
+
+/** 适配器市场：列出已知学校预设与维护者（数据来自 config/schools/registry.json）。 */
+function cmdSchools(flags: Flags): number {
+  const registryFile = [path.join('config', 'schools', 'registry.json'), path.join(PKG_ROOT, 'config', 'schools', 'registry.json')]
+    .find((p) => fs.existsSync(p)) ?? path.join('config', 'schools', 'registry.json');
+  if (!fs.existsSync(registryFile)) {
+    console.error(`找不到 ${registryFile}`);
+    return 1;
+  }
+  const registry = JSON.parse(fs.readFileSync(registryFile, 'utf8')) as {
+    version: number;
+    updatedAt?: string;
+    schools: {
+      id: string;
+      name: string;
+      presets: string[];
+      sources?: number;
+      maintainers: string[];
+      status: string;
+      lastVerified: string;
+      notes?: string;
+    }[];
+  };
+
+  if (flags.json) {
+    fs.writeFileSync(flags.json, `${JSON.stringify(registry, null, 2)}\n`, 'utf8');
+    console.log(`▸ 已写入 ${flags.json}`);
+  }
+
+  const statusMark: Record<string, string> = { verified: '✓ 可用', community: '~ 社区维护', broken: '✗ 已知失效' };
+  console.log(`▸ 已知学校预设：${registry.schools.length} 个（更新于 ${registry.updatedAt ?? '未知'}）\n`);
+  let missing = 0;
+  for (const school of registry.schools) {
+    console.log(`  ${school.id.padEnd(12)} ${school.name}   ${statusMark[school.status] ?? school.status}`);
+    console.log(`      ${'维护者'.padEnd(6)}${school.maintainers.join(', ')}   最后验证：${school.lastVerified}`);
+    for (const preset of school.presets) {
+      // 登记表里的路径相对包根（用户可能在任何目录执行 npx notice-radar schools）
+      const exists = fs.existsSync(preset) || fs.existsSync(path.join(PKG_ROOT, preset));
+      if (!exists) missing++;
+      console.log(`      ${exists ? '预设' : '缺失'}  ${preset}${exists ? '' : '  ← 文件不存在'}`);
+    }
+    if (school.notes) console.log(`      备注  ${school.notes}`);
+    console.log('');
+  }
+  console.log('  想加自己的学校：docs/add-your-school.md；登记进 config/schools/registry.json 就会出现在这里。');
+  return missing === 0 ? 0 : 1;
+}
+
 async function cmdRun(flags: Flags): Promise<number> {
-  const cfg = loadConfig(flags.config);
+  const cfg = loadCfg(flags);
   const state = loadState(flags.state);
 
   console.log(`▸ ${cfg.name}（${cfg.school}）：${cfg.sources.filter((s) => s.enabled).length} 个源`);
@@ -289,7 +375,8 @@ function cmdDashboard(flags: Flags): number {
   const generatedAt = new Date().toISOString();
 
   fs.mkdirSync(path.dirname(outFile), { recursive: true });
-  const pkgVersion = (JSON.parse(fs.readFileSync('package.json', 'utf8')) as { version: string }).version;
+  const pkgJsonPath = [path.join('package.json'), path.join(PKG_ROOT, 'package.json')].find((p) => fs.existsSync(p)) ?? 'package.json';
+  const pkgVersion = (JSON.parse(fs.readFileSync(pkgJsonPath, 'utf8')) as { version: string }).version;
   fs.writeFileSync(outFile, renderDashboard(history, { generatedAt, version: pkgVersion }), 'utf8');
 
   // 顺手把原始数据也放进 Pages 目录，方便别人二次利用（自己做图表、接别的工具）
@@ -327,7 +414,7 @@ function cmdDashboard(flags: Flags): number {
 }
 
 async function cmdDoctor(flags: Flags): Promise<number> {
-  const cfg = loadConfig(flags.config);
+  const cfg = loadCfg(flags);
   console.log(`▸ 体检 ${cfg.name}：${cfg.sources.filter((s) => s.enabled).length} 个源\n`);
   const results = await collect(cfg, flags);
   console.log(renderDoctor(results));
@@ -364,7 +451,7 @@ async function cmdFetch(flags: Flags, url: string): Promise<number> {
 }
 
 function cmdList(flags: Flags): number {
-  const cfg = loadConfig(flags.config);
+  const cfg = loadCfg(flags);
   console.log(`${cfg.name}（${cfg.school}）· 适配器：${listAdapters().join(', ')}\n`);
   for (const s of cfg.sources) {
     const state = s.enabled ? ' ' : '×';
@@ -383,6 +470,8 @@ function usage(): void {
   radr list     [--config=路径]                        列出配置里的源
   radr test-notify [--config=路径]                     只发一条测试消息，验证推送密钥配好没有
   radr dashboard [--out=docs/index.html]               把历史归档渲染成静态仪表盘（GitHub Pages 用）
+  radr stats     [--state=data/state.json] [--json=文件]  通知频次统计（来源/标签/周/星期分布）
+  radr schools   [--json=文件]                         列出已知学校预设与维护者（适配器市场）
   radr fetch    <url> [--out=文件] [--expect=关键字]    用真浏览器渲染页面并导出 DOM（摸 WAF 站点的结构用）
   radr --version                                       打印版本
 
@@ -405,6 +494,8 @@ try {
   else if (command === 'list') code = cmdList(flags);
   else if (command === 'test-notify') code = await cmdTestNotify(flags);
   else if (command === 'dashboard') code = cmdDashboard(flags);
+  else if (command === 'stats') code = cmdStats(flags);
+  else if (command === 'schools') code = cmdSchools(flags);
   else if (command === 'fetch') code = await cmdFetch(flags, rest.find((a) => /^https?:\/\//.test(a)) ?? '');
   else if (command === '--version' || command === '-v' || command === 'version') console.log(VERSION);
   else if (command === 'help' || command === '--help' || command === '-h') usage();

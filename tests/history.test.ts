@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { appendHistory, countByDay, countBySource, emptyHistory, loadHistory, saveHistory } from '../src/core/history.ts';
+import { appendHistory, countByDay, countBySource, emptyHistory, loadHistory, renderStats, saveHistory, summarize } from '../src/core/history.ts';
 import type { Notice } from '../src/types.ts';
 
 const notice = (over: Partial<Notice>): Notice => ({
@@ -89,4 +89,52 @@ test('history：读写文件能往返，文件不存在时返回空历史', () =
   assert.equal(loadHistory(file).items[0].id, 'x');
 
   fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('统计：汇总来源 / 标签 / 星期 / 最近天数', () => {
+  const history = emptyHistory();
+  const now = new Date('2026-09-28T12:00:00.000Z');
+  appendHistory(
+    history,
+    [
+      notice({ id: 'a', sourceId: 'jwc', sourceName: '教务处', tag: '教管' }),
+      notice({ id: 'b', sourceId: 'jwc', sourceName: '教务处', tag: '教管' }),
+      notice({ id: 'c', sourceId: 'news', sourceName: '新闻网', tag: '学术' }),
+    ],
+    { at: '2026-09-28T00:00:00.000Z' },
+  );
+
+  const stats = summarize(history, now);
+  assert.equal(stats.total, 3);
+  assert.equal(stats.recent7, 3, '都在最近 7 天内');
+  assert.equal(stats.recent30, 3);
+  assert.equal(stats.bySource[0].sourceId, 'jwc');
+  assert.equal(stats.bySource[0].count, 2);
+  assert.deepEqual(stats.byTag[0], { tag: '教管', count: 2 }, '标签按数量倒序');
+  assert.equal(stats.activeDays, 1);
+  assert.equal(stats.spanDays, 1);
+  assert.equal(stats.busiestDay?.count, 3);
+  assert.equal(stats.byWeek.length, 12, '最近 12 周');
+  assert.equal(stats.byMonth.length, 6, '最近 6 个月');
+  assert.equal(
+    stats.byWeekday.reduce((n, d) => n + d.count, 0),
+    3,
+    '星期分布总数应等于归档条数',
+  );
+  assert.equal(stats.byWeekday.filter((d) => d.count === 3).length, 1, '三条都落在同一个星期几');
+});
+
+test('统计：空归档不炸，也能在终端渲染出来', () => {
+  const empty = summarize(emptyHistory());
+  assert.equal(empty.total, 0);
+  assert.equal(empty.busiestDay, null);
+  assert.equal(empty.spanDays, 0);
+
+  const history = emptyHistory();
+  appendHistory(history, [notice({ id: 'a' })]);
+  const text = renderStats(summarize(history), '测试学校');
+  assert.match(text, /测试学校 归档统计/);
+  assert.match(text, /累计归档 {6}1 条/);
+  assert.match(text, /星期分布/);
+  assert.match(text, /最近 12 周/);
 });

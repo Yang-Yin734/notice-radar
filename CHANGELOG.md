@@ -2,6 +2,37 @@
 
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## v0.6.0 — 2026-09-28
+
+M3：**能发布到 npm 了**，并且把"谁维护哪个学校"变成有 CI 兜底的事实，统计也从"看个趋势"升级成可分析的频次报告。
+
+### 新增
+
+- **发布到 npm**（[docs/publish.md](docs/publish.md)）
+  - `npm run build`：`tsc -p tsconfig.build.json` → `dist/`，`tools/postbuild.mjs` 补 shebang 并自检
+    "产物里不能残留 `.ts` 的 import"
+  - **为什么要编译**：Node 明确拒绝对 `node_modules` 里的文件做类型剥离
+    （`ERR_UNSUPPORTED_NODE_MODULES_TYPE_STRIPPING`），直接发 `.ts` 会让 `npx` 直接失败——本地安装测试发现的
+  - `bin` 提供 `notice-radar` 与 `radr` 两个名字；`files` 只带 `dist` + `config`
+  - `.github/workflows/publish-npm.yml`：手动（可 dry-run）或打 tag 自动发布，带 `--provenance` 供应链签名；
+    没配 `NPM_TOKEN` 时不失败，只做打包自检
+  - CLI 里所有"随包发布的文件"改为相对**包根**解析（`PKG_ROOT`），这样在任意目录 `npx notice-radar` 都能找到
+    学校预设与登记表
+- **通知频次统计**
+  - `src/core/history.ts` 新增 `summarize()` / `renderStats()`：来源、标签、最近 12 周、最近 6 个月、
+    **星期分布**（看学校习惯哪天发通知）、最近 7/30 天、有新增天数、单日最多
+  - `radr stats` 终端报告（带条形图）+ `--json` 输出
+  - 应用的「统计」页同步升级：总览卡片 + 14 天趋势 + 按来源 + **按标签** + **星期分布**
+- **适配器市场**
+  - `config/schools/registry.json`：每个学校预设登记维护者、状态（verified/community/broken）、最后验证日期
+  - `radr schools` 命令行浏览
+  - `tests/registry.test.ts` 三重校验：登记的预设必须存在、**不许有"野生"预设**、`sources` 数量必须与主预设一致
+  - [docs/adapters.md](docs/adapters.md)：字段说明、接手失效学校的流程
+
+### 变更
+
+- 版本号 0.5.0 → 0.6.0；测试 37 → 42（新增统计 2、适配器市场 3）
+
 ## v0.5.0 — 2026-09-28
 
 应用变成**能自己管推送、能自己提示升级**的样子，并补上 iOS 的安装路径。
