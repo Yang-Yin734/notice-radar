@@ -1,0 +1,39 @@
+name: 抓取失败 / 解析出错
+description: 某个源抓不到了，或者抓到了但条目为空
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: input
+    id: source
+    attributes:
+      label: 哪个源
+      description: 配置里的 source id 或名字
+      placeholder: jwc-student（教务处·学生事务公告）
+    validations:
+      required: true
+  - type: textarea
+    id: doctor
+    attributes:
+      label: radr doctor 输出
+      description: 直接贴完整表格，这一条信息量最大
+      render: text
+    validations:
+      required: true
+  - type: dropdown
+    id: symptom
+    attributes:
+      label: 现象
+      options:
+        - 抓到了但条目为 0（选择器可能过时）
+        - HTTP 4xx / 5xx
+        - 超时
+        - 状态是 202 或体积只有几 KB（疑似 WAF 挑战页）
+        - 日报内容不对（关键词误杀/漏杀）
+    validations:
+      required: true
+  - type: input
+    id: when
+    attributes:
+      label: 最后一次正常是什么时候
+      description: 有助于判断是站点改版还是临时故障
+      placeholder: 昨天还好，今天开始 0 条

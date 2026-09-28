@@ -6,10 +6,30 @@ import type { RadarConfig, SourceConfig } from './core/config.ts';
 import { fetchHtml } from './core/fetch.ts';
 import { getAdapter, listAdapters } from './adapters/index.ts';
 import { evaluate } from './core/filter.ts';
-import { loadState, markSeen, saveState, splitNew } from './core/dedupe.ts';
+import { loadState, markSeen, saveState, splitNew, dedupeAcrossSources } from './core/dedupe.ts';
 import { renderDoctor, renderJson, renderMarkdown } from './core/report.ts';
 import { notifyAll } from './notify/index.ts';
 import type { Notice, SourceResult } from './types.ts';
+
+// 先加载项目根目录的 .env（Node 原生能力，不用 dotenv 依赖）。
+// 密钥放 .env 只影响本机，.env 已在 .gitignore 里，不会被提交。
+for (const file of ['.env', '.env.local']) {
+  if (!fs.existsSync(file)) continue;
+  try {
+    process.loadEnvFile?.(file);
+  } catch {
+    // .env 格式不合法时不该让整个程序崩掉
+  }
+}
+
+const VERSION = (() => {
+  try {
+    const pkg = JSON.parse(fs.readFileSync(new URL('../package.json', import.meta.url), 'utf8')) as { version?: string };
+    return pkg.version ?? '0.0.0';
+  } catch {
+    return '0.0.0';
+  }
+})();
 
 const DEFAULT_CONFIG = path.join('config', 'schools', 'uestc.yaml');
 const DEFAULT_STATE = path.join('data', 'state.json');
@@ -105,7 +125,10 @@ async function cmdRun(flags: Flags): Promise<number> {
 
   console.log(`▸ ${cfg.name}（${cfg.school}）：${cfg.sources.filter((s) => s.enabled).length} 个源`);
   const results = await collect(cfg, flags.delayMs);
-  const filtered = filterItems(results, cfg);
+  const matched = filterItems(results, cfg);
+  // 先跨源去重（教务处同一条通知常挂两个栏目），再算新增；但状态里把命中的都记上，
+  // 免得下次换个栏目又把同一条当新通知报一遍。
+  const filtered = dedupeAcrossSources(matched);
   const fresh = splitNew(filtered, state);
 
   for (const r of results) {
@@ -134,7 +157,7 @@ async function cmdRun(flags: Flags): Promise<number> {
   if (flags.dry) {
     console.log('\n▸ --dry：未写入状态文件。');
   } else {
-    markSeen(filtered, state);
+    markSeen(matched, state);
     saveState(flags.state, state);
     console.log(`\n▸ 状态已更新：${flags.state}（下次只报新增）`);
   }
@@ -165,16 +188,17 @@ function cmdList(flags: Flags): number {
 }
 
 function usage(): void {
-  console.log(`notice-radar —— 把高校官网通知变成能推到手机的信息流
+  console.log(`notice-radar v${VERSION} —— 把高校官网通知变成能推到手机的信息流
 
 用法：
   radr run      [--config=路径] [--dry] [--no-notify] [--json=路径] [--delay=毫秒] [--max=条数]
   radr doctor   [--config=路径]          体检：每个源能不能抓、解析出几条
   radr list     [--config=路径]          列出配置里的源
+  radr --version                         打印版本
 
 默认配置：${DEFAULT_CONFIG}
 默认状态：${DEFAULT_STATE}（只记"见过哪些通知"，不含正文与个人信息）
-推送密钥：从环境变量读（默认 SERVERCHAN_KEY），永不落盘。`);
+推送密钥：从环境变量或项目根目录的 .env 读（默认 SERVERCHAN_KEY），永不落盘。`);
 }
 
 const [, , command = 'run', ...rest] = process.argv;
@@ -185,6 +209,7 @@ try {
   if (command === 'run') code = await cmdRun(flags);
   else if (command === 'doctor') code = await cmdDoctor(flags);
   else if (command === 'list') code = cmdList(flags);
+  else if (command === '--version' || command === '-v' || command === 'version') console.log(VERSION);
   else if (command === 'help' || command === '--help' || command === '-h') usage();
   else {
     console.error(`未知命令：${command}\n`);

@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { makeId, normalizeTitle, parseDateLoose, resolveUrl } from '../src/core/normalize.ts';
 import { evaluate } from '../src/core/filter.ts';
-import { emptyState, markSeen, splitNew } from '../src/core/dedupe.ts';
+import { emptyState, markSeen, splitNew, dedupeAcrossSources } from '../src/core/dedupe.ts';
 import type { Notice } from '../src/types.ts';
 
 test('parseDateLoose：吃得下国内高校常见的各种日期写法', () => {
@@ -70,4 +70,38 @@ test('dedupe：窗口裁剪后状态不会无限增长', () => {
   markSeen(many, state, 5);
   assert.equal(state.seen.s1.length, 5, '只保留最近 5 条');
   assert.equal(state.seen.s1.at(-1), 'id9');
+});
+
+const notice = (over: Partial<Notice>): Notice => ({
+  id: 'x', sourceId: 's', sourceName: '源', school: 'uestc',
+  title: '标题', url: 'https://x.edu.cn/1', date: '2026-09-10', tag: null,
+  ...over,
+});
+
+test('跨源去重：同一条通知挂在两个栏目时只报一次，并记下另一个来源', () => {
+  const merged = dedupeAcrossSources([
+    notice({ id: 'a', sourceId: 'jwc-important', sourceName: '教务处·重要公告', title: '电子科技大学2026年秋季学期微专业招生简章' }),
+    notice({ id: 'b', sourceId: 'jwc-student', sourceName: '教务处·学生事务公告', title: '电子科技大学2026年秋季学期微专业招生简章' }),
+  ]);
+
+  assert.equal(merged.length, 1, '同标题同日期只保留一条');
+  assert.deepEqual(merged[0].alsoIn, ['教务处·学生事务公告']);
+  assert.equal(merged[0].sourceId, 'jwc-important', '保留首次出现的那条');
+});
+
+test('跨源去重：同标题不同日期（真的重发）仍各报一次', () => {
+  const merged = dedupeAcrossSources([
+    notice({ id: 'a', title: '关于选课的通知', date: '2026-09-01' }),
+    notice({ id: 'b', title: '关于选课的通知', date: '2027-03-01' }),
+  ]);
+  assert.equal(merged.length, 2);
+});
+
+test('跨源去重：只有空白差异的标题视为同一条', () => {
+  const merged = dedupeAcrossSources([
+    notice({ id: 'a', title: '关于  退课 的通知' }),
+    notice({ id: 'b', title: '关于退课 的通知', sourceId: 'other', sourceName: '另一个源' }),
+  ]);
+  assert.equal(merged.length, 1);
+  assert.deepEqual(merged[0].alsoIn, ['另一个源']);
 });

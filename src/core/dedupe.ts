@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import type { Notice } from '../types.ts';
+import { normalizeTitle } from './normalize.ts';
 
 /**
  * 状态：只记"见过哪些通知 ID"。
@@ -43,4 +44,34 @@ export function markSeen(items: Notice[], state: RadarState, window = 800): void
     state.seen[n.sourceId] = list.slice(-window);
   }
   state.lastRun = new Date().toISOString();
+}
+
+/**
+ * 跨源去重：同一条通知常常同时挂在教务处「重要公告」和「学生事务公告」下。
+ * 保留首次出现的那条，把其余来源记进 alsoIn —— 日报里只出现一次，但你知道它在哪还挂着。
+ * 判据是「归一标题 + 日期」，所以同一标题在不同日期出现（真的重发）仍会各报一次。
+ */
+export function dedupeAcrossSources(items: Notice[]): Notice[] {
+  const out: Notice[] = [];
+  const index = new Map<string, number>();
+
+  for (const item of items) {
+    const key = `${normalizeTitle(item.title)}|${item.date ?? ''}`;
+    const hit = index.get(key);
+
+    if (hit === undefined) {
+      index.set(key, out.length);
+      out.push({ ...item, alsoIn: [] });
+      continue;
+    }
+
+    const keeper = out[hit];
+    const others = keeper.alsoIn ?? [];
+    if (keeper.sourceName !== item.sourceName && !others.includes(item.sourceName)) {
+      others.push(item.sourceName);
+    }
+    keeper.alsoIn = others;
+  }
+
+  return out;
 }

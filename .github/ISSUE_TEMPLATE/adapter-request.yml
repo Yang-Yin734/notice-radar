@@ -1,0 +1,44 @@
+name: 求适配某个学校/栏目
+description: 想让 notice-radar 支持你的学校或某个通知栏目
+title: "[adapter] "
+labels: ["adapter request"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        提之前请先读 [docs/add-your-school.md](../blob/main/docs/add-your-school.md)。
+        大多数站点只要一段 YAML，你自己就能加（5 分钟），欢迎直接提 PR。
+  - type: input
+    id: school
+    attributes:
+      label: 学校
+      placeholder: 某某大学
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: 通知栏目地址
+      description: 必须是公开、免登录、直接返回 HTML 的列表页
+      placeholder: https://jwc.example.edu.cn/tzgg.htm
+    validations:
+      required: true
+  - type: textarea
+    id: probe
+    attributes:
+      label: 自检输出
+      description: 在 `tools/capture-fixtures.mjs` 的 targets 里加上这个源后运行，把输出贴在这里（状态码 + 体积就能判断能不能接）
+      render: text
+      placeholder: |
+        [200] jwc-notice.html  29814 bytes  210ms
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: 确认
+      options:
+        - label: 这个页面公开可见，不需要登录
+          required: true
+        - label: 直接请求返回的是 HTML，不是 202 挑战页 / 验证码页
+          required: true
+        - label: 我读过 CONTRIBUTING.md，知道本项目不绕过任何反爬机制
+          required: true

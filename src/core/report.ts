@@ -44,7 +44,8 @@ export function renderMarkdown(results: SourceResult[], fresh: Notice[], options
     for (const n of items.slice(0, maxPerSource)) {
       const date = n.date ?? '日期未知';
       const tag = n.tag ? `\`${n.tag}\` ` : '';
-      lines.push(`- **${date}** ${tag}[${n.title}](${n.url})`);
+      const also = n.alsoIn && n.alsoIn.length > 0 ? `　<sub>另见：${n.alsoIn.join('、')}</sub>` : '';
+      lines.push(`- **${date}** ${tag}[${n.title}](${n.url})${also}`);
     }
     if (items.length > maxPerSource) lines.push(`- …另有 ${items.length - maxPerSource} 条，见状态文件`);
     lines.push('');

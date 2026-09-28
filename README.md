@@ -6,13 +6,12 @@
 
 配置驱动 · 零服务器 · 不登录 · 任何学校 5 分钟接入
 
-[![ci](https://github.com/OWNER/notice-radar/actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER/notice-radar/actions/workflows/ci.yml)
+[![ci](https://github.com/Yang-Yin734/notice-radar/actions/workflows/ci.yml/badge.svg)](https://github.com/Yang-Yin734/notice-radar/actions/workflows/ci.yml)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![node](https://img.shields.io/badge/node-%3E%3D22.18-339933.svg)](package.json)
+[![version](https://img.shields.io/badge/version-v0.1.0-4d6bfe.svg)](CHANGELOG.md)
 
 </div>
-
-> 把上面的 `OWNER` 换成你的 GitHub 用户名，badge 才会亮。
 
 ---
 
@@ -34,12 +33,18 @@
 | 学院官网（数学科学学院等） | **202 / 2.4 KB 挑战页** | ❌ 本项目不绕过 |
 | 公共 RSSHub | 10.5 s 超时 | ❌ 境内基本不可用 |
 
+## 日报长什么样
+
+`radr run` 的输出就是一条可以直接推到微信的 Markdown 消息（下面这张图由真实抓取结果渲染，生成脚本见 `tools/render-preview.mjs`）：
+
+![日报预览](docs/preview.png)
+
 ## 30 秒上手
 
 需要 Node ≥ 22.18（利用 Node 原生的 TypeScript 支持，无需编译步骤）。
 
 ```bash
-git clone https://github.com/OWNER/notice-radar.git
+git clone https://github.com/Yang-Yin734/notice-radar.git
 cd notice-radar
 npm install
 
@@ -50,7 +55,7 @@ npm run run -- --dry    # 干跑：打印日报，不写状态、不推送
 SERVERCHAN_KEY=SCTxxxxxxxx npm run run
 ```
 
-Linux/macOS 用 `SERVERCHAN_KEY=... npm run run`，Windows PowerShell 用 `$env:SERVERCHAN_KEY="..."; npm run run`，或者复制 `.env.example` 为 `.env` 后自己加载。
+Linux/macOS 用 `SERVERCHAN_KEY=... npm run run`，Windows PowerShell 用 `$env:SERVERCHAN_KEY="..."; npm run run`；也可以复制 `.env.example` 为 `.env` 填好 —— CLI 会自动加载它（用 Node 原生能力，不依赖 dotenv）。
 
 ## 命令
 
@@ -59,6 +64,7 @@ Linux/macOS 用 `SERVERCHAN_KEY=... npm run run`，Windows PowerShell 用 `$env:
 | `radr doctor` | 体检：逐源显示状态码、体积、耗时、解析条目数，一眼看出是"站点变了"还是"选择器过时了" |
 | `radr run` | 抓取 → 解析 → 关键词过滤 → 去重 → 出日报 → 推送 → 更新状态 |
 | `radr list` | 列出配置里的源与关键词数量 |
+| `radr --version` | 打印版本 |
 | `radr run --dry` | 不写状态、不推送（调试用） |
 | `radr run --no-notify` | 只出日报不推送 |
 | `radr run --json=data/latest.json` | 同时导出结构化 JSON，方便二次开发 |
@@ -157,7 +163,6 @@ config/
 
 ## 已知限制
 
-- **跨源重复**：同一条通知可能同时挂在教务处两个栏目下，会各报一次（ID 含源 ID）。跨源去重排在 M1。
 - **只看第一页**：通知雷达不追求历史回溯，第一页足够。
 - **WAF 站点不接**：见「合规与边界」。
 - **Actions 时效**：cron 最小 5 分钟且会延迟，重要窗口期请自己盯一眼。
@@ -165,7 +170,7 @@ config/
 ## 路线图
 
 - [x] **M0** 骨架 + 教务处/新闻网/研究生院适配器 + fixture 测试 + Actions 定时 + Server酱推送
-- [ ] **M1** 跨源去重、日报截图、Release v0.1.0、`good first issue` 列表
+- [x] **M1** 跨源去重、日报预览图、Release v0.1.0、[good first issue 清单](docs/good-first-issues.md)
 - [ ] **M2** GitHub Pages 仪表盘（历史日报可视化）+ 邮件通道 + 更多学校预设
 - [ ] **M3** 发布到 npm（`npx notice-radar`）+ 通知频次统计 + 适配器市场（谁维护哪个学校）
 

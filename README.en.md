@@ -4,10 +4,8 @@
 
 Config-driven · serverless (GitHub Actions) · no login · add your school in 5 minutes
 
-[![ci](https://github.com/OWNER/notice-radar/actions/workflows/ci.yml/badge.svg)](https://github.com/OWNER/notice-radar/actions/workflows/ci.yml)
+[![ci](https://github.com/Yang-Yin734/notice-radar/actions/workflows/ci.yml/badge.svg)](https://github.com/Yang-Yin734/notice-radar/actions/workflows/ci.yml)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-
-> Replace `OWNER` above with your GitHub username.
 
 ## Why
 

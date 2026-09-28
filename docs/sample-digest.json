@@ -1,0 +1,777 @@
+{
+  "generatedAt": "2026-09-28T03:14:27.917Z",
+  "results": [
+    {
+      "sourceId": "jwc-important",
+      "sourceName": "教务处·重要公告",
+      "url": "https://www.jwc.uestc.edu.cn/hard/?page=1",
+      "adapter": "uestc/jwc",
+      "ok": true,
+      "error": null,
+      "status": 200,
+      "bytes": 28834,
+      "tookMs": 247,
+      "items": [
+        {
+          "id": "becb8285f117523f",
+          "sourceId": "jwc-important",
+          "sourceName": "教务处·重要公告",
+          "school": "uestc",
+          "title": "电子科技大学关于开展四川省高等学校首批高阶课程验收认定工作的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/567e154529581c6ecb4d303cf74f5e16",
+          "date": "2026-09-22",
+          "tag": "教研"
+        },
+        {
+          "id": "95ecd3cc4309b913",
+          "sourceId": "jwc-important",
+          "sourceName": "教务处·重要公告",
+          "school": "uestc",
+          "title": "关于开展电子科技大学首批“专业教育核心课程体系建设计划”结项验收工作的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/0589c37f3fc86a5ebf8569c140141c8f",
+          "date": "2026-09-21",
+          "tag": "教研"
+        },
+        {
+          "id": "5e5fd9a8c2f88531",
+          "sourceId": "jwc-important",
+          "sourceName": "教务处·重要公告",
+          "school": "uestc",
+          "title": "关于开展2026年秋季学期本科课程数字化建设的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/406b4aff51cdeabfbfdc2c9eb4e49918",
+          "date": "2026-09-15",
+          "tag": "教研"
+        },
+        {
+          "id": "393edb8d41cfee20",
+          "sourceId": "jwc-important",
+          "sourceName": "教务处·重要公告",
+          "school": "uestc",
+          "title": "教授开放日安排表(2026年度秋季学期）",
+          "url": "https://www.jwc.uestc.edu.cn/info/35cb8ee590be28f64bf50a05dab94736",
+          "date": "2026-09-15",
+          "tag": "教授开放日"
+        },
+        {
+          "id": "2ae353cadc8c8ca8",
+          "sourceId": "jwc-important",
+          "sourceName": "教务处·重要公告",
+          "school": "uestc",
+          "title": "2026 电子科技大学信息与通信工程学院“‘华为杯’无线通信技术创新赛” 一站式参赛指南（实时更新版）",
+          "url": "https://www.jwc.uestc.edu.cn/info/02d5f1790f41f3eba983088fcf2e1e16",
+          "date": "2026-09-11",
+          "tag": "实践"
+        },
+        {
+          "id": "1bb2a794a6395b03",
+          "sourceId": "jwc-important",
+          "sourceName": "教务处·重要公告",
+          "school": "uestc",
+          "title": "关于开展电子科技大学首批人工智能技术赋能本科教学教改项目结题验收工作的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/7563f67cc2ac4beee1fa3d32f6721216",
+          "date": "2026-09-10",
+          "tag": "教研"
+        },
+        {
+          "id": "93a90550ebebe3bb",
+          "sourceId": "jwc-important",
+          "sourceName": "教务处·重要公告",
+          "school": "uestc",
+          "title": "电子科技大学2026年秋季学期微专业招生简章",
+          "url": "https://www.jwc.uestc.edu.cn/info/aa67bb775823563d6133b9bd2a83b79e",
+          "date": "2026-09-10",
+          "tag": "学生事务公告"
+        },
+        {
+          "id": "e9945cfd7f0eb1a3",
+          "sourceId": "jwc-important",
+          "sourceName": "教务处·重要公告",
+          "school": "uestc",
+          "title": "关于开展2026-2027-1学期教学档案检查工作的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/4d1a538fb85551c7a9c8f0ccfe64f8f9",
+          "date": "2026-09-04",
+          "tag": "教管"
+        },
+        {
+          "id": "a4a9fc077b64a079",
+          "sourceId": "jwc-important",
+          "sourceName": "教务处·重要公告",
+          "school": "uestc",
+          "title": "关于2026年秋季学期清水河校区本科新生教材订购和领取的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/e3023b665ae97e44dd1e907a6cdf47c1",
+          "date": "2026-08-28",
+          "tag": "教材"
+        },
+        {
+          "id": "ff2ac69f088c3571",
+          "sourceId": "jwc-important",
+          "sourceName": "教务处·重要公告",
+          "school": "uestc",
+          "title": "关于做好推荐2027届优秀应届本科毕业生免试攻读研究生工作安排的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/d245fa4d677b2a36fc81ee013daead02",
+          "date": "2026-08-25",
+          "tag": "教师事务公告"
+        },
+        {
+          "id": "e2f0aa70e0b11cdf",
+          "sourceId": "jwc-important",
+          "sourceName": "教务处·重要公告",
+          "school": "uestc",
+          "title": "关于公布电子科技大学2026年微专业建设项目立项名单的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/bec8a046c2507770a752b77a147caabb",
+          "date": "2026-07-28",
+          "tag": "教师事务公告"
+        },
+        {
+          "id": "9bd06db3133a97ca",
+          "sourceId": "jwc-important",
+          "sourceName": "教务处·重要公告",
+          "school": "uestc",
+          "title": "关于组织开展第二批四川省高等学校创新性实验项目结题审查工作的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/e4fddc62597a0b4f696dc43bf7bb0cd5",
+          "date": "2026-07-21",
+          "tag": "实践"
+        },
+        {
+          "id": "eb60895ac1c127c8",
+          "sourceId": "jwc-important",
+          "sourceName": "教务处·重要公告",
+          "school": "uestc",
+          "title": "关于开展示范课课程质量检查工作的通知（2026年秋季学期）",
+          "url": "https://www.jwc.uestc.edu.cn/info/ee40ba9acd1c3b377de1edf1394c0211",
+          "date": "2026-07-17",
+          "tag": "教研"
+        },
+        {
+          "id": "ea3b404ec054178c",
+          "sourceId": "jwc-important",
+          "sourceName": "教务处·重要公告",
+          "school": "uestc",
+          "title": "关于2026年秋季学期对各类型教学改革课程进行质量评估暨示范课认定的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/5305299e99ceb39ef7af801c8e0a4de8",
+          "date": "2026-07-17",
+          "tag": "教研"
+        },
+        {
+          "id": "0e58ae9b903c33e2",
+          "sourceId": "jwc-important",
+          "sourceName": "教务处·重要公告",
+          "school": "uestc",
+          "title": "关于公布电子科技大学2026年春季学期示范课认定结果的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/b2d4118045a83cf1e56b7514aee6c753",
+          "date": "2026-07-17",
+          "tag": "教研"
+        }
+      ]
+    },
+    {
+      "sourceId": "jwc-student",
+      "sourceName": "教务处·学生事务公告",
+      "url": "https://www.jwc.uestc.edu.cn/list/256/?page=1",
+      "adapter": "uestc/jwc",
+      "ok": true,
+      "error": null,
+      "status": 200,
+      "bytes": 32072,
+      "tookMs": 105,
+      "items": [
+        {
+          "id": "794d095d908efadf",
+          "sourceId": "jwc-student",
+          "sourceName": "教务处·学生事务公告",
+          "school": "uestc",
+          "title": "2026年电子科技大学大学生创新训练计划——韫慧奖励专项入围名单公示",
+          "url": "https://www.jwc.uestc.edu.cn/info/f2af6c15dc83ba0c19ad9c719cd75c83",
+          "date": "2026-09-23",
+          "tag": "实践"
+        },
+        {
+          "id": "9dae6085e47bbec6",
+          "sourceId": "jwc-student",
+          "sourceName": "教务处·学生事务公告",
+          "school": "uestc",
+          "title": "第35届电子科技大学数学竞赛获奖名单公布",
+          "url": "https://www.jwc.uestc.edu.cn/info/86a3cff5a1dc8f270f749890f9c45a9c",
+          "date": "2026-09-18",
+          "tag": "学生事务公告"
+        },
+        {
+          "id": "04d8de24a18d8d46",
+          "sourceId": "jwc-student",
+          "sourceName": "教务处·学生事务公告",
+          "school": "uestc",
+          "title": "电子科学与工程学院电子实验中心开放实验室运行通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/e9c816fab9bd8cafd2d9e1db8d29a226",
+          "date": "2026-09-18",
+          "tag": "学生事务公告"
+        },
+        {
+          "id": "128de2acd82dd891",
+          "sourceId": "jwc-student",
+          "sourceName": "教务处·学生事务公告",
+          "school": "uestc",
+          "title": "2023级“形势与政策”补考安排",
+          "url": "https://www.jwc.uestc.edu.cn/info/55d4b4539cd8725e040a5ca814549134",
+          "date": "2026-09-17",
+          "tag": "考试"
+        },
+        {
+          "id": "4d227089e64930f4",
+          "sourceId": "jwc-student",
+          "sourceName": "教务处·学生事务公告",
+          "school": "uestc",
+          "title": "关于我校2026年下半年全国大学英语四、六级考试报名工作的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/c683a0d05a4f4f673f3414657464b8a2",
+          "date": "2026-09-16",
+          "tag": "考试"
+        },
+        {
+          "id": "75193b01b63f8a9b",
+          "sourceId": "jwc-student",
+          "sourceName": "教务处·学生事务公告",
+          "school": "uestc",
+          "title": "关于第三届“中国电子杯”高校 ICT 产教融合创新大赛报名的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/608777928f0250657e44452d89ae8d5c",
+          "date": "2026-09-15",
+          "tag": "学生事务公告"
+        },
+        {
+          "id": "f9dfc1e75a652e34",
+          "sourceId": "jwc-student",
+          "sourceName": "教务处·学生事务公告",
+          "school": "uestc",
+          "title": "2026 电子科技大学信息与通信工程学院“‘华为杯’无线通信技术创新赛” 一站式参赛指南（实时更新版）",
+          "url": "https://www.jwc.uestc.edu.cn/info/02d5f1790f41f3eba983088fcf2e1e16",
+          "date": "2026-09-11",
+          "tag": "实践"
+        },
+        {
+          "id": "f586e6dc2f417f86",
+          "sourceId": "jwc-student",
+          "sourceName": "教务处·学生事务公告",
+          "school": "uestc",
+          "title": "关于举办第三届电子科技大学“英才杯”电子设计竞赛的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/b3bfed90854aad6d5ccb50eb3962aa56",
+          "date": "2026-09-11",
+          "tag": "学生事务公告"
+        },
+        {
+          "id": "2208c53de79fa170",
+          "sourceId": "jwc-student",
+          "sourceName": "教务处·学生事务公告",
+          "school": "uestc",
+          "title": "关于第九届（2026）全国大学生嵌入式芯片与系统设计竞赛 FPGA 赛道报名及赛题宣讲会的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/ce1168295343ef9e93ea09dc5c2d89c9",
+          "date": "2026-09-11",
+          "tag": "实践"
+        },
+        {
+          "id": "c0b96310ba462f4c",
+          "sourceId": "jwc-student",
+          "sourceName": "教务处·学生事务公告",
+          "school": "uestc",
+          "title": "电子科技大学2026年秋季学期微专业招生简章",
+          "url": "https://www.jwc.uestc.edu.cn/info/aa67bb775823563d6133b9bd2a83b79e",
+          "date": "2026-09-10",
+          "tag": "学生事务公告"
+        },
+        {
+          "id": "42fada4cd7ea55e5",
+          "sourceId": "jwc-student",
+          "sourceName": "教务处·学生事务公告",
+          "school": "uestc",
+          "title": "关于开展2026年“大学生创新训练计划”项目结题验收工作的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/44d8f4a5cd14fa3b1d2c40edc5f8553f",
+          "date": "2026-09-10",
+          "tag": "实践"
+        },
+        {
+          "id": "54ad7417aa1e4f2b",
+          "sourceId": "jwc-student",
+          "sourceName": "教务处·学生事务公告",
+          "school": "uestc",
+          "title": "第35届电子科技大学数学竞赛预获奖名单公示",
+          "url": "https://www.jwc.uestc.edu.cn/info/24ec5cf6c921f912fc6ce5c41730a5b9",
+          "date": "2026-09-08",
+          "tag": "学生事务公告"
+        },
+        {
+          "id": "fb10e8bef1d33fb7",
+          "sourceId": "jwc-student",
+          "sourceName": "教务处·学生事务公告",
+          "school": "uestc",
+          "title": "2026-2027-1学期“大学物理I”重新学习安排",
+          "url": "https://www.jwc.uestc.edu.cn/info/c504452aa5f7978443c6977bafca8a60",
+          "date": "2026-09-08",
+          "tag": "教管"
+        },
+        {
+          "id": "2cf07b2f2b160c4c",
+          "sourceId": "jwc-student",
+          "sourceName": "教务处·学生事务公告",
+          "school": "uestc",
+          "title": "关于组织\"AI+教育\"创新应用技能大赛的补充通知——电子科技大学赛区预赛通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/ae76b48e6dbdb8d1c37824c0dbb1e8c6",
+          "date": "2026-09-07",
+          "tag": "学生事务公告"
+        },
+        {
+          "id": "46fe380040c5e8b9",
+          "sourceId": "jwc-student",
+          "sourceName": "教务处·学生事务公告",
+          "school": "uestc",
+          "title": "2026-2027-1学期“概率论与数理统计”重新学习安排",
+          "url": "https://www.jwc.uestc.edu.cn/info/51fd53a55c4f8ad75c2da3d2753326b8",
+          "date": "2026-09-07",
+          "tag": "学生事务公告"
+        }
+      ]
+    },
+    {
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
+      "url": "https://news.uestc.edu.cn/?n=UestcNews.Front.CategoryV2.Page&CatId=68",
+      "adapter": "html-list",
+      "ok": true,
+      "error": null,
+      "status": 200,
+      "bytes": 98562,
+      "tookMs": 208,
+      "items": [
+        {
+          "id": "8f9c670f22bec8f3",
+          "sourceId": "news-notice",
+          "sourceName": "新闻网·公告",
+          "school": "uestc",
+          "title": "学者论坛：超导百年：材料、强关联机理与 AI 逆向设计",
+          "url": "https://news.uestc.edu.cn/info/1015/43921.htm",
+          "date": "2026-09-25",
+          "tag": "学术"
+        },
+        {
+          "id": "24cd74c243c20b98",
+          "sourceId": "news-notice",
+          "sourceName": "新闻网·公告",
+          "school": "uestc",
+          "title": "名师讲堂：Geometry, Mesh, and Higher-Order Finite Elements",
+          "url": "https://news.uestc.edu.cn/info/1015/43893.htm",
+          "date": "2026-09-24",
+          "tag": "学术"
+        },
+        {
+          "id": "0edfd3b717b54776",
+          "sourceId": "news-notice",
+          "sourceName": "新闻网·公告",
+          "school": "uestc",
+          "title": "电子科技大学校史馆试运行公告",
+          "url": "https://news.uestc.edu.cn/info/1017/43867.htm",
+          "date": "2026-09-24",
+          "tag": "公告"
+        },
+        {
+          "id": "6a460cf85bc22591",
+          "sourceId": "news-notice",
+          "sourceName": "新闻网·公告",
+          "school": "uestc",
+          "title": "成电讲坛 | The Human Edge — Why the World Needs You More Than Ever 人之优势 —— 为何世界比以往更需要你",
+          "url": "https://news.uestc.edu.cn/info/1015/43797.htm",
+          "date": "2026-09-22",
+          "tag": "学术"
+        }
+      ]
+    },
+    {
+      "sourceId": "gr-notice",
+      "sourceName": "研究生院·通知",
+      "url": "https://gr.uestc.edu.cn/tongzhi/",
+      "adapter": "uestc/gr",
+      "ok": true,
+      "error": null,
+      "status": 200,
+      "bytes": 34573,
+      "tookMs": 163,
+      "items": [
+        {
+          "id": "3e5b2e445b6f2d58",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于电子科技大学2025年度研究生教育先进单位和个人评选结果的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/14381",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "bb8b9c668667b9da",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于开展电子科技大学2025年度研究生教育先进单位和个人评选的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/14320",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "9c198abc0ab5b2e2",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于电子科技大学2024年度研究生教育先进单位和个人评选结果的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/13381",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "d5de8e53958010d5",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于开展电子科技大学2024年度研究生教育先进单位和个人评选的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/13315",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "9cde5231b7f4c079",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于电子科技大学2023年研究生教育先进单位和个人评选结果的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/12164",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "cbcdfb7d2392e0a4",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于开展电子科技大学2023年研究生教育先进单位和个人评选的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/12106",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "edae5893fa787d29",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于电子科技大学2022年研究生教育先进单位和个人评选结果的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/11349",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "5831979a5305ae18",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于开展电子科技大学2022年研究生教育先进单位和个人评选的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/11320",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "3ab0853140ac66fd",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于电子科技大学2021年研究生教育先进单位和个人评选结果的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/10610",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "49e0779df4d29bf0",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于电子科技大学2021年研究生教育先进单位和个人评选的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/10540",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "eb434d2c47fe27dd",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于开展2021年电子科技大学研究生“科技创新先进个人（集体）”奖评选的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/10511",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "28e1bc944498bf10",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于开展2021年电子科技大学研究生“基层挂职先进个人”奖评选的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/10510",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "e4d9b9220f4e4665",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于开展2021年电子科技大学研究生“优秀社会实践”奖评选的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/10508",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "3d89ab642b016e44",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "申报职称涉及研究生院相关材料签字盖章流程",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/9857",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "0b05a9a2f47115ea",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于电子科技大学2020年研究生教育先进单位和个人评选结果的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/9590",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "4db64697f3b3f9c1",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于电子科技大学2020年研究生教育先进单位和个人评选的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/9506",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "557a645b40afafbf",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于召开电子科技大学研究生教育会议的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/9398",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "ae3354eee2e6d9bc",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于调整2020年度GFKJ“引领”基金申报工作安排的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/8738",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "0d28746572fe3ea8",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于新冠肺炎疫情防控期间加强导师对研究生指导的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/8691",
+          "date": null,
+          "tag": null
+        },
+        {
+          "id": "053aaae3b326daf6",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "致研究生导师的一封信",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/8681",
+          "date": null,
+          "tag": null
+        }
+      ]
+    }
+  ],
+  "fresh": [
+    {
+      "id": "93a90550ebebe3bb",
+      "sourceId": "jwc-important",
+      "sourceName": "教务处·重要公告",
+      "school": "uestc",
+      "title": "电子科技大学2026年秋季学期微专业招生简章",
+      "url": "https://www.jwc.uestc.edu.cn/info/aa67bb775823563d6133b9bd2a83b79e",
+      "date": "2026-09-10",
+      "tag": "学生事务公告",
+      "alsoIn": [
+        "教务处·学生事务公告"
+      ]
+    },
+    {
+      "id": "ff2ac69f088c3571",
+      "sourceId": "jwc-important",
+      "sourceName": "教务处·重要公告",
+      "school": "uestc",
+      "title": "关于做好推荐2027届优秀应届本科毕业生免试攻读研究生工作安排的通知",
+      "url": "https://www.jwc.uestc.edu.cn/info/d245fa4d677b2a36fc81ee013daead02",
+      "date": "2026-08-25",
+      "tag": "教师事务公告",
+      "alsoIn": []
+    },
+    {
+      "id": "e2f0aa70e0b11cdf",
+      "sourceId": "jwc-important",
+      "sourceName": "教务处·重要公告",
+      "school": "uestc",
+      "title": "关于公布电子科技大学2026年微专业建设项目立项名单的通知",
+      "url": "https://www.jwc.uestc.edu.cn/info/bec8a046c2507770a752b77a147caabb",
+      "date": "2026-07-28",
+      "tag": "教师事务公告",
+      "alsoIn": []
+    },
+    {
+      "id": "794d095d908efadf",
+      "sourceId": "jwc-student",
+      "sourceName": "教务处·学生事务公告",
+      "school": "uestc",
+      "title": "2026年电子科技大学大学生创新训练计划——韫慧奖励专项入围名单公示",
+      "url": "https://www.jwc.uestc.edu.cn/info/f2af6c15dc83ba0c19ad9c719cd75c83",
+      "date": "2026-09-23",
+      "tag": "实践",
+      "alsoIn": []
+    },
+    {
+      "id": "9dae6085e47bbec6",
+      "sourceId": "jwc-student",
+      "sourceName": "教务处·学生事务公告",
+      "school": "uestc",
+      "title": "第35届电子科技大学数学竞赛获奖名单公布",
+      "url": "https://www.jwc.uestc.edu.cn/info/86a3cff5a1dc8f270f749890f9c45a9c",
+      "date": "2026-09-18",
+      "tag": "学生事务公告",
+      "alsoIn": []
+    },
+    {
+      "id": "128de2acd82dd891",
+      "sourceId": "jwc-student",
+      "sourceName": "教务处·学生事务公告",
+      "school": "uestc",
+      "title": "2023级“形势与政策”补考安排",
+      "url": "https://www.jwc.uestc.edu.cn/info/55d4b4539cd8725e040a5ca814549134",
+      "date": "2026-09-17",
+      "tag": "考试",
+      "alsoIn": []
+    },
+    {
+      "id": "4d227089e64930f4",
+      "sourceId": "jwc-student",
+      "sourceName": "教务处·学生事务公告",
+      "school": "uestc",
+      "title": "关于我校2026年下半年全国大学英语四、六级考试报名工作的通知",
+      "url": "https://www.jwc.uestc.edu.cn/info/c683a0d05a4f4f673f3414657464b8a2",
+      "date": "2026-09-16",
+      "tag": "考试",
+      "alsoIn": []
+    },
+    {
+      "id": "75193b01b63f8a9b",
+      "sourceId": "jwc-student",
+      "sourceName": "教务处·学生事务公告",
+      "school": "uestc",
+      "title": "关于第三届“中国电子杯”高校 ICT 产教融合创新大赛报名的通知",
+      "url": "https://www.jwc.uestc.edu.cn/info/608777928f0250657e44452d89ae8d5c",
+      "date": "2026-09-15",
+      "tag": "学生事务公告",
+      "alsoIn": []
+    },
+    {
+      "id": "f586e6dc2f417f86",
+      "sourceId": "jwc-student",
+      "sourceName": "教务处·学生事务公告",
+      "school": "uestc",
+      "title": "关于举办第三届电子科技大学“英才杯”电子设计竞赛的通知",
+      "url": "https://www.jwc.uestc.edu.cn/info/b3bfed90854aad6d5ccb50eb3962aa56",
+      "date": "2026-09-11",
+      "tag": "学生事务公告",
+      "alsoIn": []
+    },
+    {
+      "id": "2208c53de79fa170",
+      "sourceId": "jwc-student",
+      "sourceName": "教务处·学生事务公告",
+      "school": "uestc",
+      "title": "关于第九届（2026）全国大学生嵌入式芯片与系统设计竞赛 FPGA 赛道报名及赛题宣讲会的通知",
+      "url": "https://www.jwc.uestc.edu.cn/info/ce1168295343ef9e93ea09dc5c2d89c9",
+      "date": "2026-09-11",
+      "tag": "实践",
+      "alsoIn": []
+    },
+    {
+      "id": "54ad7417aa1e4f2b",
+      "sourceId": "jwc-student",
+      "sourceName": "教务处·学生事务公告",
+      "school": "uestc",
+      "title": "第35届电子科技大学数学竞赛预获奖名单公示",
+      "url": "https://www.jwc.uestc.edu.cn/info/24ec5cf6c921f912fc6ce5c41730a5b9",
+      "date": "2026-09-08",
+      "tag": "学生事务公告",
+      "alsoIn": []
+    },
+    {
+      "id": "fb10e8bef1d33fb7",
+      "sourceId": "jwc-student",
+      "sourceName": "教务处·学生事务公告",
+      "school": "uestc",
+      "title": "2026-2027-1学期“大学物理I”重新学习安排",
+      "url": "https://www.jwc.uestc.edu.cn/info/c504452aa5f7978443c6977bafca8a60",
+      "date": "2026-09-08",
+      "tag": "教管",
+      "alsoIn": []
+    },
+    {
+      "id": "46fe380040c5e8b9",
+      "sourceId": "jwc-student",
+      "sourceName": "教务处·学生事务公告",
+      "school": "uestc",
+      "title": "2026-2027-1学期“概率论与数理统计”重新学习安排",
+      "url": "https://www.jwc.uestc.edu.cn/info/51fd53a55c4f8ad75c2da3d2753326b8",
+      "date": "2026-09-07",
+      "tag": "学生事务公告",
+      "alsoIn": []
+    },
+    {
+      "id": "8f9c670f22bec8f3",
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
+      "school": "uestc",
+      "title": "学者论坛：超导百年：材料、强关联机理与 AI 逆向设计",
+      "url": "https://news.uestc.edu.cn/info/1015/43921.htm",
+      "date": "2026-09-25",
+      "tag": "学术",
+      "alsoIn": []
+    },
+    {
+      "id": "24cd74c243c20b98",
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
+      "school": "uestc",
+      "title": "名师讲堂：Geometry, Mesh, and Higher-Order Finite Elements",
+      "url": "https://news.uestc.edu.cn/info/1015/43893.htm",
+      "date": "2026-09-24",
+      "tag": "学术",
+      "alsoIn": []
+    },
+    {
+      "id": "6a460cf85bc22591",
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
+      "school": "uestc",
+      "title": "成电讲坛 | The Human Edge — Why the World Needs You More Than Ever 人之优势 —— 为何世界比以往更需要你",
+      "url": "https://news.uestc.edu.cn/info/1015/43797.htm",
+      "date": "2026-09-22",
+      "tag": "学术",
+      "alsoIn": []
+    }
+  ]
+}
