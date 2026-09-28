@@ -1,0 +1,17 @@
+{
+  "at": "2026-09-28T05:55:53.369Z",
+  "title": "电子科技大学 · 推送通道测试",
+  "count": 0,
+  "outcomes": [
+    {
+      "channel": "serverchan",
+      "ok": true,
+      "detail": "HTTP 200 {\"code\":0,\"message\":\"\",\"data\":{\"pushid\":\"58767663\",\"readkey\":\"***\",\"error\":\"SUCCESS\",\"errno\":0}}"
+    },
+    {
+      "channel": "stdout",
+      "ok": true,
+      "detail": "已打印到终端"
+    }
+  ]
+}
