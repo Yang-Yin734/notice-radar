@@ -71,8 +71,10 @@ gradle = replaced;
 // 版本号在 android.defaultConfig 里（不在上面的映射里）
 gradle = gradle.replace(/versionCode\s+\d+/, `versionCode ${Number(manifest.appVersionCode)}`);
 gradle = gradle.replace(/versionName\s+"[^"]*"/, `versionName "${version}"`);
-// namespace 也要跟着包名走
+// namespace 与 defaultConfig 里的 applicationId 都要跟着包名走
+// （defaultConfig.applicationId 才最终决定 APK 的包名；只改上面 map 里的那个不够 —— 踩过）
 gradle = gradle.replace(/namespace\s+"[^"]*"/, `namespace "${manifest.packageId}"`);
+gradle = gradle.replace(/applicationId\s+"[^"]*"/g, `applicationId "${manifest.packageId}"`);
 
 fs.writeFileSync(gradleFile, gradle, 'utf8');
 
@@ -87,15 +89,19 @@ if (srcManifestFixed !== srcManifest) {
   console.log(`✓ ${path.relative(process.cwd(), srcManifestFile)}：已移除旧的 package 属性（改由 namespace 决定）`);
 }
 
-// 自检：确认关键字段真的写进去了
+// 自检：确认关键字段真的写进去了（applicationId 有两种写法，都要查）
 const check = fs.readFileSync(gradleFile, 'utf8');
 const problems = [];
-if (!check.includes(`applicationId: '${manifest.packageId}'`)) problems.push('applicationId');
+const ids = [...check.matchAll(/applicationId[:\s]+['"]([^'"]+)['"]/g)].map((m) => m[1]);
+if (ids.some((v) => v !== manifest.packageId)) {
+  problems.push(`applicationId 仍残留旧值：${JSON.stringify([...new Set(ids)])}`);
+}
+if (!ids.length) problems.push('applicationId 一个都没找到');
 if (!check.includes(`namespace "${manifest.packageId}"`)) problems.push('namespace');
 if (!check.includes(`versionCode ${Number(manifest.appVersionCode)}`)) problems.push('versionCode');
 if (!check.includes(`versionName "${version}"`)) problems.push('versionName');
 if (problems.length) {
-  console.error(`自检失败，这些字段没写进 build.gradle：${problems.join(', ')}`);
+  console.error(`自检失败，这些字段没写对：${problems.join('；')}`);
   process.exit(1);
 }
 

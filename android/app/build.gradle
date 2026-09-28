@@ -46,10 +46,10 @@ android {
     compileSdkVersion 36
     namespace "io.github.yangyin734.noticeradar"
     defaultConfig {
-        applicationId "io.github.yang_yin734.twa"
+        applicationId "io.github.yangyin734.noticeradar"
         minSdkVersion 21
         targetSdkVersion 36
-        versionCode 7
+        versionCode 8
         versionName "0.4.0"
 
         // The name for the application
