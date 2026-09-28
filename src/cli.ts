@@ -4,6 +4,7 @@ import path from 'node:path';
 import { loadConfig } from './core/config.ts';
 import type { RadarConfig, SourceConfig } from './core/config.ts';
 import { fetchHtml } from './core/fetch.ts';
+import { renderHtml } from './core/browser.ts';
 import { getAdapter, listAdapters } from './adapters/index.ts';
 import { evaluate } from './core/filter.ts';
 import { loadState, markSeen, saveState, splitNew, dedupeAcrossSources } from './core/dedupe.ts';
@@ -43,6 +44,11 @@ interface Flags {
   delayMs: number;
   max: number;
   writeAlways: boolean;
+  /** 允许用真浏览器渲染 requiresBrowser 的源（默认关，见 README 合规一节） */
+  allowBrowser: boolean;
+  out: string | null;
+  expect: string | null;
+  window: boolean;
 }
 
 function parseFlags(argv: string[]): Flags {
@@ -62,24 +68,28 @@ function parseFlags(argv: string[]): Flags {
     delayMs: Number(get('delay') ?? 1200),
     max: Number(get('max') ?? 20),
     writeAlways: argv.includes('--write-always'),
+    allowBrowser: argv.includes('--allow-browser'),
+    out: get('out'),
+    expect: get('expect'),
+    window: argv.includes('--window'),
   };
 }
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 /** 抓取 + 解析。不做过滤，也不动状态 —— doctor 和 run 共用这一段。 */
-async function collect(cfg: RadarConfig, delayMs: number): Promise<SourceResult[]> {
+async function collect(cfg: RadarConfig, flags: Flags): Promise<SourceResult[]> {
   const results: SourceResult[] = [];
   const sources = cfg.sources.filter((s) => s.enabled);
 
   for (const [index, source] of sources.entries()) {
-    if (index > 0 && delayMs > 0) await sleep(delayMs); // 串行 + 间隔，别给学校站点添麻烦
-    results.push(await collectOne(cfg, source));
+    if (index > 0 && flags.delayMs > 0) await sleep(flags.delayMs); // 串行 + 间隔，别给学校站点添麻烦
+    results.push(await collectOne(cfg, source, flags));
   }
   return results;
 }
 
-async function collectOne(cfg: RadarConfig, source: SourceConfig): Promise<SourceResult> {
+async function collectOne(cfg: RadarConfig, source: SourceConfig, flags: Flags): Promise<SourceResult> {
   const base: SourceResult = {
     sourceId: source.id,
     sourceName: source.name,
@@ -98,8 +108,32 @@ async function collectOne(cfg: RadarConfig, source: SourceConfig): Promise<Sourc
     return { ...base, error: `未知适配器 "${source.adapter}"（可用：${listAdapters().join(', ')}）` };
   }
 
+  // 需要浏览器渲染的源：默认跳过，只有显式 --allow-browser 才动真浏览器。
+  // 原因：那类站点部署了机器人挑战，用真浏览器访问是"绕开它的拦截"，得让人明确同意。
+  if (source.requiresBrowser && !flags.allowBrowser) {
+    return {
+      ...base,
+      skipped: true,
+      error: '需要浏览器渲染：加 --allow-browser（本机有 Chrome/Edge 时）才会抓这个源',
+    };
+  }
+
   const t0 = Date.now();
   try {
+    if (source.requiresBrowser) {
+      const headless = source.browserHeadless;
+      if (!headless) {
+        console.log(`    · ${source.id}: 该站点会拒绝无头浏览器，将以可见浏览器窗口抓取（窗口会自动关闭）`);
+      }
+      const res = await renderHtml(source.url, {
+        executablePath: process.env.NOTICE_RADAR_BROWSER,
+        expect: source.browserExpect ?? '通知',
+        headless,
+        onLog: (msg) => console.log(`    · ${source.id}: ${msg}`),
+      });
+      const items = adapter.parse({ source, school: cfg.school, html: res.html });
+      return { ...base, ok: true, status: 200, bytes: res.html.length, tookMs: Date.now() - t0, items };
+    }
     const res = await fetchHtml(source.url);
     const items = adapter.parse({ source, school: cfg.school, html: res.html });
     return { ...base, ok: true, status: res.status, bytes: res.bytes, tookMs: Date.now() - t0, items };
@@ -126,7 +160,7 @@ async function cmdRun(flags: Flags): Promise<number> {
   const state = loadState(flags.state);
 
   console.log(`▸ ${cfg.name}（${cfg.school}）：${cfg.sources.filter((s) => s.enabled).length} 个源`);
-  const results = await collect(cfg, flags.delayMs);
+  const results = await collect(cfg, flags);
   const matched = filterItems(results, cfg);
   // 先跨源去重（教务处同一条通知常挂两个栏目），再算新增；但状态里把命中的都记上，
   // 免得下次换个栏目又把同一条当新通知报一遍。
@@ -136,7 +170,7 @@ async function cmdRun(flags: Flags): Promise<number> {
   for (const r of results) {
     const kept = filterItems([r], cfg).length;
     const isNew = fresh.filter((n) => n.sourceId === r.sourceId).length;
-    const mark = r.ok ? (r.items.length === 0 ? '⚠' : '✓') : '✗';
+    const mark = r.skipped ? '⏭' : r.ok ? (r.items.length === 0 ? '⚠' : '✓') : '✗';
     console.log(`  ${mark} ${r.sourceName}：解析 ${r.items.length} → 过滤后 ${kept} → 新增 ${isNew}${r.ok ? '' : ` (${r.error})`}`);
   }
 
@@ -182,11 +216,38 @@ async function cmdRun(flags: Flags): Promise<number> {
 async function cmdDoctor(flags: Flags): Promise<number> {
   const cfg = loadConfig(flags.config);
   console.log(`▸ 体检 ${cfg.name}：${cfg.sources.filter((s) => s.enabled).length} 个源\n`);
-  const results = await collect(cfg, flags.delayMs);
+  const results = await collect(cfg, flags);
   console.log(renderDoctor(results));
-  const broken = results.filter((r) => !r.ok || r.items.length === 0).length;
+  const skipped = results.filter((r) => r.skipped).length;
+  const broken = results.filter((r) => (!r.ok && !r.skipped) || (r.ok && r.items.length === 0)).length;
   console.log('\n提示：状态 202 或体积 <4KB 通常是 WAF 挑战页；抓到了但条目为 0 说明选择器过时了。');
+  if (skipped > 0) console.log(`本次跳过了 ${skipped} 个需要浏览器渲染的源（加 --allow-browser 可启用）。`);
   return broken === 0 ? 0 : 1;
+}
+
+/** 渲染任意页面并把 DOM 存下来 —— 面对 WAF 站点时，用它摸清真实结构、再写选择器。 */
+async function cmdFetch(flags: Flags, url: string): Promise<number> {
+  if (!url) {
+    console.error('用法：radr fetch <url> [--out=文件] [--expect=关键字]');
+    return 2;
+  }
+  const res = await renderHtml(url, {
+    executablePath: process.env.NOTICE_RADAR_BROWSER,
+    expect: flags.expect ?? undefined,
+    headless: !flags.window,
+    onLog: (msg) => console.log(`  · ${msg}`),
+  });
+  console.log(`标题：${res.title}`);
+  console.log(`DOM：${res.html.length} 字节，用时 ${res.tookMs}ms，浏览器 ${res.browser}`);
+  if (flags.out) {
+    fs.mkdirSync(path.dirname(flags.out), { recursive: true });
+    fs.writeFileSync(flags.out, res.html, 'utf8');
+    console.log(`已写入 ${flags.out}`);
+  } else {
+    console.log('\n--- 前 3000 字符 ---');
+    console.log(res.html.slice(0, 3000));
+  }
+  return 0;
 }
 
 function cmdList(flags: Flags): number {
@@ -204,13 +265,15 @@ function usage(): void {
   console.log(`notice-radar v${VERSION} —— 把高校官网通知变成能推到手机的信息流
 
 用法：
-  radr run      [--config=路径] [--dry] [--no-notify] [--json=路径] [--delay=毫秒] [--max=条数] [--write-always]
-  radr doctor   [--config=路径]          体检：每个源能不能抓、解析出几条
-  radr list     [--config=路径]          列出配置里的源
-  radr --version                         打印版本
+  radr run      [--config=路径] [--dry] [--no-notify] [--json=路径] [--delay=毫秒] [--max=条数] [--write-always] [--allow-browser]
+  radr doctor   [--config=路径] [--allow-browser]      体检：每个源能不能抓、解析出几条
+  radr list     [--config=路径]                        列出配置里的源
+  radr fetch    <url> [--out=文件] [--expect=关键字]    用真浏览器渲染页面并导出 DOM（摸 WAF 站点的结构用）
+  radr --version                                       打印版本
 
-说明：默认只在「有新通知」时才写状态与 JSON 产物 —— 这样跑在 GitHub Actions 上不会每轮
-都产生一次无意义提交。要每次都写，加 --write-always。
+说明：
+  · 默认只在「有新通知」时才写状态与 JSON 产物 —— 跑在 GitHub Actions 上不会每轮都空转出一次提交。
+  · 配置里标了 requiresBrowser: true 的源（站点有 JS 机器人挑战）默认跳过，必须显式加 --allow-browser。
 
 默认配置：${DEFAULT_CONFIG}
 默认状态：${DEFAULT_STATE}（只记"见过哪些通知"，不含正文与个人信息）
@@ -225,6 +288,7 @@ try {
   if (command === 'run') code = await cmdRun(flags);
   else if (command === 'doctor') code = await cmdDoctor(flags);
   else if (command === 'list') code = cmdList(flags);
+  else if (command === 'fetch') code = await cmdFetch(flags, rest.find((a) => /^https?:\/\//.test(a)) ?? '');
   else if (command === '--version' || command === '-v' || command === 'version') console.log(VERSION);
   else if (command === 'help' || command === '--help' || command === '-h') usage();
   else {

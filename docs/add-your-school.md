@@ -98,6 +98,45 @@ node tools/capture-fixtures.mjs myschool
 
 一个 PR 只加一个学校，带上 fixture 和测试。见 [CONTRIBUTING.md](../CONTRIBUTING.md)。
 
+## 第 5 步（遇到 WAF 时才看）：站点需要执行 JS 怎么办
+
+有些站点（国内常见的是瑞数 RiverSecurity）会给非浏览器请求返回 `202` + 一个几 KB 的挑战页，要求执行混淆 JS 拿令牌。本项目**不做指纹伪装**去骗过它，但提供一条正当路径：**用真实浏览器渲染**。
+
+```bash
+# 先看渲染后的真实 DOM（--window 会弹一个可见窗口，只有无头被拒时才需要）
+node src/cli.ts fetch https://jwc.example.edu.cn/tzgg.htm --out=/tmp/probe.html
+node src/cli.ts fetch https://jwc.example.edu.cn/tzgg.htm --window --out=/tmp/probe.html
+```
+
+判断标准：
+
+| 结果 | 说明 |
+|---|---|
+| 无头渲染就拿到了内容 | 配置里写 `requiresBrowser: true` 即可（默认 `browserHeadless: true`） |
+| 无头被回 `400` / 内容为空，加 `--window` 才行 | 站点识别无头浏览器。写 `browserHeadless: false`，并记住：**这个源只能在你自己机器上跑**，云端会跳过 |
+
+对应的配置：
+
+```yaml
+  - id: my-waf-source
+    name: 某某栏目（需浏览器）
+    url: https://jwc.example.edu.cn/tzgg.htm
+    adapter: html-list
+    requiresBrowser: true
+    browserHeadless: false      # 无头被拒时才写
+    browserExpect: 通知          # 页面出现这个字符串就认为挑战已过
+    baseUrl: https://jwc.example.edu.cn/tzgg.htm   # 注意：相对链接要按“页面地址”解析
+    selectors:
+      item: div.ArticleList table tr
+      title: td.fw_t a@title
+      link: td.fw_t a@href
+      date: td.fw_s
+```
+
+两条硬规矩（PR 会按这个 review）：
+1. **必须低频**：这类源只适合每天几次，不要在 Actions 里高频打学校站点。
+2. **fixture 也要放进来**：把 `radr fetch` 导出的渲染后 DOM 存成 `tests/fixtures/<学校>/xxx.html` 并补测试 —— 否则别人没法离线复现你的解析结果。
+
 ## 选择器不肯合作的常见情况
 
 | 症状 | 原因 | 解法 |

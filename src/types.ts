@@ -32,4 +32,6 @@ export interface SourceResult {
   tookMs: number;
   /** 解析出的全部条目（已过滤前） */
   items: Notice[];
+  /** 本次被跳过（例如源需要浏览器渲染但没加 --allow-browser），既不算成功也不算失败 */
+  skipped?: boolean;
 }

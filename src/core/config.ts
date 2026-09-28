@@ -32,6 +32,18 @@ const sourceSchema = z.object({
   selectors: selectorsSchema.optional(),
   /** 适配器私有参数，透传给适配器 */
   params: z.unknown().optional(),
+  /**
+   * 这个源必须用真浏览器渲染才能拿到内容（站点部署了 JS 机器人挑战）。
+   * 默认不启用：只有显式加 --allow-browser 才会跑，见 README「合规与边界」。
+   */
+  requiresBrowser: z.boolean().default(false),
+  /** 用浏览器渲染时，页面里出现这个字符串就认为挑战已通过（默认「通知」） */
+  browserExpect: z.string().optional(),
+  /**
+   * 用无头浏览器（默认 true）。置 false 会弹出可见窗口 ——
+   * 只有被站点识别并拒绝无头浏览器时才需要，因此只适合本机低频运行。
+   */
+  browserHeadless: z.boolean().default(true),
   /** 命中任一关键词才推送（留空表示不过滤） */
   include: z.array(z.string()).default([]),
   /** 命中任一关键词就丢弃 */

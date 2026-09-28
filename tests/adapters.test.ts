@@ -103,3 +103,33 @@ test('研究生院适配器：只认详情页链接，避免把导航项当成�
   );
   assert.equal(new Set(items.map((n) => n.url)).size, items.length, '同一页里链接不该重复');
 });
+
+test('数学科学学院：渲染后的真实 DOM 能解析出带日期和详情链接的通知', () => {
+  // 这个 fixture 是用真浏览器（可见窗口）渲染后保存的 —— 学院站点拦无头浏览器，
+  // 所以它的快照只能这样抓，见 README「合规与边界」。
+  const html = fixture('math-jwgg.html');
+  const items = htmlListAdapter.parse({
+    school: 'uestc',
+    html,
+    source: source({
+      id: 'math-jwgg',
+      name: '数学科学学院·教务公告',
+      baseUrl: 'https://www.math.uestc.edu.cn/tzgg1/jwgg.htm',
+      selectors: { item: 'div.ArticleList table tr', title: 'td.fw_t a@title', link: 'td.fw_t a@href', date: 'td.fw_s' },
+    }),
+  });
+
+  assert.ok(items.length >= 8, `条目太少：${items.length}`);
+  // ../info/1043/10200.htm 这种相对链接必须按页面地址解析成绝对链接
+  assert.ok(
+    items.every((n) => n.url.startsWith('https://www.math.uestc.edu.cn/info/')),
+    `链接解析错误：${items.slice(0, 2).map((n) => n.url).join(', ')}`,
+  );
+  assert.ok(
+    items.every((n) => n.date === null || /^\d{4}-\d{2}-\d{2}$/.test(n.date)),
+    '日期必须被归一成 ISO 格式（原始形如 [2026-09-03 09:23:37]）',
+  );
+  assert.ok(items.some((n) => n.date !== null), '至少有一条解析出日期');
+  assert.ok(items.some((n) => n.title.includes('推免')), '应包含推免相关通知');
+  assert.equal(new Set(items.map((n) => n.id)).size, items.length, 'ID 必须唯一');
+});

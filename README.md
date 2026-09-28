@@ -30,7 +30,7 @@
 | 教务处（重要公告 / 学生事务） | 200 / 25–29 KB | ✅ |
 | 新闻网（公告 / 学术） | 200 / 86 KB | ✅ |
 | 研究生院（通知） | 200 / 32 KB，含 JS 挑战脚本 | ⚠️ 时好时坏 |
-| 学院官网（数学科学学院等） | **202 / 2.4 KB 挑战页** | ❌ 本项目不绕过 |
+| 学院官网（数学科学学院等） | **202 / 2.4 KB 挑战页**（无头浏览器会被回 400） | 🖥 用可见浏览器渲染，见「已支持」 |
 | 公共 RSSHub | 10.5 s 超时 | ❌ 境内基本不可用 |
 
 ## 日报长什么样
@@ -69,6 +69,8 @@ Linux/macOS 用 `SERVERCHAN_KEY=... npm run run`，Windows PowerShell 用 `$env:
 | `radr run --no-notify` | 只出日报不推送 |
 | `radr run --json=data/latest.json` | 同时导出结构化 JSON，方便二次开发 |
 | `radr run --write-always` | 即使没有新通知也写状态与产物（默认只在有新通知时写） |
+| `radr run --allow-browser` | 允许抓「需要浏览器渲染」的源（学院站点会短暂弹出浏览器窗口，几秒后自动关闭） |
+| `radr fetch <url> [--window] [--out=文件]` | 用浏览器渲染任意页面并导出 DOM —— 给 WAF 站点写选择器时用它 |
 
 ## 已支持
 
@@ -78,8 +80,40 @@ Linux/macOS 用 `SERVERCHAN_KEY=... npm run run`，Windows PowerShell 用 `$env:
 | 电子科技大学 | 教务处·学生事务公告 | `uestc/jwc` | ✅ 实测可解析 |
 | 电子科技大学 | 新闻网·公告 | `html-list`（通用） | ✅ 实测可解析 |
 | 电子科技大学 | 研究生院·通知 | `uestc/gr` | ⚠️ 站点带 WAF，偶发失败 |
+| 电子科技大学 | 数学科学学院·教务公告 | `html-list` + 浏览器 | 🖥 需本机可见浏览器（见下） |
+| 电子科技大学 | 数学科学学院·学生工作 | `html-list` + 浏览器 | 🖥 需本机可见浏览器（见下） |
 
 想加自己学校？看 **[docs/add-your-school.md](docs/add-your-school.md)** —— 大多数站点只要写一段 YAML。
+
+### 🖥 学院级站点：为什么需要"可见浏览器"
+
+数学科学学院官网部署了瑞数（RiverSecurity）类 JS 机器人挑战，实测：
+
+| 访问方式 | 结果 |
+|---|---|
+| 普通 HTTP 请求（Node fetch） | `202` + 2.4 KB 挑战页 |
+| 带上挑战页下发的 Cookie 重放 | 仍是 `202` |
+| **无头浏览器（Edge headless）** | **`400 Bad Request`** —— 它认得出无头 |
+| **普通浏览器窗口** | ✅ 正常渲染，拿到完整通知列表 |
+
+所以这两个源用 `browserHeadless: false`（真实窗口）渲染。这意味着：
+
+- 只有**你自己机器上**跑才有意义：`node src/cli.ts run --allow-browser`
+- `poll` 工作流**不会**抓这类源（无头环境过不去，而本项目**不做指纹伪装**去骗过它），日报里会显示「跳过」
+- 想每天自动收学院通知，就在本机挂个计划任务（见下）
+
+## 本机每天自动跑（含学院通知）
+
+Windows 计划任务示例（每天 08:00、12:30、18:00 各一次）：
+
+```powershell
+$action  = New-ScheduledTaskAction -Execute 'node' `
+  -Argument 'src/cli.ts run --allow-browser' -WorkingDirectory 'D:\Y\Documents\ds\notice-radar'
+$trigger = New-ScheduledTaskTrigger -Daily -At 8:00am
+Register-ScheduledTask -TaskName 'notice-radar' -Action $action -Trigger $trigger
+```
+
+抓学院站点时会短暂弹出浏览器窗口（几秒后自动关闭），所以建议安排在你不怎么用电脑的时段。
 
 ## 接自己学校：两条路
 
@@ -160,18 +194,20 @@ config/
 本项目**明确不做**以下事情，也**不接受**相关 PR：
 
 - 不抓取需要登录的页面（教务系统、成绩、课表、个人信息）
-- 不绕过验证码、JS 挑战、WAF 或任何反爬机制。学院官网返回 202 挑战页，本项目的答案就是"不支持"
+- **不做指纹伪装**：不伪造 UA、不隐藏 `navigator.webdriver`、不逆向 JS 挑战算法去骗过 WAF。
+  对需要执行 JS 的公开页面，本项目用"真实浏览器渲染"这一条路，并且默认关闭、需要 `--allow-browser` 显式同意。
 - 不收集任何用户数据：没有服务端、没有埋点，密钥只在你自己仓库的 Secrets 里
 - 不提供任何形式的"代刷""代签"
 
 同时请遵守：只抓公开页面、单源串行且带间隔（默认 1.2 s）、尊重站点 `robots.txt`、站点异常时退避重试而不是狂刷。
+浏览器渲染的源请**低频**运行（每天几次足够），不要在云端对着学校站点高频打。
 
 站点结构变更导致失效、以及因使用本项目产生的任何后果，由使用者自行承担。
 
 ## 已知限制
 
 - **只看第一页**：通知雷达不追求历史回溯，第一页足够。
-- **WAF 站点不接**：见「合规与边界」。
+- **学院级源要在本机跑**：见上面「为什么需要可见浏览器」，云端会跳过这类源。
 - **Actions 时效**：cron 最小 5 分钟且会延迟，重要窗口期请自己盯一眼。
 
 ## 路线图

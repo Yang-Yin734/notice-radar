@@ -1,8 +1,10 @@
 # 电子科技大学预设（M0 首个可用预设）
 #
-# 关于数学科学学院的通知：其官网对非浏览器请求返回 202 挑战页（瑞数类 WAF），
-# 本项目**不做绕过**（见 README「合规」一节），因此不提供该源的适配器。
-# 学院通知建议以班级群/辅导员/学院公众号兜底。
+# 关于数学科学学院的通知：其官网部署了瑞数（RiverSecurity）类的 JS 机器人挑战，
+# 无头浏览器会被识别并直接回 HTTP 400（实测 Edge 154 无头模式即被拒）。
+# 因此该源用**可见浏览器窗口**渲染 —— 这只能在你自己机器上低频跑，
+# GitHub Actions 上会被自动跳过（云端的无头环境过不去这道门，而本项目不做指纹伪装）。
+# 详见 README「合规与边界」。
 #
 # 关键词只做子串匹配（大小写不敏感）。exclude 优先级高于 include。
 # 注意：不要把「公示」整体放进 exclude —— 推免名单、奖学金评定结果都是公示形式。
@@ -191,3 +193,107 @@ sources:
     exclude:
       - 评选结果
       - 先进单位和个人
+
+  # ===== 数学科学学院 =====
+  # 这两条是本预设里唯一需要浏览器的源：本地运行时加 --allow-browser 才会抓。
+  - id: math-jwgg
+    name: 数学科学学院·教务公告
+    url: https://www.math.uestc.edu.cn/tzgg1/jwgg.htm
+    adapter: html-list
+    requiresBrowser: true
+    browserHeadless: false
+    browserExpect: 数学
+    # 列表里的链接是 ../info/... 形式，必须按「页面地址」而不是域名来解析
+    baseUrl: https://www.math.uestc.edu.cn/tzgg1/jwgg.htm
+    note: 学院自己的教务通知（推免细则、免听免修、讲座、毕设安排都在这里）
+    selectors:
+      item: div.ArticleList table tr
+      title: td.fw_t a@title
+      link: td.fw_t a@href
+      date: td.fw_s
+    include:
+      - 推免
+      - 保研
+      - 免试
+      - 免听
+      - 免修
+      - 选课
+      - 退课
+      - 补选
+      - 重修
+      - 考试
+      - 补考
+      - 缓考
+      - 讲座
+      - 竞赛
+      - 建模
+      - 数学建模
+      - 奖学金
+      - 荣誉
+      - 学分
+      - 毕业设计
+      - 答辩
+      - 助教
+      - 成绩
+      - 公示
+      - 名单
+      - 报名
+      - 培养方案
+      - 转专业
+      - 分流
+      - 微积分
+      - 线性代数
+      - 概率
+    exclude:
+      - 教师荣获
+      - 教职工
+      - 人才招聘
+      - 招标
+      - 采购
+      - 中标
+      - 成交
+      - 校友
+      - 捐赠
+      - 座谈
+      - 来访
+
+  - id: math-xsgz
+    name: 数学科学学院·学生工作
+    url: https://www.math.uestc.edu.cn/tzgg1/xsgz.htm
+    adapter: html-list
+    requiresBrowser: true
+    browserHeadless: false
+    browserExpect: 数学
+    baseUrl: https://www.math.uestc.edu.cn/tzgg1/xsgz.htm
+    note: 奖学金/评优/助学/就业实习类通常落在这个栏目
+    selectors:
+      item: div.ArticleList table tr
+      title: td.fw_t a@title
+      link: td.fw_t a@href
+      date: td.fw_s
+    include:
+      - 奖学金
+      - 助学金
+      - 助学
+      - 评优
+      - 评奖
+      - 困难认定
+      - 勤工
+      - 贷款
+      - 名单
+      - 公示
+      - 报名
+      - 竞赛
+      - 就业
+      - 实习
+      - 宣讲
+      - 心理
+      - 综测
+      - 德育
+    exclude:
+      - 招标
+      - 采购
+      - 中标
+      - 成交
+      - 校友
+      - 捐赠
