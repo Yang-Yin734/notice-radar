@@ -1,284 +1,381 @@
 <!DOCTYPE html>
-<html lang="zh-CN"><head>
+<html lang="zh-CN">
+<head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>校园通知雷达 · 通知归档</title>
-<meta name="description" content="高校官网通知的自动归档与检索：由 notice-radar 定时抓取生成。">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>校园通知雷达</title>
+<meta name="description" content="高校官网通知的自动归档与检索：notice-radar 定时抓取，手机上可添加到主屏幕当应用用。">
+<meta name="theme-color" content="#1f2a3d">
+<meta name="color-scheme" content="light dark">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="校园通知雷达">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="icon" href="icon-192.png">
 <style>
-  :root { --ink:#1f2a3d; --muted:#868e96; --line:#eef0f4; --accent:#1c7ed6; }
-  * { box-sizing: border-box; }
-  body { margin:0; background:#eef1f6; color:var(--ink);
-    font-family:"Microsoft YaHei","PingFang SC","Segoe UI",system-ui,sans-serif; }
-  .wrap { max-width:1000px; margin:0 auto; padding:28px 20px 60px; }
-  header.hero { background:linear-gradient(135deg,#2b3a55,#1f2a3d); color:#fff; border-radius:16px;
-    padding:26px 28px; box-shadow:0 10px 30px rgba(16,24,40,.10); }
-  header.hero h1 { margin:0 0 6px; font-size:24px; }
-  header.hero p { margin:0; opacity:.78; font-size:13.5px; line-height:1.7; }
-  header.hero code { background:rgba(255,255,255,.14); padding:1px 6px; border-radius:4px; }
-  .stats { display:flex; flex-wrap:wrap; gap:26px; margin-top:18px; font-size:13px; }
-  .stats b { display:block; font-size:20px; margin-top:2px; }
-  .card { background:#fff; border-radius:14px; padding:18px 22px; margin-top:16px;
-    box-shadow:0 6px 18px rgba(16,24,40,.06); }
-  .card h3 { margin:0 0 14px; font-size:14px; color:var(--muted); font-weight:600; letter-spacing:.4px; }
-  .trend { display:flex; align-items:flex-end; gap:6px; height:74px; }
-  .trend .bar { flex:1; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; height:100%; }
-  .trend .bar span { width:100%; background:linear-gradient(180deg,#4dabf7,#1c7ed6); border-radius:4px 4px 0 0; min-height:2px; }
-  .trend .bar em { font-style:normal; font-size:10.5px; color:var(--muted); margin-top:4px; }
-  .src { display:flex; align-items:center; gap:10px; margin:7px 0; font-size:13px; }
-  .src-name { flex:0 0 168px; color:#495057; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .src-bar { flex:1; background:#f1f3f5; border-radius:999px; height:9px; overflow:hidden; }
-  .src-bar i { display:block; height:100%; background:linear-gradient(90deg,#74c0fc,#1c7ed6); }
-  .src b { flex:0 0 34px; text-align:right; font-variant-numeric:tabular-nums; }
-  .controls { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:18px 0 6px; }
-  #q { flex:1; min-width:190px; padding:9px 12px; border:1px solid #dee2e6; border-radius:9px; font-size:14px; }
-  #q:focus { outline:2px solid #a5d8ff; border-color:#74c0fc; }
-  .chip { border:1px solid #dee2e6; background:#fff; color:#495057; border-radius:999px;
-    padding:6px 12px; font-size:12.5px; cursor:pointer; }
-  .chip b { color:var(--muted); font-weight:400; }
-  .chip.active { background:var(--ink); border-color:var(--ink); color:#fff; }
-  .chip.active b { color:#ced4da; }
-  .hint { font-size:12.5px; color:var(--muted); margin:6px 2px 0; }
-  section.group h2 { font-size:14px; margin:20px 0 8px; color:#343a40; display:flex; align-items:center; gap:10px; }
-  section.group h2 .n { font-size:11.5px; font-weight:400; color:var(--muted); background:#f1f3f5; padding:1px 8px; border-radius:999px; }
-  ul { list-style:none; margin:0; padding:0; }
-  li.item { background:#fff; border-radius:12px; padding:12px 16px; margin-bottom:8px;
-    box-shadow:0 3px 10px rgba(16,24,40,.05); display:flex; flex-direction:column; gap:5px; }
-  .meta { font-size:11.5px; color:var(--muted); display:flex; gap:10px; }
-  .title { color:#212529; text-decoration:none; font-size:14.5px; line-height:1.55; }
-  .title:hover { color:var(--accent); text-decoration:underline; }
-  .tag { display:inline-block; font-size:11.5px; padding:1px 7px; margin-right:7px; border-radius:4px;
-    color:#fff; background:var(--c); vertical-align:1px; }
-  footer { margin-top:26px; font-size:12px; color:var(--muted); line-height:1.8; }
-  footer a { color:var(--accent); }
-</style>
-</head><body><div class="wrap">
+  :root {
+    --bg:#eef1f6; --card:#fff; --ink:#1f2a3d; --muted:#868e96; --line:#e9ecf1;
+    --accent:#1c7ed6; --bar:#f1f3f5;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#12161f; --card:#1b212c; --ink:#e9ecef; --muted:#909aa6; --line:#2a313d; --accent:#4dabf7; --bar:#2a313d; }
+  }
+  html.dark { --bg:#12161f; --card:#1b212c; --ink:#e9ecef; --muted:#909aa6; --line:#2a313d; --accent:#4dabf7; --bar:#2a313d; }
+  html.light { --bg:#eef1f6; --card:#fff; --ink:#1f2a3d; --muted:#868e96; --line:#e9ecf1; --accent:#1c7ed6; --bar:#f1f3f5; }
 
-<header class="hero">
-  <h1>校园通知雷达 · 通知归档</h1>
-  <p>把高校官网的通知自动抓下来、按关键词过滤、归档成可检索的列表。数据由 <code>notice-radar</code> 定时抓取，只抓公开页面，不登录、不存储个人信息。</p>
-  <div class="stats">
-    <div>累计归档<b>41</b></div>
-    <div>覆盖源<b>5</b></div>
-    <div>本页展示<b>41</b></div>
-    <div>最近更新<b style="font-size:14px;line-height:1.9">2026-09-28 12:04 UTC</b></div>
-  </div>
+  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html, body { max-width:100%; overflow-x:hidden; }
+  body { margin:0; background:var(--bg); color:var(--ink);
+    font-family:"Microsoft YaHei","PingFang SC","Segoe UI",system-ui,sans-serif;
+    padding-bottom:calc(66px + env(safe-area-inset-bottom)); }
+
+  .topbar { position:sticky; top:0; z-index:20; display:flex; align-items:center; gap:9px;
+    padding:calc(10px + env(safe-area-inset-top)) 14px 10px;
+    background:var(--card); border-bottom:1px solid var(--line); }
+  .brand { font-weight:700; font-size:16px; }
+  .pill { font-size:11.5px; color:var(--muted); background:var(--bar); padding:3px 9px; border-radius:999px; white-space:nowrap; }
+  .grow { flex:1; }
+  .iconbtn { border:1px solid var(--line); background:var(--card); color:var(--ink);
+    border-radius:10px; padding:7px 11px; font-size:13px; cursor:pointer; }
+  .iconbtn:active { transform:scale(.97); }
+
+  main { max-width:760px; margin:0 auto; padding:12px 12px 20px; }
+  .view[hidden] { display:none; }
+
+  .controls { display:flex; gap:8px; margin-bottom:10px; min-width:0; }
+  /* min-width:0 是关键：flex 子项默认 min-width:auto，输入框的固有宽度会把整页撑出屏幕 */
+  #q { flex:1; min-width:0; padding:11px 13px; border:1px solid var(--line); border-radius:12px; font-size:15px;
+    background:var(--card); color:var(--ink); }
+  #q:focus { outline:2px solid var(--accent); outline-offset:-1px; border-color:var(--accent); }
+  .chips { display:flex; gap:7px; overflow-x:auto; padding:2px 0 10px; }
+  .chips::-webkit-scrollbar { display:none; }
+  .chip { flex:0 0 auto; border:1px solid var(--line); background:var(--card); color:var(--muted);
+    border-radius:999px; padding:7px 13px; font-size:13px; cursor:pointer; white-space:nowrap; }
+  .chip.active { background:var(--ink); border-color:var(--ink); color:var(--card); }
+  .chip b { font-weight:400; opacity:.65; }
+
+  section.group h2 { font-size:13px; margin:16px 2px 8px; color:var(--muted); font-weight:600;
+    display:flex; align-items:center; gap:8px; }
+  section.group h2 .n { font-size:11px; background:var(--bar); padding:1px 8px; border-radius:999px; }
+  .list { display:grid; gap:8px; }
+
+  .item { background:var(--card); border-radius:14px; padding:12px 13px; position:relative; min-width:0;
+    box-shadow:0 3px 10px rgba(16,24,40,.05); display:flex; flex-direction:column; gap:6px; }
+  .item.unread::before { content:""; position:absolute; left:0; top:12px; bottom:12px; width:3px;
+    border-radius:0 3px 3px 0; background:var(--accent); }
+  .item.read { opacity:.7; }
+  .meta { display:flex; align-items:center; gap:8px; font-size:11.5px; color:var(--muted); padding-right:34px; min-width:0; }
+  .meta .from { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; }
+  .title { color:var(--ink); text-decoration:none; font-size:15px; line-height:1.5; padding-right:34px;
+    overflow-wrap:anywhere; }
+  .tag { display:inline-block; font-size:11.5px; padding:1px 7px; margin-right:6px; border-radius:5px; color:#fff; background:var(--c); }
+  .star { position:absolute; right:6px; bottom:6px; border:none; background:transparent; font-size:19px;
+    line-height:1; cursor:pointer; opacity:.3; padding:8px; }
+  .star.on { opacity:1; }
+
+  .card { background:var(--card); border-radius:14px; padding:16px; box-shadow:0 3px 10px rgba(16,24,40,.05); }
+  .card h3 { margin:0 0 12px; font-size:13px; color:var(--muted); font-weight:600; }
+  .card + .card { margin-top:12px; }
+  .trend { display:flex; align-items:flex-end; gap:5px; height:80px; }
+  .trend .bar { flex:1; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; height:100%; }
+  .trend .bar span { width:100%; background:linear-gradient(180deg,#4dabf7,var(--accent)); border-radius:4px 4px 0 0; min-height:2px; }
+  .trend .bar em { font-style:normal; font-size:10px; color:var(--muted); margin-top:4px; }
+  .src { display:flex; align-items:center; gap:10px; margin:7px 0; font-size:13px; }
+  .src-name { flex:0 0 44%; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; }
+  .src-bar { flex:1; background:var(--bar); border-radius:999px; height:9px; overflow:hidden; }
+  .src-bar i { display:block; height:100%; background:linear-gradient(90deg,#74c0fc,var(--accent)); }
+  .src b { flex:0 0 30px; text-align:right; font-variant-numeric:tabular-nums; }
+  .about p { font-size:13.5px; line-height:1.85; color:var(--muted); margin:0 0 10px; }
+  .about a { color:var(--accent); }
+  .kbd { background:var(--bar); border-radius:6px; padding:1px 7px; font-size:12.5px; color:var(--ink); }
+  .empty { text-align:center; color:var(--muted); font-size:13.5px; padding:34px 10px; }
+
+  .tabbar { position:fixed; left:0; right:0; bottom:0; z-index:30; display:flex;
+    background:var(--card); border-top:1px solid var(--line); padding-bottom:env(safe-area-inset-bottom); }
+  .tabbar button { flex:1; border:none; background:transparent; color:var(--muted); font-size:12px;
+    padding:9px 2px 10px; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:3px; }
+  .tabbar button .dot { width:5px; height:5px; border-radius:50%; background:transparent; }
+  .tabbar button.active { color:var(--accent); }
+  .tabbar button.active .dot { background:var(--accent); }
+  .tabbar .badge { font-size:10px; background:var(--accent); color:#fff; border-radius:999px; padding:0 5px; }
+
+  .toast { position:fixed; left:50%; transform:translateX(-50%); bottom:calc(80px + env(safe-area-inset-bottom));
+    background:var(--ink); color:var(--card); font-size:13px; padding:9px 15px; border-radius:999px;
+    opacity:0; pointer-events:none; transition:opacity .25s; z-index:40; }
+  .toast.show { opacity:.95; }
+
+  @media (min-width:760px) {
+    main { padding:16px 20px 28px; }
+  }
+  @media (min-width:700px) {
+    body { padding-bottom:0; }
+    .tabbar { position:static; width:fit-content; margin:10px auto 0; border:1px solid var(--line);
+      border-radius:999px; overflow:hidden; }
+    .tabbar button { padding:9px 22px; flex-direction:row; gap:8px; }
+    .tabbar button .dot { display:none; }
+    .toast { bottom:24px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <span class="brand">校园通知雷达</span>
+  <span class="pill" id="pill">…</span>
+  <span class="grow"></span>
+  <button class="iconbtn" id="theme" title="切换深浅色">◐</button>
+  <button class="iconbtn" id="refresh" title="拉取最新数据">刷新</button>
 </header>
 
-<div class="card">
-  <h3>最近 14 天发现量</h3>
-  <div class="trend"><div class="bar" title="2026-09-15：0 条"><span style="height:0%"></span><em>15</em></div><div class="bar" title="2026-09-16：0 条"><span style="height:0%"></span><em>16</em></div><div class="bar" title="2026-09-17：0 条"><span style="height:0%"></span><em>17</em></div><div class="bar" title="2026-09-18：0 条"><span style="height:0%"></span><em>18</em></div><div class="bar" title="2026-09-19：0 条"><span style="height:0%"></span><em>19</em></div><div class="bar" title="2026-09-20：0 条"><span style="height:0%"></span><em>20</em></div><div class="bar" title="2026-09-21：0 条"><span style="height:0%"></span><em>21</em></div><div class="bar" title="2026-09-22：0 条"><span style="height:0%"></span><em>22</em></div><div class="bar" title="2026-09-23：0 条"><span style="height:0%"></span><em>23</em></div><div class="bar" title="2026-09-24：0 条"><span style="height:0%"></span><em>24</em></div><div class="bar" title="2026-09-25：0 条"><span style="height:0%"></span><em>25</em></div><div class="bar" title="2026-09-26：0 条"><span style="height:0%"></span><em>26</em></div><div class="bar" title="2026-09-27：0 条"><span style="height:0%"></span><em>27</em></div><div class="bar" title="2026-09-28：41 条"><span style="height:100%"></span><em>28</em></div></div>
-</div>
+<main>
+  <section class="view" id="view-list">
+    <div class="controls"><input id="q" type="search" placeholder="搜索标题，例如：退课 / 四六级 / 推免" enterkeyhint="search"></div>
+    <div class="chips" id="chips"></div>
+    <div id="list"></div>
+  </section>
 
-<div class="card">
-  <h3>按来源统计</h3>
-  <div class="src"><span class="src-name">数学科学学院·教务公告</span><span class="src-bar"><i style="width:100%"></i></span><b>15</b></div><div class="src"><span class="src-name">教务处·学生事务公告</span><span class="src-bar"><i style="width:87%"></i></span><b>13</b></div><div class="src"><span class="src-name">数学科学学院·学生工作</span><span class="src-bar"><i style="width:40%"></i></span><b>6</b></div><div class="src"><span class="src-name">教务处·重要公告</span><span class="src-bar"><i style="width:27%"></i></span><b>4</b></div><div class="src"><span class="src-name">新闻网·公告</span><span class="src-bar"><i style="width:20%"></i></span><b>3</b></div>
-</div>
+  <section class="view card" id="view-stats" hidden>
+    <h3>最近 14 天发现量</h3>
+    <div class="trend" id="trend"></div>
+    <div style="height:18px"></div>
+    <h3>按来源统计</h3>
+    <div id="sources"></div>
+  </section>
 
-<div class="controls">
-  <input id="q" type="search" placeholder="搜索标题关键词，例如：退课 / 四六级 / 推免">
-  <button class="chip active" data-source="all">全部 <b>41</b></button><button class="chip" data-source="math-jwgg">数学科学学院·教务公告 <b>15</b></button><button class="chip" data-source="jwc-student">教务处·学生事务公告 <b>13</b></button><button class="chip" data-source="math-xsgz">数学科学学院·学生工作 <b>6</b></button><button class="chip" data-source="jwc-important">教务处·重要公告 <b>4</b></button><button class="chip" data-source="news-notice">新闻网·公告 <b>3</b></button>
-</div>
-<p class="hint">当前显示 <b id="count">41</b> 条（共 41 条在归档里）</p>
+  <section class="view card about" id="view-about" hidden>
+    <h3>关于这个应用</h3>
+    <p>它把学校官网的通知自动抓下来、按关键词过滤、归档成可检索的列表 —— <b>只抓公开页面，不登录、不存储个人信息</b>。</p>
+    <p><b>装到手机上：</b>Android 的 Chrome 打开菜单选 <span class="kbd">安装应用 / 添加到主屏幕</span>；iPhone 的 Safari 点 <span class="kbd">分享</span> → <span class="kbd">添加到主屏幕</span>。装好后离线也能翻已缓存的通知。</p>
+    <p><b>收藏与已读只存在你这台设备</b>（localStorage），不会上传；清浏览器数据会一起清掉。</p>
+    <p>数据由 <a href="https://github.com/Yang-Yin734/notice-radar">notice-radar</a> 定时抓取并提交到仓库。站点结构变更可能导致漏抓，<b>请以学校官网原文为准</b>。</p>
+    <p id="meta-line"></p>
+  </section>
+</main>
 
-<section class="group"><h2>2026-09-25<span class="n">1 条</span></h2><ul><li class="item" data-source="news-notice" data-text="学者论坛：超导百年：材料、强关联机理与 ai 逆向设计 学术 新闻网·公告">
-  <div class="meta"><span class="from">新闻网·公告</span><span class="host">news.uestc.edu.cn</span></div>
-  <a class="title" href="https://news.uestc.edu.cn/info/1015/43921.htm" target="_blank" rel="noreferrer"><span class="tag" style="--c:#0b7285">学术</span>学者论坛：超导百年：材料、强关联机理与 AI 逆向设计</a>
-</li></ul></section>
-<section class="group"><h2>2026-09-24<span class="n">1 条</span></h2><ul><li class="item" data-source="news-notice" data-text="名师讲堂：geometry, mesh, and higher-order finite elements 学术 新闻网·公告">
-  <div class="meta"><span class="from">新闻网·公告</span><span class="host">news.uestc.edu.cn</span></div>
-  <a class="title" href="https://news.uestc.edu.cn/info/1015/43893.htm" target="_blank" rel="noreferrer"><span class="tag" style="--c:#0b7285">学术</span>名师讲堂：Geometry, Mesh, and Higher-Order Finite Elements</a>
-</li></ul></section>
-<section class="group"><h2>2026-09-22<span class="n">1 条</span></h2><ul><li class="item" data-source="news-notice" data-text="成电讲坛 | the human edge — why the world needs you more than ever 人之优势 —— 为何世界比以往更需要你 学术 新闻网·公告">
-  <div class="meta"><span class="from">新闻网·公告</span><span class="host">news.uestc.edu.cn</span></div>
-  <a class="title" href="https://news.uestc.edu.cn/info/1015/43797.htm" target="_blank" rel="noreferrer"><span class="tag" style="--c:#0b7285">学术</span>成电讲坛 | The Human Edge — Why the World Needs You More Than Ever 人之优势 —— 为何世界比以往更需要你</a>
-</li></ul></section>
-<section class="group"><h2>2026-09-20<span class="n">1 条</span></h2><ul><li class="item" data-source="math-xsgz" data-text="数学科学学院关于2026年研究生国家奖学金评定的通知  数学科学学院·学生工作">
-  <div class="meta"><span class="from">数学科学学院·学生工作</span><span class="host">www.math.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.math.uestc.edu.cn/info/1044/10270.htm" target="_blank" rel="noreferrer">数学科学学院关于2026年研究生国家奖学金评定的通知</a>
-</li></ul></section>
-<section class="group"><h2>2026-09-17<span class="n">1 条</span></h2><ul><li class="item" data-source="math-xsgz" data-text="数学科学学院关于2026-2027学年研究生学业奖学金评定的通知  数学科学学院·学生工作">
-  <div class="meta"><span class="from">数学科学学院·学生工作</span><span class="host">www.math.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.math.uestc.edu.cn/info/1044/10258.htm" target="_blank" rel="noreferrer">数学科学学院关于2026-2027学年研究生学业奖学金评定的通知</a>
-</li></ul></section>
-<section class="group"><h2>2026-09-03<span class="n">1 条</span></h2><ul><li class="item" data-source="math-jwgg" data-text="数学科学学院2027届优秀应届本科毕业生推免生工作实施细则  数学科学学院·教务公告">
-  <div class="meta"><span class="from">数学科学学院·教务公告</span><span class="host">www.math.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.math.uestc.edu.cn/info/1043/10200.htm" target="_blank" rel="noreferrer">数学科学学院2027届优秀应届本科毕业生推免生工作实施细则</a>
-</li></ul></section>
-<section class="group"><h2>2026-09-02<span class="n">1 条</span></h2><ul><li class="item" data-source="jwc-student" data-text="关于2026-2027-1学期本科生退课及补选课的通知 教管 教务处·学生事务公告">
-  <div class="meta"><span class="from">教务处·学生事务公告</span><span class="host">www.jwc.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.jwc.uestc.edu.cn/info/a6c974d61855132589f852b5ad5ff97c" target="_blank" rel="noreferrer"><span class="tag" style="--c:#1c7ed6">教管</span>关于2026-2027-1学期本科生退课及补选课的通知</a>
-</li></ul></section>
-<section class="group"><h2>2026-08-27<span class="n">3 条</span></h2><ul><li class="item" data-source="jwc-student" data-text="关于本学期学生证、火车票优惠卡（含2026级新生）办理工作的通知 教管 教务处·学生事务公告">
-  <div class="meta"><span class="from">教务处·学生事务公告</span><span class="host">www.jwc.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.jwc.uestc.edu.cn/info/8e1791da4a9163bc0e3650838dab7f60" target="_blank" rel="noreferrer"><span class="tag" style="--c:#1c7ed6">教管</span>关于本学期学生证、火车票优惠卡（含2026级新生）办理工作的通知</a>
-</li>
-<li class="item" data-source="math-jwgg" data-text="数学科学学院关于聘任2026-2027-1学期研究生助教（本科课程）的通知  数学科学学院·教务公告">
-  <div class="meta"><span class="from">数学科学学院·教务公告</span><span class="host">www.math.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.math.uestc.edu.cn/info/1043/10185.htm" target="_blank" rel="noreferrer">数学科学学院关于聘任2026-2027-1学期研究生助教（本科课程）的通知</a>
-</li>
-<li class="item" data-source="math-xsgz" data-text="“华为杯” 第二十三届中国研究生数学建模竞赛参赛通知（电子科技大学）  数学科学学院·学生工作">
-  <div class="meta"><span class="from">数学科学学院·学生工作</span><span class="host">www.math.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.math.uestc.edu.cn/info/1044/10184.htm" target="_blank" rel="noreferrer">“华为杯” 第二十三届中国研究生数学建模竞赛参赛通知（电子科技大学）</a>
-</li></ul></section>
-<section class="group"><h2>2026-07-13<span class="n">2 条</span></h2><ul><li class="item" data-source="jwc-student" data-text="关于2026-2027-1学期重新学习报名相关工作的通知 教管 教务处·学生事务公告">
-  <div class="meta"><span class="from">教务处·学生事务公告</span><span class="host">www.jwc.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.jwc.uestc.edu.cn/info/aa14c951d48ad5eb4696ca85accea85a" target="_blank" rel="noreferrer"><span class="tag" style="--c:#1c7ed6">教管</span>关于2026-2027-1学期重新学习报名相关工作的通知</a>
-</li>
-<li class="item" data-source="jwc-student" data-text="关于大面积课程开学缓补考安排的通知 考试 教务处·学生事务公告">
-  <div class="meta"><span class="from">教务处·学生事务公告</span><span class="host">www.jwc.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.jwc.uestc.edu.cn/info/a774817870dc5a53b3a3b1069f2f2d08" target="_blank" rel="noreferrer"><span class="tag" style="--c:#e8590c">考试</span>关于大面积课程开学缓补考安排的通知</a>
-</li></ul></section>
-<section class="group"><h2>2026-07-03<span class="n">1 条</span></h2><ul><li class="item" data-source="math-jwgg" data-text="数学科学学院2026-2027-1学期免听免修课程清单  数学科学学院·教务公告">
-  <div class="meta"><span class="from">数学科学学院·教务公告</span><span class="host">www.math.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.math.uestc.edu.cn/info/1043/10089.htm" target="_blank" rel="noreferrer">数学科学学院2026-2027-1学期免听免修课程清单</a>
-</li></ul></section>
-<section class="group"><h2>2026-06-17<span class="n">1 条</span></h2><ul><li class="item" data-source="jwc-student" data-text="关于2026-2027-1学期本科生选课工作的通知 教管 教务处·学生事务公告">
-  <div class="meta"><span class="from">教务处·学生事务公告</span><span class="host">www.jwc.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.jwc.uestc.edu.cn/info/926bb11d748e2d10925297371c13e14c" target="_blank" rel="noreferrer"><span class="tag" style="--c:#1c7ed6">教管</span>关于2026-2027-1学期本科生选课工作的通知</a>
-</li></ul></section>
-<section class="group"><h2>2026-06-04<span class="n">1 条</span></h2><ul><li class="item" data-source="math-jwgg" data-text="关于2025-2026-2学期举办“微积分ii疑难分析讲座（三）”的通知  数学科学学院·教务公告">
-  <div class="meta"><span class="from">数学科学学院·教务公告</span><span class="host">www.math.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.math.uestc.edu.cn/info/1043/10028.htm" target="_blank" rel="noreferrer">关于2025-2026-2学期举办“微积分II疑难分析讲座（三）”的通知</a>
-</li></ul></section>
-<section class="group"><h2>2026-06-01<span class="n">3 条</span></h2><ul><li class="item" data-source="jwc-student" data-text="关于本学期大面积课程期末及重新学习考试安排的通知 考试 教务处·学生事务公告">
-  <div class="meta"><span class="from">教务处·学生事务公告</span><span class="host">www.jwc.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.jwc.uestc.edu.cn/info/93308ee8d7982f4970482f0551a6b9d9" target="_blank" rel="noreferrer"><span class="tag" style="--c:#e8590c">考试</span>关于本学期大面积课程期末及重新学习考试安排的通知</a>
-</li>
-<li class="item" data-source="math-jwgg" data-text="数学科学学院2026年本科生荣誉计划（荣誉学位）证书审核情况公示  数学科学学院·教务公告">
-  <div class="meta"><span class="from">数学科学学院·教务公告</span><span class="host">www.math.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.math.uestc.edu.cn/info/1043/10008.htm" target="_blank" rel="noreferrer">数学科学学院2026年本科生荣誉计划（荣誉学位）证书审核情况公示</a>
-</li>
-<li class="item" data-source="math-xsgz" data-text="2026年毕业生奖励名单公示  数学科学学院·学生工作">
-  <div class="meta"><span class="from">数学科学学院·学生工作</span><span class="host">www.math.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.math.uestc.edu.cn/info/1044/10018.htm" target="_blank" rel="noreferrer">2026年毕业生奖励名单公示</a>
-</li></ul></section>
-<section class="group"><h2>2026-05-20<span class="n">1 条</span></h2><ul><li class="item" data-source="math-jwgg" data-text="关于公布数学科学学院2027届推免工作智育成绩计算细则和科创成果类加分细则的通知  数学科学学院·教务公告">
-  <div class="meta"><span class="from">数学科学学院·教务公告</span><span class="host">www.math.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.math.uestc.edu.cn/info/1043/9968.htm" target="_blank" rel="noreferrer">关于公布数学科学学院2027届推免工作智育成绩计算细则和科创成果类加分细则的通知</a>
-</li></ul></section>
-<section class="group"><h2>2026-05-14<span class="n">1 条</span></h2><ul><li class="item" data-source="math-jwgg" data-text="关于2025-2026-2学期举办“微积分ii疑难分析讲座（二）”的通知  数学科学学院·教务公告">
-  <div class="meta"><span class="from">数学科学学院·教务公告</span><span class="host">www.math.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.math.uestc.edu.cn/info/1043/9963.htm" target="_blank" rel="noreferrer">关于2025-2026-2学期举办“微积分II疑难分析讲座（二）”的通知</a>
-</li></ul></section>
-<section class="group"><h2>2026-05-09<span class="n">1 条</span></h2><ul><li class="item" data-source="math-jwgg" data-text="关于数学科学学院2022级本科生毕业设计（论文）答辩及后期工作的通知  数学科学学院·教务公告">
-  <div class="meta"><span class="from">数学科学学院·教务公告</span><span class="host">www.math.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.math.uestc.edu.cn/info/1043/9947.htm" target="_blank" rel="noreferrer">关于数学科学学院2022级本科生毕业设计（论文）答辩及后期工作的通知</a>
-</li></ul></section>
-<section class="group"><h2>2026-05-08<span class="n">1 条</span></h2><ul><li class="item" data-source="jwc-student" data-text="关于第八届中关村百校联盟人才创客大赛参赛报名的通知 实践 教务处·学生事务公告">
-  <div class="meta"><span class="from">教务处·学生事务公告</span><span class="host">www.jwc.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.jwc.uestc.edu.cn/info/bcf98d2126e5ae10442c6fc301cbf612" target="_blank" rel="noreferrer"><span class="tag" style="--c:#7048e8">实践</span>关于第八届中关村百校联盟人才创客大赛参赛报名的通知</a>
-</li></ul></section>
-<section class="group"><h2>2026-04-30<span class="n">1 条</span></h2><ul><li class="item" data-source="math-jwgg" data-text="2026年电子科技大学第二十六届数学建模竞赛通知  数学科学学院·教务公告">
-  <div class="meta"><span class="from">数学科学学院·教务公告</span><span class="host">www.math.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.math.uestc.edu.cn/info/1043/9932.htm" target="_blank" rel="noreferrer">2026年电子科技大学第二十六届数学建模竞赛通知</a>
-</li></ul></section>
-<section class="group"><h2>2026-04-27<span class="n">1 条</span></h2><ul><li class="item" data-source="jwc-student" data-text="关于2025-2026-2学期中期退课及补选课的通知 教管 教务处·学生事务公告">
-  <div class="meta"><span class="from">教务处·学生事务公告</span><span class="host">www.jwc.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.jwc.uestc.edu.cn/info/f6566f91bad43401f78af8062c67650b" target="_blank" rel="noreferrer"><span class="tag" style="--c:#1c7ed6">教管</span>关于2025-2026-2学期中期退课及补选课的通知</a>
-</li></ul></section>
-<section class="group"><h2>2026-04-21<span class="n">1 条</span></h2><ul><li class="item" data-source="math-jwgg" data-text="关于2025-2026-2学期举办“微积分ii疑难分析讲座（一）”的通知  数学科学学院·教务公告">
-  <div class="meta"><span class="from">数学科学学院·教务公告</span><span class="host">www.math.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.math.uestc.edu.cn/info/1043/9902.htm" target="_blank" rel="noreferrer">关于2025-2026-2学期举办“微积分II疑难分析讲座（一）”的通知</a>
-</li></ul></section>
-<section class="group"><h2>2026-04-10<span class="n">1 条</span></h2><ul><li class="item" data-source="math-xsgz" data-text="关于开展2025年度电子科技大学研究生“优秀竞赛团队”奖评选的通知  数学科学学院·学生工作">
-  <div class="meta"><span class="from">数学科学学院·学生工作</span><span class="host">www.math.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.math.uestc.edu.cn/info/1044/9870.htm" target="_blank" rel="noreferrer">关于开展2025年度电子科技大学研究生“优秀竞赛团队”奖评选的通知</a>
-</li></ul></section>
-<section class="group"><h2>2026-03-31<span class="n">1 条</span></h2><ul><li class="item" data-source="jwc-student" data-text="关于本学期大面积课程期中考试安排的通知 考试 教务处·学生事务公告">
-  <div class="meta"><span class="from">教务处·学生事务公告</span><span class="host">www.jwc.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.jwc.uestc.edu.cn/info/78ca81c2549659a4eac4ee66e6886e62" target="_blank" rel="noreferrer"><span class="tag" style="--c:#e8590c">考试</span>关于本学期大面积课程期中考试安排的通知</a>
-</li></ul></section>
-<section class="group"><h2>2026-03-23<span class="n">1 条</span></h2><ul><li class="item" data-source="math-jwgg" data-text="关于数学科学学院2022级本科毕业设计中期检查的通知  数学科学学院·教务公告">
-  <div class="meta"><span class="from">数学科学学院·教务公告</span><span class="host">www.math.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.math.uestc.edu.cn/info/1043/9785.htm" target="_blank" rel="noreferrer">关于数学科学学院2022级本科毕业设计中期检查的通知</a>
-</li></ul></section>
-<section class="group"><h2>2026-03-03<span class="n">1 条</span></h2><ul><li class="item" data-source="jwc-student" data-text="关于2025-2026-2学期本科生退课及补选课的通知 教管 教务处·学生事务公告">
-  <div class="meta"><span class="from">教务处·学生事务公告</span><span class="host">www.jwc.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.jwc.uestc.edu.cn/info/88739ad2e71ea13a536229dc7071f6f6" target="_blank" rel="noreferrer"><span class="tag" style="--c:#1c7ed6">教管</span>关于2025-2026-2学期本科生退课及补选课的通知</a>
-</li></ul></section>
-<section class="group"><h2>2026-02-27<span class="n">1 条</span></h2><ul><li class="item" data-source="jwc-student" data-text="关于本学期学生证、火车票优惠卡办理工作的通知 教管 教务处·学生事务公告">
-  <div class="meta"><span class="from">教务处·学生事务公告</span><span class="host">www.jwc.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.jwc.uestc.edu.cn/info/1d560d774f3632eeaee186eafb800c03" target="_blank" rel="noreferrer"><span class="tag" style="--c:#1c7ed6">教管</span>关于本学期学生证、火车票优惠卡办理工作的通知</a>
-</li></ul></section>
-<section class="group"><h2>2026-02-26<span class="n">2 条</span></h2><ul><li class="item" data-source="jwc-student" data-text="关于2025-2026-2学期重新学习报名相关工作的通知 学生事务公告 教务处·学生事务公告">
-  <div class="meta"><span class="from">教务处·学生事务公告</span><span class="host">www.jwc.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.jwc.uestc.edu.cn/info/3818952895a3cd0f3b5f92b7e5d316ad" target="_blank" rel="noreferrer"><span class="tag" style="--c:#2f9e44">学生事务公告</span>关于2025-2026-2学期重新学习报名相关工作的通知</a>
-</li>
-<li class="item" data-source="math-jwgg" data-text="数学科学学院关于聘任2025-2026-2学期研究生助教（本科课程）的通知  数学科学学院·教务公告">
-  <div class="meta"><span class="from">数学科学学院·教务公告</span><span class="host">www.math.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.math.uestc.edu.cn/info/1043/9739.htm" target="_blank" rel="noreferrer">数学科学学院关于聘任2025-2026-2学期研究生助教（本科课程）的通知</a>
-</li></ul></section>
-<section class="group"><h2>2026-01-20<span class="n">1 条</span></h2><ul><li class="item" data-source="jwc-student" data-text="关于大面积课程开学缓补考安排的通知 考试 教务处·学生事务公告">
-  <div class="meta"><span class="from">教务处·学生事务公告</span><span class="host">www.jwc.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.jwc.uestc.edu.cn/info/30d196608fe3a20ae08ada0b22a573a4" target="_blank" rel="noreferrer"><span class="tag" style="--c:#e8590c">考试</span>关于大面积课程开学缓补考安排的通知</a>
-</li></ul></section>
-<section class="group"><h2>2026-01-13<span class="n">1 条</span></h2><ul><li class="item" data-source="math-xsgz" data-text="数学科学学院2026年研究生奖学金（国家、学业）评定实施细则公布  数学科学学院·学生工作">
-  <div class="meta"><span class="from">数学科学学院·学生工作</span><span class="host">www.math.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.math.uestc.edu.cn/info/1044/9693.htm" target="_blank" rel="noreferrer">数学科学学院2026年研究生奖学金（国家、学业）评定实施细则公布</a>
-</li></ul></section>
-<section class="group"><h2>2026-01-08<span class="n">1 条</span></h2><ul><li class="item" data-source="math-jwgg" data-text="数学科学学院2025-2026-2学期免听免修课程清单  数学科学学院·教务公告">
-  <div class="meta"><span class="from">数学科学学院·教务公告</span><span class="host">www.math.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.math.uestc.edu.cn/info/1043/9688.htm" target="_blank" rel="noreferrer">数学科学学院2025-2026-2学期免听免修课程清单</a>
-</li></ul></section>
-<section class="group"><h2>2025-12-26<span class="n">1 条</span></h2><ul><li class="item" data-source="math-jwgg" data-text="关于数学科学学院2022级本科毕业设计初期检查的通知  数学科学学院·教务公告">
-  <div class="meta"><span class="from">数学科学学院·教务公告</span><span class="host">www.math.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.math.uestc.edu.cn/info/1043/9658.htm" target="_blank" rel="noreferrer">关于数学科学学院2022级本科毕业设计初期检查的通知</a>
-</li></ul></section>
-<section class="group"><h2>2025-12-24<span class="n">1 条</span></h2><ul><li class="item" data-source="math-jwgg" data-text="关于举办2025-2026-1学期“线性代数与空间解析几何疑难分析讲座（三）”的通知  数学科学学院·教务公告">
-  <div class="meta"><span class="from">数学科学学院·教务公告</span><span class="host">www.math.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.math.uestc.edu.cn/info/1043/9654.htm" target="_blank" rel="noreferrer">关于举办2025-2026-1学期“线性代数与空间解析几何疑难分析讲座（三）”的通知</a>
-</li></ul></section>
-<section class="group"><h2>2024-12-17<span class="n">1 条</span></h2><ul><li class="item" data-source="jwc-important" data-text="关于2024-2025-2学期本科生选课工作的通知 教管 教务处·重要公告">
-  <div class="meta"><span class="from">教务处·重要公告</span><span class="host">www.jwc.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.jwc.uestc.edu.cn/info/a47aeba515a6f801e469f62ef0f08569" target="_blank" rel="noreferrer"><span class="tag" style="--c:#1c7ed6">教管</span>关于2024-2025-2学期本科生选课工作的通知</a>
-</li></ul></section>
-<section class="group"><h2>2024-07-17<span class="n">1 条</span></h2><ul><li class="item" data-source="jwc-important" data-text="关于大面积课程开学缓补考安排的通知 考试 教务处·重要公告">
-  <div class="meta"><span class="from">教务处·重要公告</span><span class="host">www.jwc.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.jwc.uestc.edu.cn/info/628d16a7ceee724d8a19607bc800241c" target="_blank" rel="noreferrer"><span class="tag" style="--c:#e8590c">考试</span>关于大面积课程开学缓补考安排的通知</a>
-</li></ul></section>
-<section class="group"><h2>2024-07-16<span class="n">1 条</span></h2><ul><li class="item" data-source="jwc-important" data-text="关于2024-2025-1学期重新学习报名相关工作的通知 教管 教务处·重要公告">
-  <div class="meta"><span class="from">教务处·重要公告</span><span class="host">www.jwc.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.jwc.uestc.edu.cn/info/14e456d1b1c7339202d69b3c19c1d7bf" target="_blank" rel="noreferrer"><span class="tag" style="--c:#1c7ed6">教管</span>关于2024-2025-1学期重新学习报名相关工作的通知</a>
-</li></ul></section>
-<section class="group"><h2>2024-05-16<span class="n">1 条</span></h2><ul><li class="item" data-source="jwc-important" data-text="关于开展2023届本科毕业生培养质量问卷调查的通知 学生事务公告 教务处·重要公告">
-  <div class="meta"><span class="from">教务处·重要公告</span><span class="host">www.jwc.uestc.edu.cn</span></div>
-  <a class="title" href="https://www.jwc.uestc.edu.cn/info/4d209efc9ffb943b0103f6a166408f3f" target="_blank" rel="noreferrer"><span class="tag" style="--c:#2f9e44">学生事务公告</span>关于开展2023届本科毕业生培养质量问卷调查的通知</a>
-</li></ul></section>
+<nav class="tabbar" id="tabbar">
+  <button data-view="list" data-filter="all" class="active"><span class="dot"></span>通知 <span class="badge" id="badge-unread" hidden></span></button>
+  <button data-view="list" data-filter="fav"><span class="dot"></span>收藏 <span class="badge" id="badge-fav" hidden></span></button>
+  <button data-view="stats"><span class="dot"></span>统计</button>
+  <button data-view="about"><span class="dot"></span>关于</button>
+</nav>
 
-<footer>
-  由 <a href="https://github.com/Yang-Yin734/notice-radar">notice-radar</a> 自动生成 ·
-  只抓公开页面 · 不登录 · 不存储个人信息 ·
-  站点结构变更可能导致漏抓，请以学校官网原文为准
-</footer>
+<div class="toast" id="toast"></div>
 
-</div>
+<script id="bootstrap" type="application/json">{"generatedAt":"2026-09-28T12:18:44.490Z","title":"校园通知雷达","repoUrl":"https://github.com/Yang-Yin734/notice-radar","dataPath":"dashboard-data.json","total":41,"bySource":[{"sourceId":"math-jwgg","sourceName":"数学科学学院·教务公告","count":15},{"sourceId":"jwc-student","sourceName":"教务处·学生事务公告","count":13},{"sourceId":"math-xsgz","sourceName":"数学科学学院·学生工作","count":6},{"sourceId":"jwc-important","sourceName":"教务处·重要公告","count":4},{"sourceId":"news-notice","sourceName":"新闻网·公告","count":3}],"items":[{"id":"8f9c670f22bec8f3","sourceId":"news-notice","sourceName":"新闻网·公告","school":"uestc","title":"学者论坛：超导百年：材料、强关联机理与 AI 逆向设计","url":"https://news.uestc.edu.cn/info/1015/43921.htm","date":"2026-09-25","tag":"学术","alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"24cd74c243c20b98","sourceId":"news-notice","sourceName":"新闻网·公告","school":"uestc","title":"名师讲堂：Geometry, Mesh, and Higher-Order Finite Elements","url":"https://news.uestc.edu.cn/info/1015/43893.htm","date":"2026-09-24","tag":"学术","alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"6a460cf85bc22591","sourceId":"news-notice","sourceName":"新闻网·公告","school":"uestc","title":"成电讲坛 | The Human Edge — Why the World Needs You More Than Ever 人之优势 —— 为何世界比以往更需要你","url":"https://news.uestc.edu.cn/info/1015/43797.htm","date":"2026-09-22","tag":"学术","alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"bd3c0b61318d2d89","sourceId":"math-xsgz","sourceName":"数学科学学院·学生工作","school":"uestc","title":"数学科学学院关于2026年研究生国家奖学金评定的通知","url":"https://www.math.uestc.edu.cn/info/1044/10270.htm","date":"2026-09-20","tag":null,"alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"e5e900ae1b07e121","sourceId":"math-xsgz","sourceName":"数学科学学院·学生工作","school":"uestc","title":"数学科学学院关于2026-2027学年研究生学业奖学金评定的通知","url":"https://www.math.uestc.edu.cn/info/1044/10258.htm","date":"2026-09-17","tag":null,"alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"c52fd4f6c243e1c6","sourceId":"math-jwgg","sourceName":"数学科学学院·教务公告","school":"uestc","title":"数学科学学院2027届优秀应届本科毕业生推免生工作实施细则","url":"https://www.math.uestc.edu.cn/info/1043/10200.htm","date":"2026-09-03","tag":null,"alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"46e2a04970a512bc","sourceId":"jwc-student","sourceName":"教务处·学生事务公告","school":"uestc","title":"关于2026-2027-1学期本科生退课及补选课的通知","url":"https://www.jwc.uestc.edu.cn/info/a6c974d61855132589f852b5ad5ff97c","date":"2026-09-02","tag":"教管","alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"0c5f024343c65473","sourceId":"jwc-student","sourceName":"教务处·学生事务公告","school":"uestc","title":"关于本学期学生证、火车票优惠卡（含2026级新生）办理工作的通知","url":"https://www.jwc.uestc.edu.cn/info/8e1791da4a9163bc0e3650838dab7f60","date":"2026-08-27","tag":"教管","alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"4db7477301ea670c","sourceId":"math-jwgg","sourceName":"数学科学学院·教务公告","school":"uestc","title":"数学科学学院关于聘任2026-2027-1学期研究生助教（本科课程）的通知","url":"https://www.math.uestc.edu.cn/info/1043/10185.htm","date":"2026-08-27","tag":null,"alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"b7c7254df1596f24","sourceId":"math-xsgz","sourceName":"数学科学学院·学生工作","school":"uestc","title":"“华为杯” 第二十三届中国研究生数学建模竞赛参赛通知（电子科技大学）","url":"https://www.math.uestc.edu.cn/info/1044/10184.htm","date":"2026-08-27","tag":null,"alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"5c97fb7c21e12ef0","sourceId":"jwc-student","sourceName":"教务处·学生事务公告","school":"uestc","title":"关于2026-2027-1学期重新学习报名相关工作的通知","url":"https://www.jwc.uestc.edu.cn/info/aa14c951d48ad5eb4696ca85accea85a","date":"2026-07-13","tag":"教管","alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"fd3d8c4ec14eac8f","sourceId":"jwc-student","sourceName":"教务处·学生事务公告","school":"uestc","title":"关于大面积课程开学缓补考安排的通知","url":"https://www.jwc.uestc.edu.cn/info/a774817870dc5a53b3a3b1069f2f2d08","date":"2026-07-13","tag":"考试","alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"33731e865f7069a2","sourceId":"math-jwgg","sourceName":"数学科学学院·教务公告","school":"uestc","title":"数学科学学院2026-2027-1学期免听免修课程清单","url":"https://www.math.uestc.edu.cn/info/1043/10089.htm","date":"2026-07-03","tag":null,"alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"d675c2a22e5102c0","sourceId":"jwc-student","sourceName":"教务处·学生事务公告","school":"uestc","title":"关于2026-2027-1学期本科生选课工作的通知","url":"https://www.jwc.uestc.edu.cn/info/926bb11d748e2d10925297371c13e14c","date":"2026-06-17","tag":"教管","alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"e261030a4dcfdc4c","sourceId":"math-jwgg","sourceName":"数学科学学院·教务公告","school":"uestc","title":"关于2025-2026-2学期举办“微积分II疑难分析讲座（三）”的通知","url":"https://www.math.uestc.edu.cn/info/1043/10028.htm","date":"2026-06-04","tag":null,"alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"d25dcb85a19fe41e","sourceId":"jwc-student","sourceName":"教务处·学生事务公告","school":"uestc","title":"关于本学期大面积课程期末及重新学习考试安排的通知","url":"https://www.jwc.uestc.edu.cn/info/93308ee8d7982f4970482f0551a6b9d9","date":"2026-06-01","tag":"考试","alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"85042fb56925a3eb","sourceId":"math-jwgg","sourceName":"数学科学学院·教务公告","school":"uestc","title":"数学科学学院2026年本科生荣誉计划（荣誉学位）证书审核情况公示","url":"https://www.math.uestc.edu.cn/info/1043/10008.htm","date":"2026-06-01","tag":null,"alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"b3a3d67d56d8020c","sourceId":"math-xsgz","sourceName":"数学科学学院·学生工作","school":"uestc","title":"2026年毕业生奖励名单公示","url":"https://www.math.uestc.edu.cn/info/1044/10018.htm","date":"2026-06-01","tag":null,"alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"f2e566fb928b84cc","sourceId":"math-jwgg","sourceName":"数学科学学院·教务公告","school":"uestc","title":"关于公布数学科学学院2027届推免工作智育成绩计算细则和科创成果类加分细则的通知","url":"https://www.math.uestc.edu.cn/info/1043/9968.htm","date":"2026-05-20","tag":null,"alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"33d9f2f8cefe3ffb","sourceId":"math-jwgg","sourceName":"数学科学学院·教务公告","school":"uestc","title":"关于2025-2026-2学期举办“微积分II疑难分析讲座（二）”的通知","url":"https://www.math.uestc.edu.cn/info/1043/9963.htm","date":"2026-05-14","tag":null,"alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"09604b68b9b2a015","sourceId":"math-jwgg","sourceName":"数学科学学院·教务公告","school":"uestc","title":"关于数学科学学院2022级本科生毕业设计（论文）答辩及后期工作的通知","url":"https://www.math.uestc.edu.cn/info/1043/9947.htm","date":"2026-05-09","tag":null,"alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"cf91ea89165f9f33","sourceId":"jwc-student","sourceName":"教务处·学生事务公告","school":"uestc","title":"关于第八届中关村百校联盟人才创客大赛参赛报名的通知","url":"https://www.jwc.uestc.edu.cn/info/bcf98d2126e5ae10442c6fc301cbf612","date":"2026-05-08","tag":"实践","alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"dc7d5f7f1c5efbf1","sourceId":"math-jwgg","sourceName":"数学科学学院·教务公告","school":"uestc","title":"2026年电子科技大学第二十六届数学建模竞赛通知","url":"https://www.math.uestc.edu.cn/info/1043/9932.htm","date":"2026-04-30","tag":null,"alsoIn":["数学科学学院·学生工作"],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"f95b3426d1dc2187","sourceId":"jwc-student","sourceName":"教务处·学生事务公告","school":"uestc","title":"关于2025-2026-2学期中期退课及补选课的通知","url":"https://www.jwc.uestc.edu.cn/info/f6566f91bad43401f78af8062c67650b","date":"2026-04-27","tag":"教管","alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"ea6a437842b5d7d7","sourceId":"math-jwgg","sourceName":"数学科学学院·教务公告","school":"uestc","title":"关于2025-2026-2学期举办“微积分II疑难分析讲座（一）”的通知","url":"https://www.math.uestc.edu.cn/info/1043/9902.htm","date":"2026-04-21","tag":null,"alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"3154449738138c1b","sourceId":"math-xsgz","sourceName":"数学科学学院·学生工作","school":"uestc","title":"关于开展2025年度电子科技大学研究生“优秀竞赛团队”奖评选的通知","url":"https://www.math.uestc.edu.cn/info/1044/9870.htm","date":"2026-04-10","tag":null,"alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"e7dba21c5a50d4d9","sourceId":"jwc-student","sourceName":"教务处·学生事务公告","school":"uestc","title":"关于本学期大面积课程期中考试安排的通知","url":"https://www.jwc.uestc.edu.cn/info/78ca81c2549659a4eac4ee66e6886e62","date":"2026-03-31","tag":"考试","alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"7611db9a25a1a48c","sourceId":"math-jwgg","sourceName":"数学科学学院·教务公告","school":"uestc","title":"关于数学科学学院2022级本科毕业设计中期检查的通知","url":"https://www.math.uestc.edu.cn/info/1043/9785.htm","date":"2026-03-23","tag":null,"alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"ae03a633e819626e","sourceId":"jwc-student","sourceName":"教务处·学生事务公告","school":"uestc","title":"关于2025-2026-2学期本科生退课及补选课的通知","url":"https://www.jwc.uestc.edu.cn/info/88739ad2e71ea13a536229dc7071f6f6","date":"2026-03-03","tag":"教管","alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"ed1e7a3799841756","sourceId":"jwc-student","sourceName":"教务处·学生事务公告","school":"uestc","title":"关于本学期学生证、火车票优惠卡办理工作的通知","url":"https://www.jwc.uestc.edu.cn/info/1d560d774f3632eeaee186eafb800c03","date":"2026-02-27","tag":"教管","alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"ec30688fe317b9e9","sourceId":"jwc-student","sourceName":"教务处·学生事务公告","school":"uestc","title":"关于2025-2026-2学期重新学习报名相关工作的通知","url":"https://www.jwc.uestc.edu.cn/info/3818952895a3cd0f3b5f92b7e5d316ad","date":"2026-02-26","tag":"学生事务公告","alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"fbb4660dc2626c95","sourceId":"math-jwgg","sourceName":"数学科学学院·教务公告","school":"uestc","title":"数学科学学院关于聘任2025-2026-2学期研究生助教（本科课程）的通知","url":"https://www.math.uestc.edu.cn/info/1043/9739.htm","date":"2026-02-26","tag":null,"alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"fa4fd9559a3c408e","sourceId":"jwc-student","sourceName":"教务处·学生事务公告","school":"uestc","title":"关于大面积课程开学缓补考安排的通知","url":"https://www.jwc.uestc.edu.cn/info/30d196608fe3a20ae08ada0b22a573a4","date":"2026-01-20","tag":"考试","alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"37e735c6e4c9e45b","sourceId":"math-xsgz","sourceName":"数学科学学院·学生工作","school":"uestc","title":"数学科学学院2026年研究生奖学金（国家、学业）评定实施细则公布","url":"https://www.math.uestc.edu.cn/info/1044/9693.htm","date":"2026-01-13","tag":null,"alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"88c123d07ef3c449","sourceId":"math-jwgg","sourceName":"数学科学学院·教务公告","school":"uestc","title":"数学科学学院2025-2026-2学期免听免修课程清单","url":"https://www.math.uestc.edu.cn/info/1043/9688.htm","date":"2026-01-08","tag":null,"alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"bb6a8dee06b3ca08","sourceId":"math-jwgg","sourceName":"数学科学学院·教务公告","school":"uestc","title":"关于数学科学学院2022级本科毕业设计初期检查的通知","url":"https://www.math.uestc.edu.cn/info/1043/9658.htm","date":"2025-12-26","tag":null,"alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"13e032626bbffc3d","sourceId":"math-jwgg","sourceName":"数学科学学院·教务公告","school":"uestc","title":"关于举办2025-2026-1学期“线性代数与空间解析几何疑难分析讲座（三）”的通知","url":"https://www.math.uestc.edu.cn/info/1043/9654.htm","date":"2025-12-24","tag":null,"alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"5fc43373c222abbd","sourceId":"jwc-important","sourceName":"教务处·重要公告","school":"uestc","title":"关于2024-2025-2学期本科生选课工作的通知","url":"https://www.jwc.uestc.edu.cn/info/a47aeba515a6f801e469f62ef0f08569","date":"2024-12-17","tag":"教管","alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"1a38b516299bdb84","sourceId":"jwc-important","sourceName":"教务处·重要公告","school":"uestc","title":"关于大面积课程开学缓补考安排的通知","url":"https://www.jwc.uestc.edu.cn/info/628d16a7ceee724d8a19607bc800241c","date":"2024-07-17","tag":"考试","alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"9d2b7f5b9282d4fd","sourceId":"jwc-important","sourceName":"教务处·重要公告","school":"uestc","title":"关于2024-2025-1学期重新学习报名相关工作的通知","url":"https://www.jwc.uestc.edu.cn/info/14e456d1b1c7339202d69b3c19c1d7bf","date":"2024-07-16","tag":"教管","alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"},{"id":"e6cfa046f94ff798","sourceId":"jwc-important","sourceName":"教务处·重要公告","school":"uestc","title":"关于开展2023届本科毕业生培养质量问卷调查的通知","url":"https://www.jwc.uestc.edu.cn/info/4d209efc9ffb943b0103f6a166408f3f","date":"2024-05-16","tag":"学生事务公告","alsoIn":[],"firstSeenAt":"2026-09-28T12:00:56.521Z"}]}</script>
 <script>
-  const input = document.getElementById('q');
-  const chips = Array.from(document.querySelectorAll('.chip'));
-  let activeSource = 'all';
-  function apply() {
-    const text = (input.value || '').trim().toLowerCase();
-    let shown = 0;
-    for (const li of document.querySelectorAll('li.item')) {
-      const okSource = activeSource === 'all' || li.dataset.source === activeSource;
-      const okText = !text || (li.dataset.text || '').includes(text);
-      const show = okSource && okText;
-      li.hidden = !show;
-      if (show) shown++;
-    }
-    document.getElementById('count').textContent = String(shown);
-    for (const group of document.querySelectorAll('section.group')) {
-      const any = Array.from(group.querySelectorAll('li.item')).some((li) => !li.hidden);
-      group.hidden = !any;
-    }
+(function () {
+  var BOOT = JSON.parse(document.getElementById('bootstrap').textContent);
+  var KEY_READ = 'notice-radar:read', KEY_FAV = 'notice-radar:fav', KEY_THEME = 'notice-radar:theme';
+  var state = {
+    items: BOOT.items.slice(), view: 'list', filter: 'all', source: 'all', query: '',
+    read: new Set(lsRead(KEY_READ)), fav: new Set(lsRead(KEY_FAV))
+  };
+
+  function lsRead(key) { try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch (e) { return []; } }
+  function lsWrite(key, arr) { try { localStorage.setItem(key, JSON.stringify(arr)); } catch (e) {} }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+    return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]; }); }
+  function host(url) { try { return new URL(url).host; } catch (e) { return ''; } }
+  function tagColor(tag) {
+    if (!tag) return '#495057';
+    if (/考试|补考|缓考/.test(tag)) return '#e8590c';
+    if (/教管|教学/.test(tag)) return '#1c7ed6';
+    if (/学生事务/.test(tag)) return '#2f9e44';
+    if (/实践/.test(tag)) return '#7048e8';
+    if (/学术|讲座/.test(tag)) return '#0b7285';
+    return '#495057';
   }
-  input.addEventListener('input', apply);
-  for (const chip of chips) {
-    chip.addEventListener('click', () => {
-      activeSource = chip.dataset.source;
-      for (const c of chips) c.classList.toggle('active', c === chip);
-      apply();
+  function toast(msg) {
+    var el = document.getElementById('toast');
+    el.textContent = msg; el.classList.add('show');
+    setTimeout(function () { el.classList.remove('show'); }, 2200);
+  }
+
+  function visible() {
+    var q = state.query.trim().toLowerCase();
+    return state.items.filter(function (it) {
+      if (state.filter === 'fav' && !state.fav.has(it.id)) return false;
+      if (state.source !== 'all' && it.sourceId !== state.source) return false;
+      if (!q) return true;
+      return (it.title + ' ' + (it.tag || '') + ' ' + it.sourceName).toLowerCase().indexOf(q) >= 0;
     });
   }
+
+  function renderChips() {
+    var counts = {};
+    state.items.forEach(function (it) { counts[it.sourceId] = (counts[it.sourceId] || 0) + 1; });
+    var rows = [['all', '全部', state.items.length]];
+    BOOT.bySource.forEach(function (s) { rows.push([s.sourceId, s.sourceName, counts[s.sourceId] || 0]); });
+    document.getElementById('chips').innerHTML = rows.map(function (r) {
+      return '<button class="chip' + (state.source === r[0] ? ' active' : '') + '" data-source="' + esc(r[0]) + '">' +
+        esc(r[1]) + ' <b>' + r[2] + '</b></button>';
+    }).join('');
+  }
+
+  function renderList() {
+    var items = visible();
+    var box = document.getElementById('list');
+    if (!items.length) {
+      box.innerHTML = '<div class="empty">' + (state.filter === 'fav'
+        ? '还没有收藏。点通知卡片右下角的 ☆ 收藏。' : '没有匹配的通知。') + '</div>';
+      return;
+    }
+    var groups = new Map();
+    items.forEach(function (it) {
+      var day = it.date || '日期未知';
+      if (!groups.has(day)) groups.set(day, []);
+      groups.get(day).push(it);
+    });
+    var html = '';
+    groups.forEach(function (list, day) {
+      html += '<section class="group"><h2>' + esc(day) + '<span class="n">' + list.length + ' 条</span></h2><div class="list">';
+      list.forEach(function (it) {
+        var isRead = state.read.has(it.id), isFav = state.fav.has(it.id);
+        html += '<article class="item ' + (isRead ? 'read' : 'unread') + '">' +
+          '<div class="meta"><span class="from">' + esc(it.sourceName) + '</span><span>' + esc(host(it.url)) + '</span></div>' +
+          '<a class="title" href="' + esc(it.url) + '" target="_blank" rel="noreferrer" data-open="' + esc(it.id) + '">' +
+            (it.tag ? '<span class="tag" style="--c:' + tagColor(it.tag) + '">' + esc(it.tag) + '</span>' : '') + esc(it.title) + '</a>' +
+          '<button class="star' + (isFav ? ' on' : '') + '" data-fav="' + esc(it.id) + '" aria-label="收藏">' + (isFav ? '★' : '☆') + '</button>' +
+        '</article>';
+      });
+      html += '</div></section>';
+    });
+    box.innerHTML = html;
+  }
+
+  function renderStats() {
+    var trend = BOOT.__trend || [];
+    var max = Math.max.apply(null, [1].concat(trend.map(function (t) { return t.count; })));
+    document.getElementById('trend').innerHTML = trend.map(function (t) {
+      return '<div class="bar" title="' + esc(t.day) + '：' + t.count + ' 条"><span style="height:' +
+        Math.round(t.count / max * 100) + '%"></span><em>' + esc(t.day.slice(8)) + '</em></div>';
+    }).join('') || '<div class="empty">还没有数据</div>';
+
+    var maxSrc = Math.max.apply(null, [1].concat(BOOT.bySource.map(function (s) { return s.count; })));
+    document.getElementById('sources').innerHTML = BOOT.bySource.map(function (s) {
+      return '<div class="src"><span class="src-name">' + esc(s.sourceName) + '</span><span class="src-bar"><i style="width:' +
+        Math.round(s.count / maxSrc * 100) + '%"></i></span><b>' + s.count + '</b></div>';
+    }).join('') || '<div class="empty">还没有数据</div>';
+  }
+
+  function renderChrome() {
+    var unread = state.items.filter(function (it) { return !state.read.has(it.id); }).length;
+    document.getElementById('pill').textContent = '共 ' + state.items.length + ' 条 · 未读 ' + unread;
+    var bu = document.getElementById('badge-unread');
+    bu.hidden = unread === 0; bu.textContent = unread > 99 ? '99+' : String(unread);
+    var bf = document.getElementById('badge-fav');
+    bf.hidden = state.fav.size === 0; bf.textContent = String(state.fav.size);
+    document.getElementById('meta-line').textContent =
+      '数据生成时间：' + BOOT.generatedAt.replace('T', ' ').slice(0, 16) + ' UTC · 归档 ' + BOOT.total + ' 条';
+  }
+
+  function showView(view) {
+    state.view = view;
+    document.getElementById('view-list').hidden = view !== 'list';
+    document.getElementById('view-stats').hidden = view !== 'stats';
+    document.getElementById('view-about').hidden = view !== 'about';
+    Array.prototype.forEach.call(document.querySelectorAll('#tabbar button'), function (b) {
+      b.classList.toggle('active', b.dataset.view === view && (view !== 'list' || b.dataset.filter === state.filter));
+    });
+    if (view === 'stats') renderStats();
+  }
+
+  function renderAll() { renderChips(); renderList(); renderChrome(); }
+
+  document.getElementById('q').addEventListener('input', function (e) {
+    state.query = e.target.value; renderList();
+  });
+  document.getElementById('chips').addEventListener('click', function (e) {
+    var chip = e.target.closest('.chip'); if (!chip) return;
+    state.source = chip.dataset.source;
+    if (state.filter === 'fav') state.filter = 'all';
+    renderChips(); renderList(); showView('list');
+  });
+  document.getElementById('list').addEventListener('click', function (e) {
+    var fav = e.target.closest('[data-fav]');
+    if (fav) {
+      var id = fav.dataset.fav;
+      if (state.fav.has(id)) state.fav.delete(id); else state.fav.add(id);
+      lsWrite(KEY_FAV, Array.from(state.fav));
+      renderList(); renderChrome();
+      return;
+    }
+    var open = e.target.closest('[data-open]');
+    if (open) {
+      state.read.add(open.dataset.open);
+      lsWrite(KEY_READ, Array.from(state.read));
+      renderList(); renderChrome();
+    }
+  });
+  document.getElementById('tabbar').addEventListener('click', function (e) {
+    var btn = e.target.closest('button'); if (!btn) return;
+    state.filter = btn.dataset.filter || 'all';
+    state.source = 'all';
+    renderChips(); renderList(); showView(btn.dataset.view);
+  });
+  document.getElementById('theme').addEventListener('click', function () {
+    var html = document.documentElement;
+    var isDark = html.classList.contains('dark') ||
+      (!html.classList.contains('light') && matchMedia('(prefers-color-scheme: dark)').matches);
+    html.classList.remove('dark', 'light');
+    html.classList.add(isDark ? 'light' : 'dark');
+    lsWrite(KEY_THEME, [isDark ? 'light' : 'dark']);
+  });
+  document.getElementById('refresh').addEventListener('click', function () {
+    fetch(BOOT.dataPath + '?t=' + Date.now(), { cache: 'no-store' })
+      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function (data) {
+        if (!data.items) throw new Error('数据格式不对');
+        state.items = data.items;
+        BOOT.total = data.total || data.items.length;
+        if (data.bySource) BOOT.bySource = data.bySource;
+        if (data.generatedAt) BOOT.generatedAt = data.generatedAt;
+        computeTrend();
+        renderAll();
+        if (state.view === 'stats') renderStats();
+        toast('已更新到最新（' + state.items.length + ' 条）');
+      })
+      .catch(function (err) { toast('刷新失败：' + err.message); });
+  });
+
+  function computeTrend() {
+    var days = [], now = new Date(BOOT.generatedAt);
+    for (var i = 13; i >= 0; i--) {
+      days.push({ day: new Date(now.getTime() - i * 86400000).toISOString().slice(0, 10), count: 0 });
+    }
+    var index = {};
+    days.forEach(function (d, i) { index[d.day] = i; });
+    state.items.forEach(function (it) {
+      var day = String(it.firstSeenAt || '').slice(0, 10);
+      if (day in index) days[index[day]].count++;
+    });
+    BOOT.__trend = days;
+  }
+
+  var savedTheme = lsRead(KEY_THEME)[0];
+  if (savedTheme === 'dark' || savedTheme === 'light') document.documentElement.classList.add(savedTheme);
+
+  computeTrend();
+  renderAll();
+  showView('list');
+
+  var deferredPrompt = null;
+  window.addEventListener('beforeinstallprompt', function (e) {
+    e.preventDefault(); deferredPrompt = e;
+    var install = document.createElement('button');
+    install.className = 'iconbtn'; install.textContent = '安装';
+    install.addEventListener('click', function () {
+      if (!deferredPrompt) return;
+      deferredPrompt.prompt(); deferredPrompt = null; install.remove();
+    });
+    var refreshBtn = document.getElementById('refresh');
+    refreshBtn.parentNode.insertBefore(install, refreshBtn);
+  });
+
+  if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
+    navigator.serviceWorker.register('sw.js').catch(function () { /* 离线是加分项，失败不影响使用 */ });
+  }
+})();
 </script>
 </body></html>

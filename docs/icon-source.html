@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html><head><meta charset="utf-8"><style>
+  html, body { margin:0; padding:0; width:512px; height:512px; overflow:hidden; }
+</style></head>
+<body>
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2b3a55"/>
+      <stop offset="1" stop-color="#16202f"/>
+    </linearGradient>
+    <linearGradient id="sweep" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#74c0fc" stop-opacity=".85"/>
+      <stop offset="1" stop-color="#1c7ed6" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <g fill="none" stroke="#4dabf7" stroke-opacity=".55" stroke-width="10">
+    <circle cx="256" cy="272" r="168"/>
+    <circle cx="256" cy="272" r="118"/>
+    <circle cx="256" cy="272" r="68"/>
+  </g>
+  <path d="M256 272 L256 104 A168 168 0 0 1 400 188 Z" fill="url(#sweep)"/>
+  <circle cx="256" cy="272" r="13" fill="#e9ecef"/>
+  <circle cx="357" cy="196" r="20" fill="#ff6b6b"/>
+  <circle cx="357" cy="196" r="34" fill="#ff6b6b" fill-opacity=".28"/>
+</svg>
+</body></html>

@@ -228,25 +228,37 @@ sources:
 
 ```
 src/
-  cli.ts                  run / doctor / list
+  cli.ts                  run / doctor / list / dashboard / test-notify / fetch
+  dashboard.ts            把归档渲染成 PWA 应用（内联 CSS + 原生 JS，零依赖）
   core/
     fetch.ts              限速、退避重试、编码嗅探（gbk 也能吃）
+    browser.ts            浏览器渲染抓取（CDP 驱动本机 Chrome/Edge，不引 puppeteer）
     config.ts             YAML + zod 校验，配错立刻报错
     normalize.ts          稳定 ID、宽松日期解析、相对链接补全
-    dedupe.ts             状态：只记"见过哪些 ID"
+    dedupe.ts             状态：只记"见过哪些 ID"（两级去重）
+    history.ts            归档：留下内容，供应用展示与检索
     filter.ts             关键词包含/排除
     report.ts             Markdown 日报 / JSON / 体检表
   adapters/
     html-list.ts          通用列表页适配器（选择器写在 YAML）
     uestc/jwc.ts          教务处专属适配器
     uestc/gr.ts           研究生院专属适配器
-  notify/index.ts         Server酱 / webhook / stdout
+  notify/index.ts         Server酱 / webhook / 邮件 / stdout
+docs/                     GitHub Pages 根目录
+  index.html              应用（构建产物，由 npm run dashboard 生成）
+  dashboard-data.json     应用的数据源（点"刷新"时拉它）
+  manifest.webmanifest    PWA 清单（名称/图标/主题色）
+  sw.js                   Service Worker（外壳缓存 + 离线回落）
+  icon-source.html        图标源文件（改完用无头浏览器导出 png）
 tests/
   fixtures/uestc/*.html   真实页面快照（测试不依赖网络）
 tools/
+  run-tests.mjs           跨 Node 版本稳定的测试入口
   capture-fixtures.mjs    重抓快照
+  run-daily.ps1           本机计划任务入口（云端之外的兜底）
 config/
-  schools/uestc.yaml      学校预设
+  schools/uestc.yaml      学校预设（全量）
+  schools/uestc-math.yaml 只含学院源（本机兜底用）
   sources.example.yaml    新学校模板
 ```
 
@@ -284,22 +296,33 @@ config/
 - [x] **M0** 骨架 + 教务处/新闻网/研究生院适配器 + fixture 测试 + Actions 定时 + Server酱推送
 - [x] **M1** 跨源去重、日报预览图、Release v0.1.0、[good first issue 清单](docs/good-first-issues.md)
 - [x] **M2** 通知归档仪表盘（GitHub Pages，可搜索/按来源筛选）+ 邮件通道 + 归档原始数据 + [Release v0.2.0](../../releases)
+- [x] **M2.5** 升级为**手机/电脑都能用的 PWA 应用**：底部标签栏、收藏与已读、深色模式、可添加到主屏幕、离线可用（[Release v0.3.0](../../releases)）
 - [ ] **M3** 发布到 npm（`npx notice-radar`）+ 通知频次统计 + 适配器市场（谁维护哪个学校）
 
-## 通知归档仪表盘
+## 应用：手机、电脑都能用
 
 推送只告诉你"有什么新的"，想翻旧通知就得靠归档。每次抓到新通知都会追加进 `data/history.json`，
-并自动重建一个静态页面（两个抓取工作流都会在提交状态时顺带重建）：
+并自动重建一个**可以直接当应用用的网页**（两个抓取工作流都会在提交状态时顺带重建）：
 
-![仪表盘](docs/dashboard.png)
+| 手机（390px，深色） | 电脑（1280px） |
+|---|---|
+| ![手机版](docs/app-mobile.png) | ![电脑版](docs/app-desktop.png) |
 
-- **在线看**：[yang-yin734.github.io/notice-radar](https://yang-yin734.github.io/notice-radar/)（构建产物就是 `docs/index.html`）
-- **可搜索**（标题关键词，如"退课""四六级""推免"）、**可按来源筛选**、**按日期分组**
-- 顶部有「最近 14 天发现量」与「按来源统计」，一眼看出哪个栏目最活跃
-- 页面**自包含**：内联 CSS + 原生 JS，不依赖任何 CDN，关掉 JS 也能读
-- 原始数据也放了一份：`docs/dashboard-data.json`，想自己做图表、接别的工具随便用
+- **在线打开**：[yang-yin734.github.io/notice-radar](https://yang-yin734.github.io/notice-radar/)
+- **装到手机上**（PWA，可离线）：
+  - Android：Chrome 菜单 → **安装应用 / 添加到主屏幕**
+  - iPhone：Safari → 分享 → **添加到主屏幕**
+- 手机上是**底部标签栏**（通知 / 收藏 / 统计 / 关于）+ 大点击区 + 刘海屏安全区适配；
+  电脑上自动变成**顶部胶囊标签栏 + 居中窄栏**（通知流每天一两条，宽栏反而难读长标题）
+- **搜索**标题关键词（退课 / 四六级 / 推免）、**按来源筛选**、按日期分组
+- **收藏**与**已读**：点卡片右下角 ☆ 收藏；点标题会自动标记已读，标签栏上有未读数
+  —— 这两样只存本机 `localStorage`，不上传
+- **跟随系统的深色模式**，右上角 ◐ 可手动切换（选择记在本机）
+- 顶栏 **刷新** 会去拉 `docs/dashboard-data.json` 取最新（不必等页面重新构建）
+- 零依赖：内联 CSS + 原生 JS，不引任何 CDN；`sw.js` 只做外壳缓存 + 数据"网络优先、离线回落"
+- 原始数据也放了一份：`docs/dashboard-data.json`，自己做图表、接别的工具随便用
 
-本地重建：`npm run dashboard`。
+本地重建：`npm run dashboard`（产物是 `docs/index.html` + `docs/dashboard-data.json`）。
 
 ## 推送通道
 

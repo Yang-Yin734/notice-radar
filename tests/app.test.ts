@@ -1,0 +1,84 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { renderDashboard } from '../src/dashboard.ts';
+import { appendHistory, emptyHistory } from '../src/core/history.ts';
+import type { Notice } from '../src/types.ts';
+
+const notice = (over: Partial<Notice>): Notice => ({
+  id: 'id1', sourceId: 'jwc', sourceName: '教务处·学生事务公告', school: 'uestc',
+  title: '关于退课及补选课的通知', url: 'https://www.jwc.uestc.edu.cn/info/abc', date: '2026-09-02', tag: '教管',
+  ...over,
+});
+
+/** 从生成的页面里取出内嵌给前端的 bootstrap JSON */
+const bootstrapOf = (html: string): any => {
+  const m = /<script id="bootstrap" type="application\/json">([\s\S]*?)<\/script>/.exec(html);
+  assert.ok(m, '页面里应该有 bootstrap 数据块');
+  return JSON.parse(m![1]);
+};
+
+test('应用：是一个可装到手机的 PWA（manifest / 图标 / 视口 / SW 注册）', () => {
+  const history = emptyHistory();
+  appendHistory(history, [notice({ id: 'a' })]);
+  const html = renderDashboard(history);
+
+  assert.match(html, /<link rel="manifest" href="manifest\.webmanifest">/, '要有 manifest');
+  assert.match(html, /apple-touch-icon/, 'iOS 主屏图标');
+  assert.match(html, /apple-mobile-web-app-capable/, 'iOS 全屏应用元信息');
+  assert.match(html, /viewport-fit=cover/, '适配刘海屏安全区');
+  assert.match(html, /prefers-color-scheme: dark/, '跟随系统深色模式');
+  assert.match(html, /serviceWorker[\s\S]*register\('sw\.js'\)/, '注册 service worker 以支持离线');
+  assert.match(html, /id="tabbar"/, '底部标签栏（手机导航）');
+  assert.match(html, /main \{ max-width:760px/, '电脑上是居中窄栏（通知流每天一两条，宽栏反而难读）');
+  assert.match(html, /@media \(min-width:700px\)/, '宽屏时标签栏改成顶部胶囊');
+});
+
+test('应用：数据内嵌，首屏不依赖网络', () => {
+  const history = emptyHistory();
+  appendHistory(history, [
+    notice({ id: 'a' }),
+    notice({ id: 'b', sourceId: 'news', sourceName: '新闻网·公告', title: '学者论坛：超导百年', tag: '学术' }),
+  ]);
+  const boot = bootstrapOf(renderDashboard(history, { generatedAt: '2026-09-28T00:00:00.000Z' }));
+
+  assert.equal(boot.total, 2);
+  assert.equal(boot.items.length, 2);
+  assert.equal(boot.generatedAt, '2026-09-28T00:00:00.000Z');
+  assert.equal(boot.dataPath, 'dashboard-data.json', '刷新时拉这个文件');
+  assert.deepEqual(
+    boot.bySource.map((s: any) => s.sourceId).sort(),
+    ['jwc', 'news'],
+  );
+  assert.ok(boot.items.some((i: any) => i.title === '学者论坛：超导百年'));
+});
+
+test('应用：标题里的标签会被转义，不能从 JSON 里逃出去', () => {
+  const history = emptyHistory();
+  appendHistory(history, [notice({ id: 'x', title: '<script>alert(1)</script> 关于选课' })]);
+  const html = renderDashboard(history);
+
+  assert.ok(!html.includes('<script>alert(1)</script>'), '不该出现可执行的 script 标签');
+  assert.match(html, /\\u003cscript>alert\(1\)/, 'JSON 里的 < 应被转义成 \\u003c');
+  assert.equal(bootstrapOf(html).items[0].title, '<script>alert(1)</script> 关于选课', '只是转义，没有破坏内容');
+});
+
+test('应用：maxItems 只影响内嵌条数，total 仍是全量', () => {
+  const history = emptyHistory();
+  appendHistory(
+    history,
+    Array.from({ length: 6 }, (_, i) => notice({ id: `id${i}`, title: `通知 ${i}` })),
+  );
+  const boot = bootstrapOf(renderDashboard(history, { maxItems: 2 }));
+  assert.equal(boot.total, 6, '统计口径是全量');
+  assert.equal(boot.items.length, 2, '首屏只内嵌 2 条');
+});
+
+test('应用：没有数据也能渲染出界面（不是空白页）', () => {
+  const html = renderDashboard(emptyHistory());
+  const boot = bootstrapOf(html);
+  assert.equal(boot.total, 0);
+  assert.deepEqual(boot.items, []);
+  assert.match(html, /id="q"/, '搜索框仍在');
+  assert.match(html, /关于这个应用/, '"关于"里写了安装方法');
+  assert.match(html, /添加到主屏幕/);
+});
