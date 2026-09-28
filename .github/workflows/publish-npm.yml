@@ -40,15 +40,19 @@ jobs:
       - name: 打包自检（永远执行，能提前发现 files 配置漏文件）
         run: |
           npm pack --dry-run 2>&1 | tail -25
-          echo "--- 包内是否带上了学校预设与登记表 ---"
+          echo "--- 包内关键文件（发布的是编译后的 dist，不是 src）---"
           npm pack --json | node -e "
             let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{
               const info=JSON.parse(s)[0];
               const files=info.files.map(f=>f.path);
-              const need=['src/cli.ts','config/schools/uestc.yaml','config/schools/registry.json','package.json'];
+              const need=['dist/cli.js','dist/core/history.js','config/schools/uestc.yaml','config/schools/registry.json','package.json'];
+              const forbidden=['src/cli.ts'];
               let bad=0;
-              for(const n of need){const ok=files.includes(n);if(!ok)bad++;console.log((ok?'  ✓ ':'  ✗ ')+n);}
-              console.log('  共 '+files.length+' 个文件，'+Math.round(info.size/1024)+' KB');
+              for(const n of need){const ok=files.includes(n);if(!ok)bad++;console.log((ok?'  ✓ ':'  ✗ 缺 ')+n);}
+              for(const n of forbidden){const hit=files.includes(n);if(hit)bad++;console.log((hit?'  ✗ 不该带 ':'  ✓ 不含 ')+n);}
+              const shebangOk = files.includes('dist/cli.js');
+              console.log('  共 '+files.length+' 个文件，压缩后 '+Math.round(info.size/1024)+' KB，解包 '+Math.round(info.unpackedSize/1024)+' KB');
+              if(!shebangOk) console.log('  ! 注意：dist/cli.js 缺失，bin 会指向不存在的文件');
               process.exit(bad?1:0);
             });
           "
