@@ -1,0 +1,193 @@
+# 电子科技大学预设（M0 首个可用预设）
+#
+# 关于数学科学学院的通知：其官网对非浏览器请求返回 202 挑战页（瑞数类 WAF），
+# 本项目**不做绕过**（见 README「合规」一节），因此不提供该源的适配器。
+# 学院通知建议以班级群/辅导员/学院公众号兜底。
+#
+# 关键词只做子串匹配（大小写不敏感）。exclude 优先级高于 include。
+# 注意：不要把「公示」整体放进 exclude —— 推免名单、奖学金评定结果都是公示形式。
+
+school: uestc
+name: 电子科技大学
+
+notify:
+  - type: serverchan
+    keyEnv: SERVERCHAN_KEY
+  - type: stdout
+
+sources:
+  - id: jwc-important
+    name: 教务处·重要公告
+    url: https://www.jwc.uestc.edu.cn/hard/?page=1
+    adapter: uestc/jwc
+    note: 全校政策类，选课/考试/学籍都从这里出
+    include:
+      - 选课
+      - 退课
+      - 补选
+      - 重修
+      - 重新学习
+      - 调课
+      - 停课
+      - 考试
+      - 缓考
+      - 补考
+      - 成绩
+      - 学籍
+      - 注册
+      - 学生证
+      - 培养方案
+      - 转专业
+      - 大类分流
+      - 推免
+      - 保研
+      - 奖学金
+      - 助学金
+      - 四六级
+      - 竞赛
+      - 建模
+      - 数学
+      - 大创
+      - 微专业
+      - 报名
+      - 毕业
+      - 学位
+    exclude:
+      - 中标
+      - 成交
+      - 招标
+      - 采购
+      - 询价
+      - 竞争性磋商
+      - 流标
+      - 资产处置
+      - 报废
+      - 校友
+      - 捐赠
+      - 校庆
+      - 巡察
+      - 主题教育
+      - 党建
+      - 安全生产
+      - 消防
+      - 后勤
+      - 基建
+      - 会议纪要
+      - 喜报
+      - 表彰大会
+      - 征稿
+
+  - id: jwc-student
+    name: 教务处·学生事务公告
+    url: https://www.jwc.uestc.edu.cn/list/256/?page=1
+    adapter: uestc/jwc
+    note: 退课/补选/重新学习/竞赛报名 主要落在这个栏目
+    include:
+      - 选课
+      - 退课
+      - 补选
+      - 重修
+      - 重新学习
+      - 考试
+      - 缓考
+      - 补考
+      - 成绩
+      - 学籍
+      - 注册
+      - 学生证
+      - 推免
+      - 保研
+      - 奖学金
+      - 助学金
+      - 评奖
+      - 四六级
+      - 竞赛
+      - 建模
+      - 数学
+      - 大创
+      - 微专业
+      - 报名
+      - 名单
+      - 公示
+    exclude:
+      - 中标
+      - 成交
+      - 招标
+      - 采购
+      - 资产处置
+      - 报废
+      - 校友
+      - 捐赠
+      - 校庆
+      - 巡察
+      - 党建
+      - 喜报
+      - 表彰大会
+      - 征稿
+
+  - id: news-notice
+    name: 新闻网·公告
+    url: https://news.uestc.edu.cn/?n=UestcNews.Front.CategoryV2.Page&CatId=68
+    adapter: html-list
+    note: 通用适配器示例：选择器写在 YAML 里，不用写代码。该栏目每页只列最新 4 条左右。
+    baseUrl: https://news.uestc.edu.cn
+    selectors:
+      item: div.notice_item
+      title: a.title
+      link: a.title@href
+      date: span.date
+      tag: span.category
+    include:
+      - 选课
+      - 退课
+      - 考试
+      - 补考
+      - 竞赛
+      - 建模
+      - 数学
+      - 讲座
+      - 报告
+      - 讲坛
+      - 讲堂
+      - 论坛
+      - 报名
+      - 奖学金
+      - 放假
+      - 开学
+      - 调课
+      - 停课
+      - 校历
+    exclude:
+      - 中标
+      - 成交
+      - 招标
+      - 采购
+      - 校友
+      - 捐赠
+      - 校庆
+      - 座谈
+      - 来访
+      - 揭牌
+      - 喜报
+      - 征稿
+
+  - id: gr-notice
+    name: 研究生院·通知
+    url: https://gr.uestc.edu.cn/tongzhi/
+    adapter: uestc/gr
+    note: 站点带 JS 挑战 WAF，偶发失败属正常；对大一主要是推免/保研/夏令营相关
+    include:
+      - 推免
+      - 保研
+      - 免试
+      - 夏令营
+      - 招生
+      - 考试
+      - 培养
+      - 学位
+      - 答辩
+      - 评奖
+      - 奖学金
+    exclude:
+      - 评选结果
+      - 先进单位和个人

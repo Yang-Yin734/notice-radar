@@ -1,0 +1,63 @@
+# 新学校模板：复制这个文件到 config/schools/<你的学校>.yaml 再改。
+#
+# 两种接法：
+#   A. adapter: html-list  —— 选择器写在 YAML 里，不写代码（大多数站点）
+#   B. adapter: <自定义名>  —— 结构特殊时写一个适配器，见 docs/add-your-school.md
+#
+# 自检流程：
+#   1. npm run doctor          看能不能抓、解析出几条
+#   2. npm run capture <学校>   抓真实页面存成 fixture（在 tools/capture-fixtures.mjs 里加源）
+#   3. npm test                确认解析在 fixture 上稳定
+
+school: example
+name: 某某大学
+
+notify:
+  - type: serverchan
+    keyEnv: SERVERCHAN_KEY
+
+sources:
+  - id: jwc-notice
+    name: 教务处·通知公告
+    url: https://jwc.example.edu.cn/tzgg.htm
+    adapter: html-list
+    note: 打开页面按 F12，右键列表项 → 检查，抄下容器的 class
+    baseUrl: https://jwc.example.edu.cn
+    selectors:
+      # 每条通知的容器
+      item: ul.news-list li
+      # 标题：`a` 取文本，`a@title` 取属性
+      title: a@title
+      # 链接：相对链接会自动用 baseUrl 补全
+      link: a@href
+      # 日期：留空则 date 为 null
+      date: span.date
+      # 分类标签：可选
+      tag: span.tag
+    include:
+      - 选课
+      - 考试
+      - 报名
+      - 奖学金
+    exclude:
+      - 招标
+      - 采购
+      - 中标
+
+  # 同一个站点不同栏目 = 再加一个 source，换 url 即可
+  - id: jwc-student
+    name: 教务处·学生事务
+    url: https://jwc.example.edu.cn/xssw.htm
+    adapter: html-list
+    enabled: false # 还没验证的源先关掉，别让它污染日报
+    baseUrl: https://jwc.example.edu.cn
+    selectors:
+      item: ul.news-list li
+      title: a
+      link: a@href
+      date: span.date
+    include:
+      - 退课
+      - 补选
+      - 重修
+    exclude: []

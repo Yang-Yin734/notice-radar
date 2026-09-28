@@ -1,0 +1,527 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:shiro="http://www.pollix.at/thymeleaf/shiro">
+<head>
+
+ <meta charset="utf-8">
+  <title>电子科技大学教务处</title>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon"  type="image/x-icon" href="/res/favicon-1e25c936cd66161e3ec3ec275d0181ea.ico;jsessionid=411E812C545B19B39A973A30F27DA412" />
+    <link type="text/css" href="/web/css/reset-22ac024200169b396b22e31a0de5f94b.css;jsessionid=411E812C545B19B39A973A30F27DA412" rel="stylesheet" />
+    <link type="text/css" href="/web/css/layout-fb226042bd6e6a130d858104dd1b27b0.css;jsessionid=411E812C545B19B39A973A30F27DA412" rel="stylesheet" />
+    <link type="text/css" href="/web/css/Stylet-c0e25c8d96cc1d7f655862a7fead629b.css;jsessionid=411E812C545B19B39A973A30F27DA412" rel="stylesheet" />
+    <link type="text/css" href="/web/css/service-5a9280f235fffa349c44fce598b7aa8b.css;jsessionid=411E812C545B19B39A973A30F27DA412" rel="stylesheet" />
+
+    <!--全局通用框架样式 end-->
+
+    
+    <link rel="stylesheet" media="all">
+    
+    <style type="text/css">
+.list-title{
+	width: 380px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+</style>
+<style>
+  .layui-upload-img{width: 120px; height: 120px; margin: 0 10px 10px 0;}
+  </style>
+<!--[if IE 6]>
+    <script src="js/DD_belatedPNG_0.0.8a.js" type="text/javascript" ></script>
+    <script type="text/javascript">
+    DD_belatedPNG.fix('*');
+    </script>
+    <![endif]-->
+</head>
+
+<body>
+	<div>
+   <div class="header">
+        <div class="head clearfix">
+            <div class="logo fl"><a href="/;jsessionid=411E812C545B19B39A973A30F27DA412"><img src="/web/img/web_logo-ec4cfe32f10dde13e2e24604dd24e5e8.png;jsessionid=411E812C545B19B39A973A30F27DA412" alt="电子科技大学教务处" title="电子科技大学教务处"  height="80"/></a></div>
+            <div class="search fr">
+                <div class="school-time fl"><span id="shijian">&nbsp;</span></div>
+                <div class="search-form fl">
+                    <form class="clearfix" name="searchForm" method="post" action="/search;jsessionid=411E812C545B19B39A973A30F27DA412">
+                        <select class="fl" name="type">
+                            <option value="1">标题</option>
+                            <option value="2">内容</option>
+                        </select>
+                        
+                        <input class="fl" type="text" name="k" value=""/>
+                        <button class="fl" type="button" value="" id="searchBtn"></button>
+                    </form>
+                </div>
+
+            </div>
+             <!-- <div class="Oldportal fl"><a class="oldOut" href="//www.jwc.uestc.edu.cn:8080/jwc/">旧版入口</a></div> -->
+        </div>
+    </div>
+
+    <!-- nav strar -->
+    <div class="naver">
+        <div class="nav">
+            <ul id="mainbav" class="mainbav">
+                <li><a href="/;jsessionid=411E812C545B19B39A973A30F27DA412">首页</a> </li>
+	                 
+	                 <li>
+	                    <a  href="javascript:void(0);" partId="6">部门概况 </a>
+		                    <ul class="subnav">
+		                        <li>
+		                        <a href="javascript:void(0);" partId="248">部门简介</a>
+		                          
+		                        
+		                        </li>
+		                        <li>
+		                        <a href="javascript:void(0);" partId="251">部门领导</a>
+		                          
+		                        
+		                        </li>
+		                        <li>
+		                        <a href="javascript:void(0);" partId="252">内设机构</a>
+		                          
+		                        
+		                        </li>
+		                    </ul>
+	                </li>
+	                 <li>
+	                    <a  href="javascript:void(0);" partId="98">教学管理 </a>
+		                    <ul class="subnav">
+		                        <li>
+		                        <a href="javascript:void(0);" partId="99">教学管理系统</a>
+		                          
+		                        
+		                        </li>
+		                        <li>
+		                        <a href="javascript:void(0);" partId="100"> 学籍查询与注册</a>
+		                          
+		                        
+		                        </li>
+		                    </ul>
+	                </li>
+	                 <li>
+	                    <a  href="javascript:void(0);" partId="1">教改教研 </a>
+		                    <ul class="subnav">
+		                        <li>
+		                        <a href="javascript:void(0);" partId="109">教学成果</a>
+		                          <ul class="submenu ">
+		                                <li> <a href="javascript:void(0);" partId="178">国家级教学成果奖 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="179">省级教学成果奖 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="180">校级教学成果奖 </a></li>
+		                            </ul>
+		                        
+		                        </li>
+		                        <li>
+		                        <a href="javascript:void(0);" partId="134">教改项目</a>
+		                          <ul class="submenu ">
+		                                <li> <a href="javascript:void(0);" partId="195">省级教改项目 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="196">校级教改项目 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="198">工作动态 </a></li>
+		                            </ul>
+		                        
+		                        </li>
+		                        <li>
+		                        <a href="javascript:void(0);" partId="138"> 课程建设</a>
+		                          <ul class="submenu ">
+		                                <li> <a href="javascript:void(0);" partId="199">工作动态 </a></li>
+		                            </ul>
+		                        
+		                        </li>
+		                        <li>
+		                        <a href="javascript:void(0);" partId="141"> 教材建设</a>
+		                          <ul class="submenu ">
+		                                <li> <a href="javascript:void(0);" partId="200">规划教材 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="201">精品教材 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="202">工作动态 </a></li>
+		                            </ul>
+		                        
+		                        </li>
+		                        <li>
+		                        <a href="javascript:void(0);" partId="4028811d56ccfe510156d4df87a50201">教学奖励</a>
+		                          <ul class="submenu ">
+		                                <li> <a href="javascript:void(0);" partId="4028811d56ccfe510156d4e06c2b0202">本科教学优秀奖 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="4028811d56d6c3b90156d97f3c16006b">教学竞赛 </a></li>
+		                            </ul>
+		                        
+		                        </li>
+		                        <li>
+		                        <a href="javascript:void(0);" partId="4028811d56ccfe510156d4e350210206">本科教学关键岗位</a>
+		                          
+		                        
+		                        </li>
+		                    </ul>
+	                </li>
+	                 <li>
+	                    <a  href="javascript:void(0);" partId="2">质量保障 </a>
+		                    <ul class="subnav">
+		                        <li>
+		                        <a href="javascript:void(0);" partId="147"> 教学评估</a>
+		                          <ul class="submenu ">
+		                                <li> <a href="javascript:void(0);" partId="227">专业评估 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="228">课程评估 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="230">毕业设计论文评估 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="231">实验室评估 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="232">工作动态 </a></li>
+		                            </ul>
+		                        
+		                        </li>
+		                        <li>
+		                        <a href="javascript:void(0);" partId="148"> 质量评价</a>
+		                          <ul class="submenu ">
+		                                <li> <a href="javascript:void(0);" partId="233">考评评定 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="234">学生评教 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="235">毕业生评议 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="236">工作动态 </a></li>
+		                            </ul>
+		                        
+		                        </li>
+		                        <li>
+		                        <a href="javascript:void(0);" partId="149"> 教学检查</a>
+		                          <ul class="submenu ">
+		                                <li> <a href="javascript:void(0);" partId="237">初期教学检查 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="238">中期教学检查 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="239">工作动态 </a></li>
+		                            </ul>
+		                        
+		                        </li>
+		                        <li>
+		                        <a href="javascript:void(0);" partId="4028811d56ccfe510156d4e4a729020a">教学准入</a>
+		                          
+		                        
+		                        </li>
+		                    </ul>
+	                </li>
+	                 <li>
+	                    <a  href="javascript:void(0);" partId="108">实践教学 </a>
+		                    <ul class="subnav">
+		                        <li>
+		                        <a href="javascript:void(0);" partId="4028811d55c619530155c95fbc5a0002">实验教学中心</a>
+		                          <ul class="submenu ">
+		                                <li> <a href="javascript:void(0);" partId="4028811d55c619530155c960772f0004">建设动态 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="4028811d55c619530155c96bce5d0005">建设成效 </a></li>
+		                            </ul>
+		                        
+		                        </li>
+		                        <li>
+		                        <a href="javascript:void(0);" partId="4028811d55c619530155c960279b0003">实验教学</a>
+		                          <ul class="submenu ">
+		                                <li> <a href="javascript:void(0);" partId="4028811d56a1f9ed0156b14fcc3d000d">实习实训 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="4028811d56a1f9ed0156b1500597000e">毕业设计 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="4028811d56a1f9ed0156b1503e00000f">师资队伍 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="4028811d56a1f9ed0156b150a5b00010">教学督导 </a></li>
+		                            </ul>
+		                        
+		                        </li>
+		                        <li>
+		                        <a href="javascript:void(0);" partId="4028811d56a1f9ed0156b14eafd4000b">创新教育</a>
+		                          <ul class="submenu ">
+		                                <li> <a href="javascript:void(0);" partId="4028811d56a1f9ed0156b15100110011">学科竞赛 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="4028811d56a1f9ed0156b1513d8e0012">一院一赛 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="4028811d56a1f9ed0156b1530f030013">科研训练 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="4028811d56a1f9ed0156b1533d1e0014">大学生创新创业训练计划 </a></li>
+		                            </ul>
+		                        
+		                        </li>
+		                        <li>
+		                        <a href="javascript:void(0);" partId="4028811d56a1f9ed0156b14eefa9000c">教学改革</a>
+		                          <ul class="submenu ">
+		                                <li> <a href="javascript:void(0);" partId="4028811d56a1f9ed0156b153dec70015">教师实验教学研究项目 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="4028811d56a1f9ed0156b15418ec0016">挑战性课程 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="4028811d56a1f9ed0156b15827140017">创新创业课程 </a></li>
+		                            </ul>
+		                        
+		                        </li>
+		                    </ul>
+	                </li>
+	                 <li>
+	                    <a  href="javascript:void(0);" partId="59">国际交流 </a>
+		                    <ul class="subnav">
+		                        <li>
+		                        <a href="javascript:void(0);" partId="65"> 出国（境）留学项目</a>
+		                          
+		                        
+		                        </li>
+		                        <li>
+		                        <a href="javascript:void(0);" partId="66"> 学分转换政策</a>
+		                          
+		                        
+		                        </li>
+		                    </ul>
+	                </li>
+	                 <li>
+	                    <a  href="javascript:void(0);" partId="5">招生信息 </a>
+		                    
+	                </li>
+	                 <li>
+	                    <a  href="javascript:void(0);" partId="7">政策法规 </a>
+		                    <ul class="subnav">
+		                        <li>
+		                        <a href="javascript:void(0);" partId="51">法律法规政策</a>
+		                          
+		                        
+		                        </li>
+		                        <li>
+		                        <a href="javascript:void(0);" partId="52">学校规章制度</a>
+		                          <ul class="submenu ">
+		                                <li> <a href="javascript:void(0);" partId="53">教学研究 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="54">教学管理 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="56">实践教学 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="55">教材管理 </a></li>
+		                            </ul>
+		                        
+		                        </li>
+		                    </ul>
+	                </li>
+	                 <li>
+	                    <a  href="javascript:void(0);" partId="10">办事指南 </a>
+		                    <ul class="subnav">
+		                        <li>
+		                        <a href="javascript:void(0);" partId="33">学生</a>
+		                          
+		                        
+		                        </li>
+		                        <li>
+		                        <a href="javascript:void(0);" partId="34">教师</a>
+		                          
+		                        
+		                        </li>
+		                        <li>
+		                        <a href="javascript:void(0);" partId="35">家长</a>
+		                          
+		                        
+		                        </li>
+		                        <li>
+		                        <a href="javascript:void(0);" partId="36">毕业生</a>
+		                          
+		                        
+		                        </li>
+		                    </ul>
+	                </li>
+	                 <li>
+	                    <a  href="javascript:void(0);" partId="57">资料下载 </a>
+		                    <ul class="subnav">
+		                        <li>
+		                        <a href="javascript:void(0);" partId="42">服务学生</a>
+		                          <ul class="submenu ">
+		                                <li> <a href="javascript:void(0);" partId="89">教学研究与质量监控 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="88">教学管理 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="90">实践教学 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="92">教材管理 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="244">对外合作交流 </a></li>
+		                            </ul>
+		                        
+		                        </li>
+		                        <li>
+		                        <a href="javascript:void(0);" partId="43">服务教师</a>
+		                          <ul class="submenu ">
+		                                <li> <a href="javascript:void(0);" partId="93">教学研究与质量监控 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="4028811d56ccfe510156d3fef8a60186">教学管理 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="95">实践教学 </a></li>
+		                                <li> <a href="javascript:void(0);" partId="96">教材管理 </a></li>
+		                            </ul>
+		                        
+		                        </li>
+		                    </ul>
+	                </li>
+	                 
+	                 
+	                 
+	                 
+	                 
+                
+                 
+               
+               <!--  <li><a href="javascript:;" id="message">留言板</a></li> -->
+            </ul>
+        </div>
+         <div class="navBg"><img src="/web/img/navBg2-ee3d1f60f1a16fa9d2e9c06af0f22f71.png;jsessionid=411E812C545B19B39A973A30F27DA412" alt=""></div>
+    </div>
+  <!-- banner strar -->
+
+    
+</div>
+
+		<div class="contenterNew section_botton">
+        <!-- 内容页大标题 -->
+        <div class="contentNew">
+            <div class="section_sidLeft fl">
+                <h3 class="section_Title">栏目</h3>
+                <ul id="section_list" class="section_list">
+                    <li class="clearfix">
+                        <a href="javascript:;" partId="255" title="教师事务公告">教师事务公告</a>
+                    	
+                    </li>
+                    <li class="clearfix">
+                        <a href="javascript:;" partId="256" title="学生事务公告">学生事务公告</a>
+                    	
+                    </li>
+                    <li class="clearfix">
+                        <a href="javascript:;" partId="40" title="教学新闻">教学新闻</a>
+                    	
+                    </li>
+                    <li class="clearfix">
+                        <a href="javascript:;" partId="ff80808160bcf79c0160c010a8d20020" title="办公室公告">办公室公告</a>
+                    	
+                    </li>
+                </ul>
+            </div>
+            
+            <div class="section_sidRight fl">
+                <div class="section_Img"><img src="/web/img/sectionImg-300cd3d053706878e6a21990b9f3d595.jpg;jsessionid=411E812C545B19B39A973A30F27DA412" /></div>
+                <div class="commerTitle"> <i>您现在的位置</i>：<a href="/;jsessionid=411E812C545B19B39A973A30F27DA412" >首页</a> 
+               
+                · <a href="javascript:;" partId="8">信息公告</a>
+                 
+                · <a href="javascript:;" partId="256">学生事务公告</a>
+                 
+                </div>
+                <div class="section_Content">
+                    <div class="wrap">
+                        <div class=" textAreo clearfix">
+                        <span style="width: 380px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+                            <a href="#" newsId="f2af6c15dc83ba0c19ad9c719cd75c83" title="2026年电子科技大学大学生创新训练计划——韫慧奖励专项入围名单公示">【实践】2026年电子科技大学大学生创新训练计划——韫慧奖励专项入围名单公示 </a>
+                            </span>
+                            <i>2026/09/23</i>
+                        </div>
+                        <div class=" textAreo clearfix">
+                        <span style="width: 380px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+                            <a href="#" newsId="86a3cff5a1dc8f270f749890f9c45a9c" title="第35届电子科技大学数学竞赛获奖名单公布">【学生事务公告】第35届电子科技大学数学竞赛获奖名单公布 </a>
+                            </span>
+                            <i>2026/09/18</i>
+                        </div>
+                        <div class=" textAreo clearfix">
+                        <span style="width: 380px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+                            <a href="#" newsId="e9c816fab9bd8cafd2d9e1db8d29a226" title="电子科学与工程学院电子实验中心开放实验室运行通知">【学生事务公告】电子科学与工程学院电子实验中心开放实验室运行通知 </a>
+                            </span>
+                            <i>2026/09/18</i>
+                        </div>
+                        <div class=" textAreo clearfix">
+                        <span style="width: 380px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+                            <a href="#" newsId="55d4b4539cd8725e040a5ca814549134" title="2023级“形势与政策”补考安排">【考试】2023级“形势与政策”补考安排 </a>
+                            </span>
+                            <i>2026/09/17</i>
+                        </div>
+                        <div class=" textAreo clearfix">
+                        <span style="width: 380px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+                            <a href="#" newsId="c683a0d05a4f4f673f3414657464b8a2" title="关于我校2026年下半年全国大学英语四、六级考试报名工作的通知">【考试】关于我校2026年下半年全国大学英语四、六级考试报名工作的通知 </a>
+                            </span>
+                            <i>2026/09/16</i>
+                        </div>
+                        <div class=" textAreo clearfix">
+                        <span style="width: 380px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+                            <a href="#" newsId="608777928f0250657e44452d89ae8d5c" title="关于第三届“中国电子杯”高校 ICT 产教融合创新大赛报名的通知">【学生事务公告】关于第三届“中国电子杯”高校 ICT 产教融合创新大赛报名的通知 </a>
+                            </span>
+                            <i>2026/09/15</i>
+                        </div>
+                        <div class=" textAreo clearfix">
+                        <span style="width: 380px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+                            <a href="#" newsId="02d5f1790f41f3eba983088fcf2e1e16" title="2026 电子科技大学信息与通信工程学院“‘华为杯’无线通信技术创新赛”  一站式参赛指南（实时更新版）">【实践】2026 电子科技大学信息与通信工程学院“‘华为杯’无线通信技术创新赛”  一站式参赛指南（实时更新版） </a>
+                            </span>
+                            <i>2026/09/11</i>
+                        </div>
+                        <div class=" textAreo clearfix">
+                        <span style="width: 380px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+                            <a href="#" newsId="b3bfed90854aad6d5ccb50eb3962aa56" title="关于举办第三届电子科技大学“英才杯”电子设计竞赛的通知">【学生事务公告】关于举办第三届电子科技大学“英才杯”电子设计竞赛的通知 </a>
+                            </span>
+                            <i>2026/09/11</i>
+                        </div>
+                        <div class=" textAreo clearfix">
+                        <span style="width: 380px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+                            <a href="#" newsId="ce1168295343ef9e93ea09dc5c2d89c9" title="关于第九届（2026）全国大学生嵌入式芯片与系统设计竞赛 FPGA 赛道报名及赛题宣讲会的通知">【实践】关于第九届（2026）全国大学生嵌入式芯片与系统设计竞赛 FPGA 赛道报名及赛题宣讲会的通知 </a>
+                            </span>
+                            <i>2026/09/11</i>
+                        </div>
+                        <div class=" textAreo clearfix">
+                        <span style="width: 380px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+                            <a href="#" newsId="aa67bb775823563d6133b9bd2a83b79e" title="电子科技大学2026年秋季学期微专业招生简章">【学生事务公告】电子科技大学2026年秋季学期微专业招生简章 </a>
+                            </span>
+                            <i>2026/09/10</i>
+                        </div>
+                        <div class=" textAreo clearfix">
+                        <span style="width: 380px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+                            <a href="#" newsId="44d8f4a5cd14fa3b1d2c40edc5f8553f" title="关于开展2026年“大学生创新训练计划”项目结题验收工作的通知">【实践】关于开展2026年“大学生创新训练计划”项目结题验收工作的通知 </a>
+                            </span>
+                            <i>2026/09/10</i>
+                        </div>
+                        <div class=" textAreo clearfix">
+                        <span style="width: 380px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+                            <a href="#" newsId="24ec5cf6c921f912fc6ce5c41730a5b9" title="第35届电子科技大学数学竞赛预获奖名单公示">【学生事务公告】第35届电子科技大学数学竞赛预获奖名单公示 </a>
+                            </span>
+                            <i>2026/09/08</i>
+                        </div>
+                        <div class=" textAreo clearfix">
+                        <span style="width: 380px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+                            <a href="#" newsId="c504452aa5f7978443c6977bafca8a60" title="2026-2027-1学期“大学物理I”重新学习安排">【教管】2026-2027-1学期“大学物理I”重新学习安排 </a>
+                            </span>
+                            <i>2026/09/08</i>
+                        </div>
+                        <div class=" textAreo clearfix">
+                        <span style="width: 380px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+                            <a href="#" newsId="ae76b48e6dbdb8d1c37824c0dbb1e8c6" title="关于组织&quot;AI+教育&quot;创新应用技能大赛的补充通知——电子科技大学赛区预赛通知">【学生事务公告】关于组织&quot;AI+教育&quot;创新应用技能大赛的补充通知——电子科技大学赛区预赛通知 </a>
+                            </span>
+                            <i>2026/09/07</i>
+                        </div>
+                        <div class=" textAreo clearfix">
+                        <span style="width: 380px;overflow: hidden;white-space: nowrap;text-overflow: ellipsis;">
+                            <a href="#" newsId="51fd53a55c4f8ad75c2da3d2753326b8" title="2026-2027-1学期“概率论与数理统计”重新学习安排">【学生事务公告】2026-2027-1学期“概率论与数理统计”重新学习安排 </a>
+                            </span>
+                            <i>2026/09/07</i>
+                        </div>
+                    </div>
+                    <div class="messageBtnGroup bor clearfix">首页&lt;上一页<span>1/139</span><a class='list_link' href="#" onclick="javascript:document.pageForm.action='/list/256/?page=2';document.pageForm.submit();return false;">下一页&gt;</a>&nbsp;<a class='list_link' href="#" onclick="javascript:document.pageForm.action='/list/256/?page=139';document.pageForm.submit();return false;">尾页&gt;&gt;</a><span class="Group">共有<em class="total">2071</em>条记录<form name='pageForm' action='/list/256/?page=1' method='post'><input id='page' type='hidden' name='page' value='1'>
+<input id='msg' type='hidden' name='msg' value=''>
+<input id='status' type='hidden' name='status' value=''>
+</form></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+ 	<div>
+   <div class="footer">
+        <div class="foot">
+            <div class="schooladd clearfix">
+                <div class="add"> <span>沙河校区地址：<a href="https://j.map.baidu.com/e2/gec" target="_blank">成都市建设北路二段四号</a></span> <strong>邮编：610054</strong>  </div>
+                <div class="add"> <span>清水河校区地址：<a href="https://j.map.baidu.com/15/4jJ" target="_blank">成都市高新区(西区)西源大道2006号</a></span> <strong>邮编：611731</strong>  </div>
+            </div>
+        <!--  <div class="copyright">*为了更好的网站访问体验，建议使用IE6以上浏览器(360浏览器兼容模式内核为IE6)，或最新Firefox、chrome浏览器</div> -->
+        
+        </div>
+    </div>
+    
+</div>
+  	<div>
+
+
+    <script type="text/javascript" src="/web/js/jquery-eaec1712551cd2792f4607f39fab12e7.js;jsessionid=411E812C545B19B39A973A30F27DA412"></script>
+    <script src="/web/js/DD_belatedPNG_0.0.8a-c7e0fe0c230f5d927868a3ec9b8d5d12.js;jsessionid=411E812C545B19B39A973A30F27DA412"></script>
+	<script type="text/javascript" src="/web/top-4fbb3ddbc3d5fb10f800db6789c60770.js;jsessionid=411E812C545B19B39A973A30F27DA412"></script>
+	<script type="text/javascript" src="/layui/layui-283f389e9b4f41b323ca7cf7bdd8b46a.js;jsessionid=411E812C545B19B39A973A30F27DA412"></script>
+<script type="text/javascript" src="/res/js/util-824a1c67066102ad077325ea454ef711.js;jsessionid=411E812C545B19B39A973A30F27DA412"></script>
+<script type="text/javascript" src="/web/info-41084534ae85a78aa533e1b646428b61.js;jsessionid=411E812C545B19B39A973A30F27DA412"></script>
+	<!--[if IE 6]>
+    <script src="js/DD_belatedPNG_0.0.8a.js" type="text/javascript" ></script>
+    <script type="text/javascript">
+    DD_belatedPNG.fix('*');
+    </script>
+    <![endif]-->
+	
+	<script>     
+        var context = "\/;jsessionid=411E812C545B19B39A973A30F27DA412";      
+        if(context=="\/"){
+        	context="";
+        }
+        var weeks = 5;
+        
+	</script>
+</div>
+  	<script type="text/javascript">
+  		
+  	</script>
+</body>
+</html>
+
+

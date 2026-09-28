@@ -1,0 +1,26 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+
+      - run: npm ci
+
+      # 测试跑在真实页面的快照上，不依赖网络：站点改版时能立刻区分"解析坏了"还是"网络抽风"
+      - name: 单元测试
+        run: npm test
+
+      - name: 类型检查
+        run: npx tsc --noEmit

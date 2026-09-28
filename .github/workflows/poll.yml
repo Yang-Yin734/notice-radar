@@ -1,0 +1,47 @@
+name: poll
+
+# 定时抓取。GitHub Actions 的 cron 用 UTC，最小间隔 5 分钟；
+# 实际执行会排队延迟几分钟，所以别指望"秒级"。
+# 注意：仓库 60 天没有任何提交活动时，GitHub 会自动停用定时任务（在 Actions 页面会提示）。
+on:
+  schedule:
+    - cron: '*/20 * * * *'
+  workflow_dispatch:
+
+concurrency:
+  group: poll
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  poll:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+
+      - run: npm ci
+
+      - name: 抓取并推送
+        env:
+          # 在想用这个仓库的人自己的 Settings → Secrets 里配
+          SERVERCHAN_KEY: ${{ secrets.SERVERCHAN_KEY }}
+        run: node src/cli.ts run --json=data/latest.json --delay=1500
+
+      - name: 提交状态（下次只报新增）
+        run: |
+          git config user.name "notice-radar-bot"
+          git config user.email "notice-radar-bot@users.noreply.github.com"
+          git add -A data
+          if git diff --cached --quiet; then
+            echo "状态无变化，跳过提交"
+          else
+            git commit -m "chore(state): $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
+            git push
+          fi
