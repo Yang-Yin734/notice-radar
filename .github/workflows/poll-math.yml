@@ -74,12 +74,14 @@ jobs:
         run: |
           git config user.name "notice-radar-bot"
           git config user.email "notice-radar-bot@users.noreply.github.com"
+          # 先同步远端再提交：否则会和本地/别的提交撞车（docs 下的构建产物尤其容易冲突）
+          git pull --rebase --autostash origin main || echo "::warning::同步失败，继续尝试提交"
           git add -A data docs
           if git diff --cached --quiet; then
             echo "状态无变化，跳过提交"
           else
             git commit -m "chore(state): math $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
-            if git push; then
+            if git push || (git pull --rebase --autostash origin main && git push); then
               echo "✓ 状态已提交回仓库"
             else
               echo "::error::推送状态失败。多半是仓库把 GITHUB_TOKEN 设成了只读：Settings → Actions → General → Workflow permissions → 选 Read and write permissions"
