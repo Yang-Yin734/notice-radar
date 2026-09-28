@@ -116,11 +116,9 @@ sources:
 - GitHub 的 cron 用 UTC，最小间隔 5 分钟，且**实际执行会延迟几分钟**；仓库 60 天无提交时定时任务会被自动停用。
 - 想更实时就把 workflow 的 cron 改密一点，或在本机用系统计划任务跑同一条命令（`radr run`）。
 
-还有一个**首次使用必做**的设置：`poll` 要把"见过哪些通知"提交回仓库，需要写权限。
+关于状态提交的权限：`poll` 需要把"见过哪些通知"提交回仓库，工作流里已经声明了 `permissions: contents: write`，**实测开箱可用，不用改仓库设置**。
 
-> Settings → Actions → General → Workflow permissions → 选 **Read and write permissions**
->
-> 不设的话，抓取和推送照常，只有最后"提交状态"那一步会失败并给出明确报错（工作流里已经写好提示）。
+> 只有在公司/组织策略限制过、或你把那段 `permissions` 删掉的情况下，才会在最后"提交状态"那步失败（失败时会直接告诉你点哪里：Settings → Actions → General → Workflow permissions → Read and write）。
 
 ## 项目结构
 
