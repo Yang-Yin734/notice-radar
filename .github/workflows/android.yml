@@ -143,6 +143,10 @@ jobs:
           echo "--- 内容抽样 ---"
           unzip -l notice-radar.apk | head -10
 
+          # 确认 APK 里真的带了目标网址（TWA 打开的就是它）
+          echo "--- TWA 目标网址（从 APK 字符串确认）---"
+          "$BT/aapt2" dump strings notice-radar.apk | grep -iE 'yang-yin734|notice-radar' | head -6 || true
+
           SHA=$(sha256sum notice-radar.apk | cut -d' ' -f1)
           SIZE=$(du -h notice-radar.apk | cut -f1)
           CERT=$("$BT/apksigner" verify --print-certs notice-radar.apk | grep -i 'SHA-256 digest' | head -1 | awk '{print $NF}')

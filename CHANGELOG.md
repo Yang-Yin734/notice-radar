@@ -27,6 +27,24 @@
   所以 APK 打开后顶部会显示地址栏（Custom Tabs 模式）。想全屏需要另建 `Yang-Yin734.github.io` 仓库把该文件放到根路径，或换自定义域名
 - 本机没有 Android 设备，**无法真机安装验证**；能验证的是：构建成功、APK 结构合法、签名指纹与本机密钥一致
 
+### 踩坑记录（给后来者省点时间）
+
+在 CI 里用 Bubblewrap 打 TWA，这几处都会让人卡住，全部已修：
+
+1. **它会交互式问"要不要由它安装 JDK"** → 没有 TTY 直接崩。写 `~/.bubblewrap/config.json`（`jdkPath`/`androidSdkPath`）即可跳过
+2. **它只认 `$SDK/tools` 或 `$SDK/bin`**，而现代 Android SDK 布局里两者都没有 → 一直报 `The provided androidSdk isn't correct.`。
+   补一条软链 `$SDK/bin → cmdline-tools/latest/bin` 即可（它也从 `bin/` 找 sdkmanager）。它还硬编码要 `build-tools;36.1.0`
+3. **`init` 全是交互式提问**（Domain/URL path/图标…），CI 里跑不了 → 本地 `init` 一次，把工程提交，CI 只 `build`
+4. **它比对 `manifest-checksum.txt` 与 `twa-manifest.json` 的 sha1**，不一致（或文件缺失）就弹"要不要应用变更" → 改了 manifest 必须顺手重算校验和（算法就是 sha1(文件字节)）
+5. **包名/版本不在 twa-manifest.json 里生效**：`init` 会把配置**内联**进 `app/build.gradle` 的 `twaManifest` 映射，
+   且 `defaultConfig.applicationId` 才最终决定 APK 包名 → 只改 manifest 会让 APK 还是旧包名/旧版本号
+6. **AGP 8+ 不允许源码 `AndroidManifest.xml` 里再有 `package` 属性** → 与 `namespace` 冲突，构建直接失败，要删掉该属性
+7. **它签名时给密码自带双引号**（`pass:"密码"`）→ apksigner 报 `Failed PKCS12 integrity checking`。
+   本项目改为 `--skipSigning` + 自己调 `apksigner`（密码走 `env:`，不进命令行）
+8. **node-forge 导出的 PKCS#12 必须设 `friendlyName`**，否则私钥条目没有别名，apksigner 报 `entry does not contain a key`
+9. **Windows 检出会丢 `gradlew` 的可执行位** → `git update-index --chmod=+x`，CI 里也补一次 `chmod +x`
+10. **GitHub Pages 默认不发布点号目录** → `docs/.well-known/assetlinks.json` 404，加 `docs/.nojekyll` 才会发布
+
 ## v0.3.0 — 2026-09-28
 
 把归档页升级成**手机、电脑都能用的应用**（PWA）：能装到主屏幕、能离线翻、收藏和已读只存本机。
