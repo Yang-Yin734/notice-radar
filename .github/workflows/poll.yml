@@ -42,16 +42,21 @@ jobs:
           # 在想用这个仓库的人自己的 Settings → Secrets 里配
           SERVERCHAN_KEY: ${{ secrets.SERVERCHAN_KEY }}
         run: |
-          # 境内学校站点在境外 runner 上偶发整体不可达（跨境网络抖动）。
+          # 境内学校站点在境外 runner 上偶发整体不可达（跨境网络抖动，实测过两次）。
           # 单源失败不影响退出码，只有全部源都失败才返回非零，所以重试放在这一层。
-          for attempt in 1 2 3; do
+          # 退避逐步拉长：30s / 45s / 60s，覆盖几分钟级别的网络 weather。
+          delays=(30 45 60)
+          for attempt in 1 2 3 4; do
             if node src/cli.ts run --json=data/latest.json --delay=1500; then
               exit 0
             fi
-            echo "::warning::第 ${attempt} 次抓取失败（可能所有源都不可达），20 秒后重试"
-            sleep 20
+            if [ "$attempt" -lt 4 ]; then
+              wait="${delays[$((attempt-1))]}"
+              echo "::warning::第 ${attempt} 次抓取失败（可能所有源都不可达），${wait} 秒后重试"
+              sleep "$wait"
+            fi
           done
-          echo "::error::连续 3 次抓取全部失败。多半是 runner 到境内站点的网络问题；若长期如此，看下一步 doctor 输出判断是否站点改版。"
+          echo "::error::连续 4 次抓取全部失败。多半是 runner 到境内站点的网络问题（本站点在境外会偶发抖动）；若长期如此，看下一步 doctor 输出判断是否站点改版。"
           exit 1
 
       - name: 失败时打印体检表（便于定位）
