@@ -196,9 +196,19 @@ async function cmdTestNotify(flags: Flags): Promise<number> {
   for (const o of outcomes) console.log(`  ${o.ok ? '✓' : '✗'} 通知[${o.channel}] ${o.detail}`);
   if (!flags.dry) console.log(`  · 结果已记录到 ${writeNotifyLog(flags.state, `${cfg.name} · 推送通道测试`, 0, outcomes)}`);
 
-  const anyOk = outcomes.some((o) => o.ok);
-  console.log(anyOk ? '\n▸ 至少一个通道推送成功。' : '\n▸ 所有通道都失败了 —— 检查密钥/网络。');
-  return anyOk ? 0 : 1;
+  // 判定必须忽略 stdout：它永远"成功"，否则这个自检会永远显示通过（真踩过这个坑）
+  const remote = outcomes.filter((o) => o.channel !== 'stdout');
+  if (remote.length === 0) {
+    console.log('\n▸ 配置里没有真正的推送通道（只有 stdout），这个测试说明不了问题。');
+    return 1;
+  }
+  const anyRemoteOk = remote.some((o) => o.ok);
+  console.log(
+    anyRemoteOk
+      ? `\n▸ 推送通道可用：${remote.filter((o) => o.ok).map((o) => o.channel).join(', ')}`
+      : '\n▸ 所有推送通道都失败了 —— 检查密钥/网络。',
+  );
+  return anyRemoteOk ? 0 : 1;
 }
 
 async function cmdRun(flags: Flags): Promise<number> {
