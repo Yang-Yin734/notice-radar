@@ -143,6 +143,27 @@ jobs:
           echo "--- 内容抽样 ---"
           unzip -l notice-radar.apk | head -10
 
+          # 清单里的 android:name="LauncherActivity" 是相对 namespace 解析的：
+          # 如果 Java 源文件的包名跟 namespace 不一致，编译能过、装上一打开就崩（ClassNotFoundException）。
+          # 这里直接查 APK 里的启动 Activity 名和 dex 里的类。
+          echo "--- 启动 Activity 与运行时类 ---"
+          LAUNCH=$("$BT/aapt2" dump badging notice-radar.apk | grep '^launchable-activity' || true)
+          echo "$LAUNCH"
+          EXPECTED_ACT="$EXPECTED_PKG.LauncherActivity"
+          case "$LAUNCH" in
+            *"name='$EXPECTED_ACT'"*) echo "✓ 启动 Activity：$EXPECTED_ACT" ;;
+            *) echo "::error::启动 Activity 与包名不一致（装上会一打开就崩）：期望 $EXPECTED_ACT，实际：$LAUNCH"; exit 1 ;;
+          esac
+          DEX_DIR=$(echo "$EXPECTED_PKG" | tr '.' '/')
+          for CLS in LauncherActivity Application DelegationService; do
+            if unzip -p notice-radar.apk classes.dex | grep -aq "$DEX_DIR/$CLS"; then
+              echo "✓ dex 里存在 $DEX_DIR/$CLS"
+            else
+              echo "::error::dex 里找不到类 $DEX_DIR/$CLS，但清单引用了它 —— 运行时会崩"
+              exit 1
+            fi
+          done
+
           # 确认 APK 里真的带了目标网址（TWA 打开的就是它）
           echo "--- TWA 目标网址（从 APK 字符串确认）---"
           "$BT/aapt2" dump strings notice-radar.apk | grep -iE 'yang-yin734|notice-radar' | head -6 || true

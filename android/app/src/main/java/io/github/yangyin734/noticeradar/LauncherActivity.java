@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.github.yang_yin734.twa;
+package io.github.yangyin734.noticeradar;
 
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
