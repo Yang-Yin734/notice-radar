@@ -83,20 +83,11 @@ jobs:
           bubblewrap doctor || true
 
       - name: 写入版本号（versionCode 递增才允许覆盖安装）
-        working-directory: android
         env:
           RUN_NUMBER: ${{ github.run_number }}
         run: |
-          node - <<'NODE'
-          const fs = require('fs');
-          const pkg = JSON.parse(fs.readFileSync('../package.json', 'utf8'));
-          const m = JSON.parse(fs.readFileSync('twa-manifest.json', 'utf8'));
-          m.appVersionName = pkg.version;
-          m.appVersion = pkg.version;
-          m.appVersionCode = Number(process.env.RUN_NUMBER);
-          fs.writeFileSync('twa-manifest.json', JSON.stringify(m, null, 2) + '\n');
-          console.log(`版本：${m.appVersionName}（code ${m.appVersionCode}）`);
-          NODE
+          # 同时重算 manifest-checksum.txt：bubblewrap 比对不一致时会交互式提问，CI 里会崩
+          node tools/twa-version.mjs --dir=android --version-code="$RUN_NUMBER"
 
       - name: 构建并签名 APK
         working-directory: android

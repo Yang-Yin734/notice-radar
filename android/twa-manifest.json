@@ -20,8 +20,8 @@
     "path": "../android-signing/notice-radar.p12",
     "alias": "notice-radar"
   },
-  "appVersionName": "0.3.0",
-  "appVersionCode": 1,
+  "appVersionName": "0.4.0",
+  "appVersionCode": 4,
   "shortcuts": [],
   "generatorApp": "bubblewrap-cli",
   "webManifestUrl": "https://yang-yin734.github.io/notice-radar/manifest.webmanifest",
@@ -43,5 +43,5 @@
   "fileHandlers": [],
   "launchHandlerClientMode": "",
   "displayOverride": [],
-  "appVersion": "0.3.0"
+  "appVersion": "0.4.0"
 }
