@@ -61,16 +61,29 @@
 
 需要 Node ≥ 22.18（利用 Node 原生的 TypeScript 支持，仓库里跑无需编译步骤）。
 
-**只想试试看**（不用 clone，直接跑 npm 包）：
+**只想试试看**（不用 clone）：
 
 ```bash
-npx notice-radar list       # 看内置的学校预设
-npx notice-radar schools    # 适配器市场：谁维护哪个学校
-npx notice-radar doctor     # 体检：每个源能不能抓、解析出几条
-npx notice-radar stats      # 归档频次统计（来源/标签/周/星期分布）
+# 方式一：从 Release 装（现在就能用，不需要 npm 账号；已实测）
+npm i -g https://github.com/Yang-Yin734/notice-radar/releases/download/v0.6.0/notice-radar-0.6.0.tgz
+
+# 方式二：从 npm 装（包已就绪，等仓库配上 NPM_TOKEN 后即可发布，见 docs/publish.md）
+npx notice-radar schools
 ```
 
-> 包发的是编译后的 JS：Node 不允许对 `node_modules` 里的文件做类型剥离，细节见 [docs/publish.md](docs/publish.md)。
+装好后可用两个命令名（`notice-radar` 与 `radr`）：
+
+```bash
+notice-radar list       # 看内置的学校预设
+notice-radar schools    # 适配器市场：谁维护哪个学校
+notice-radar doctor     # 体检：每个源能不能抓、解析出几条
+notice-radar stats      # 归档频次统计（来源/标签/周/星期分布）
+```
+
+> - 包发的是**编译后的 JS**：Node 不允许对 `node_modules` 里的文件做类型剥离，否则 `npx` 直接报
+>   `ERR_UNSUPPORTED_NODE_MODULES_TYPE_STRIPPING`。细节见 [docs/publish.md](docs/publish.md)。
+> - `npm i -g github:Yang-Yin734/notice-radar`（从 git 直装）在 **Windows 上不可靠**——npm 的
+>   git 依赖准备阶段会因 `EPERM` 清理失败导致构建缺 typescript，已实测；Linux/macOS 上没有这个问题。
 
 **要改配置、加自己学校**（推荐 clone）：
 

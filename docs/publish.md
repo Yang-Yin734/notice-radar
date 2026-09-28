@@ -1,16 +1,26 @@
 # 发布到 npm
 
-发布后的用法：
+## 安装方式（按可靠性排序，均已实测）
 
 ```bash
-npx notice-radar list          # 看内置学校预设
-npx notice-radar schools       # 适配器市场（谁维护哪个学校）
-npx notice-radar run           # 抓一次并推送
-npx notice-radar stats         # 归档频次统计
-npx notice-radar --help        # 全部命令
+# ① 从 Release 装：现在就能用，不需要 npm 账号（4 秒装完）
+npm i -g https://github.com/Yang-Yin734/notice-radar/releases/download/v0.6.0/notice-radar-0.6.0.tgz
+
+# ② 从 npm 装：配上 NPM_TOKEN 发布后可用
+npx notice-radar schools
+
+# ③ 从 git 直装：Linux/macOS 可用；Windows 上 npm 的 git 依赖准备会 EPERM 失败（见文末）
+npm i -g github:Yang-Yin734/notice-radar
 ```
 
-包名 `notice-radar`，同时提供两个可执行名：`notice-radar` 与 `radr`。
+装好后提供两个命令名：`notice-radar` 与 `radr`。
+
+```bash
+notice-radar list / schools / run / stats / doctor / dashboard / test-notify
+```
+
+> Release 里的 `.tgz` 由 `publish-npm.yml` 在打 tag 时自动上传（`npm pack` + `gh release upload`），
+> 所以每个版本都会带一个可直接安装的包——**即使永远不发布到 npm，这条分发路径也是通的**。
 
 ---
 
@@ -89,4 +99,25 @@ npx notice-radar@latest schools
 
 - `package.json` 的 `version` 是唯一版本源：应用外壳（`docs/version.json`）与 TWA 工程的
   `appVersionName` 都由它派生（`radr dashboard` 与 `tools/twa-version.mjs`）
-- 打 tag（`v0.6.0`）会同时触发：npm 发布、Android APK 构建（`android.yml`）
+- 打 tag（`v0.6.0`）会同时触发：npm 发布（`publish-npm.yml`，并上传 `.tgz` 到 Release）、
+  Android APK 构建（`android.yml`）
+
+---
+
+## 已知问题
+
+**`npm i -g github:...` 在 Windows 上会失败**（实测）：
+
+```
+npm error git dep preparation failed
+npm error command failed  npm run build
+npm error 找不到 typescript
+npm warn cleanup [Error: EPERM: operation not permitted, rmdir '...node_modules\htmlparser2']
+```
+
+原因不在本项目：npm 从 git 安装时会做一次"git dep preparation"（在缓存目录里嵌套 `npm install --force`
+再清理），Windows 上这一步常因文件占用报 `EPERM`，清理失败 → devDependencies 不全 → 构建拿不到 typescript。
+规避方式：用上面的 ①（Release 的 `.tgz`）或 ②（npm），它们不经过 git 准备流程。
+
+> 为了让 ③ 尽量能工作，构建脚本 `tools/tsc.mjs` 用 Node 显式解析 typescript 入口，
+> 不依赖 `node_modules/.bin` 是否在 PATH 上；`prepare` 脚本也已就位（git 安装只跑 `prepare`，不跑 `prepack`）。

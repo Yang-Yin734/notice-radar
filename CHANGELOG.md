@@ -32,6 +32,13 @@ M3：**能发布到 npm 了**，并且把"谁维护哪个学校"变成有 CI 兜
 ### 变更
 
 - 版本号 0.5.0 → 0.6.0；测试 37 → 42（新增统计 2、适配器市场 3）
+- **没 npm 账号也能装**：打 tag 时 `publish-npm.yml` 会把打包产物 `notice-radar-x.y.z.tgz`
+  一并上传到 Release，用户可直接
+  `npm i -g https://github.com/Yang-Yin734/notice-radar/releases/download/v0.6.0/notice-radar-0.6.0.tgz`
+  （已实测：4 秒装完、两个命令名都可用、在任意目录执行正常）
+- 构建脚本改为 `tools/tsc.mjs`（Node 显式解析 typescript 入口，不依赖 PATH）+
+  `prepare` 脚本（让 git 直装也能构建）；`npm i -g github:...` 在 Windows 上仍会因 npm 自身的
+  git 依赖准备 `EPERM` 失败，已在 [docs/publish.md](docs/publish.md) 说明并给出规避方式
 
 ## v0.5.0 — 2026-09-28
 
