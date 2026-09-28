@@ -8,6 +8,7 @@
   之前每 20 分钟都会因 `lastRun` 变化产生一次提交，一天 72 个，会把提交历史淹掉
 - `poll` 的 push 触发限定在 `config/**` 与自身，改文档/代码不再顺带触发抓取
 - 两个 workflow 加 `timeout-minutes: 10`，避免某个源卡住白占 runner
+- `poll` 对"全部源不可达"（境外 runner 到境内站点的跨境抖动）自动重试 3 次，失败时额外打印 `doctor` 体检表便于定位
 - 测试入口改为 `tools/run-tests.mjs`：显式发现 `*.test.ts` 再交给 `node --test`，
   修掉"本地 Node 26 能跑、CI Node 24 找不到测试文件"的版本差异
 - 新增 `tools/gh-setup.mjs`：一条命令配好仓库描述/topics/labels/good first issues/Release（可选 Pages 与 Actions secret）
