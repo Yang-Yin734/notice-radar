@@ -56,8 +56,30 @@ const fingerprint = crypto
   .match(/../g)
   .join(':');
 
-const p12 = forge.pkcs12.toPkcs12Asn1(keys.privateKey, [cert], password, { algorithm: '3des' });
+const p12 = forge.pkcs12.toPkcs12Asn1(keys.privateKey, [cert], password, {
+  algorithm: '3des',
+  // 关键：必须给条目设 friendlyName，否则私钥/证书条目没有别名，
+  // apksigner 会报 entry "别名" does not contain a key（踩过这个坑）
+  friendlyName: alias,
+});
 const p12Der = Buffer.from(forge.asn1.toDer(p12).getBytes(), 'binary');
+
+// 写完立刻回读自检：确认私钥条目存在、别名正确、证书指纹与预期一致
+{
+  const readBack = forge.pkcs12.pkcs12FromAsn1(forge.asn1.fromDer(forge.util.createBuffer(p12Der.toString('binary'))), password);
+  const keyBags = readBack.getBags({ bagType: forge.pki.oids.pkcs8ShroudedKeyBag })[forge.pki.oids.pkcs8ShroudedKeyBag] ?? [];
+  const certBags = readBack.getBags({ bagType: forge.pki.oids.certBag })[forge.pki.oids.certBag] ?? [];
+  const names = [...keyBags, ...certBags].map((b) => b.attributes?.friendlyName?.[0]);
+  if (!keyBags.length) {
+    console.error('自检失败：导出的 keystore 里没有私钥条目，apksigner 会拒绝签名');
+    process.exit(1);
+  }
+  if (names.some((n) => n !== alias)) {
+    console.error(`自检失败：条目别名不一致（期望 ${alias}，实际 ${JSON.stringify(names)}）`);
+    process.exit(1);
+  }
+  console.log(`  ✓ 自检通过：条目 ${names.length} 个，别名均为 ${alias}，私钥可读回`);
+}
 
 const p12Path = path.join(outDir, `${alias}.p12`);
 fs.writeFileSync(p12Path, p12Der);
