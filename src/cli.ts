@@ -193,8 +193,25 @@ async function cmdRun(flags: Flags): Promise<number> {
   }
 
   if (flags.notify && fresh.length > 0) {
-    const outcomes = await notifyAll(cfg.notify, `${cfg.name} · 新增 ${fresh.length} 条`, markdown);
+    const title = `${cfg.name} · 新增 ${fresh.length} 条`;
+    const outcomes = await notifyAll(cfg.notify, title, markdown);
     for (const o of outcomes) console.log(`  ${o.ok ? '✓' : '✗'} 通知[${o.channel}] ${o.detail}`);
+
+    // 把推送结果落盘（会被 poll 一并提交）——这样"云端到底推出去没有"可以直接从仓库查证，
+    // 不用翻 Actions 日志（日志接口要 token）。注意脱敏：Server酱 返回里带 readkey，
+    // 它能用来读/删那条消息，不该进公开仓库。
+    if (!flags.dry) {
+      const sanitize = (detail: string) =>
+        detail.replace(/"readkey"\s*:\s*"[^"]*"/g, '"readkey":"***"').replace(/SCT[A-Za-z0-9]{10,}/g, 'SCT***').slice(0, 400);
+      const notifyLog = path.join(path.dirname(flags.state), 'last-notify.json');
+      fs.mkdirSync(path.dirname(notifyLog), { recursive: true });
+      fs.writeFileSync(
+        notifyLog,
+        `${JSON.stringify({ at: new Date().toISOString(), title, count: fresh.length, outcomes: outcomes.map((o) => ({ ...o, detail: sanitize(o.detail) })) }, null, 2)}\n`,
+        'utf8',
+      );
+      console.log(`  · 推送结果已记录到 ${notifyLog}`);
+    }
   } else if (fresh.length === 0) {
     console.log('\n▸ 没有新通知，跳过推送。');
   }
