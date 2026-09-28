@@ -1,0 +1,9 @@
+# 统一换行符，避免 Windows 提交时把整站 fixture 改成 CRLF 产生无意义 diff
+* text=auto eol=lf
+
+# 二进制/大文件照原样
+*.png binary
+*.jpg binary
+*.ico binary
+*.woff binary
+*.woff2 binary
