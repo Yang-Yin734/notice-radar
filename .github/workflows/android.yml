@@ -89,43 +89,59 @@ jobs:
           # 同时重算 manifest-checksum.txt：bubblewrap 比对不一致时会交互式提问，CI 里会崩
           node tools/twa-version.mjs --dir=android --version-code="$RUN_NUMBER"
 
-      - name: 构建并签名 APK
+      - name: 构建 APK（先不签名）
         working-directory: android
-        env:
-          BUBBLEWRAP_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          BUBBLEWRAP_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
           # fork 到 Windows 上再提交时容易丢可执行位，这里兜一下
           chmod +x gradlew
-          bubblewrap build --skipPwaValidation \
-            --signingKeyPath="$GITHUB_WORKSPACE/android-signing/notice-radar.p12" \
-            --signingKeyAlias="${{ secrets.ANDROID_KEY_ALIAS }}"
+          # --skipSigning：bubblewrap 签名时会给密码自带双引号再经 shell 传递（pass:"密码"），
+          # 到 apksigner 手里就带上了引号 → "Failed PKCS12 integrity checking"。
+          # 所以构建交给它，签名我们自己来（下一步，密码走 env: 不经过命令行）。
+          bubblewrap build --skipPwaValidation --skipSigning
+          ls -lh *.apk
+
+      - name: 用固定密钥签名（自己调 apksigner）
+        env:
+          KS_PASS: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          KEY_PASS: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          KS_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+        run: |
+          BT=$(ls -d "$ANDROID_HOME/build-tools"/* | sort -V | tail -1)
+          echo "build-tools：$BT"
+          UNSIGNED=android/app-release-unsigned-aligned.apk
+          ls -lh "$UNSIGNED" || { echo "::error::没找到待签名的 APK"; exit 1; }
+          "$BT/zipalign" -p -f 4 "$UNSIGNED" aligned.apk
+          "$BT/apksigner" sign \
+            --ks android-signing/notice-radar.p12 \
+            --ks-key-alias "$KS_ALIAS" \
+            --ks-pass env:KS_PASS --key-pass env:KEY_PASS \
+            --out notice-radar.apk aligned.apk
+          "$BT/apksigner" verify --print-certs notice-radar.apk | head -6
 
       - name: 校验产物（签名、包名、体积）
         id: pack
         run: |
-          APK=$(find android/app/build/outputs -name '*.apk' | head -1)
-          if [ -z "$APK" ]; then echo "::error::没找到 APK"; exit 1; fi
-          cp "$APK" notice-radar.apk
           ls -lh notice-radar.apk
-
-          APKSIGNER=$(find "$ANDROID_HOME/build-tools" -name apksigner -type f | sort | tail -1)
-          echo "--- 签名校验 ---"
-          "$APKSIGNER" verify --print-certs notice-radar.apk | head -8 || true
-
-          AAPT=$(find "$ANDROID_HOME/build-tools" -name aapt2 -type f | sort | tail -1)
+          BT=$(ls -d "$ANDROID_HOME/build-tools"/* | sort -V | tail -1)
           echo "--- 包信息 ---"
-          unzip -l notice-radar.apk | head -8
+          "$BT/aapt2" dump badging notice-radar.apk | head -4 || true
+          echo "--- 内容抽样 ---"
+          unzip -l notice-radar.apk | head -10
 
           SHA=$(sha256sum notice-radar.apk | cut -d' ' -f1)
           SIZE=$(du -h notice-radar.apk | cut -f1)
+          CERT=$("$BT/apksigner" verify --print-certs notice-radar.apk | grep -i 'SHA-256 digest' | head -1 | awk '{print $NF}')
           echo "sha256=$SHA" >> "$GITHUB_OUTPUT"
           {
             echo "### Android APK 构建成功"
             echo ""
-            echo "- 大小：$SIZE"
-            echo "- sha256：\`$SHA\`"
-            echo "- 下载：https://github.com/${{ github.repository }}/releases/download/android-latest/notice-radar.apk"
+            echo "| 项目 | 值 |"
+            echo "|---|---|"
+            echo "| 大小 | $SIZE |"
+            echo "| sha256 | \`$SHA\` |"
+            echo "| 签名证书 SHA-256 | \`$CERT\` |"
+            echo ""
+            echo "下载：https://github.com/${{ github.repository }}/releases/download/android-latest/notice-radar.apk"
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: 发布到 Release（滚动标签 android-latest，下载链接固定）
