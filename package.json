@@ -39,6 +39,7 @@
     "dashboard": "node src/cli.ts dashboard",
     "make-keystore": "node tools/make-android-keystore.mjs",
     "capture": "node tools/capture-fixtures.mjs",
+    "prepare": "npm run build",
     "prepack": "npm run build"
   },
   "keywords": [
