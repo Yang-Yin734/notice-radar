@@ -95,6 +95,8 @@ jobs:
           BUBBLEWRAP_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           BUBBLEWRAP_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
+          # fork 到 Windows 上再提交时容易丢可执行位，这里兜一下
+          chmod +x gradlew
           bubblewrap build --skipPwaValidation \
             --signingKeyPath="$GITHUB_WORKSPACE/android-signing/notice-radar.p12" \
             --signingKeyAlias="${{ secrets.ANDROID_KEY_ALIAS }}"
