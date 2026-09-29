@@ -70,9 +70,28 @@ jobs:
 
       - name: 构建 APK（Gradle）
         working-directory: android
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           chmod +x gradlew
-          ./gradlew assembleRelease --no-daemon --stacktrace
+          set +e
+          ./gradlew assembleRelease --no-daemon --stacktrace 2>&1 | tee /tmp/gradle.log
+          status=${PIPESTATUS[0]}
+          set -e
+          if [ "$status" -ne 0 ]; then
+            # 把错误摘要发成提交评论：Actions 日志在 Azure Blob 上，有些网络环境拿不到，
+            # 提交评论走 api.github.com，哪里都能查
+            {
+              echo "Android 构建失败（${{ github.sha }}）"
+              echo ''
+              echo '```'
+              grep -E 'e: file|error:|FAILURE|What went wrong|Caused by|Unresolved|Execution failed|Could not|BUILD FAILED' /tmp/gradle.log | head -50
+              echo '```'
+            } > /tmp/comment.md
+            gh api "repos/${{ github.repository }}/commits/${{ github.sha }}/comments" -F body=@/tmp/comment.md >/dev/null 2>&1 || true
+            echo "::error::Gradle 构建失败，错误摘要已作为提交评论发出"
+            exit 1
+          fi
 
       - name: 签名 + 校验产物
         id: pack
