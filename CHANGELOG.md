@@ -2,6 +2,35 @@
 
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## v0.8.0 — 2026-09-29
+
+**Android 改成纯原生界面**（Kotlin + Jetpack Compose），并处理了"应用里不该出现安装引导"和底部白条。
+
+### 变更
+
+- **界面重写为原生 Compose**（删掉 WebView 与 `assets/www`）：
+  - 通知列表：按日期分组、未读左侧色条、已读变淡、标签色块、☆ 收藏、搜索、按来源筛选
+  - 收藏页、统计页（总览卡片 / 14 天柱状图 / 按来源 / 按标签 / 星期分布）、设置页
+  - 设置页：微信推送开关（读写仓库变量）、应用更新（检查 + 下载新 APK）、数据来源与时间、立即刷新、
+    清除已读/收藏、深浅色切换、关于
+  - 数据层用 `HttpURLConnection` + `org.json`（不引第三方网络库），镜像地址与版本检查逻辑搬进 Kotlin
+- **应用内不再出现"安装到手机"引导**：原生设置页没有该区块；只有网页版访客才会看到安装横幅
+- **底部白条修复**：根因是 WebView 不支持 `env(safe-area-inset-*)` 且窗口底色为浅色。
+  现在用 `enableEdgeToEdge()` + Compose `Scaffold`/`NavigationBar` 正确消费系统栏内边距，
+  并在 `themes.xml` 与 `values-night/colors.xml` 把 `windowBackground`、状态栏、导航栏颜色设为应用底色
+- 随包资源只剩 `assets/data/{dashboard-data.json,version.json}`（18 KB）；APK 体积 2.4 MB → 6.4 MB（Compose 运行时）
+- CI 断言改为：包名正确、内置数据在包里、**所有 `classes*.dex` 里能搜到镜像地址**（Compose 会触发 multidex）、
+  不应再出现 `assets/www`
+- 顺带：构建失败时把错误摘要**发成提交评论**——Actions 日志存在 Azure Blob，部分网络环境取不到，
+  提交评论走 `api.github.com`，哪里都能查
+- 包名与签名密钥不变，已安装的旧版可直接覆盖升级
+
+### 说明
+
+- 本机没有 Android 设备，**无法真机验证**；已核对：APK 内无 `assets/www`、有内置数据（41 条 / v0.8.0）、
+  dex 里含镜像地址与推送开关常量、不含 TWA/WebView 资源加载器、签名指纹与密钥一致
+- 底部白条是按标准做法修的（insets + 窗口底色）；如果真机上仍有异常，告诉我具体机型与现象
+
 ## v0.7.0 — 2026-09-29
 
 **Android 端从"套壳网页"改成真正的独立应用**（用户反馈：点开是网页、不加载 GitHub 就进不去）。
