@@ -98,18 +98,25 @@ jobs:
             *"package: name='io.github.yangyin734.noticeradar'"*) echo "✓ 包名正确" ;;
             *) echo "::error::包名不对：$BADGING"; exit 1 ;;
           esac
-          echo "--- 界面资源是否真的在包里（决定能否离线打开）---"
-          unzip -l notice-radar.apk | grep -E 'assets/www/(index\.html|dashboard-data\.json|version\.json)' || {
-            echo "::error::APK 里没有打包界面资源，装出来会白屏"
+          echo "--- 内置数据是否真的在包里（决定能否离线打开）---"
+          unzip -l notice-radar.apk | grep -E 'assets/data/(dashboard-data\.json|version\.json)' || {
+            echo "::error::APK 里没有内置数据，装出来会是空列表"
             exit 1
           }
-          echo "  assets/www 文件数：$(unzip -l notice-radar.apk | grep -c 'assets/www/')"
-          if unzip -p notice-radar.apk assets/www/index.html | grep -q 'jsdelivr'; then
-            echo "✓ 镜像数据源已内置"
+          echo "  内置数据条数：$(unzip -p notice-radar.apk assets/data/dashboard-data.json | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>console.log(JSON.parse(s).items.length))")"
+          echo "--- 镜像数据源是否编译进代码（国内可达性）---"
+          if unzip -p notice-radar.apk classes.dex | grep -aq 'jsdelivr'; then
+            echo "✓ 镜像地址已在代码里"
           else
-            echo "::error::内置页面里没有镜像列表，国内将无法刷新数据"
+            echo "::error::dex 里没有镜像地址，国内将无法刷新数据"
             exit 1
           fi
+          echo "--- 界面是否为原生（不应再有网页资源）---"
+          if unzip -l notice-radar.apk | grep -q 'assets/www/'; then
+            echo "::error::APK 里还残留 assets/www（网页界面），说明还在用 WebView 版本"
+            exit 1
+          fi
+          echo "✓ 没有 assets/www，界面是原生的"
           SHA=$(sha256sum notice-radar.apk | cut -d' ' -f1)
           SIZE=$(du -h notice-radar.apk | cut -f1)
           CERT=$("$BT/apksigner" verify --print-certs notice-radar.apk | grep -i 'SHA-256 digest' | head -1 | awk '{print $NF}')

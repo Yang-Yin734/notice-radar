@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 窗口背景跟应用同色：避免系统栏区域露出白底（用户反馈的"底部白条"） -->
+    <style name="Theme.NoticeRadar" parent="@android:style/Theme.DeviceDefault.NoActionBar">
+        <item name="android:windowBackground">@color/appBackground</item>
+        <item name="android:navigationBarColor">@color/appSurface</item>
+        <item name="android:statusBarColor">@color/appSurface</item>
+    </style>
+</resources>

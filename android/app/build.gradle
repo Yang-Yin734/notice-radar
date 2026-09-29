@@ -1,5 +1,7 @@
 plugins {
     id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'org.jetbrains.kotlin.plugin.compose'
 }
 
 android {
@@ -12,7 +14,7 @@ android {
         targetSdk 36
         // 由 tools/android-version.mjs 在构建时按 package.json 版本与 CI 运行号改写
         versionCode 1
-        versionName "0.7.0"
+        versionName "0.8.0"
     }
 
     buildTypes {
@@ -21,14 +23,32 @@ android {
         }
     }
 
+    buildFeatures {
+        compose true
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+
+    packaging {
+        resources {
+            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+        }
+    }
 }
 
 dependencies {
-    // WebViewAssetLoader：把打包进 APK 的网页资源用 https://appassets.androidplatform.net/ 提供，
-    // 这样 fetch 与本地存储都有正常的"安全来源"语义（直接用 file:// 会被 CORS 拦住）
-    implementation 'androidx.webkit:webkit:1.12.1'
+    implementation platform('androidx.compose:compose-bom:2025.01.00')
+    implementation 'androidx.compose.ui:ui'
+    implementation 'androidx.compose.ui:ui-graphics'
+    implementation 'androidx.compose.material3:material3'
+    implementation 'androidx.activity:activity-compose:1.10.0'
+    implementation 'androidx.core:core-ktx:1.15.0'
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.7'
 }

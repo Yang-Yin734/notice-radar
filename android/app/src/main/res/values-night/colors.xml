@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 深色模式下的窗口底色（默认值来自 values/colors.xml） -->
+    <color name="appBackground">#FF12161F</color>
+    <color name="appSurface">#FF1B212C</color>
+</resources>

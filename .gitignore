@@ -13,7 +13,7 @@ dist/
 android-signing/
 android-app/
 # 打包进 APK 的网页资源：构建时由 tools/prepare-android-assets.mjs 从 docs/ 生成
-android/app/src/main/assets/www/
+android/app/src/main/assets/
 *.p12
 *.p12.base64
 *.jks
