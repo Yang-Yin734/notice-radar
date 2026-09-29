@@ -212,9 +212,12 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
   @media (min-width:600px) { .stats-grid { grid-template-columns:repeat(3,1fr); } }
 
   .tabbar { position:fixed; left:0; right:0; bottom:0; z-index:30; display:flex;
-    background:var(--card); border-top:1px solid var(--line); padding-bottom:env(safe-area-inset-bottom); }
+    background:var(--card); border-top:1px solid var(--line); padding-bottom:env(safe-area-inset-bottom);
+    /* 关键：始终 fixed 覆盖在视口底部，进来就能点，不用滚到页面最下端 */
+    }
   .tabbar button { flex:1; border:none; background:transparent; color:var(--muted); font-size:12px;
-    padding:9px 2px 10px; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:3px; }
+    padding:9px 2px 10px; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:3px;
+    white-space:nowrap; }
   .tabbar button .dot { width:5px; height:5px; border-radius:50%; background:transparent; }
   .tabbar button.active { color:var(--accent); }
   .tabbar button.active .dot { background:var(--accent); }
@@ -229,12 +232,16 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     main { padding:16px 20px 28px; }
   }
   @media (min-width:700px) {
-    body { padding-bottom:0; }
-    .tabbar { position:static; width:fit-content; margin:10px auto 0; border:1px solid var(--line);
-      border-radius:999px; overflow:hidden; }
+    /* 宽屏也固定在底部，只是收成居中的悬浮胶囊：
+       之前这里是 position:static，而 nav 在 DOM 里位于 main 之后 ——
+       结果标签栏掉到页面内容最底部，必须滚到最后才能点（用户反馈） */
+    body { padding-bottom:84px; }
+    .tabbar { left:50%; right:auto; transform:translateX(-50%); width:fit-content; bottom:16px;
+      border:1px solid var(--line); border-radius:999px; overflow:hidden;
+      padding-bottom:0; box-shadow:0 8px 24px rgba(16,24,40,.16); }
     .tabbar button { padding:9px 22px; flex-direction:row; gap:8px; }
     .tabbar button .dot { display:none; }
-    .toast { bottom:24px; }
+    .toast { bottom:96px; }
   }
 </style>
 </head>

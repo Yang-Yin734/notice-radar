@@ -158,3 +158,16 @@ test('应用：数据源是「内置优先 + 多镜像」，github.io 不排第�
   assert.match(html, /内置数据/, '数据来源会显示给用户');
   assert.match(html, /indexOf\('dashboard-data\.json'\)/, '版本检查也改用镜像地址（APK 内那份永远等于自己）');
 });
+
+test('应用：底部导航始终固定在视口底部（不能掉到页面最下端）', () => {
+  const html = renderDashboard(emptyHistory());
+
+  assert.match(html, /\.tabbar \{ position:fixed;/, '基础样式就是 fixed');
+  assert.ok(
+    !/\.tabbar \{ position:static/.test(html),
+    '宽屏也不能改成 static —— 那会让它掉到内容最底部，必须滚到底才能点',
+  );
+  assert.match(html, /@media \(min-width:700px\)[\s\S]*?\.tabbar \{ left:50%[\s\S]*?bottom:16px/, '宽屏是居中的悬浮胶囊');
+  assert.match(html, /body \{ padding-bottom:84px; \}/, '宽屏给悬浮栏留空间，最后一条通知不被盖住');
+  assert.match(html, /white-space:nowrap/, '标签文字不换行（通知两字被竖排过）');
+});

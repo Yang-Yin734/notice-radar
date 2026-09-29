@@ -2,6 +2,18 @@
 
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## v0.8.1 — 2026-09-29
+
+### 修复
+
+- **网页版宽屏下底部导航要滚到最底才能点**（用户反馈）：≥700px 时标签栏被设成 `position: static`，
+  而 `nav` 在 DOM 里位于 `main` 之后 —— 结果它掉到页面内容最底部。
+  现在**所有宽度都固定在视口底部**：窄屏是通栏标签栏，宽屏是居中的悬浮胶囊（含阴影，并给内容留 84px 底部空间），
+  一进来就能点「收藏 / 统计 / 设置」。
+  实测（CDP 量 `getBoundingClientRect`）：390×844 与 1280×900 都是 `position: fixed`、`visibleNoScroll: true`。
+- 顺手修掉宽屏下「通知」两个字被竖排的问题（标签加 `white-space: nowrap`）
+- 新增回归测试：断言标签栏基础样式是 `fixed`，并**禁止**再出现 `position: static`
+
 ## v0.8.0 — 2026-09-29
 
 **Android 改成纯原生界面**（Kotlin + Jetpack Compose），并处理了"应用里不该出现安装引导"和底部白条。
