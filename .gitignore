@@ -12,6 +12,8 @@ dist/
 # Android 签名密钥与构建产物：绝不提交（密钥泄漏 = 别人能冒名发布你的应用更新）
 android-signing/
 android-app/
+# 打包进 APK 的网页资源：构建时由 tools/prepare-android-assets.mjs 从 docs/ 生成
+android/app/src/main/assets/www/
 *.p12
 *.p12.base64
 *.jks

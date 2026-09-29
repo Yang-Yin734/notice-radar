@@ -1,16 +1,20 @@
 name: android-apk
 
-# 把 PWA 打包成**可以直接下载安装的 Android APK**（TWA：Trusted Web Activity —— 套壳的原生应用，
-# 打开的就是同一个网页，但会出现在桌面图标列表里，点开即用，不需要手动"添加到主屏幕"）。
-#
-# 为什么在 CI 里打：本地要装 JDK + Android SDK（1GB+），runner 上现成。
-# 为什么不在 CI 里 bubblewrap init：init 全是交互式提问（Domain/URL path/图标…），
-# 没有 TTY 会崩。所以工程在本地 init 一次后提交到 android/，CI 只负责构建 + 签名。
-# 签名密钥来自 Secrets：同一把密钥才能覆盖安装（见 tools/make-android-keystore.mjs）。
+# 构建**自带界面的独立 Android 应用**（不再是 TWA 套壳）：
+#   - 网页界面与数据被打包进 APK（assets/www），打开不需要网络、没有地址栏、不跳浏览器
+#   - 数据先读内置，再按镜像顺序尝试刷新（github.io 在国内经常不通）
+#   - 直接 Gradle 构建（不再依赖 bubblewrap），用固定密钥签名后发布到滚动 Release
 on:
   workflow_dispatch:
   push:
+    branches: [main]
     tags: ['v*']
+    paths:
+      - 'android/**'
+      - 'src/dashboard.ts'
+      - 'tools/prepare-android-assets.mjs'
+      - 'tools/android-version.mjs'
+      - '.github/workflows/android.yml'
 
 permissions:
   contents: write
@@ -34,6 +38,11 @@ jobs:
 
       - run: npm ci
 
+      - name: 生成应用界面与数据（随后被打包进 APK）
+        run: |
+          node src/cli.ts dashboard
+          node tools/prepare-android-assets.mjs
+
       - name: 准备签名密钥
         run: |
           mkdir -p android-signing
@@ -42,65 +51,25 @@ jobs:
           keytool -list -keystore android-signing/notice-radar.p12 -storetype PKCS12 \
             -storepass "${{ secrets.ANDROID_KEYSTORE_PASSWORD }}" | tail -2
 
-      - name: 安装 bubblewrap
-        run: npm install -g @bubblewrap/cli
-
-      # 不写这个配置，bubblewrap 会交互式问"要不要由它安装 JDK"，CI 里会直接崩。
-      # 另外 bubblewrap 只认 $SDK/tools 或 $SDK/bin（并从这里找 sdkmanager），
-      # 而现代 Android SDK 布局里这两个目录都不存在（命令行工具在 cmdline-tools/latest/bin），
-      # 不补一个软链它会一直说 "The provided androidSdk isn't correct."
-      - name: 预置 bubblewrap 配置 + 补齐它要求的 SDK 结构
-        run: |
-          echo "ANDROID_HOME=[$ANDROID_HOME]  ANDROID_SDK_ROOT=[$ANDROID_SDK_ROOT]"
-          SDK="${ANDROID_HOME:-${ANDROID_SDK_ROOT:-/usr/local/lib/android/sdk}}"
-          if [ ! -d "$SDK" ]; then
-            echo "::error::找不到 Android SDK"
-            exit 1
-          fi
-          echo "使用 SDK：$SDK"
-          ls "$SDK"
-          if [ ! -d "$SDK/tools" ] && [ ! -d "$SDK/bin" ]; then
-            sudo ln -sfn "$SDK/cmdline-tools/latest/bin" "$SDK/bin"
-            echo "已补软链：$SDK/bin → cmdline-tools/latest/bin"
-          fi
-          ls -l "$SDK/bin/sdkmanager"
-          mkdir -p ~/.bubblewrap
-          printf '{"jdkPath":"%s","androidSdkPath":"%s"}\n' "$JAVA_HOME" "$SDK" > ~/.bubblewrap/config.json
-          cat ~/.bubblewrap/config.json
-          {
-            echo "ANDROID_HOME=$SDK"
-            echo "ANDROID_SDK_ROOT=$SDK"
-          } >> "$GITHUB_ENV"
+      - name: 写入版本号（versionCode 递增才允许覆盖安装）
+        run: node tools/android-version.mjs --version-code="${{ github.run_number }}"
 
       - name: 接受许可证 + 装构建所需组件
         run: |
           SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
           yes | "$SDKMANAGER" --licenses >/dev/null 2>&1 || true
-          # 工程 compileSdk/targetSdk = 36；bubblewrap 这个版本硬编码要 build-tools 36.1.0
-          yes | "$SDKMANAGER" "platform-tools" "platforms;android-36" "build-tools;36.1.0" || true
+          yes | "$SDKMANAGER" "platform-tools" "platforms;android-36" "build-tools;36.0.0" || true
           echo "--- platforms ---"; ls "$ANDROID_HOME/platforms" || true
           echo "--- build-tools ---"; ls "$ANDROID_HOME/build-tools" || true
-          bubblewrap doctor || true
 
-      - name: 写入版本号（versionCode 递增才允许覆盖安装）
-        env:
-          RUN_NUMBER: ${{ github.run_number }}
-        run: |
-          # 同时重算 manifest-checksum.txt：bubblewrap 比对不一致时会交互式提问，CI 里会崩
-          node tools/twa-version.mjs --dir=android --version-code="$RUN_NUMBER"
-
-      - name: 构建 APK（先不签名）
+      - name: 构建 APK（Gradle）
         working-directory: android
         run: |
-          # fork 到 Windows 上再提交时容易丢可执行位，这里兜一下
           chmod +x gradlew
-          # --skipSigning：bubblewrap 签名时会给密码自带双引号再经 shell 传递（pass:"密码"），
-          # 到 apksigner 手里就带上了引号 → "Failed PKCS12 integrity checking"。
-          # 所以构建交给它，签名我们自己来（下一步，密码走 env: 不经过命令行）。
-          bubblewrap build --skipPwaValidation --skipSigning
-          ls -lh *.apk
+          ./gradlew assembleRelease --no-daemon --stacktrace
 
-      - name: 用固定密钥签名（自己调 apksigner）
+      - name: 签名 + 校验产物
+        id: pack
         env:
           KS_PASS: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           KEY_PASS: ${{ secrets.ANDROID_KEY_PASSWORD }}
@@ -108,78 +77,46 @@ jobs:
         run: |
           BT=$(ls -d "$ANDROID_HOME/build-tools"/* | sort -V | tail -1)
           echo "build-tools：$BT"
-          UNSIGNED=android/app-release-unsigned-aligned.apk
-          ls -lh "$UNSIGNED" || { echo "::error::没找到待签名的 APK"; exit 1; }
+          UNSIGNED=$(find android/app/build/outputs/apk/release -name '*unsigned*.apk' | head -1)
+          [ -n "$UNSIGNED" ] || { echo "::error::没找到未签名 APK"; ls -R android/app/build/outputs || true; exit 1; }
+          ls -lh "$UNSIGNED"
           "$BT/zipalign" -p -f 4 "$UNSIGNED" aligned.apk
-          "$BT/apksigner" sign \
-            --ks android-signing/notice-radar.p12 \
-            --ks-key-alias "$KS_ALIAS" \
-            --ks-pass env:KS_PASS --key-pass env:KEY_PASS \
-            --out notice-radar.apk aligned.apk
+          "$BT/apksigner" sign --ks android-signing/notice-radar.p12 --ks-key-alias "$KS_ALIAS" \
+            --ks-pass env:KS_PASS --key-pass env:KEY_PASS --out notice-radar.apk aligned.apk
+          echo "--- 签名 ---"
           "$BT/apksigner" verify --print-certs notice-radar.apk | head -6
-
-      - name: 校验产物（签名、包名、体积）
-        id: pack
-        run: |
-          ls -lh notice-radar.apk
-          BT=$(ls -d "$ANDROID_HOME/build-tools"/* | sort -V | tail -1)
           echo "--- 包信息 ---"
           BADGING=$("$BT/aapt2" dump badging notice-radar.apk | head -1)
           echo "$BADGING"
-
-          # 断言包名与配置一致：bubblewrap 会把 twa-manifest.json 内联进 build.gradle，
-          # 只改 manifest 不改 build.gradle 时 APK 里会还是旧包名（踩过），这里拦住
-          EXPECTED_PKG=$(node -p "require('./android/twa-manifest.json').packageId")
-          EXPECTED_CODE=$(node -p "require('./android/twa-manifest.json').appVersionCode")
           case "$BADGING" in
-            *"package: name='$EXPECTED_PKG'"*) echo "✓ 包名一致：$EXPECTED_PKG" ;;
-            *) echo "::error::APK 包名与 twa-manifest.json 不一致（期望 $EXPECTED_PKG）：$BADGING"; exit 1 ;;
+            *"package: name='io.github.yangyin734.noticeradar'"*) echo "✓ 包名正确" ;;
+            *) echo "::error::包名不对：$BADGING"; exit 1 ;;
           esac
-          case "$BADGING" in
-            *"versionCode='$EXPECTED_CODE'"*) echo "✓ versionCode 一致：$EXPECTED_CODE" ;;
-            *) echo "::error::APK versionCode 与配置不一致（期望 $EXPECTED_CODE）：$BADGING"; exit 1 ;;
-          esac
-
-          echo "--- 内容抽样 ---"
-          unzip -l notice-radar.apk | head -10
-
-          # 清单里的 android:name="LauncherActivity" 是相对 namespace 解析的：
-          # 如果 Java 源文件的包名跟 namespace 不一致，编译能过、装上一打开就崩（ClassNotFoundException）。
-          # 这里直接查 APK 里的启动 Activity 名和 dex 里的类。
-          echo "--- 启动 Activity 与运行时类 ---"
-          LAUNCH=$("$BT/aapt2" dump badging notice-radar.apk | grep '^launchable-activity' || true)
-          echo "$LAUNCH"
-          EXPECTED_ACT="$EXPECTED_PKG.LauncherActivity"
-          case "$LAUNCH" in
-            *"name='$EXPECTED_ACT'"*) echo "✓ 启动 Activity：$EXPECTED_ACT" ;;
-            *) echo "::error::启动 Activity 与包名不一致（装上会一打开就崩）：期望 $EXPECTED_ACT，实际：$LAUNCH"; exit 1 ;;
-          esac
-          DEX_DIR=$(echo "$EXPECTED_PKG" | tr '.' '/')
-          for CLS in LauncherActivity Application DelegationService; do
-            if unzip -p notice-radar.apk classes.dex | grep -aq "$DEX_DIR/$CLS"; then
-              echo "✓ dex 里存在 $DEX_DIR/$CLS"
-            else
-              echo "::error::dex 里找不到类 $DEX_DIR/$CLS，但清单引用了它 —— 运行时会崩"
-              exit 1
-            fi
-          done
-
-          # 确认 APK 里真的带了目标网址（TWA 打开的就是它）
-          echo "--- TWA 目标网址（从 APK 字符串确认）---"
-          "$BT/aapt2" dump strings notice-radar.apk | grep -iE 'yang-yin734|notice-radar' | head -6 || true
-
+          echo "--- 界面资源是否真的在包里（决定能否离线打开）---"
+          unzip -l notice-radar.apk | grep -E 'assets/www/(index\.html|dashboard-data\.json|version\.json)' || {
+            echo "::error::APK 里没有打包界面资源，装出来会白屏"
+            exit 1
+          }
+          echo "  assets/www 文件数：$(unzip -l notice-radar.apk | grep -c 'assets/www/')"
+          if unzip -p notice-radar.apk assets/www/index.html | grep -q 'jsdelivr'; then
+            echo "✓ 镜像数据源已内置"
+          else
+            echo "::error::内置页面里没有镜像列表，国内将无法刷新数据"
+            exit 1
+          fi
           SHA=$(sha256sum notice-radar.apk | cut -d' ' -f1)
           SIZE=$(du -h notice-radar.apk | cut -f1)
           CERT=$("$BT/apksigner" verify --print-certs notice-radar.apk | grep -i 'SHA-256 digest' | head -1 | awk '{print $NF}')
           echo "sha256=$SHA" >> "$GITHUB_OUTPUT"
           {
-            echo "### Android APK 构建成功"
+            echo "### Android 独立应用构建成功"
             echo ""
             echo "| 项目 | 值 |"
             echo "|---|---|"
             echo "| 大小 | $SIZE |"
             echo "| sha256 | \`$SHA\` |"
             echo "| 签名证书 SHA-256 | \`$CERT\` |"
+            echo "| 界面资源 | 已打包进 APK（断网可打开、无地址栏） |"
             echo ""
             echo "下载：https://github.com/${{ github.repository }}/releases/download/android-latest/notice-radar.apk"
           } >> "$GITHUB_STEP_SUMMARY"
@@ -190,8 +127,8 @@ jobs:
         run: |
           gh release view android-latest >/dev/null 2>&1 || \
             gh release create android-latest \
-              --title "Android 安装包（滚动更新）" \
-              --notes "下载 **notice-radar.apk** 安装即可（首次需在系统设置里允许安装未知来源应用）。这个 Release 每次构建都会被覆盖，下载地址固定不变。" \
+              --title "Android 独立应用（滚动更新）" \
+              --notes "下载 **notice-radar.apk** 安装即可（首次需在系统设置里允许安装未知来源应用）。界面与数据已打包在应用内：打开不需要联网，也不会跳浏览器。" \
               --prerelease
           gh release upload android-latest notice-radar.apk --clobber
           echo "已发布：https://github.com/${{ github.repository }}/releases/download/android-latest/notice-radar.apk"

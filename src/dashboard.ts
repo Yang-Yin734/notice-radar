@@ -28,6 +28,9 @@ export interface DashboardOptions {
   repo?: string;
   /** 版本清单路径（网络优先，实时反映线上版本） */
   versionFile?: string;
+  /** 数据源候选（按顺序尝试）。APK 里内置数据永远可用，网络只是"锦上添花"：
+   *  github.io 在国内经常打不开，所以默认把 CDN 镜像排在前面。 */
+  dataUrls?: string[];
 }
 
 const HTML_ESCAPES: Record<string, string> = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' };
@@ -48,6 +51,13 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     version = '0.0.0',
     repo = 'Yang-Yin734/notice-radar',
     versionFile = 'version.json',
+    dataUrls = [
+      // 国内访问 github.io 经常不通，所以 CDN 镜像排在前面；全失败就用内置/缓存数据
+      'https://cdn.jsdelivr.net/gh/Yang-Yin734/notice-radar@main/docs/dashboard-data.json',
+      'https://cdn.statically.io/gh/Yang-Yin734/notice-radar/main/docs/dashboard-data.json',
+      'https://raw.githack.com/Yang-Yin734/notice-radar/main/docs/dashboard-data.json',
+      'https://yang-yin734.github.io/notice-radar/dashboard-data.json',
+    ],
   } = options;
 
   const bootstrap = {
@@ -59,6 +69,7 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     version,
     repo,
     versionFile,
+    dataUrls,
     total: history.items.length,
     bySource: countBySource(history),
     items: history.items.slice(0, maxItems),
@@ -306,6 +317,7 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
         <button class="btn" id="check-update">检查更新</button>
       </div>
       <p class="hint">通知内容本身始终是实时的（每次打开都拉最新）；这里检查的是「应用外壳」有没有新版。</p>
+      <p class="hint" id="data-info">数据来源：内置数据</p>
     </div>
 
     <div class="card">
@@ -569,21 +581,87 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     html.classList.add(isDark ? 'light' : 'dark');
     lsWrite(KEY_THEME, [isDark ? 'light' : 'dark']);
   });
+  // ---------- 数据刷新：内置/缓存永远可用，网络按镜像顺序尝试 ----------
+  var KEY_DATA_CACHE = 'notice-radar:data-cache';
+  function labelOf(url) {
+    if (url.indexOf('jsdelivr') >= 0) return 'jsDelivr 镜像';
+    if (url.indexOf('statically') >= 0) return 'Statically 镜像';
+    if (url.indexOf('githack') >= 0) return 'githack 镜像';
+    if (url.indexOf('github.io') >= 0) return 'GitHub Pages';
+    if (url.indexOf('appassets') >= 0) return '内置数据';
+    return url;
+  }
+  function isNewer(a, b) {
+    if (!a) return false;
+    if (!b) return true;
+    return String(a) > String(b); // ISO 时间串可以直接比大小
+  }
+  function applyData(data, sourceLabel) {
+    if (!data || !data.items) return false;
+    state.items = data.items;
+    BOOT.total = data.total || data.items.length;
+    if (data.bySource) BOOT.bySource = data.bySource;
+    if (data.generatedAt) BOOT.generatedAt = data.generatedAt;
+    BOOT.dataSource = sourceLabel;
+    computeTrend();
+    renderAll();
+    if (state.view === 'stats') renderStats();
+    renderDataInfo();
+    return true;
+  }
+  function cacheData(data, sourceLabel) {
+    try {
+      localStorage.setItem(KEY_DATA_CACHE, JSON.stringify({ at: Date.now(), source: sourceLabel, data: data }));
+    } catch (e) {
+      /* 配额满了就算了，内置数据仍在 */
+    }
+  }
+  function loadCached() {
+    var c = lsRead(KEY_DATA_CACHE)[0];
+    return c && c.data ? c : null;
+  }
+  function renderDataInfo() {
+    var el = document.getElementById('data-info');
+    if (!el) return;
+    var when = String(BOOT.generatedAt || '').replace('T', ' ').slice(0, 16);
+    el.textContent = '数据时间 ' + when + ' UTC · 来源：' + (BOOT.dataSource || '内置数据');
+  }
+  function refreshFromNetwork(manual) {
+    var urls = [BOOT.dataPath].concat(BOOT.dataUrls || []);
+    var i = 0;
+    if (manual) toast('正在检查更新…');
+    (function next() {
+      if (i >= urls.length) {
+        BOOT.dataSource = BOOT.dataSource || '内置数据';
+        renderDataInfo();
+        if (manual) toast('所有数据源都连不上，继续用本机数据（' + state.items.length + ' 条）');
+        return;
+      }
+      var url = urls[i++];
+      fetch(url + (url.indexOf('?') >= 0 ? '&' : '?') + 't=' + Date.now(), { cache: 'no-store' })
+        .then(function (r) {
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return r.json();
+        })
+        .then(function (data) {
+          if (!data || !data.items) throw new Error('数据格式不对');
+          if (isNewer(data.generatedAt, BOOT.generatedAt)) {
+            applyData(data, labelOf(url));
+            cacheData(data, labelOf(url));
+            if (manual) toast('已更新 ' + state.items.length + ' 条（来自 ' + labelOf(url) + '）');
+          } else {
+            BOOT.dataSource = labelOf(url);
+            renderDataInfo();
+            if (manual) toast('已是最新（' + state.items.length + ' 条）');
+          }
+        })
+        .catch(function () {
+          next();
+        });
+    })();
+  }
   document.getElementById('refresh').addEventListener('click', function () {
-    fetch(BOOT.dataPath + '?t=' + Date.now(), { cache: 'no-store' })
-      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-      .then(function (data) {
-        if (!data.items) throw new Error('数据格式不对');
-        state.items = data.items;
-        BOOT.total = data.total || data.items.length;
-        if (data.bySource) BOOT.bySource = data.bySource;
-        if (data.generatedAt) BOOT.generatedAt = data.generatedAt;
-        computeTrend();
-        renderAll();
-        if (state.view === 'stats') renderStats();
-        toast('已更新到最新（' + state.items.length + ' 条）');
-      })
-      .catch(function (err) { toast('刷新失败：' + err.message); });
+    refreshFromNetwork(true);
   });
 
   function computeTrend() {
@@ -704,21 +782,39 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     var stateEl = document.getElementById('ver-state');
     var hintEl = document.getElementById('ver-hint');
     if (manual) hintEl.textContent = '检查中…';
-    fetch(BOOT.versionFile + '?t=' + Date.now(), { cache: 'no-store' })
-      .then(function (r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-      .then(function (v) {
-        if (v.version && cmpVersion(v.version, BOOT.version)) {
-          stateEl.textContent = '发现新版本 v' + v.version + '（当前 v' + BOOT.version + '）';
-          hintEl.textContent = '用上方横幅里的按钮更新';
-          showUpdate(isStandalone() ? 'apk' : 'shell', v.version, v.apkUrl);
-        } else {
-          stateEl.textContent = '当前版本 v' + BOOT.version + '，已是最新';
-          hintEl.textContent = '检查时间：' + new Date().toLocaleTimeString();
-        }
-      })
-      .catch(function (e) {
-        if (manual) hintEl.textContent = '检查失败：' + e.message;
-      });
+    // APK 内的 version.json 就是随包那份（永远等于自己），所以必须按镜像顺序去网上找：
+    // 本地/同源 → CDN 镜像 → GitHub Pages
+    var urls = [BOOT.versionFile].concat(
+      (BOOT.dataUrls || []).map(function (u) {
+        return u.replace(/dashboard-data\.json.*$/, 'version.json');
+      }),
+    );
+    var i = 0;
+    (function tryNext() {
+      if (i >= urls.length) {
+        if (manual) hintEl.textContent = '连不上版本服务器（离线也能正常用）';
+        return;
+      }
+      var url = urls[i++];
+      fetch(url + (url.indexOf('?') >= 0 ? '&' : '?') + 't=' + Date.now(), { cache: 'no-store' })
+        .then(function (r) {
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return r.json();
+        })
+        .then(function (v) {
+          if (v && v.version && cmpVersion(v.version, BOOT.version)) {
+            stateEl.textContent = '发现新版本 v' + v.version + '（当前 v' + BOOT.version + '）';
+            hintEl.textContent = '用上方横幅里的按钮更新';
+            showUpdate(isStandalone() ? 'apk' : 'shell', v.version, v.apkUrl);
+          } else {
+            stateEl.textContent = '当前版本 v' + BOOT.version + '，已是最新';
+            hintEl.textContent = '检查时间：' + new Date().toLocaleTimeString();
+          }
+        })
+        .catch(function () {
+          tryNext();
+        });
+    })();
   }
   document.getElementById('check-update').addEventListener('click', function () { checkVersion(true); });
 
@@ -817,7 +913,17 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     toast('已清除收藏');
   });
 
+  // 启动：先用本机缓存（若比内置的新），再静默尝试网络；两者都失败也不影响打开
+  (function boot() {
+    var cached = loadCached();
+    if (cached && isNewer(cached.data.generatedAt, BOOT.generatedAt)) {
+      applyData(cached.data, cached.source || '本机缓存');
+    } else {
+      renderDataInfo();
+    }
+  })();
   checkVersion(false);
+  setTimeout(function () { refreshFromNetwork(false); }, 800);
 })();
 </script>
 </body></html>

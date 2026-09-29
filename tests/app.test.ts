@@ -141,3 +141,20 @@ test('应用：APK 下载入口在显眼位置（顶部横幅 + 关于里的大�
   assert.match(html, /Android\/i\.test\(ua\)/, '只在 Android 上弹出 APK 横幅');
   assert.match(html, /notice-radar:install-dismissed/, '关掉后不再打扰（记在本机）');
 });
+
+test('应用：数据源是「内置优先 + 多镜像」，github.io 不排第一', () => {
+  const history = emptyHistory();
+  appendHistory(history, [notice({ id: 'a' })]);
+  const mirror = 'https://cdn.jsdelivr.net/gh/me/repo@main/docs/dashboard-data.json';
+  const html = renderDashboard(history, {
+    dataUrls: [mirror, 'https://yang-yin734.github.io/notice-radar/dashboard-data.json'],
+  });
+  const boot = bootstrapOf(html);
+
+  assert.deepEqual(boot.dataUrls, [mirror, 'https://yang-yin734.github.io/notice-radar/dashboard-data.json']);
+  assert.ok(boot.dataUrls[0].includes('jsdelivr'), '镜像排在 github.io 之前（国内可达性更好）');
+  assert.match(html, /notice-radar:data-cache/, '抓到的新数据会缓存到本机');
+  assert.match(html, /function refreshFromNetwork/, '按顺序尝试多个数据源');
+  assert.match(html, /内置数据/, '数据来源会显示给用户');
+  assert.match(html, /replace\(\/dashboard-data\\\.json/, '版本检查也改用镜像地址（APK 内那份永远等于自己）');
+});
