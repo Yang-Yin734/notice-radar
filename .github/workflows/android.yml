@@ -19,6 +19,12 @@ on:
 permissions:
   contents: write
 
+# 所有 APK 构建串行：分支推送与 tag 推送可能同时触发，两个运行都往同一个滚动 Release
+# 上传 notice-radar.apk 会撞车（实见过 HTTP 422 ReleaseAsset.name already exists）
+concurrency:
+  group: android-release
+  cancel-in-progress: false
+
 jobs:
   apk:
     runs-on: ubuntu-latest
@@ -129,9 +135,19 @@ jobs:
             gh release create android-latest \
               --title "Android 独立应用（滚动更新）" \
               --notes "下载 **notice-radar.apk** 安装即可（首次需在系统设置里允许安装未知来源应用）。界面与数据已打包在应用内：打开不需要联网，也不会跳浏览器。" \
-              --prerelease
-          gh release upload android-latest notice-radar.apk --clobber
-          echo "已发布：https://github.com/${{ github.repository }}/releases/download/android-latest/notice-radar.apk"
+              --prerelease || true
+          # 并发构建撞车时 GitHub 会回 422（同名资产已存在），退避重试几次
+          for attempt in 1 2 3 4 5; do
+            if gh release upload android-latest notice-radar.apk --clobber; then
+              echo "✓ 已发布（第 ${attempt} 次尝试）"
+              echo "下载地址：https://github.com/${{ github.repository }}/releases/download/android-latest/notice-radar.apk"
+              exit 0
+            fi
+            echo "::warning::第 ${attempt} 次上传失败（可能是并发构建撞车），$((attempt * 10)) 秒后重试"
+            sleep $((attempt * 10))
+          done
+          echo "::error::多次重试仍无法上传 APK"
+          exit 1
 
       - name: 上传 APK 作为构建产物（保留 90 天）
         uses: actions/upload-artifact@v4
