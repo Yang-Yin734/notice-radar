@@ -264,9 +264,9 @@ private fun AppHeader(title: String, subtitle: String, refreshing: Boolean, onRe
 
 // ---------------------------------------------------------------- 通知列表
 
-private sealed interface Row {
-    data class Day(val date: String, val count: Int) : Row
-    data class Item(val notice: Notice) : Row
+private sealed interface Entry {
+    data class Day(val date: String, val count: Int) : Entry
+    data class Item(val notice: Notice) : Entry
 }
 
 @Composable
@@ -295,10 +295,10 @@ private fun NoticeList(
     }
 
     val rows = remember(filtered) {
-        val out = mutableListOf<Row>()
+        val out = mutableListOf<Entry>()
         filtered.groupBy { it.date.ifEmpty { "日期未知" } }.forEach { (date, list) ->
-            out += Row.Day(date, list.size)
-            list.forEach { out += Row.Item(it) }
+            out += Entry.Day(date, list.size)
+            list.forEach { out += Entry.Item(it) }
         }
         out
     }
@@ -345,7 +345,7 @@ private fun NoticeList(
         ) {
             rows.forEach { row ->
                 when (row) {
-                    is Row.Day -> item(key = "day-${row.date}") {
+                    is Entry.Day -> item(key = "day-${row.date}") {
                         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 6.dp)) {
                             Text(row.date, fontSize = 12.5.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                             Spacer(Modifier.width(8.dp))
@@ -359,7 +359,7 @@ private fun NoticeList(
                             )
                         }
                     }
-                    is Row.Item -> item(key = row.notice.id) {
+                    is Entry.Item -> item(key = row.notice.id) {
                         NoticeCard(
                             notice = row.notice,
                             isRead = row.notice.id in read,
