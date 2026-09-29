@@ -50,31 +50,36 @@ fun labelOf(url: String): String = when {
 }
 
 object Json {
-    fun parseSnapshot(raw: String): Snapshot? = try {
-        val root = JSONObject(raw)
-        val arr = root.optJSONArray("items") ?: JSONArray()
-        val items = (0 until arr.length()).mapNotNull { i ->
-            val n = arr.optJSONObject(i) ?: return@mapNotNull null
-            Notice(
-                id = n.optString("id"),
-                title = n.optString("title"),
-                url = n.optString("url"),
-                date = n.optString("date"),
-                tag = n.optString("tag").ifEmpty { null },
-                sourceId = n.optString("sourceId"),
-                sourceName = n.optString("sourceName"),
-                firstSeenAt = n.optString("firstSeenAt"),
-            )
+    fun parseSnapshot(raw: String): Snapshot? {
+        return try {
+            val root = JSONObject(raw)
+            val arr = root.optJSONArray("items") ?: JSONArray()
+            val items = (0 until arr.length()).mapNotNull { i ->
+                val n = arr.optJSONObject(i) ?: return@mapNotNull null
+                Notice(
+                    id = n.optString("id"),
+                    title = n.optString("title"),
+                    url = n.optString("url"),
+                    date = n.optString("date"),
+                    tag = n.optString("tag").ifEmpty { null },
+                    sourceId = n.optString("sourceId"),
+                    sourceName = n.optString("sourceName"),
+                    firstSeenAt = n.optString("firstSeenAt"),
+                )
+            }
+            if (items.isEmpty()) {
+                null
+            } else {
+                val srcArr = root.optJSONArray("bySource") ?: JSONArray()
+                val bySource = (0 until srcArr.length()).mapNotNull { i ->
+                    val s = srcArr.optJSONObject(i) ?: return@mapNotNull null
+                    SourceStat(s.optString("sourceId"), s.optString("sourceName"), s.optInt("count"))
+                }
+                Snapshot(root.optString("generatedAt"), root.optInt("total", items.size), items, bySource)
+            }
+        } catch (e: Exception) {
+            null
         }
-        if (items.isEmpty()) return null
-        val srcArr = root.optJSONArray("bySource") ?: JSONArray()
-        val bySource = (0 until srcArr.length()).mapNotNull { i ->
-            val s = srcArr.optJSONObject(i) ?: return@mapNotNull null
-            SourceStat(s.optString("sourceId"), s.optString("sourceName"), s.optInt("count"))
-        }
-        Snapshot(root.optString("generatedAt"), root.optInt("total", items.size), items, bySource)
-    } catch (e: Exception) {
-        null
     }
 }
 
