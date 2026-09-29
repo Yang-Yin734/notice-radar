@@ -323,7 +323,8 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     <div class="card">
       <h3>安装到手机</h3>
       <a class="btn primary big" href="${escapeHtml(apkUrl)}" id="apk-download-about">⬇ 下载 Android 安装包（APK）</a>
-      <p class="hint"><b>Android：</b>下载后按提示安装（首次需允许「安装未知来源应用」）；也可以 Chrome 菜单 → 安装应用。</p>
+      <p class="hint"><b>Android：</b>下载后按提示安装（首次需允许「安装未知来源应用」）。安装包里已包含界面与当前数据，
+        <b>打开不需要联网、也不会跳浏览器</b>；联网时会自动尝试镜像刷新最新通知。</p>
       <p class="hint"><b>iPhone / iPad：</b>用 <b>Safari</b> 打开本页 → 点底部 <span class="kbd">分享</span> →
         <span class="kbd">添加到主屏幕</span>。iOS 不允许像 Android 那样直接装安装包（必须有 Apple 开发者账号签名），
         「添加到主屏幕」就是苹果官方给网页应用的安装方式：同样有独立图标、全屏显示、可离线。</p>

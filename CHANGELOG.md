@@ -2,6 +2,39 @@
 
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## v0.7.0 — 2026-09-29
+
+**Android 端从"套壳网页"改成真正的独立应用**（用户反馈：点开是网页、不加载 GitHub 就进不去）。
+
+### 修复
+
+- **点开是网页 / 带地址栏** → 不再用 TWA（Custom Tabs 套壳），改成 **WebView 加载打包进 APK 的界面**：
+  没有地址栏、没有浏览器痕迹，只有点外部链接才交给系统浏览器。
+  界面资源走 `WebViewAssetLoader`，以 `https://appassets.androidplatform.net/` 提供，
+  fetch 与 localStorage 都有正常的安全来源语义。
+- **不加载 GitHub 就进不去** → 界面与数据全部内置（`assets/www`，约 240 KB）：
+  打开零网络、断网可用；数据先读内置，再按**镜像顺序**刷新
+  （jsDelivr → Statically → githack → GitHub Pages 垫底，因为 `github.io` 在国内经常不通），
+  抓到的新数据缓存到本机；设置页显示"数据时间 / 来源"。
+  版本检查也改走镜像（APK 内那份 `version.json` 永远等于自己，否则永远测不出新版本）。
+
+### 变更
+
+- Android 工程去掉 bubblewrap 那一整套（`twa-manifest.json`、`manifest-checksum.txt`、DelegationService…），
+  改为**直接 `./gradlew assembleRelease` + `apksigner` 签名**；`tools/twa-version.mjs` → `tools/android-version.mjs`
+- 新增 `tools/prepare-android-assets.mjs`：把 `docs/` 的应用与数据打进 `assets/www` 并自检
+  （必须有底部标签栏、必须有数据条目、必须含镜像列表）
+- CI 增加三条断言：包名正确、`assets/www` 关键文件都在包里、内置页面含镜像列表——
+  否则 APK 会"装出来白屏"或"国内刷不动数据"
+- 包名与签名密钥不变，已安装的旧版本可直接覆盖升级
+- 测试 42 → 43
+
+### 说明
+
+- 本机没有 Android 设备，**无法真机验证**；已核对的是：APK 内确实含 7 个界面资源文件、
+  含 `MainActivity`、不含 `androidbrowserhelper`、清单里无 TWA 痕迹、签名指纹与密钥一致
+- iOS 仍是"Safari → 添加到主屏幕"（Apple 不允许侧载安装包），见 [docs/ios.md](docs/ios.md)
+
 ## v0.6.0 — 2026-09-28
 
 M3：**能发布到 npm 了**，并且把"谁维护哪个学校"变成有 CI 兜底的事实，统计也从"看个趋势"升级成可分析的频次报告。
