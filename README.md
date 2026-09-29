@@ -126,7 +126,24 @@ Linux/macOS 用 `SERVERCHAN_KEY=... npm run run`，Windows PowerShell 用 `$env:
 | `radr dashboard` | 把历史归档渲染成静态仪表盘（`docs/index.html`，GitHub Pages 用） |
 | `radr test-notify` | 只发一条测试消息，验证推送密钥配好没有 |
 | `radr stats [--json=文件]` | 通知频次统计：来源/标签/最近 12 周/星期分布/单日最多 |
+| `radr digest [--date=YYYY-MM-DD \| --hours=24] [--notify]` | 每日日报：把一天的新通知合成**一条**消息。**默认只预览不发送**，加 `--notify` 才真发；空窗口默认不打扰（`--force` 可强发） |
 | `radr schools [--json=文件]` | 适配器市场：列出已知学校预设与维护者 |
+
+### 日报（`radr digest`）—— 目前是预览状态
+
+现状：每 20 分钟发现新通知就推一次，期中期末手机上会很吵。日报把一天的内容合成一条：
+
+```bash
+radr digest                       # 预览：昨天（北京时间）的日报，只打印不发送
+radr digest --date=2026-09-28     # 指定某一天
+radr digest --hours=24            # 滚动 24 小时
+radr digest --out=digest.md       # 同时落盘
+node tools/digest-preview.mjs     # 生成"在微信里长什么样"的预览页（可截图看效果）
+radr digest --notify              # 真发（走配置里的推送通道）
+```
+
+> ⚠️ **尚未接入任何定时任务**：`poll.yml` / `poll-math.yml` 的行为完全没变，你不加 `--notify` 它就不会发任何东西。
+> 空窗口（那一天没有新通知）默认**不发**，避免"今天没消息"这种噪音。
 
 ## 已支持
 

@@ -12,6 +12,15 @@ import { loadState, markSeen, saveState, splitNew, dedupeAcrossSources } from '.
 import { appendHistory, countBySource, loadHistory, renderStats, saveHistory, summarize } from './core/history.ts';
 import { renderDashboard } from './dashboard.ts';
 import { renderDoctor, renderJson, renderMarkdown } from './core/report.ts';
+import {
+  beijingDayRange,
+  buildDigest,
+  digestTitle,
+  renderDigestMarkdown,
+  renderDigestText,
+  rollingRange,
+  yesterdayRange,
+} from './core/digest.ts';
 import { notifyAll } from './notify/index.ts';
 import type { Notice, SourceResult } from './types.ts';
 
@@ -67,6 +76,15 @@ interface Flags {
   out: string | null;
   expect: string | null;
   window: boolean;
+  /** digest：时间窗（二选一，缺省=昨天北京时间） */
+  date: string | null;
+  hours: number | null;
+  /** digest：窗口内没有新通知时也照常输出/发送 */
+  force: boolean;
+  /** digest：只有显式 --notify 才真的发送（默认只预览） */
+  send: boolean;
+  /** 用户是否显式传了 --max（digest 的默认上限与 run 不同） */
+  maxExplicit: number | null;
 }
 
 function parseFlags(argv: string[]): Flags {
@@ -90,6 +108,11 @@ function parseFlags(argv: string[]): Flags {
     out: get('out'),
     expect: get('expect'),
     window: argv.includes('--window'),
+    date: get('date'),
+    hours: get('hours') ? Number(get('hours')) : null,
+    force: argv.includes('--force'),
+    send: argv.includes('--notify'),
+    maxExplicit: get('max') ? Number(get('max')) : null,
   };
 }
 
@@ -252,8 +275,74 @@ function cmdStats(flags: Flags): number {
   return 0;
 }
 
-/** 适配器市场：列出已知学校预设与维护者（数据来自 config/schools/registry.json）。 */
-function cmdSchools(flags: Flags): number {
+/** 每日日报：把某个时间窗内「首次发现」的通知合成**一条**消息。
+ *
+ *  默认只打印预览（不发送、不动任何状态）—— 加 --notify 才真的推。
+ *  为什么要有它：现在每 20 分钟发现新通知就推一次，期中期末手机上会很吵；
+ *  日报把一天的内容合成一条，读者只需要看一次。 */
+async function cmdDigest(flags: Flags): Promise<number> {
+  const historyFile = path.join(path.dirname(flags.state), 'history.json');
+  const history = loadHistory(historyFile);
+
+  const range = flags.date
+    ? beijingDayRange(flags.date)
+    : flags.hours
+      ? rollingRange(flags.hours)
+      : yesterdayRange();
+
+  let name = '校园通知雷达';
+  let appUrl = 'https://yang-yin734.github.io/notice-radar/';
+  let channels = null as ReturnType<typeof loadCfg>['notify'] | null;
+  try {
+    const cfg = loadCfg(flags);
+    name = cfg.name;
+    channels = cfg.notify;
+  } catch {
+    /* 配置坏了也要能看日报 */
+  }
+
+  const digest = buildDigest(history, {
+    ...range,
+    maxItems: flags.maxExplicit ?? 40,
+    maxPerSource: 8,
+    appUrl,
+  });
+  const markdown = renderDigestMarkdown(digest, { name, appUrl });
+  const title = digestTitle(digest, name);
+
+  if (flags.json) {
+    fs.mkdirSync(path.dirname(flags.json), { recursive: true });
+    fs.writeFileSync(flags.json, `${JSON.stringify(digest, null, 2)}\n`, 'utf8');
+    console.log(`▸ 日报 JSON 已写入 ${flags.json}`);
+  }
+  if (flags.out) {
+    fs.mkdirSync(path.dirname(flags.out), { recursive: true });
+    fs.writeFileSync(flags.out, markdown, 'utf8');
+    console.log(`▸ 日报 Markdown 已写入 ${flags.out}`);
+  }
+
+  if (!flags.send) {
+    console.log(`▸ 预览模式（不会发送）· 时间窗：${digest.label} · 共 ${digest.total} 条`);
+    console.log(`  推送标题：${title}`);
+    console.log('');
+    console.log(markdown.trimEnd());
+    console.log('');
+    console.log('  要真的发送：radr digest --notify（建议先在本地试一条）');
+    return 0;
+  }
+
+  if (digest.empty && !flags.force) {
+    console.log(`▸ ${digest.label} 没有新通知，按默认策略**不打扰**（要强发加 --force）`);
+    return 0;
+  }
+  const outcomes = await notifyAll(channels ?? [], title, markdown);
+  for (const o of outcomes) console.log(`  ${o.ok ? '✓' : '✗'} ${o.channel}：${o.detail}`);
+  const anyOk = outcomes.some((o) => o.ok);
+  console.log(anyOk ? `▸ 日报已发送（${digest.total} 条）` : '✗ 没有任何通道发送成功');
+  return anyOk ? 0 : 1;
+}
+
+/** 适配器市场：列出已知学校预设与维护者（数据来自 config/schools/registry.json）。 */function cmdSchools(flags: Flags): number {
   const registryFile = [path.join('config', 'schools', 'registry.json'), path.join(PKG_ROOT, 'config', 'schools', 'registry.json')]
     .find((p) => fs.existsSync(p)) ?? path.join('config', 'schools', 'registry.json');
   if (!fs.existsSync(registryFile)) {
@@ -471,6 +560,8 @@ function usage(): void {
   radr test-notify [--config=路径]                     只发一条测试消息，验证推送密钥配好没有
   radr dashboard [--out=docs/index.html]               把历史归档渲染成静态仪表盘（GitHub Pages 用）
   radr stats     [--state=data/state.json] [--json=文件]  通知频次统计（来源/标签/周/星期分布）
+  radr digest    [--date=YYYY-MM-DD | --hours=24] [--max=条数] [--out=文件] [--notify] [--force]
+                                                       每日日报：把一天的新通知合成一条消息（默认只预览）
   radr schools   [--json=文件]                         列出已知学校预设与维护者（适配器市场）
   radr fetch    <url> [--out=文件] [--expect=关键字]    用真浏览器渲染页面并导出 DOM（摸 WAF 站点的结构用）
   radr --version                                       打印版本
@@ -495,6 +586,7 @@ try {
   else if (command === 'test-notify') code = await cmdTestNotify(flags);
   else if (command === 'dashboard') code = cmdDashboard(flags);
   else if (command === 'stats') code = cmdStats(flags);
+  else if (command === 'digest') code = await cmdDigest(flags);
   else if (command === 'schools') code = cmdSchools(flags);
   else if (command === 'fetch') code = await cmdFetch(flags, rest.find((a) => /^https?:\/\//.test(a)) ?? '');
   else if (command === '--version' || command === '-v' || command === 'version') console.log(VERSION);
