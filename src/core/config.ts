@@ -50,6 +50,8 @@ const sourceSchema = z.object({
   exclude: z.array(z.string()).default([]),
   /** 给未来的自己/贡献者留的备注 */
   note: z.string().optional(),
+  /** 覆盖全局 alerts.silenceDays：这个源多久没动静就该怀疑（例如假期本来就不发） */
+  silenceDays: z.number().int().positive().optional(),
 });
 
 const notifySchema = z.object({
@@ -61,15 +63,63 @@ const notifySchema = z.object({
   urlEnv: z.string().optional(),
 });
 
+/**
+ * 默认「抢时间」关键词：命中就立刻推微信。
+ *
+ * 为什么要有这一层：通知分两种——「退课/选课/缓补考/推免」这类错过就麻烦的，
+ * 和「讲座/公示」这类晚一天看也没关系的。以前全都即时推，期中期末手机上很吵；
+ * 现在命中这些词的立刻推，其余的进每天早上 8 点的日报。
+ *
+ * 想改直接在自己的 YAML 里写 push.urgent（整个列表替换），或把 digestRest 设成 false
+ * 恢复「全都即时推」的老行为。
+ */
+export const DEFAULT_URGENT_KEYWORDS = [
+  // 只放「错过就真麻烦」的：报名/办理类必须带时间词，否则会误伤
+  // （实测教训：只写「公示」「报名」「毕业」会把"奖励名单公示""毕业生问卷调查"也判成急事）
+  '考试', '缓考', '补考', '重考', '重修', '调课', '停课', '四六级', '成绩查询',
+  '退课', '补选', '选课',
+  '推免', '保研', '奖学金', '国奖', '助学金', '评优',
+  '报名截止', '报名时间', '截止', '缴费', '选导师', '开题',
+  '学籍', '答辩', '学位', '开学', '报到',
+];
+
+const pushSchema = z.object({
+  /** 命中任一关键词（标题或标签）→ 立刻推送 */
+  urgent: z.array(z.string().min(1)).default(DEFAULT_URGENT_KEYWORDS),
+  /** 命中任一关键词 → 既不时推、也不进日报（彻底静音，比如纯宣传类栏目） */
+  mute: z.array(z.string().min(1)).default([]),
+  /** 其余通知交给日报。设 false = 恢复「所有新通知都即时推」的老行为 */
+  digestRest: z.boolean().default(true),
+  /** 日报里每个来源最多列几条 */
+  digestMaxPerSource: z.number().int().positive().default(8),
+  /** 日报里最多列几条（超出提示「另有 N 条」） */
+  digestMaxItems: z.number().int().positive().default(40),
+});
+
+const alertsSchema = z.object({
+  /** 源抓取失败、或抓到了却解析不出条目时，推一条微信告警 */
+  failureNotify: z.boolean().default(true),
+  /** 同一个源的告警最短间隔（小时）—— 别每 20 分钟吵一次 */
+  throttleHours: z.number().positive().default(12),
+  /** 某源连续这么多天没有新通知，就怀疑它挂了（只在日报顶部提示，不当急事推） */
+  silenceDays: z.number().int().positive().default(14),
+  /** 归档观察期不足这么多天时，不下「从未抓到过条目」的判断 */
+  warmupDays: z.number().int().positive().default(3),
+});
+
 const configSchema = z.object({
   school: z.string().min(1),
   name: z.string().min(1),
   notify: z.array(notifySchema).default([]),
+  push: pushSchema.default({}),
+  alerts: alertsSchema.default({}),
   sources: z.array(sourceSchema).min(1),
 });
 
 export type SourceConfig = z.infer<typeof sourceSchema>;
 export type NotifyConfig = z.infer<typeof notifySchema>;
+export type PushConfig = z.infer<typeof pushSchema>;
+export type AlertsConfig = z.infer<typeof alertsSchema>;
 export type RadarConfig = z.infer<typeof configSchema>;
 
 function checkUrl(value: string, where: string): void {

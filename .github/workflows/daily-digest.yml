@@ -1,0 +1,84 @@
+name: daily-digest
+
+# 每天早上 8 点（北京时间）把「昨天的新通知」合成一条微信推送。
+#
+# 为什么要有它：poll 每 20 分钟发现新通知就推一次，期中期末手机上很吵。
+# 现在分工是：命中急事关键词（选课/退课/缓考试/推免/奖学金…）的由 poll 立刻推，
+# 其余全部留到这里汇总成一条 —— 见配置里的 push.urgent 与 push.digestRest。
+#
+# 手动触发默认「只预览不发送」：渲染结果会作为**提交评论**发出来，
+# 因为在部分网络环境里 Actions 日志（存在 Azure Blob）拿不到，提交评论能拿到。
+on:
+  schedule:
+    - cron: '5 0 * * *' # 00:05 UTC = 08:05 北京
+  workflow_dispatch:
+    inputs:
+      date:
+        description: 指定日期（YYYY-MM-DD，留空=昨天北京时间）
+        required: false
+        default: ''
+      dry:
+        description: 只预览不发送（结果发成提交评论）
+        type: boolean
+        default: true
+
+permissions:
+  contents: write
+
+jobs:
+  digest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    # 关掉推送时，定时任务静默；手动触发仍可看预览
+    if: github.event_name == 'workflow_dispatch' || vars.PUSH_ENABLED != 'false'
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+
+      - run: npm ci
+
+      - name: 预览（不发送，结果发成提交评论）
+        if: github.event_name == 'workflow_dispatch' && github.event.inputs.dry != 'false'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          ARGS=""
+          if [ -n "${{ github.event.inputs.date }}" ]; then ARGS="--date=${{ github.event.inputs.date }}"; fi
+          node src/cli.ts digest $ARGS > preview.txt 2>&1 || true
+          {
+            echo "### 日报预览（**未发送**）"
+            echo ""
+            echo '```'
+            head -100 preview.txt
+            echo '```'
+          } > comment.md
+          gh api "repos/${{ github.repository }}/commits/${{ github.sha }}/comments" -F body=@comment.md >/dev/null 2>&1 || true
+          echo "预览已发成提交评论（没有推送任何消息）"
+          {
+            echo "### 日报预览（未发送）"
+            echo ""
+            echo '```'
+            head -60 preview.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: 发送日报（定时任务，或手动 dry=false）
+        if: github.event_name != 'workflow_dispatch' || github.event.inputs.dry == 'false'
+        env:
+          SERVERCHAN_KEY: ${{ secrets.SERVERCHAN_KEY }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          ARGS=""
+          if [ -n "${{ github.event.inputs.date }}" ]; then ARGS="--date=${{ github.event.inputs.date }}"; fi
+          node src/cli.ts digest --notify $ARGS | tee digest-out.txt
+          {
+            echo "### 日报已处理"
+            echo ""
+            echo '```'
+            tail -20 digest-out.txt
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

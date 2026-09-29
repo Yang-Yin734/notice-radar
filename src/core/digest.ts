@@ -138,11 +138,13 @@ export interface DigestRenderOptions {
   appUrl?: string;
   /** 正文末尾的自述行 */
   footer?: string;
+  /** 插在正文最前面的提示块（例如「某些来源可能异常」），没有就不插 */
+  notice?: string;
 }
 
 /** 渲染成 Markdown：Server酱/邮件都吃这个格式。 */
 export function renderDigestMarkdown(digest: Digest, options: DigestRenderOptions = {}): string {
-  const { name = '校园通知雷达', appUrl, footer } = options;
+  const { name = '校园通知雷达', appUrl, footer, notice } = options;
   const lines: string[] = [];
 
   lines.push(`# ${name} · ${digest.label}`);
@@ -151,6 +153,11 @@ export function renderDigestMarkdown(digest: Digest, options: DigestRenderOption
   if (digest.empty) {
     lines.push('这段时间没有新通知。');
     lines.push('');
+    // 安静的这天更要让健康提示露出来：可能正是"源挂了所以没通知"
+    if (notice) {
+      lines.push(notice.trimEnd());
+      lines.push('');
+    }
     if (appUrl) lines.push(`[打开应用](${appUrl})`);
     lines.push('');
     lines.push(footer ?? '由 notice-radar 自动汇总：只抓公开页面，不登录、不存储个人信息。');
@@ -163,6 +170,11 @@ export function renderDigestMarkdown(digest: Digest, options: DigestRenderOption
     lines.push(`标签：${digest.tagCounts.slice(0, 6).map((t) => `${t.tag} ${t.count}`).join(' · ')}`);
   }
   lines.push('');
+
+  if (notice) {
+    lines.push(notice.trimEnd());
+    lines.push('');
+  }
 
   for (const g of digest.groups) {
     lines.push(`## ${g.sourceName}（${g.total} 条）`);

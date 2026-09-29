@@ -12,6 +12,21 @@ import { loadState, markSeen, saveState, splitNew, dedupeAcrossSources } from '.
 import { appendHistory, countBySource, loadHistory, renderStats, saveHistory, summarize } from './core/history.ts';
 import { renderDashboard } from './dashboard.ts';
 import { renderDoctor, renderJson, renderMarkdown } from './core/report.ts';
+import { explainTier, immediateItems, splitByTier } from './core/tiers.ts';
+import {
+  DEFAULT_ALERT_FILE,
+  detectProblems,
+  detectSilence,
+  loadAlerts,
+  problemTitle,
+  renderProblemMarkdown,
+  renderSilenceNotice,
+  renderSilenceText,
+  saveAlerts,
+  silenceTitle,
+  throttleProblems,
+  defaultAlertOptions,
+} from './core/health.ts';
 import {
   beijingDayRange,
   buildDigest,
@@ -85,6 +100,8 @@ interface Flags {
   send: boolean;
   /** 用户是否显式传了 --max（digest 的默认上限与 run 不同） */
   maxExplicit: number | null;
+  /** tiers：看最近多少天 */
+  days: number | null;
 }
 
 function parseFlags(argv: string[]): Flags {
@@ -113,6 +130,7 @@ function parseFlags(argv: string[]): Flags {
     force: argv.includes('--force'),
     send: argv.includes('--notify'),
     maxExplicit: get('max') ? Number(get('max')) : null,
+    days: get('days') ? Number(get('days')) : null,
   };
 }
 
@@ -293,8 +311,9 @@ async function cmdDigest(flags: Flags): Promise<number> {
   let name = '校园通知雷达';
   let appUrl = 'https://yang-yin734.github.io/notice-radar/';
   let channels = null as ReturnType<typeof loadCfg>['notify'] | null;
+  let cfg: ReturnType<typeof loadCfg> | null = null;
   try {
-    const cfg = loadCfg(flags);
+    cfg = loadCfg(flags);
     name = cfg.name;
     channels = cfg.notify;
   } catch {
@@ -303,11 +322,15 @@ async function cmdDigest(flags: Flags): Promise<number> {
 
   const digest = buildDigest(history, {
     ...range,
-    maxItems: flags.maxExplicit ?? 40,
-    maxPerSource: 8,
+    maxItems: flags.maxExplicit ?? cfg?.push.digestMaxItems ?? 40,
+    maxPerSource: cfg?.push.digestMaxPerSource ?? 8,
     appUrl,
   });
-  const markdown = renderDigestMarkdown(digest, { name, appUrl });
+
+  // 长期静默的源：放进日报顶部（不当急事推，但一定要让你看见）
+  const silence = cfg ? detectSilence(history, cfg.sources, defaultAlertOptions(cfg.alerts)) : [];
+  const notice = renderSilenceNotice(silence);
+  const markdown = renderDigestMarkdown(digest, { name, appUrl, notice });
   const title = digestTitle(digest, name);
 
   if (flags.json) {
@@ -322,7 +345,10 @@ async function cmdDigest(flags: Flags): Promise<number> {
   }
 
   if (!flags.send) {
-    console.log(`▸ 预览模式（不会发送）· 时间窗：${digest.label} · 共 ${digest.total} 条`);
+    console.log(
+      `▸ 预览模式（不会发送）· 时间窗：${digest.label} · 共 ${digest.total} 条` +
+        (silence.length ? ` · ${silence.length} 个源疑似异常` : ''),
+    );
     console.log(`  推送标题：${title}`);
     console.log('');
     console.log(markdown.trimEnd());
@@ -342,7 +368,102 @@ async function cmdDigest(flags: Flags): Promise<number> {
   return anyOk ? 0 : 1;
 }
 
-/** 适配器市场：列出已知学校预设与维护者（数据来自 config/schools/registry.json）。 */function cmdSchools(flags: Flags): number {
+/** 看看当前关键词表会把归档里的通知怎么分档（调关键词时用它，不联网、不推送）。 */
+function cmdTiers(flags: Flags): number {
+  const cfg = loadCfg(flags);
+  const historyFile = path.join(path.dirname(flags.state), 'history.json');
+  const history = loadHistory(historyFile);
+  const days = flags.days ?? 14;
+  const since = Date.now() - days * 24 * 60 * 60 * 1000;
+  const recent = history.items.filter((n) => Date.parse(n.firstSeenAt ?? '') >= since);
+  const split = splitByTier(recent, cfg.push);
+
+  if (flags.json) {
+    fs.mkdirSync(path.dirname(flags.json), { recursive: true });
+    fs.writeFileSync(
+      flags.json,
+      `${JSON.stringify(
+        {
+          checkedAt: new Date().toISOString(),
+          days,
+          digestRest: cfg.push.digestRest,
+          urgent: split.urgent.map((n) => ({ id: n.id, sourceName: n.sourceName, title: n.title, why: explainTier(n, cfg.push), url: n.url })),
+          digest: split.digest.map((n) => ({ id: n.id, sourceName: n.sourceName, title: n.title, url: n.url })),
+          mute: split.mute.map((n) => ({ id: n.id, title: n.title, url: n.url })),
+        },
+        null,
+        2,
+      )}\n`,
+      'utf8',
+    );
+    console.log(`▸ 分档结果已写入 ${flags.json}`);
+  }
+
+  console.log(`▸ ${cfg.name}：最近 ${days} 天归档 ${recent.length} 条`);
+  if (!cfg.push.digestRest) {
+    console.log('  （分级已关闭 push.digestRest=false：所有新通知都即时推，下面只是分类展示）');
+  }
+  console.log('');
+  console.log(`  ⚡ 立刻推（命中急事关键词）：${split.urgent.length} 条`);
+  for (const n of split.urgent.slice(0, 40)) {
+    console.log(`      ${explainTier(n, cfg.push).replace('命中关键词', '')} ${n.sourceName}：${n.title.slice(0, 44)}`);
+  }
+  if (split.urgent.length > 40) console.log(`      …另 ${split.urgent.length - 40} 条`);
+  console.log('');
+  console.log(`  📋 进日报（每天早 8:00 汇总）：${split.digest.length} 条`);
+  for (const n of split.digest.slice(0, 15)) console.log(`      ${n.sourceName}：${n.title.slice(0, 44)}`);
+  if (split.digest.length > 15) console.log(`      …另 ${split.digest.length - 15} 条`);
+  console.log('');
+  console.log(`  🔇 静音：${split.mute.length} 条`);
+  console.log('');
+  console.log('  想改词表：编辑配置里的 push.urgent / push.mute，再跑一次本命令核对。');
+  console.log('  急事太多就删词，太少就加词；--json 可导出逐条结果。');
+  return 0;
+}
+
+/** 抓取健康检查：只看归档，不联网。长期静默的源在这里能一眼看到。 */
+async function cmdHealth(flags: Flags): Promise<number> {
+  const cfg = loadCfg(flags);
+  const historyFile = path.join(path.dirname(flags.state), 'history.json');
+  const history = loadHistory(historyFile);
+  const silence = detectSilence(history, cfg.sources, defaultAlertOptions(cfg.alerts));
+
+  if (flags.json) {
+    fs.mkdirSync(path.dirname(flags.json), { recursive: true });
+    fs.writeFileSync(flags.json, `${JSON.stringify({ checkedAt: new Date().toISOString(), silence }, null, 2)}\n`, 'utf8');
+    console.log(`▸ 健康检查 JSON 已写入 ${flags.json}`);
+  }
+
+  const enabled = cfg.sources.filter((s) => s.enabled);
+  console.log(`▸ ${cfg.name}：${enabled.length} 个源，归档 ${history.items.length} 条`);
+  console.log(`  静默阈值：${cfg.alerts.silenceDays} 天（单源可用 silenceDays 覆盖）`);
+  console.log('');
+  if (silence.length === 0) {
+    console.log('  ✓ 所有源最近都有动静，没发现疑似失效。');
+  } else {
+    for (const issue of silence) {
+      const text = issue.kind === 'never'
+        ? `观察 ${issue.days} 天一条都没抓到过（选择器可能不对）`
+        : `${issue.days} 天没有新通知（阈值 ${issue.threshold} 天）`;
+      console.log(`  ⚠ ${issue.sourceName}：${text}`);
+      if (issue.lastSeenAt) console.log(`      最后一次拿到新通知：${issue.lastSeenAt}`);
+    }
+    console.log('');
+    console.log('  不一定是故障（寒暑假本来就安静）；确认站点是否还在更新，跑 `radr doctor` 看逐源状态。');
+  }
+
+  if (!flags.send) return 0;
+  if (silence.length === 0) {
+    console.log('\n▸ 没有异常，不发告警。');
+    return 0;
+  }
+  const outcomes = await notifyAll(cfg.notify, silenceTitle(silence, cfg.name), renderSilenceNotice(silence));
+  for (const o of outcomes) console.log(`  ${o.ok ? '✓' : '✗'} 告警[${o.channel}] ${o.detail}`);
+  return outcomes.some((o) => o.ok) ? 0 : 1;
+}
+
+/** 适配器市场：列出已知学校预设与维护者（数据来自 config/schools/registry.json）。 */
+function cmdSchools(flags: Flags): number {
   const registryFile = [path.join('config', 'schools', 'registry.json'), path.join(PKG_ROOT, 'config', 'schools', 'registry.json')]
     .find((p) => fs.existsSync(p)) ?? path.join('config', 'schools', 'registry.json');
   if (!fs.existsSync(registryFile)) {
@@ -407,8 +528,29 @@ async function cmdRun(flags: Flags): Promise<number> {
     console.log(`  ${mark} ${r.sourceName}：解析 ${r.items.length} → 过滤后 ${kept} → 新增 ${isNew}${r.ok ? '' : ` (${r.error})`}`);
   }
 
-  const markdown = renderMarkdown(results, fresh, { maxPerSource: flags.max });
-  console.log(`\n${markdown}`);
+  const split = splitByTier(fresh, cfg.push);
+  const immediate = immediateItems(fresh, cfg.push);
+  const deferred = cfg.push.digestRest ? split.digest : [];
+  const muted = split.mute;
+
+  let markdown = renderMarkdown(results, immediate, { maxPerSource: flags.max });
+  if (deferred.length > 0) {
+    markdown += `\n> 另有 ${deferred.length} 条常规通知（未命中急事关键词），会在每天早上 8:00 的日报里汇总。\n`;
+  }
+
+  if (immediate.length === 0 && fresh.length > 0) {
+    console.log(`\n▸ 本轮 ${fresh.length} 条都是常规通知：不即时推送，等日报汇总。`);
+    for (const n of deferred) console.log(`    · ${n.sourceName}：${n.title.slice(0, 46)}`);
+  } else {
+    console.log(`\n${markdown}`);
+  }
+  if (fresh.length > 0) {
+    console.log(
+      `▸ 分级：急事 ${immediate.length} 条（立即推）· 常规 ${deferred.length} 条（进日报）· 静音 ${muted.length} 条` +
+        (cfg.push.digestRest ? '' : '（分级已关闭：全部即时推）'),
+    );
+    for (const n of immediate) console.log(`    ⚡ ${explainTier(n, cfg.push)}：${n.title.slice(0, 42)}`);
+  }
 
   // 只在真有新通知时才写文件。
   // 否则 poll 每 20 分钟都会因为 lastRun 变化而产生一次无意义的提交（一天 72 个），
@@ -425,13 +567,37 @@ async function cmdRun(flags: Flags): Promise<number> {
     }
   }
 
-  if (flags.notify && fresh.length > 0) {
-    const title = `${cfg.name} · 新增 ${fresh.length} 条`;
+  if (flags.notify && immediate.length > 0) {
+    const title = `${cfg.name} · 新增 ${immediate.length} 条`;
     const outcomes = await notifyAll(cfg.notify, title, markdown);
     for (const o of outcomes) console.log(`  ${o.ok ? '✓' : '✗'} 通知[${o.channel}] ${o.detail}`);
-    if (!flags.dry) console.log(`  · 推送结果已记录到 ${writeNotifyLog(flags.state, title, fresh.length, outcomes)}`);
+    if (!flags.dry) console.log(`  · 推送结果已记录到 ${writeNotifyLog(flags.state, title, immediate.length, outcomes)}`);
   } else if (fresh.length === 0) {
     console.log('\n▸ 没有新通知，跳过推送。');
+  } else if (immediate.length === 0) {
+    console.log('\n▸ 常规通知不即时推送（已进归档，日报会汇总）。');
+  }
+
+  // ---- 抓取健康告警：静默失效是最阴险的失败模式（以为在收通知，其实早就断了）----
+  const problems = detectProblems(results);
+  if (problems.length > 0) {
+    for (const p of problems) console.log(`    ⚠ ${p.sourceName}：${p.detail}`);
+  }
+  if (cfg.alerts.failureNotify && problems.length > 0 && flags.notify && !flags.dry) {
+    const alertFile = path.join(path.dirname(flags.state), path.basename(DEFAULT_ALERT_FILE));
+    const { send, record } = throttleProblems(problems, loadAlerts(alertFile), {
+      throttleHours: cfg.alerts.throttleHours,
+    });
+    if (send.length === 0) {
+      console.log(`▸ ${problems.length} 个源有异常，但 ${cfg.alerts.throttleHours} 小时内已告警过，不重复打扰。`);
+    } else {
+      const outcomes = await notifyAll(cfg.notify, problemTitle(send, cfg.name), renderProblemMarkdown(send, cfg.name));
+      for (const o of outcomes) console.log(`  ${o.ok ? '✓' : '✗'} 告警[${o.channel}] ${o.detail}`);
+      if (outcomes.some((o) => o.ok)) {
+        saveAlerts(record, alertFile);
+        console.log(`▸ 已就 ${send.length} 个源发出告警（节流记录：${alertFile}）`);
+      }
+    }
   }
 
   if (flags.dry) {
@@ -563,6 +729,8 @@ function usage(): void {
   radr digest    [--date=YYYY-MM-DD | --hours=24] [--max=条数] [--out=文件] [--notify] [--force]
                                                        每日日报：把一天的新通知合成一条消息（默认只预览）
   radr schools   [--json=文件]                         列出已知学校预设与维护者（适配器市场）
+  radr health    [--config=路径] [--json=文件] [--notify]  抓取健康检查：哪些源长期没动静（只读归档，不联网）
+  radr tiers     [--days=14] [--json=文件]             查看关键词分档：哪些会立刻推、哪些进日报
   radr fetch    <url> [--out=文件] [--expect=关键字]    用真浏览器渲染页面并导出 DOM（摸 WAF 站点的结构用）
   radr --version                                       打印版本
 
@@ -588,6 +756,8 @@ try {
   else if (command === 'stats') code = cmdStats(flags);
   else if (command === 'digest') code = await cmdDigest(flags);
   else if (command === 'schools') code = cmdSchools(flags);
+  else if (command === 'health') code = await cmdHealth(flags);
+  else if (command === 'tiers') code = cmdTiers(flags);
   else if (command === 'fetch') code = await cmdFetch(flags, rest.find((a) => /^https?:\/\//.test(a)) ?? '');
   else if (command === '--version' || command === '-v' || command === 'version') console.log(VERSION);
   else if (command === 'help' || command === '--help' || command === '-h') usage();
