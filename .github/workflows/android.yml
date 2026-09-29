@@ -113,7 +113,8 @@ jobs:
           }
           echo "  内置数据条数：$(unzip -p notice-radar.apk assets/data/dashboard-data.json | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>console.log(JSON.parse(s).items.length))")"
           echo "--- 镜像数据源是否编译进代码（国内可达性）---"
-          if unzip -p notice-radar.apk classes.dex | grep -aq 'jsdelivr'; then
+          # Compose 会让方法数超过 64K，AGP 自动分 dex —— 所以要扫所有 classes*.dex
+          if unzip -p notice-radar.apk 'classes*.dex' | grep -aq 'cdn.jsdelivr.net'; then
             echo "✓ 镜像地址已在代码里"
           else
             echo "::error::dex 里没有镜像地址，国内将无法刷新数据"
