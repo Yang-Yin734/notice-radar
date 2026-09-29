@@ -257,11 +257,6 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
 
 <main>
   <section class="view" id="view-list">
-    <div class="installbanner" id="update-banner" hidden>
-      <div class="ib-text"><b id="update-title">发现新版本</b><span id="update-desc">更新后即可用上新功能</span></div>
-      <button class="btn primary" id="update-action">立即更新</button>
-      <button class="ib-close" id="update-dismiss" aria-label="稍后再说">✕</button>
-    </div>
     <div class="installbanner" id="install-banner" hidden>
       <div class="ib-text"><b id="install-title">装成手机应用更方便</b><span id="install-desc">下载安装包后不用每次找浏览器</span></div>
       <a class="btn primary" id="apk-download-top" href="${escapeHtml(apkUrl)}">下载 APK</a>
@@ -318,12 +313,13 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     </div>
 
     <div class="card">
-      <h3>应用更新</h3>
+      <h3>版本</h3>
       <div class="row">
-        <div class="row-main"><b id="ver-state">当前版本 v${escapeHtml(version)}</b><span id="ver-hint">打开应用时会自动检查线上版本</span></div>
-        <button class="btn" id="check-update">检查更新</button>
+        <div class="row-main"><b id="ver-state">当前页面 v${escapeHtml(version)}</b><span id="ver-hint">网页版始终跟随 GitHub 上的最新构建</span></div>
+        <button class="btn" id="check-update">查看线上版本</button>
       </div>
-      <p class="hint">通知内容本身始终是实时的（每次打开都拉最新）；这里检查的是「应用外壳」有没有新版。</p>
+      <p class="hint">网页版**不需要手动更新**：页面与数据都直接从线上取最新（Service Worker 对外壳走网络优先，
+        新版本自动接管）。这里只是给你看当前版本。</p>
       <p class="hint" id="data-info">数据来源：内置数据</p>
     </div>
 
@@ -708,15 +704,28 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
 
   if ('serviceWorker' in navigator && location.protocol.indexOf('http') === 0) {
     navigator.serviceWorker.register('sw.js').then(function (reg) {
-      // 已有新版在等待接管 → 提示用户更新
-      if (reg.waiting && navigator.serviceWorker.controller) showUpdate('shell', BOOT.version, null);
+      // 网页版**不弹任何"有新版本"提示**：新外壳装好就让它立即接管，
+      // 并且只在页面不可见（用户切走了）时静默刷新，绝不打断阅读。
+      // 加上 sw.js 本身对外壳走"网络优先"，所以这个链接永远是最新的。
+      function activateQuietly(worker) {
+        if (!worker) return;
+        try {
+          worker.postMessage({ type: 'SKIP_WAITING' });
+        } catch (e) {
+          /* 忽略 */
+        }
+        if (document.visibilityState === 'hidden') {
+          setTimeout(function () {
+            if (document.visibilityState === 'hidden') location.reload();
+          }, 400);
+        }
+      }
+      if (reg.waiting && navigator.serviceWorker.controller) activateQuietly(reg.waiting);
       reg.addEventListener('updatefound', function () {
         var installing = reg.installing;
         if (!installing) return;
         installing.addEventListener('statechange', function () {
-          if (installing.state === 'installed' && navigator.serviceWorker.controller) {
-            showUpdate('shell', BOOT.version, null);
-          }
+          if (installing.state === 'installed' && navigator.serviceWorker.controller) activateQuietly(installing);
         });
       });
       // 长时间挂着的应用也定期去看看有没有新版
@@ -724,13 +733,14 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     }).catch(function () { /* 离线是加分项，失败不影响使用 */ });
   }
 
-  // Android：引导下载 APK；iOS：引导"添加到主屏幕"（苹果官方给网页应用的安装方式）
+  // Android：引导下载 APK（可选，想用原生应用才需要）；iOS：引导"添加到主屏幕"
   (function installBanner() {
     var KEY = 'notice-radar:install-dismissed';
     var ua = navigator.userAgent;
     var isAndroid = /Android/i.test(ua);
     var isIOS = /iPhone|iPad|iPod/i.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
     if (!isAndroid && !isIOS) return;
+    if (isStandalone()) return; // 已经以应用形式打开（装到主屏幕）就别再劝装了
     if (lsRead(KEY)[0] === '1') return;
     var banner = document.getElementById('install-banner');
     if (isIOS) {
@@ -748,35 +758,10 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     });
   })();
 
-  // ---------- 版本检查与"应用内提示更新" ----------
-  var updateBanner = document.getElementById('update-banner');
-  var pendingUpdate = null;
-  function showUpdate(kind, version, url) {
-    if (pendingUpdate && pendingUpdate.kind === kind && pendingUpdate.version === version) return;
-    pendingUpdate = { kind: kind, version: version, url: url };
-    document.getElementById('update-title').textContent = '有新版本 v' + version;
-    document.getElementById('update-desc').textContent = kind === 'apk'
-      ? '点右侧下载新安装包，可直接覆盖安装'
-      : '新版界面已就绪，点右侧立即生效';
-    updateBanner.hidden = false;
-  }
-  document.getElementById('update-action').addEventListener('click', function () {
-    if (!pendingUpdate) return;
-    if (pendingUpdate.kind === 'apk') {
-      location.href = pendingUpdate.url || BOOT.apkUrl;
-      return;
-    }
-    if (navigator.serviceWorker && navigator.serviceWorker.controller) {
-      navigator.serviceWorker.getRegistration().then(function (reg) {
-        if (reg && reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
-        setTimeout(function () { location.reload(); }, 300);
-      });
-    } else {
-      location.reload();
-    }
-  });
-  document.getElementById('update-dismiss').addEventListener('click', function () { updateBanner.hidden = true; });
-
+  // ---------- 版本检查（只做说明，网页版不弹更新提示） ----------
+  // 为什么网页版不需要"更新提示"：页面本身是 GitHub Pages 上的最新构建，
+  // sw.js 对外壳走"网络优先"，新版本会自动接管 —— 用户没有任何需要手动做的事。
+  // 以前这里在"已装到主屏幕的 PWA"上会误判成原生应用，弹出"下载 APK"，属于 bug。
   function cmpVersion(a, b) {
     var pa = String(a).replace(/^v/, '').split('.').map(Number);
     var pb = String(b).replace(/^v/, '').split('.').map(Number);
@@ -813,9 +798,8 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
         })
         .then(function (v) {
           if (v && v.version && cmpVersion(v.version, BOOT.version)) {
-            stateEl.textContent = '发现新版本 v' + v.version + '（当前 v' + BOOT.version + '）';
-            hintEl.textContent = '用上方横幅里的按钮更新';
-            showUpdate(isStandalone() ? 'apk' : 'shell', v.version, v.apkUrl);
+            stateEl.textContent = '线上已是 v' + v.version + '（当前页面 v' + BOOT.version + '）';
+            hintEl.textContent = '网页版会自动跟随最新版本，刷新一次即可；无需手动更新';
           } else {
             stateEl.textContent = '当前版本 v' + BOOT.version + '，已是最新';
             hintEl.textContent = '检查时间：' + new Date().toLocaleTimeString();

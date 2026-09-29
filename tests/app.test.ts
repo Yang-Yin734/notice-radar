@@ -101,7 +101,7 @@ test('应用：设置页能开关微信推送（读写仓库变量 PUSH_ENABLED�
   assert.match(html, /settings\/variables\/actions/, '也给"不想给令牌"的手动路径');
 });
 
-test('应用：能检测并提示新版本（应用内更新）', () => {
+test('应用：版本信息只做说明（网页版不提示更新）', () => {
   const history = emptyHistory();
   appendHistory(history, [notice({ id: 'a' })]);
   const html = renderDashboard(history, { version: '1.2.3' });
@@ -109,12 +109,12 @@ test('应用：能检测并提示新版本（应用内更新）', () => {
 
   assert.equal(boot.version, '1.2.3', '当前版本进 bootstrap');
   assert.equal(boot.versionFile, 'version.json', '版本清单路径');
-  assert.match(html, /id="update-banner"/, '有"有新版本"横幅');
-  assert.match(html, /id="check-update"/, '设置里有"检查更新"按钮');
+  assert.match(html, /id="check-update"/, '设置里可以查看线上版本');
   assert.match(html, /function cmpVersion/, '会做版本比较');
   assert.match(html, /updatefound/, '监听 Service Worker 新版本');
-  assert.match(html, /SKIP_WAITING/, '点更新时让新 SW 立即接管');
-  assert.match(html, /当前版本 v1\.2\.3/, '设置页显示当前版本');
+  assert.match(html, /当前页面 v1\.2\.3/, '设置页显示当前版本');
+  assert.ok(!html.includes('id="update-banner"'), '网页版不再有更新横幅');
+  assert.ok(!html.includes("kind === 'apk'"), '不会再出现"下载 APK"当作更新');
 });
 
 test('应用：iOS 引导"添加到主屏幕"而不是下载 APK', () => {
@@ -157,6 +157,18 @@ test('应用：数据源是「内置优先 + 多镜像」，github.io 不排第�
   assert.match(html, /function refreshFromNetwork/, '按顺序尝试多个数据源');
   assert.match(html, /内置数据/, '数据来源会显示给用户');
   assert.match(html, /indexOf\('dashboard-data\.json'\)/, '版本检查也改用镜像地址（APK 内那份永远等于自己）');
+});
+
+test('应用：网页版不弹更新提示，且链接永远是最新（自动更新）', () => {
+  const html = renderDashboard(emptyHistory());
+
+  // 曾经的 bug：已装到主屏幕的 PWA 被判成原生应用，点"更新"却下载 APK
+  assert.ok(!html.includes('id="update-banner"'), '不该再有更新横幅');
+  assert.ok(!html.includes('showUpdate'), '不该再有"提示更新"的逻辑');
+  assert.match(html, /function activateQuietly/, '新外壳静默接管');
+  assert.match(html, /document\.visibilityState === 'hidden'/, '只在页面不可见时静默刷新，绝不打断阅读');
+  assert.match(html, /SKIP_WAITING/, '让新 Service Worker 立即接管');
+  assert.match(html, /自动跟随最新版本/, '设置里说明网页版会自动跟随最新');
 });
 
 test('应用：底部导航始终固定在视口底部（不能掉到页面最下端）', () => {
