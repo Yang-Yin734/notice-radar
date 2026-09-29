@@ -156,5 +156,5 @@ test('应用：数据源是「内置优先 + 多镜像」，github.io 不排第�
   assert.match(html, /notice-radar:data-cache/, '抓到的新数据会缓存到本机');
   assert.match(html, /function refreshFromNetwork/, '按顺序尝试多个数据源');
   assert.match(html, /内置数据/, '数据来源会显示给用户');
-  assert.match(html, /replace\(\/dashboard-data\\\.json/, '版本检查也改用镜像地址（APK 内那份永远等于自己）');
+  assert.match(html, /indexOf\('dashboard-data\.json'\)/, '版本检查也改用镜像地址（APK 内那份永远等于自己）');
 });

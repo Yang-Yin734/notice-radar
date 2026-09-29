@@ -786,7 +786,9 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     // 本地/同源 → CDN 镜像 → GitHub Pages
     var urls = [BOOT.versionFile].concat(
       (BOOT.dataUrls || []).map(function (u) {
-        return u.replace(/dashboard-data\.json.*$/, 'version.json');
+        // 用 indexOf 而不是正则：这段 JS 是模板字符串的一部分，正则里的反斜杠会被吃掉
+        var cut = u.indexOf('dashboard-data.json');
+        return cut >= 0 ? u.slice(0, cut) + 'version.json' : u;
       }),
     );
     var i = 0;
