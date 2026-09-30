@@ -1,36 +1,41 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-30T19:47:30.143Z",
+  "updatedAt": "2026-09-30T20:04:48.834Z",
   "sources": {
     "jwc-important": [
       "ok",
       "fail",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "jwc-student": [
       "ok",
       "fail",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "news-notice": [
       "ok",
       "fail",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "news-academic": [
       "ok",
       "fail",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "gr-notice": [
       "ok",
       "fail",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ]
   }
 }
