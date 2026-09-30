@@ -2,9 +2,11 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { emptyHistory } from '../src/core/history.ts';
 import {
+  confirmByStreak,
   detectProblems,
   detectSilence,
   emptyAlerts,
+  failureStreak,
   loadAlerts,
   problemTitle,
   renderProblemMarkdown,
@@ -65,6 +67,43 @@ test('health：被跳过的源（需要浏览器但没开 --allow-browser）不�
     result({ sourceId: 'math', sourceName: '数学学院', ok: false, skipped: true, error: '需要浏览器', items: [] }),
   ]);
   assert.deepEqual(problems, []);
+});
+
+test('health：单次失败不算故障 —— 要连续失败到阈值才告警（实测误报过）', () => {
+  assert.equal(failureStreak(undefined), 0);
+  assert.equal(failureStreak([]), 0);
+  assert.equal(failureStreak(['ok']), 0);
+  assert.equal(failureStreak(['ok', 'fail']), 1);
+  assert.equal(failureStreak(['fail', 'fail', 'fail']), 3);
+  assert.equal(failureStreak(['fail', 'ok', 'fail']), 1, '中间成功过就重新计数');
+
+  const problems = detectProblems([result({ sourceId: 'a', sourceName: 'A', ok: false, error: 'boom' })]);
+  const { confirmed, pending } = confirmByStreak(problems, { a: 1 }, 3);
+  assert.equal(confirmed.length, 0, '第 1 次失败不告警（网络天气）');
+  assert.equal(pending.length, 1);
+
+  const third = confirmByStreak(problems, { a: 3 }, 3);
+  assert.equal(third.confirmed.length, 1, '连续第 3 次才告警');
+  assert.equal(third.pending.length, 0);
+
+  // Map 形式也支持
+  assert.equal(confirmByStreak(problems, new Map([['a', 5]]), 3).confirmed.length, 1);
+});
+
+test('health：告警正文写清"连续几次"、是否所有源一起挂、以及怎么排查', () => {
+  const problems = detectProblems([
+    result({ sourceId: 'a', sourceName: '教务处·重要公告', ok: false, error: 'HTTP 403' }),
+  ]);
+  const md = renderProblemMarkdown(problems, '电子科技大学', {
+    streakOf: () => 3,
+    allFailed: true,
+    minStreak: 3,
+  });
+  assert.match(md, /已连续 3 次/);
+  assert.match(md, /连续 3 次/, '逐条也要标出次数');
+  assert.match(md, /所有源一起失败/, '要说明可能只是网络问题，避免用户白折腾');
+  assert.match(md, /radr health/, '给出排查命令');
+  assert.match(md, /alerts\.failureNotify/, '告诉用户怎么关掉这类提醒');
 });
 
 test('health：同一个源在节流窗口内只告警一次，过期后会再报', () => {

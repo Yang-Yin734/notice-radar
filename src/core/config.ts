@@ -105,6 +105,12 @@ const pushSchema = z.object({
 const alertsSchema = z.object({
   /** 源抓取失败、或抓到了却解析不出条目时，推一条微信告警 */
   failureNotify: z.boolean().default(true),
+  /**
+   * 同一个源**连续**失败多少次才告警（默认 3）。
+   * 为什么必须连续：GitHub runner 抓国内站点本来就约每 3 次有 1 次整体不通，
+   * 只看单次失败会把"网络天气"当成故障 —— 实测真的误报过（4 个源同时告警，下一轮就恢复正常）。
+   */
+  failureStreak: z.number().int().positive().default(3),
   /** 同一个源的告警最短间隔（小时）—— 别每 20 分钟吵一次 */
   throttleHours: z.number().positive().default(12),
   /** 某源连续这么多天没有新通知，就怀疑它挂了（只在日报顶部提示，不当急事推） */

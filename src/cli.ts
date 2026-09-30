@@ -16,8 +16,10 @@ import { renderDoctor, renderJson, renderMarkdown } from './core/report.ts';
 import { explainTier, immediateItems, splitByTier } from './core/tiers.ts';
 import {
   DEFAULT_ALERT_FILE,
+  confirmByStreak,
   detectProblems,
   detectSilence,
+  failureStreak,
   loadAlerts,
   problemTitle,
   renderProblemMarkdown,
@@ -639,19 +641,46 @@ async function cmdRun(flags: Flags): Promise<number> {
   }
 
   // ---- 抓取健康告警：静默失效是最阴险的失败模式（以为在收通知，其实早就断了）----
+  // 但**必须**区分"网络天气"和"真故障"：runner 抓国内站点本来就约每 3 次有 1 次整体不通。
+  // 实测踩过坑：单次失败就告警 → 4 个源在同一秒一起告警，而下一轮全部恢复正常（纯误报）。
+  // 所以：只有**连续**失败到阈值才告警，阈值见 alerts.failureStreak。
+  const runsFile = path.join(path.dirname(flags.state), 'runs.json');
+  const runsRecord = recordRun(results, loadRuns(runsFile));
+  const streakOf = (sourceId: string) => failureStreak(runsRecord.state.sources[sourceId]);
+
   const problems = detectProblems(results);
-  if (problems.length > 0) {
-    for (const p of problems) console.log(`    ⚠ ${p.sourceName}：${p.detail}`);
+  for (const p of problems) {
+    const streak = streakOf(p.sourceId);
+    const note = streak >= cfg.alerts.failureStreak ? `连续第 ${streak} 次` : `本轮失败（第 ${streak} 次）`;
+    console.log(`    ⚠ ${p.sourceName}：${p.detail} —— ${note}`);
   }
-  if (cfg.alerts.failureNotify && problems.length > 0 && flags.notify && !flags.dry) {
+
+  const { confirmed, pending } = confirmByStreak(
+    problems,
+    Object.fromEntries(Object.entries(runsRecord.state.sources).map(([id, list]) => [id, failureStreak(list)])),
+    cfg.alerts.failureStreak,
+  );
+  if (pending.length > 0) {
+    console.log(
+      `▸ ${pending.length} 个源本轮失败，但未达连续 ${cfg.alerts.failureStreak} 次，暂不告警（多半是网络抖动）`,
+    );
+  }
+
+  if (cfg.alerts.failureNotify && confirmed.length > 0 && flags.notify && !flags.dry) {
     const alertFile = path.join(path.dirname(flags.state), path.basename(DEFAULT_ALERT_FILE));
-    const { send, record } = throttleProblems(problems, loadAlerts(alertFile), {
+    const { send, record } = throttleProblems(confirmed, loadAlerts(alertFile), {
       throttleHours: cfg.alerts.throttleHours,
     });
     if (send.length === 0) {
-      console.log(`▸ ${problems.length} 个源有异常，但 ${cfg.alerts.throttleHours} 小时内已告警过，不重复打扰。`);
+      console.log(`▸ ${confirmed.length} 个源连续失败，但 ${cfg.alerts.throttleHours} 小时内已告警过，不重复打扰。`);
     } else {
-      const outcomes = await notifyAll(cfg.notify, problemTitle(send, cfg.name), renderProblemMarkdown(send, cfg.name));
+      const considered = results.filter((r) => !r.skipped);
+      const allFailed = considered.length > 0 && considered.every((r) => !r.ok || r.items.length === 0);
+      const outcomes = await notifyAll(
+        cfg.notify,
+        problemTitle(send, cfg.name),
+        renderProblemMarkdown(send, cfg.name, { streakOf, allFailed, minStreak: cfg.alerts.failureStreak }),
+      );
       for (const o of outcomes) console.log(`  ${o.ok ? '✓' : '✗'} 告警[${o.channel}] ${o.detail}`);
       if (outcomes.some((o) => o.ok)) {
         saveAlerts(record, alertFile);
@@ -678,12 +707,11 @@ async function cmdRun(flags: Flags): Promise<number> {
     console.log('\n▸ 没有新通知：不写状态文件（要强制写加 --write-always）');
   }
 
-  // 每个源最近 N 次成功率（issue #6）：有新通知时一起写，或者出问题时必写
-  if (!flags.dry && (shouldWrite || problems.length > 0)) {
-    const runsFile = path.join(path.dirname(flags.state), 'runs.json');
-    const { state: nextRuns, changed } = recordRun(results, loadRuns(runsFile));
-    if (changed) {
-      saveRuns(nextRuns, runsFile);
+  // 每个源最近 N 次成功率（issue #6）：有新通知、出问题、或"连续失败的状态发生了变化"时写。
+  // 其余情况（安静地成功）不写文件 —— 否则一天 72 次提交会把历史淹掉。
+  if (!flags.dry && (shouldWrite || problems.length > 0 || runsRecord.changed)) {
+    if (runsRecord.changed || problems.length > 0) {
+      saveRuns(runsRecord.state, runsFile);
       console.log(`▸ 抓取近况已记录：${runsFile}（doctor 里会显示"最近 N 次成功 X 次"）`);
     }
   }

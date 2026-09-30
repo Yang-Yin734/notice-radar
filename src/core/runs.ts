@@ -57,7 +57,9 @@ export function recordRun(
     const outcome: 'ok' | 'fail' = r.ok && r.items.length > 0 ? 'ok' : 'fail';
     const list = [...(sources[r.sourceId] ?? []), outcome].slice(-window);
     const before = sources[r.sourceId] ?? [];
-    if (before.length !== list.length || before[before.length - 1] !== list[list.length - 1]) changed = true;
+    // 只有"最新一次结果变了"才算有意义的变化：
+    // 它正好对应"连续失败开始/结束"，也是决定要不要写文件、要不要告警的依据
+    if (before.length === 0 || before[before.length - 1] !== outcome) changed = true;
     sources[r.sourceId] = list;
   }
 

@@ -99,17 +99,78 @@ export function throttleProblems(
   return { send, record: { lastAlertAt, updatedAt: now.toISOString() } };
 }
 
-export function renderProblemMarkdown(problems: SourceProblem[], name = '校园通知雷达'): string {
+/** 末尾连续失败了多少次（决定"这是网络抖动还是真故障"）。 */
+export function failureStreak(list: ('ok' | 'fail')[] | undefined): number {
+  if (!list || list.length === 0) return 0;
+  let streak = 0;
+  for (let i = list.length - 1; i >= 0; i--) {
+    if (list[i] !== 'fail') break;
+    streak++;
+  }
+  return streak;
+}
+
+/**
+ * 只留下"连续失败够多次"的问题。
+ *
+ * 为什么必须这样过滤：GitHub runner 抓国内站点本来就约每 3 次有 1 次整体不通，
+ * 单次失败多半是网络天气。实测真踩过：4 个源在同一秒一起告警，下一轮就全部恢复正常。
+ */
+export function confirmByStreak(
+  problems: SourceProblem[],
+  streaks: Map<string, number> | Record<string, number>,
+  minStreak: number,
+): { confirmed: SourceProblem[]; pending: SourceProblem[] } {
+  const get = (id: string): number => (streaks instanceof Map ? (streaks.get(id) ?? 0) : (streaks[id] ?? 0));
+  const confirmed: SourceProblem[] = [];
+  const pending: SourceProblem[] = [];
+  for (const p of problems) {
+    if (get(p.sourceId) >= minStreak) confirmed.push(p);
+    else pending.push(p);
+  }
+  return { confirmed, pending };
+}
+
+export interface ProblemRenderOptions {
+  /** 每个源连续失败了几次 */
+  streakOf?: (sourceId: string) => number;
+  /** 本轮是不是所有源都失败了（那就更可能是网络天气） */
+  allFailed?: boolean;
+  minStreak?: number;
+}
+
+export function renderProblemMarkdown(
+  problems: SourceProblem[],
+  name = '校园通知雷达',
+  options: ProblemRenderOptions = {},
+): string {
+  const { streakOf, allFailed, minStreak } = options;
   const lines: string[] = [];
   lines.push(`# ${name} · 抓取异常（${problems.length} 个源）`);
   lines.push('');
+  if (typeof minStreak === 'number') {
+    lines.push(`以下源**已连续 ${minStreak} 次**抓取失败，不是偶发网络抖动：`);
+    lines.push('');
+  }
   for (const p of problems) {
-    const label = p.kind === 'fetch-failed' ? '抓取失败' : '解析不出条目';
-    lines.push(`- **${p.sourceName}**：${label} —— ${p.detail}`);
+    const label = p.kind === 'fetch-failed' ? '抓取失败' : '抓到了但解析不出条目';
+    const streak = streakOf?.(p.sourceId);
+    const times = streak && streak > 1 ? `（连续 ${streak} 次）` : '';
+    lines.push(`- **${p.sourceName}**${times}：${label} —— ${p.detail}`);
   }
   lines.push('');
-  lines.push('可能是站点改版或选择器过时。本机跑 `radr doctor` 能看到逐源状态；');
-  lines.push('如果是站点结构变了，改 `selectors` 即可（见 docs/add-your-school.md）。');
+  if (allFailed) {
+    lines.push('> 注意：本轮**所有源一起失败**，多半是 runner 到国内站点的网络问题；');
+    lines.push('> 之所以还是提醒你，是因为它已经连续失败到阈值了。');
+    lines.push('');
+  }
+  lines.push('排查顺序：');
+  lines.push('1. 本机跑 `radr doctor`（或 `radr doctor --only=源id`）看是站点变了还是网络问题');
+  lines.push('2. `radr health` 看各源近况与静默情况');
+  lines.push('3. 若是站点改版，改 `selectors` 即可（见 docs/add-your-school.md）');
+  lines.push('');
+  lines.push('不想收这类提醒：把配置里 `alerts.failureNotify` 改成 false，');
+  lines.push('或把 `alerts.failureStreak` 调大（例如 6 = 约 2 小时都不通才提醒）。');
   return `${lines.join('\n')}\n`;
 }
 
