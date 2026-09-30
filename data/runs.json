@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-30T20:30:43.838Z",
+  "updatedAt": "2026-09-30T20:47:45.963Z",
   "sources": {
     "jwc-important": [
       "ok",
@@ -8,7 +8,8 @@
       "fail",
       "ok",
       "fail",
-      "fail"
+      "fail",
+      "ok"
     ],
     "jwc-student": [
       "ok",
@@ -16,7 +17,8 @@
       "fail",
       "ok",
       "fail",
-      "fail"
+      "fail",
+      "ok"
     ],
     "news-notice": [
       "ok",
@@ -24,7 +26,8 @@
       "fail",
       "ok",
       "fail",
-      "fail"
+      "fail",
+      "ok"
     ],
     "news-academic": [
       "ok",
@@ -32,7 +35,8 @@
       "fail",
       "ok",
       "fail",
-      "fail"
+      "fail",
+      "ok"
     ],
     "gr-notice": [
       "ok",
@@ -40,7 +44,8 @@
       "fail",
       "ok",
       "fail",
-      "fail"
+      "fail",
+      "ok"
     ]
   }
 }
