@@ -1,4 +1,5 @@
 import type { History, HistoryItem } from './history.ts';
+import { extractDeadline, renderDeadline } from './deadline.ts';
 
 /** 北京时间偏移（分钟）。归档里的时间是 UTC ISO，展示与时间窗按北京时间为准。 */
 const BEIJING_OFFSET_MIN = 8 * 60;
@@ -181,7 +182,9 @@ export function renderDigestMarkdown(digest: Digest, options: DigestRenderOption
     lines.push('');
     for (const n of g.items) {
       const tag = n.tag ? `\`${n.tag}\` ` : '';
-      lines.push(`- **${n.date ?? '日期未知'}** ${tag}[${n.title}](${n.url})`);
+      // 标题里自带截止日就标出"还剩几天"（issue #4）
+      const due = renderDeadline(extractDeadline(n.title));
+      lines.push(`- **${n.date ?? '日期未知'}** ${tag}${due ? `**${due}** ` : ''}[${n.title}](${n.url})`);
     }
     if (g.total > g.items.length) lines.push(`- …另有 ${g.total - g.items.length} 条`);
     lines.push('');
@@ -217,7 +220,8 @@ export function renderDigestText(digest: Digest, options: DigestRenderOptions = 
       lines.push(`【${g.sourceName}】${g.total} 条`);
       for (const n of g.items) {
         const tag = n.tag ? `[${n.tag}] ` : '';
-        lines.push(`  · ${n.date ?? '日期未知'} ${tag}${n.title}`);
+        const due = renderDeadline(extractDeadline(n.title));
+        lines.push(`  · ${n.date ?? '日期未知'} ${tag}${due ? `${due} ` : ''}${n.title}`);
         lines.push(`    ${n.url}`);
       }
       if (g.total > g.items.length) lines.push(`  · …另有 ${g.total - g.items.length} 条`);

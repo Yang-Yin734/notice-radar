@@ -48,6 +48,12 @@ const sourceSchema = z.object({
   include: z.array(z.string()).default([]),
   /** 命中任一关键词就丢弃 */
   exclude: z.array(z.string()).default([]),
+  /**
+   * 抓几页（issue #7）。默认 1 页。
+   * URL 里可写 `{page}` 占位符；没写就改写/追加 `page` 查询参数（教务处列表是 `?page=2` 这种）。
+   * 页与页之间会保持 --delay 的间隔，不连续猛击学校站点。
+   */
+  pages: z.number().int().positive().max(20).default(1),
   /** 给未来的自己/贡献者留的备注 */
   note: z.string().optional(),
   /** 覆盖全局 alerts.silenceDays：这个源多久没动静就该怀疑（例如假期本来就不发） */
@@ -55,7 +61,7 @@ const sourceSchema = z.object({
 });
 
 const notifySchema = z.object({
-  type: z.enum(['serverchan', 'webhook', 'stdout', 'email']),
+  type: z.enum(['serverchan', 'webhook', 'stdout', 'email', 'wecom-bot', 'wecom-app', 'wxpusher']),
   enabled: z.boolean().default(true),
   /** 密钥从哪个环境变量读（默认 SERVERCHAN_KEY） */
   keyEnv: z.string().optional(),
@@ -131,6 +137,75 @@ function checkUrl(value: string, where: string): void {
   }
 }
 
+const DOC_HINT = 'docs/add-your-school.md';
+
+/** --only=a,b：只抓指定源（issue #2，调试单个源时不用等其它源的间隔）。 */
+export function selectSources(sources: SourceConfig[], only?: string | null): SourceConfig[] {
+  if (!only) return sources;
+  const wanted = new Set(
+    only
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean),
+  );
+  return sources.filter((s) => wanted.has(s.id));
+}
+
+/**
+ * 翻页 URL（issue #7）。
+ * URL 里写了 `{page}` 就替换占位符；否则改写/追加 `page` 查询参数（教务处列表是 `?page=N` 这种）。
+ */
+export function pageUrls(url: string, pages = 1): string[] {
+  const count = Math.max(1, Math.floor(pages));
+  if (count === 1) return [url];
+  return Array.from({ length: count }, (_, i) => {
+    const page = String(i + 1);
+    if (url.includes('{page}')) return url.replace(/\{page\}/g, page);
+    try {
+      const u = new URL(url);
+      u.searchParams.set('page', page);
+      return u.toString();
+    } catch {
+      return url;
+    }
+  });
+}
+
+function sourceAt(raw: unknown, index: number): { id?: string; name?: string; adapter?: string } | null {
+  const sources = (raw as { sources?: unknown } | null)?.sources;
+  if (!Array.isArray(sources)) return null;
+  const item = sources[index];
+  return item && typeof item === 'object' ? (item as { id?: string; name?: string; adapter?: string }) : null;
+}
+
+function hintFor(field: string, adapter?: string): string {
+  if (field === 'selectors.item') return 'html-list 适配器必须写 item（每条通知的容器选择器），例如 div.notice-item.clearfix';
+  if (field === 'selectors.title') return '要写 title（标题选择器），例如 a 取文本、a@title 取属性';
+  if (field === 'selectors') return `adapter=${adapter ?? 'html-list'} 需要 selectors，至少要有 item 与 title`;
+  if (field === 'url') return '要写完整的 http/https 地址';
+  if (field === 'id') return '每个源要有唯一 id，例如 jwc-important';
+  if (field === 'name') return '写给人看的名字，例如 教务处·重要公告';
+  if (field === 'pages') return 'pages 是正整数（抓几页），默认 1';
+  if (field === 'adapter') return '适配器名写错了？跑 `radr list` 看可用的有哪些';
+  return '检查这一项的取值';
+}
+
+/** 把 zod 的报错翻译成人话：带上源名字、说清缺什么、给出文档（issue #3）。 */
+function explainIssue(issue: z.ZodIssue, raw: unknown): string {
+  const path = issue.path;
+  if (path[0] === 'sources' && typeof path[1] === 'number') {
+    const s = sourceAt(raw, path[1]);
+    const who = s?.name ?? s?.id;
+    const label = `第 ${path[1] + 1} 个源${who ? `（${who}）` : ''}`;
+    const field = path.slice(2).join('.') || '（源本身）';
+    return `  ✗ ${label}的 ${field} 有问题：${issue.message}\n    提示：${hintFor(field, s?.adapter)}，见 ${DOC_HINT}`;
+  }
+  if (path[0] === 'push' || path[0] === 'alerts' || path[0] === 'notify') {
+    return `  ✗ ${path.join('.')}：${issue.message}\n    提示：见 README 的「推送分级与每日日报」与「抓取健康告警」两节`;
+  }
+  return `  ✗ ${path.join('.') || '(根)'}：${issue.message}`;
+}
+
 export function loadConfig(file: string): RadarConfig {
   if (!fs.existsSync(file)) {
     throw new Error(`配置文件不存在：${file}\n提示：可以从 config/schools/uestc.yaml 复制一份改。`);
@@ -138,7 +213,7 @@ export function loadConfig(file: string): RadarConfig {
   const raw = parseYaml(fs.readFileSync(file, 'utf8'));
   const parsed = configSchema.safeParse(raw);
   if (!parsed.success) {
-    const lines = parsed.error.issues.map((i) => `  - ${i.path.join('.') || '(根)'}：${i.message}`);
+    const lines = parsed.error.issues.map((i) => explainIssue(i, raw));
     throw new Error(`配置文件校验失败：${file}\n${lines.join('\n')}`);
   }
   const cfg = parsed.data;
@@ -146,7 +221,10 @@ export function loadConfig(file: string): RadarConfig {
     checkUrl(s.url, `sources[${s.id}].url`);
     if (s.baseUrl) checkUrl(s.baseUrl, `sources[${s.id}].baseUrl`);
     if (s.adapter === 'html-list' && !s.selectors) {
-      throw new Error(`sources[${s.id}] 用了 html-list 适配器，但没写 selectors（至少要有 item 和 title）。`);
+      throw new Error(
+        `配置文件校验失败：${file}\n  ✗ 源「${s.name}」（${s.id}）用了 html-list 适配器，但没写 selectors\n` +
+          `    提示：至少要有 item 与 title，见 ${DOC_HINT}`,
+      );
     }
   }
   return cfg;

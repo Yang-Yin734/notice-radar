@@ -113,8 +113,9 @@ Linux/macOS 用 `SERVERCHAN_KEY=... npm run run`，Windows PowerShell 用 `$env:
 
 | 命令 | 作用 |
 |---|---|
-| `radr doctor` | 体检：逐源显示状态码、体积、耗时、解析条目数，一眼看出是"站点变了"还是"选择器过时了" |
+| `radr doctor` | 体检：逐源显示状态码、体积、耗时、解析条目数 + **最近 N 次成功率**，一眼看出是"站点变了"还是"选择器过时了"，或"这个源一直不稳" |
 | `radr run` | 抓取 → 解析 → 关键词过滤 → 去重 → 出日报 → 推送 → 更新状态 |
+| `radr doctor --only=jwc-student` | 只体检指定源（调试时不用等其它源的间隔）；`--only` 逗号可多选 |
 | `radr list` | 列出配置里的源与关键词数量 |
 | `radr --version` | 打印版本 |
 | `radr run --dry` | 不写状态、不推送（调试用） |
@@ -130,6 +131,20 @@ Linux/macOS 用 `SERVERCHAN_KEY=... npm run run`，Windows PowerShell 用 `$env:
 | `radr schools [--json=文件]` | 适配器市场：列出已知学校预设与维护者 |
 | `radr tiers [--days=14] [--json=文件]` | 查看关键词分档：哪些会立刻推、哪些进日报（调关键词时用） |
 | `radr health [--json=文件] [--notify]` | 抓取健康检查：哪些源长期没动静（只读归档，不联网） |
+
+### 源配置里还能写什么
+
+```yaml
+sources:
+  - id: jwc-important
+    name: 教务处·重要公告
+    url: https://www.jwc.uestc.edu.cn/hard/?page=1
+    adapter: uestc/jwc
+    pages: 2          # 抓前两页（缺省 1）；URL 里写 {page} 可自定义参数名，翻页之间有间隔
+    include: [选课, 退课]   # 命中才要
+    exclude: [招标, 中标]   # 命中就丢
+    silenceDays: 30   # 这个源多久没动静才怀疑它挂了（覆盖全局 alerts.silenceDays）
+```
 
 ### 推送分级与每日日报
 
@@ -482,17 +497,31 @@ iOS **没有**"下载安装包直接装"这回事，Apple 只允许两条路，�
 
 应用里会认 UA：**Android 提示下载 APK，iOS 提示"添加到主屏幕"**，文案与步骤都不同。
 
-## 推送通道
+## 推送通道：怎么真正推到**微信**
 
-| 通道 | 配置 | 说明 |
-|---|---|---|
-| Server酱 | `type: serverchan`，密钥放 `SERVERCHAN_KEY` | 推到微信，国内最省事 |
-| 邮件 | `type: email` | 读环境变量 `SMTP_URL`（形如 `smtps://user:pass@smtp.example.com:465`）、`MAIL_TO`、`MAIL_FROM`；需要 `npm i nodemailer` |
-| 通用 webhook | `type: webhook` | 飞书/钉钉/自建服务都行 |
-| stdout | `type: stdout` | 只打印到终端（本地调试用；它永远"成功"，所以不算真正的通道） |
+| 通道 | 配置 | 落地到哪 | 说明 |
+|---|---|---|---|
+| **WxPusher** | `type: wxpusher` + `WXPUSHER_APP_TOKEN`、`WXPUSHER_UIDS` | **微信**（公众号会话） | 最接近"微信授权"：微信扫码登录 → 建应用 → 关注公众号即完成授权 |
+| **企业微信群机器人** | `type: wecom-bot` + `WECOM_BOT_WEBHOOK` | 企业微信；开**微信插件**后微信也能收到 | 免费、无月配额、最稳，1 分钟配好 |
+| **企业微信自建应用** | `type: wecom-app` + `WECOM_CORP_ID`/`WECOM_SECRET`/`WECOM_AGENT_ID`/`WECOM_TOUSER` | 企业微信（可发给指定人）；同样可进微信 | 不想建群时用 |
+| Server酱 | `type: serverchan` + `SERVERCHAN_KEY` | 微信（第三方中转） | 免费版每天有条数上限；**配额用尽会明确提示** |
+| 邮件 | `type: email` + `SMTP_URL`（或 `SMTP_HOST`/`SMTP_USER`/`SMTP_PASS`）+ `MAIL_TO`/`MAIL_FROM` | 邮箱 | 需要 `npm i nodemailer`；同时发纯文本与 HTML（链接可点） |
+| 通用 webhook | `type: webhook` + `url`/`urlEnv` | 飞书/钉钉/自建服务 | POST `{title, markdown}` |
+| stdout | `type: stdout` | 终端 | 本地调试用；它永远"成功"，所以不算真正的通道 |
 
-想确认密钥配好没有：`npm run run -- --no-notify` 不推送；直接跑 **`node src/cli.ts test-notify`** 会发一条测试消息，
-结果同时写进 `data/last-notify.json`（已脱敏），可以从提交记录里查证——这比翻 Actions 日志方便得多。
+> **为什么没有"微信官方授权登录"**：微信服务号的模板消息/订阅通知要求**已认证的服务号**（企业主体 + 300 元/年）
+> 且需自建服务器做 OAuth —— 个人主体申请不到。所以"推到微信"实际是上面三条个人可行的路，
+> **一步步的配置步骤（含截图级说明、环境变量、验证命令、GitHub Secrets 怎么加）见 [docs/wechat.md](docs/wechat.md)**。
+
+配置好之后逐条验证（微信通道多了以后很有用）：
+
+```bash
+radr test-notify                      # 测所有启用的通道
+radr test-notify --channel=wxpusher   # 只测某一条
+```
+
+结果同时写进 `data/last-notify.json`（密钥已脱敏），可以从提交记录里查证 —— 比翻 Actions 日志方便得多。
+推送失败时会尽量说人话：缺哪个环境变量、配额用尽、webhook 格式不对等；网络抖动会自动重试两次。
 
 ## 许可
 

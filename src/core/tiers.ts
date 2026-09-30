@@ -1,5 +1,6 @@
 import type { PushConfig } from './config.ts';
 import type { Notice } from '../types.ts';
+import { extractDeadline, isUrgentDeadline } from './deadline.ts';
 
 /**
  * 通知分级：把新通知分成「立刻推」「进日报」「静音」三档。
@@ -7,6 +8,9 @@ import type { Notice } from '../types.ts';
  * 背景（用户反馈）：每 20 分钟发现新通知就推一次，期中期末手机上会很吵；
  * 但选课/退课这类抢时间的通知又不能等到第二天早上。
  * 所以按关键词分级：命中 push.urgent 的立刻推，其余交给每天早上的日报。
+ *
+ * 还有一条更准的信号：标题自带**临近的截止日**（"9月30日前提交"）——
+ * 关键词表未必抓得到，但"还剩 3 天"谁都能判断是急事，所以也算 urgent（issue #4）。
  */
 
 export type Tier = 'urgent' | 'digest' | 'mute';
@@ -32,30 +36,34 @@ export function matchKeyword(text: string, keywords: string[]): string | null {
   return null;
 }
 
-/** 一条通知属于哪一档。标题与标签都参与匹配。 */
-export function classify(notice: Notice, push: PushConfig): Tier {
+/** 一条通知属于哪一档。标题与标签都参与匹配；临近截止的算急事。 */
+export function classify(notice: Notice, push: PushConfig, now: Date = new Date()): Tier {
   const text = `${notice.title} ${notice.tag ?? ''}`;
   if (matchKeyword(text, push.mute)) return 'mute';
   if (matchKeyword(text, push.urgent)) return 'urgent';
+  if (isUrgentDeadline(extractDeadline(notice.title, now))) return 'urgent';
   return 'digest';
 }
 
-export function splitByTier(items: Notice[], push: PushConfig): TieredSplit {
+export function splitByTier(items: Notice[], push: PushConfig, now: Date = new Date()): TieredSplit {
   const split: TieredSplit = { urgent: [], digest: [], mute: [] };
-  for (const n of items) split[classify(n, push)].push(n);
+  for (const n of items) split[classify(n, push, now)].push(n);
   return split;
 }
 
 /** 只有显式关掉分级（push.digestRest=false）才恢复"所有新通知都即时推"的老行为。 */
-export function immediateItems(items: Notice[], push: PushConfig): Notice[] {
+export function immediateItems(items: Notice[], push: PushConfig, now: Date = new Date()): Notice[] {
   if (!push.digestRest) return items;
-  const { urgent } = splitByTier(items, push);
+  const { urgent } = splitByTier(items, push, now);
   return urgent;
 }
 
 /** 命中急事关键词时，告诉用户命中哪一个 —— 避免"为什么这条推了那条没推"的困惑。 */
-export function explainTier(notice: Notice, push: PushConfig): string {
+export function explainTier(notice: Notice, push: PushConfig, now: Date = new Date()): string {
   const text = `${notice.title} ${notice.tag ?? ''}`;
   const hit = matchKeyword(text, push.urgent);
-  return hit ? `命中关键词「${hit}」` : '常规通知';
+  if (hit) return `命中关键词「${hit}」`;
+  const deadline = extractDeadline(notice.title, now);
+  if (isUrgentDeadline(deadline)) return `临近截止（${deadline?.date}）`;
+  return '常规通知';
 }

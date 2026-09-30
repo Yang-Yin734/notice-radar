@@ -1,4 +1,6 @@
 import type { Notice, SourceResult } from '../types.ts';
+import { extractDeadline, renderDeadline } from './deadline.ts';
+import { renderRate, type SourceRate } from './runs.ts';
 
 export interface ReportOptions {
   title?: string;
@@ -47,8 +49,11 @@ export function renderMarkdown(results: SourceResult[], fresh: Notice[], options
     for (const n of items.slice(0, maxPerSource)) {
       const date = n.date ?? '日期未知';
       const tag = n.tag ? `\`${n.tag}\` ` : '';
+      // 标题里自带截止日就标出"还剩几天"（issue #4）
+      const due = renderDeadline(extractDeadline(n.title));
+      const dueText = due ? `**${due}** ` : '';
       const also = n.alsoIn && n.alsoIn.length > 0 ? `　<sub>另见：${n.alsoIn.join('、')}</sub>` : '';
-      lines.push(`- **${date}** ${tag}[${n.title}](${n.url})${also}`);
+      lines.push(`- **${date}** ${tag}${dueText}[${n.title}](${n.url})${also}`);
     }
     if (items.length > maxPerSource) lines.push(`- …另有 ${items.length - maxPerSource} 条，见状态文件`);
     lines.push('');
@@ -74,15 +79,18 @@ export function renderMarkdown(results: SourceResult[], fresh: Notice[], options
   return lines.join('\n');
 }
 
-/** doctor 用的体检表：一眼看出哪个源坏了、是站点变了还是选择器过时了。 */
-export function renderDoctor(results: SourceResult[]): string {
+/** doctor 用的体检表：一眼看出哪个源坏了、是站点变了还是选择器过时了。
+ *  rates（可选）来自 data/runs.json —— 当下成功但一直不稳的源也能看出来（issue #6）。 */
+export function renderDoctor(results: SourceResult[], rates?: Map<string, SourceRate>): string {
   const pad = (s: string, width: number) => {
     const visual = [...s].reduce((w, c) => w + (c.charCodeAt(0) > 255 ? 2 : 1), 0);
     return s + ' '.repeat(Math.max(0, width - visual));
   };
   const lines: string[] = [];
-  lines.push(`${pad('源', 26)}${pad('适配器', 14)}${pad('状态', 8)}${pad('体积', 10)}${pad('耗时', 9)}${pad('条目', 6)}判定`);
-  lines.push('-'.repeat(88));
+  lines.push(
+    `${pad('源', 26)}${pad('适配器', 14)}${pad('状态', 8)}${pad('体积', 10)}${pad('耗时', 9)}${pad('条目', 6)}${pad('近况', 24)}判定`,
+  );
+  lines.push('-'.repeat(112));
   for (const r of results) {
     const verdict = r.skipped
       ? '⏭ 跳过（需要浏览器渲染）'
@@ -98,6 +106,7 @@ export function renderDoctor(results: SourceResult[]): string {
         pad(String(r.bytes), 10) +
         pad(`${r.tookMs}ms`, 9) +
         pad(String(r.items.length), 6) +
+        pad(renderRate(rates?.get(r.sourceId)) || '—', 24) +
         verdict,
     );
   }

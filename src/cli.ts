@@ -2,7 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { loadConfig } from './core/config.ts';
+import { loadConfig, pageUrls, selectSources } from './core/config.ts';
 import type { RadarConfig, SourceConfig } from './core/config.ts';
 import { fetchHtml } from './core/fetch.ts';
 import { renderHtml } from './core/browser.ts';
@@ -10,6 +10,7 @@ import { getAdapter, listAdapters } from './adapters/index.ts';
 import { evaluate } from './core/filter.ts';
 import { loadState, markSeen, saveState, splitNew, dedupeAcrossSources } from './core/dedupe.ts';
 import { appendHistory, countBySource, loadHistory, renderStats, saveHistory, summarize } from './core/history.ts';
+import { loadRuns, recordRun, saveRuns, summarizeRuns } from './core/runs.ts';
 import { renderDashboard } from './dashboard.ts';
 import { renderDoctor, renderJson, renderMarkdown } from './core/report.ts';
 import { explainTier, immediateItems, splitByTier } from './core/tiers.ts';
@@ -102,6 +103,10 @@ interface Flags {
   maxExplicit: number | null;
   /** tiers：看最近多少天 */
   days: number | null;
+  /** 只跑指定源（逗号分隔），调试单个源用（issue #2） */
+  only: string | null;
+  /** test-notify：只测某个通道（issue：微信通道多了，要能单独验） */
+  channel: string | null;
 }
 
 function parseFlags(argv: string[]): Flags {
@@ -131,15 +136,25 @@ function parseFlags(argv: string[]): Flags {
     send: argv.includes('--notify'),
     maxExplicit: get('max') ? Number(get('max')) : null,
     days: get('days') ? Number(get('days')) : null,
+    only: get('only'),
+    channel: get('channel'),
   };
 }
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
-/** 抓取 + 解析。不做过滤，也不动状态 —— doctor 和 run 共用这一段。 */
+/** 抓取 + 解析。不做过滤，也不动状态 —— doctor 和 run 共用这一段。
+ *  支持 --only=<id> 只跑指定源（issue #2）与多页翻页（issue #7）。 */
 async function collect(cfg: RadarConfig, flags: Flags): Promise<SourceResult[]> {
   const results: SourceResult[] = [];
-  const sources = cfg.sources.filter((s) => s.enabled);
+  const enabled = cfg.sources.filter((s) => s.enabled);
+  const sources = selectSources(enabled, flags.only);
+  if (flags.only && sources.length === 0) {
+    throw new Error(`--only=${flags.only} 没匹配到任何启用的源。可用：${enabled.map((s) => s.id).join(', ')}`);
+  }
+  if (flags.only && sources.length > 0) {
+    console.log(`▸ --only：只跑 ${sources.length} 个源（${sources.map((s) => s.id).join(', ')}）`);
+  }
 
   for (const [index, source] of sources.entries()) {
     if (index > 0 && flags.delayMs > 0) await sleep(flags.delayMs); // 串行 + 间隔，别给学校站点添麻烦
@@ -178,27 +193,64 @@ async function collectOne(cfg: RadarConfig, source: SourceConfig, flags: Flags):
   }
 
   const t0 = Date.now();
-  try {
-    if (source.requiresBrowser) {
-      const headless = source.browserHeadless;
-      if (!headless) {
-        console.log(`    · ${source.id}: 该站点会拒绝无头浏览器，将以可见浏览器窗口抓取（窗口会自动关闭）`);
+  const urls = pageUrls(source.url, source.pages);
+  const items: Notice[] = [];
+  const seen = new Set<string>();
+  let status: number | null = null;
+  let bytes = 0;
+
+  for (const [index, pageUrl] of urls.entries()) {
+    // 翻页之间也要保持间隔，不连续猛击学校站点（issue #7）
+    if (index > 0 && flags.delayMs > 0) await sleep(flags.delayMs);
+    try {
+      let html: string;
+      let pageStatus: number | null;
+      let pageBytes: number;
+
+      if (source.requiresBrowser) {
+        const headless = source.browserHeadless;
+        if (!headless && index === 0) {
+          console.log(`    · ${source.id}: 该站点会拒绝无头浏览器，将以可见浏览器窗口抓取（窗口会自动关闭）`);
+        }
+        const res = await renderHtml(pageUrl, {
+          executablePath: process.env.NOTICE_RADAR_BROWSER,
+          expect: source.browserExpect ?? '通知',
+          headless,
+          onLog: (msg) => console.log(`    · ${source.id}: ${msg}`),
+        });
+        html = res.html;
+        pageStatus = 200;
+        pageBytes = res.html.length;
+      } else {
+        const res = await fetchHtml(pageUrl);
+        html = res.html;
+        pageStatus = res.status;
+        pageBytes = res.bytes;
       }
-      const res = await renderHtml(source.url, {
-        executablePath: process.env.NOTICE_RADAR_BROWSER,
-        expect: source.browserExpect ?? '通知',
-        headless,
-        onLog: (msg) => console.log(`    · ${source.id}: ${msg}`),
-      });
-      const items = adapter.parse({ source, school: cfg.school, html: res.html });
-      return { ...base, ok: true, status: 200, bytes: res.html.length, tookMs: Date.now() - t0, items };
+
+      status = pageStatus;
+      bytes += pageBytes;
+      const parsed = adapter.parse({ source, school: cfg.school, html });
+      for (const item of parsed) {
+        if (seen.has(item.id)) continue; // 跨页去重：同一条挂两页只算一次
+        seen.add(item.id);
+        items.push(item);
+      }
+      if (urls.length > 1) {
+        console.log(
+          `    · ${source.id}: 第 ${index + 1}/${urls.length} 页解析 ${parsed.length} 条（去重后累计 ${items.length} 条）`,
+        );
+      }
+    } catch (e) {
+      const message = (e as Error).message;
+      if (index === 0) return { ...base, error: message, tookMs: Date.now() - t0 };
+      // 第一页成功、后面某页失败：保留已有结果，但明确说出来（不静默降级）
+      console.log(`    · ${source.id}: 第 ${index + 1}/${urls.length} 页失败（${message}），保留前 ${index} 页的 ${items.length} 条`);
+      break;
     }
-    const res = await fetchHtml(source.url);
-    const items = adapter.parse({ source, school: cfg.school, html: res.html });
-    return { ...base, ok: true, status: res.status, bytes: res.bytes, tookMs: Date.now() - t0, items };
-  } catch (e) {
-    return { ...base, error: (e as Error).message, tookMs: Date.now() - t0 };
   }
+
+  return { ...base, ok: true, status, bytes, tookMs: Date.now() - t0, items };
 }
 
 function filterItems(results: SourceResult[], cfg: RadarConfig): Notice[] {  const byId = new Map(cfg.sources.map((s) => [s.id, s]));
@@ -232,11 +284,19 @@ function writeNotifyLog(statePath: string, title: string, count: number, outcome
   return file;
 }
 
-/** 只测推送通道，不抓任何站点 —— 用来确认 SERVERCHAN_KEY 之类配好了没有。 */
+/** 只测推送通道，不抓任何站点 —— 用来确认 SERVERCHAN_KEY 之类配好了没有。
+ *  支持 --channel=<type> 单独验某个通道（微信通道多了以后很有用）。 */
 async function cmdTestNotify(flags: Flags): Promise<number> {
   const cfg = loadCfg(flags);
-  const channels = cfg.notify.filter((n) => n.enabled).map((n) => n.type).join(', ') || '(未配置任何通道)';
+  const wanted = cfg.notify.filter((n) => n.enabled && (!flags.channel || n.type === flags.channel));
+  const channels = wanted.map((n) => n.type).join(', ') || '(没有匹配的启用通道)';
   console.log(`▸ 推送通道测试：${cfg.name}（${channels}）`);
+  if (flags.channel && wanted.length === 0) {
+    console.log(
+      `  配置文件里启用着的通道：${cfg.notify.filter((n) => n.enabled).map((n) => n.type).join(', ') || '(无)'}`,
+    );
+    return 2;
+  }
 
   const now = new Date();
   const markdown = [
@@ -251,7 +311,7 @@ async function cmdTestNotify(flags: Flags): Promise<number> {
     '如果这条能收到，但通知日报收不到，那问题在抓取或关键词，不在推送。',
   ].join('\n');
 
-  const outcomes = await notifyAll(cfg.notify, `${cfg.name} · 推送通道测试`, markdown);
+  const outcomes = await notifyAll(wanted, `${cfg.name} · 推送通道测试`, markdown);
   for (const o of outcomes) console.log(`  ${o.ok ? '✓' : '✗'} 通知[${o.channel}] ${o.detail}`);
   if (!flags.dry) console.log(`  · 结果已记录到 ${writeNotifyLog(flags.state, `${cfg.name} · 推送通道测试`, 0, outcomes)}`);
 
@@ -618,6 +678,16 @@ async function cmdRun(flags: Flags): Promise<number> {
     console.log('\n▸ 没有新通知：不写状态文件（要强制写加 --write-always）');
   }
 
+  // 每个源最近 N 次成功率（issue #6）：有新通知时一起写，或者出问题时必写
+  if (!flags.dry && (shouldWrite || problems.length > 0)) {
+    const runsFile = path.join(path.dirname(flags.state), 'runs.json');
+    const { state: nextRuns, changed } = recordRun(results, loadRuns(runsFile));
+    if (changed) {
+      saveRuns(nextRuns, runsFile);
+      console.log(`▸ 抓取近况已记录：${runsFile}（doctor 里会显示"最近 N 次成功 X 次"）`);
+    }
+  }
+
   const okCount = results.filter((r) => r.ok).length;
   return okCount === 0 ? 1 : 0;
 }
@@ -672,7 +742,8 @@ async function cmdDoctor(flags: Flags): Promise<number> {
   const cfg = loadCfg(flags);
   console.log(`▸ 体检 ${cfg.name}：${cfg.sources.filter((s) => s.enabled).length} 个源\n`);
   const results = await collect(cfg, flags);
-  console.log(renderDoctor(results));
+  const rates = summarizeRuns(loadRuns(path.join(path.dirname(flags.state), 'runs.json')));
+  console.log(renderDoctor(results, rates));
   const skipped = results.filter((r) => r.skipped).length;
   const broken = results.filter((r) => (!r.ok && !r.skipped) || (r.ok && r.items.length === 0)).length;
   console.log('\n提示：状态 202 或体积 <4KB 通常是 WAF 挑战页；抓到了但条目为 0 说明选择器过时了。');
@@ -720,10 +791,10 @@ function usage(): void {
   console.log(`notice-radar v${VERSION} —— 把高校官网通知变成能推到手机的信息流
 
 用法：
-  radr run      [--config=路径] [--dry] [--no-notify] [--json=路径] [--delay=毫秒] [--max=条数] [--write-always] [--allow-browser]
-  radr doctor   [--config=路径] [--allow-browser]      体检：每个源能不能抓、解析出几条
+  radr run      [--config=路径] [--dry] [--no-notify] [--json=路径] [--delay=毫秒] [--max=条数] [--only=源id] [--write-always] [--allow-browser]
+  radr doctor   [--config=路径] [--only=源id] [--allow-browser]      体检：每个源能不能抓、解析出几条（含最近 N 次成功率）
   radr list     [--config=路径]                        列出配置里的源
-  radr test-notify [--config=路径]                     只发一条测试消息，验证推送密钥配好没有
+  radr test-notify [--config=路径] [--channel=通道]     只发一条测试消息，验证推送密钥配好没有（微信通道见 docs/wechat.md）
   radr dashboard [--out=docs/index.html]               把历史归档渲染成静态仪表盘（GitHub Pages 用）
   radr stats     [--state=data/state.json] [--json=文件]  通知频次统计（来源/标签/周/星期分布）
   radr digest    [--date=YYYY-MM-DD | --hours=24] [--max=条数] [--out=文件] [--notify] [--force]

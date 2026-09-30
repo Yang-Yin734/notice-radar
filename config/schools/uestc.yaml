@@ -16,6 +16,18 @@ notify:
   - type: serverchan
     keyEnv: SERVERCHAN_KEY
   - type: stdout
+  # 下面三条是"能真正落到微信"的通道，默认关着 —— 填好密钥后把 enabled 改成 true 即可。
+  # 各自的开通步骤见 docs/wechat.md（每条 1 分钟）。
+  #
+  # 1) WxPusher：微信扫码关注公众号即完成授权，消息由公众号直达你的微信（最接近"微信授权"）
+  - type: wxpusher
+    enabled: false # 需要 WXPUSHER_APP_TOKEN 与 WXPUSHER_UIDS
+  # 2) 企业微信群机器人：免费、无需审核；企业微信开"微信插件"后微信也能收到
+  - type: wecom-bot
+    enabled: false # 需要 WECOM_BOT_WEBHOOK
+  # 3) 企业微信自建应用：能发给指定人（同样可经微信插件落到微信）
+  - type: wecom-app
+    enabled: false # 需要 WECOM_CORP_ID / WECOM_SECRET / WECOM_AGENT_ID / WECOM_TOUSER
 
 # 推送分级（M4）：命中 urgent 的立刻推微信，其余进每天早 8:00 的日报。
 # 想恢复「所有新通知都即时推」的老行为：把 digestRest 改成 false。
@@ -222,6 +234,41 @@ sources:
       - 揭牌
       - 喜报
       - 征稿
+
+  # issue #1：新闻网·学术栏目（CatId=66）。结构和公告栏目一样，但内容偏讲座/论坛/征稿，
+  # 抢时间的少，所以它基本都进日报 —— 只有带截止日或命中急事关键词的才会即时推。
+  - id: news-academic
+    name: 新闻网·学术
+    url: https://news.uestc.edu.cn/?n=UestcNews.Front.CategoryV2.Page&CatId=66
+    adapter: html-list
+    baseUrl: https://news.uestc.edu.cn
+    selectors:
+      item: div.notice_item
+      title: a.title
+      link: a.title@href
+      date: span.date
+      tag: span.category
+    include:
+      - 讲座
+      - 报告
+      - 讲坛
+      - 讲堂
+      - 论坛
+      - 学术
+      - 征稿
+      - 竞赛
+      - 建模
+      - 研讨会
+      - 会议
+    exclude:
+      - 中标
+      - 成交
+      - 招标
+      - 采购
+      - 校庆
+      - 揭牌
+      - 喜报
+      - 来访
 
   - id: gr-notice
     name: 研究生院·通知
