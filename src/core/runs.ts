@@ -15,6 +15,15 @@ import type { SourceResult } from '../types.ts';
 
 export const DEFAULT_RUNS_FILE = path.join('data', 'runs.json');
 export const DEFAULT_WINDOW = 20;
+/**
+ * 同一次「失败期」的判定窗口（分钟）。
+ *
+ * 为什么需要：poll 工作流为了扛住跨境网络抖动，一轮里最多重试 4 次（间隔 30/50/70 秒）。
+ * 如果每次尝试都记一条 fail，"重试到第 3 次"就会顶到告警阈值 —— 而工作流最终可能第 4 次成功。
+ * 实测数据就是这样：`fail,fail,fail,fail,ok`。所以同一失败期内的重试只算一次。
+ * 窗口取得比 crontab 间隔（20 分钟）小，保证"真正持续不通"仍然能被计数。
+ */
+export const DEFAULT_PERIOD_MINUTES = 15;
 
 export interface RunsState {
   version: number;
@@ -41,29 +50,50 @@ export function saveRuns(state: RunsState, file: string = DEFAULT_RUNS_FILE): vo
 
 /**
  * 记录一轮结果。skipped（需要浏览器但没开开关）不算失败也不计入 —— 那是预期行为。
+ *
+ * 记账规则（每一分都是为了"不产生无谓提交、也不误报"）：
+ *   · 连续成功 → 不记（安静运行不该产生提交）
+ *   · 第一次失败 → 记（并成为这次失败期的锚点）
+ *   · 同一失败期内的重试（相隔小于 periodMinutes）→ 不记（工作流的 4 次重试只算一次失败）
+ *   · 之后每隔一轮仍失败（新的一次失败期）→ 记（连续计数增长）
+ *   · 失败之后的第一次成功 → 记（把连续计数清零）
  */
 export function recordRun(
   results: SourceResult[],
   state: RunsState,
-  options: { at?: string; window?: number } = {},
+  options: { at?: string; window?: number; periodMinutes?: number } = {},
 ): { state: RunsState; changed: boolean } {
   const at = options.at ?? new Date().toISOString();
   const window = options.window ?? DEFAULT_WINDOW;
+  const periodMs = (options.periodMinutes ?? DEFAULT_PERIOD_MINUTES) * 60_000;
+  const atMs = Date.parse(at);
+  const anchorMs = Date.parse(state.updatedAt);
+  const samePeriod = Number.isFinite(atMs) && Number.isFinite(anchorMs) && atMs - anchorMs < periodMs;
+
   const sources: Record<string, ('ok' | 'fail')[]> = { ...state.sources };
-  let changed = false;
+  let appended = false;
 
   for (const r of results) {
     if (r.skipped) continue;
     const outcome: 'ok' | 'fail' = r.ok && r.items.length > 0 ? 'ok' : 'fail';
-    const list = [...(sources[r.sourceId] ?? []), outcome].slice(-window);
-    const before = sources[r.sourceId] ?? [];
-    // 只有"最新一次结果变了"才算有意义的变化：
-    // 它正好对应"连续失败开始/结束"，也是决定要不要写文件、要不要告警的依据
-    if (before.length === 0 || before[before.length - 1] !== outcome) changed = true;
-    sources[r.sourceId] = list;
+    const list = sources[r.sourceId] ?? [];
+    const prev = list[list.length - 1];
+
+    if (prev === outcome) {
+      if (outcome === 'ok') continue; // 一直成功：不记
+      if (samePeriod) continue; // 同一失败期内的重试：不记
+    }
+
+    sources[r.sourceId] = [...list, outcome].slice(-window);
+    appended = true;
   }
 
-  return { state: { version: 1, updatedAt: at, sources }, changed };
+  return {
+    // 没有真正需要记的东西时，保持 updatedAt 不变 ——
+    // 它同时是"失败期"的锚点，乱动会让持续故障被错误地合并掉
+    state: { version: 1, updatedAt: appended ? at : state.updatedAt, sources },
+    changed: appended,
+  };
 }
 
 export interface SourceRate {
@@ -90,10 +120,16 @@ export function summarizeRuns(state: RunsState): Map<string, SourceRate> {
   return map;
 }
 
-/** doctor 表格里那一列："最近 20 次成功 18 次（90%）"；没有记录就留空。 */
+/**
+ * doctor 表格里那一列。
+ *
+ * 口径说明（重要，别误读）：记录的是**状态变化**（第一次失败、每个持续失败期、以及恢复成功），
+ * 安静的成功不记 —— 否则每 20 分钟一轮会产生 72 次提交/天，把提交历史淹掉。
+ * 所以这里的百分比是"最近 N 次记录的构成"，用来发现**不稳定**的源，而不是精确的可用率。
+ */
 export function renderRate(rate?: SourceRate): string {
   if (!rate || rate.runs === 0) return '';
   const percent = Math.round(rate.rate * 100);
   const warn = rate.runs >= 3 && rate.rate < 0.8 ? ' ⚠' : '';
-  return `最近 ${rate.runs} 次成功 ${rate.ok} 次（${percent}%）${warn}`;
+  return `近 ${rate.runs} 次记录：成功 ${rate.ok}（${percent}%）${warn}`;
 }
