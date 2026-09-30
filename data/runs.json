@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "updatedAt": "2026-09-30T17:46:18.996Z",
+  "sources": {
+    "jwc-important": [
+      "fail",
+      "fail",
+      "fail",
+      "fail"
+    ],
+    "jwc-student": [
+      "fail",
+      "fail",
+      "fail",
+      "fail"
+    ],
+    "news-notice": [
+      "fail",
+      "fail",
+      "fail",
+      "fail"
+    ],
+    "news-academic": [
+      "fail",
+      "fail",
+      "fail",
+      "fail"
+    ],
+    "gr-notice": [
+      "fail",
+      "fail",
+      "fail",
+      "fail"
+    ]
+  }
+}
