@@ -45,7 +45,8 @@ android {
     testOptions {
         unitTests {
             // 单元测试碰到 Android 框架方法时返回默认值而不是抛 Stub!（我们只测纯逻辑）
-            isReturnDefaultValues = true
+            // 注意：Groovy DSL 里是 returnDefaultValues，不是 Kotlin DSL 的 isReturnDefaultValues
+            returnDefaultValues = true
         }
     }
 }
