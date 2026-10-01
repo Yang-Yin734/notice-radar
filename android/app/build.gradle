@@ -51,4 +51,7 @@ dependencies {
     implementation 'androidx.activity:activity-compose:1.10.0'
     implementation 'androidx.core:core-ktx:1.15.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.7'
+
+    // 单元测试（版本号比较这种纯逻辑必须有测试：它出过错，导致新版本发不出去）
+    testImplementation 'junit:junit:4.13.2'
 }

@@ -73,11 +73,12 @@ jobs:
         run: |
           chmod +x gradlew
           set +e
-          ./gradlew assembleRelease --no-daemon --stacktrace 2>&1 | tee /tmp/gradle.log
+          # test：跑 JVM 单元测试（版本比较等纯逻辑）；assembleRelease：出包
+          ./gradlew test assembleRelease --no-daemon --stacktrace 2>&1 | tee /tmp/gradle.log
           status=${PIPESTATUS[0]}
           set -e
           if [ "$status" -ne 0 ]; then
-            echo "::error::Gradle 构建失败"
+            echo "::error::Gradle 构建或单元测试失败"
             exit 1
           fi
 

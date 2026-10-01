@@ -512,31 +512,27 @@ iOS **没有**"下载安装包直接装"这回事，Apple 只允许两条路，�
 
 应用里会认 UA：**Android 提示下载 APK，iOS 提示"添加到主屏幕"**，文案与步骤都不同。
 
-## 推送通道：怎么真正推到**微信**
+## 推送通道
 
-| 通道 | 配置 | 落地到哪 | 说明 |
-|---|---|---|---|
-| **WxPusher** | `type: wxpusher` + `WXPUSHER_APP_TOKEN`、`WXPUSHER_UIDS` | **微信**（公众号会话） | 最接近"微信授权"：微信扫码登录 → 建应用 → 关注公众号即完成授权 |
-| **企业微信群机器人** | `type: wecom-bot` + `WECOM_BOT_WEBHOOK` | 企业微信；开**微信插件**后微信也能收到 | 免费、无月配额、最稳，1 分钟配好 |
-| **企业微信自建应用** | `type: wecom-app` + `WECOM_CORP_ID`/`WECOM_SECRET`/`WECOM_AGENT_ID`/`WECOM_TOUSER` | 企业微信（可发给指定人）；同样可进微信 | 不想建群时用 |
-| Server酱 | `type: serverchan` + `SERVERCHAN_KEY` | 微信（第三方中转） | 免费版每天有条数上限；**配额用尽会明确提示** |
-| 邮件 | `type: email` + `SMTP_URL`（或 `SMTP_HOST`/`SMTP_USER`/`SMTP_PASS`）+ `MAIL_TO`/`MAIL_FROM` | 邮箱 | 需要 `npm i nodemailer`；同时发纯文本与 HTML（链接可点） |
-| 通用 webhook | `type: webhook` + `url`/`urlEnv` | 飞书/钉钉/自建服务 | POST `{title, markdown}` |
-| stdout | `type: stdout` | 终端 | 本地调试用；它永远"成功"，所以不算真正的通道 |
+| 通道 | 配置 | 说明 |
+|---|---|---|
+| Server酱 | `type: serverchan` + `SERVERCHAN_KEY` | **本项目主用**：转发到微信，免费版每天有条数上限（配额用尽会明确提示） |
+| 邮件 | `type: email` + `SMTP_URL`（或 `SMTP_HOST`/`SMTP_USER`/`SMTP_PASS`）+ `MAIL_TO`/`MAIL_FROM` | 需要 `npm i nodemailer`；同时发纯文本与 HTML（链接可点） |
+| 通用 webhook | `type: webhook` + `url`/`urlEnv` | 飞书/钉钉/自建服务都行；POST `{title, markdown}` |
+| stdout | `type: stdout` | 只打印到终端（本地调试用；它永远"成功"，所以不算真正的通道） |
 
-> **为什么没有"微信官方授权登录"**：微信服务号的模板消息/订阅通知要求**已认证的服务号**（企业主体 + 300 元/年）
-> 且需自建服务器做 OAuth —— 个人主体申请不到。所以"推到微信"实际是上面三条个人可行的路，
-> **一步步的配置步骤（含截图级说明、环境变量、验证命令、GitHub Secrets 怎么加）见 [docs/wechat.md](docs/wechat.md)**。
-
-配置好之后逐条验证（微信通道多了以后很有用）：
+逐条验证：
 
 ```bash
 radr test-notify                      # 测所有启用的通道
-radr test-notify --channel=wxpusher   # 只测某一条
+radr test-notify --channel=serverchan # 只测某一条
 ```
 
 结果同时写进 `data/last-notify.json`（密钥已脱敏），可以从提交记录里查证 —— 比翻 Actions 日志方便得多。
-推送失败时会尽量说人话：缺哪个环境变量、配额用尽、webhook 格式不对等；网络抖动会自动重试两次。
+推送失败时会尽量说人话：缺哪个环境变量、配额用尽、地址格式不对等；网络抖动会自动重试两次。
+
+> 说明：曾经尝试过 WxPusher / 企业微信 等"微信授权"类通道，因个人主体拿不到微信官方的模板消息能力、
+> 且这些通道都需要额外账号与绑定，已在 v0.10.4 移除，只保留上面这几条通用通道。
 
 ## 许可
 

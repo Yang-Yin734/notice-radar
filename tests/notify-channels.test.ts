@@ -132,20 +132,20 @@ test('notify：HTML 里会转义尖括号，避免注入', () => {
   assert.match(html, /&lt;script&gt;/);
 });
 
-test('notify：缺密钥的微信通道给出"缺哪个变量"的提示，且不发网络请求', async () => {
+test('notify：缺密钥时给出"缺哪个变量"的提示，且不发网络请求', async () => {
   const outcomes = await notifyAll(
     [
-      { type: 'wxpusher', enabled: true },
-      { type: 'wecom-bot', enabled: true },
-      { type: 'wecom-app', enabled: true },
+      { type: 'serverchan', enabled: true },
+      { type: 'email', enabled: true },
+      { type: 'webhook', enabled: true },
     ],
     '测试',
     '正文',
   );
   const byChannel = new Map(outcomes.map((o) => [o.channel, o.detail]));
-  assert.match(byChannel.get('wxpusher') ?? '', /WXPUSHER_APP_TOKEN/);
-  assert.match(byChannel.get('wecom-bot') ?? '', /WECOM_BOT_WEBHOOK/);
-  assert.match(byChannel.get('wecom-app') ?? '', /WECOM_CORP_ID/);
+  assert.match(byChannel.get('serverchan') ?? '', /SERVERCHAN_KEY/);
+  assert.match(byChannel.get('email') ?? '', /SMTP_URL|SMTP_HOST/);
+  assert.match(byChannel.get('webhook') ?? '', /url/);
   assert.ok(outcomes.every((o) => !o.ok), '没配密钥就必须明确失败，不能假装成功');
 });
 
@@ -153,7 +153,7 @@ test('notify：禁用的通道完全不参与；stdout 永远算成功（所以�
   const outcomes = await notifyAll(
     [
       { type: 'stdout', enabled: true },
-      { type: 'wxpusher', enabled: false },
+      { type: 'email', enabled: false },
     ],
     '测试',
     '正文',
@@ -161,8 +161,34 @@ test('notify：禁用的通道完全不参与；stdout 永远算成功（所以�
   assert.deepEqual(outcomes.map((o) => o.channel), ['stdout']);
 });
 
-test('notify：webhook 地址长得不对时给出格式提示', async () => {
-  const outcomes = await notifyAll([{ type: 'wecom-bot', enabled: true, url: 'https://example.com/hook' }], '测试', '正文');
-  assert.match(outcomes[0].detail, /webhook 格式不对/);
-  assert.match(outcomes[0].detail, /qyapi\.weixin\.qq\.com/);
+test('config：已移除的微信专属通道会被配置校验挡下（v0.10.4 移除）', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'radar-removed-'));
+  const file = path.join(dir, 'config.yaml');
+  fs.writeFileSync(
+    file,
+    [
+      'school: demo',
+      'name: 演示',
+      'notify:',
+      '  - type: wxpusher',
+      'sources:',
+      '  - id: a',
+      '    name: 源',
+      '    url: https://e.cn/',
+      '    adapter: html-list',
+      '    selectors:',
+      '      item: div.i',
+      '      title: a',
+      '',
+    ].join('\n'),
+    'utf8',
+  );
+  let message = '';
+  try {
+    loadConfig(file);
+  } catch (e) {
+    message = (e as Error).message;
+  }
+  assert.match(message, /notify/, '校验要指出是 notify 段的问题');
+  fs.rmSync(dir, { recursive: true, force: true });
 });

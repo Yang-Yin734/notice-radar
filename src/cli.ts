@@ -832,7 +832,7 @@ function usage(): void {
   radr run      [--config=路径] [--dry] [--no-notify] [--json=路径] [--delay=毫秒] [--max=条数] [--only=源id] [--write-always] [--allow-browser]
   radr doctor   [--config=路径] [--only=源id] [--allow-browser]      体检：每个源能不能抓、解析出几条（含最近 N 次成功率）
   radr list     [--config=路径]                        列出配置里的源
-  radr test-notify [--config=路径] [--channel=通道]     只发一条测试消息，验证推送密钥配好没有（微信通道见 docs/wechat.md）
+  radr test-notify [--config=路径] [--channel=通道]     只发一条测试消息，验证推送密钥配好没有（serverchan/email/webhook/stdout）
   radr dashboard [--out=docs/index.html]               把历史归档渲染成静态仪表盘（GitHub Pages 用）
   radr stats     [--state=data/state.json] [--json=文件]  通知频次统计（来源/标签/周/星期分布）
   radr digest    [--date=YYYY-MM-DD | --hours=24] [--max=条数] [--out=文件] [--notify] [--force]

@@ -109,6 +109,8 @@ fun NoticeRadarApp(store: Store) {
     var fav by remember { mutableStateOf(store.favIds()) }
     var refreshing by remember { mutableStateOf(false) }
     var toast by remember { mutableStateOf<String?>(null) }
+    // 新版本提示：打开应用就检查一次（以前只在"设置 → 应用更新"里查，用户根本看不到）
+    var updateVersion by remember { mutableStateOf<String?>(null) }
 
     // 打开：先用内置/缓存（零网络），再静默尝试镜像
     LaunchedEffect(Unit) {
@@ -130,6 +132,11 @@ fun NoticeRadarApp(store: Store) {
                         toast = "已更新 ${snap.items.size} 条（$label）"
                     }
                 }
+            }
+            // 顺带查一次新版本（同一批镜像请求，不额外打扰）
+            val remote = store.remoteVersion()
+            if (remote != null && compareVersions(remote, store.appVersion()) > 0 && remote != store.dismissedUpdateVersion) {
+                withContext(Dispatchers.Main) { updateVersion = remote }
             }
         }
     }
@@ -182,27 +189,43 @@ fun NoticeRadarApp(store: Store) {
                     )
 
                     when (tab) {
-                        0, 1 -> NoticeList(
-                            snapshot = snapshot,
-                            query = query,
-                            onQueryChange = { query = it },
-                            sourceFilter = sourceFilter,
-                            onSourceFilter = { sourceFilter = it },
-                            favOnly = tab == 1,
-                            read = read,
-                            fav = fav,
-                            onOpen = { notice ->
-                                read = (read + notice.id).toMutableSet()
-                                store.saveRead(read)
-                                runCatching {
-                                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(notice.url)))
-                                }
-                            },
-                            onToggleFav = { notice ->
-                                fav = (if (notice.id in fav) fav - notice.id else fav + notice.id).toMutableSet()
-                                store.saveFav(fav)
-                            },
-                        )
+                        0, 1 -> {
+                            updateVersion?.let { version ->
+                                UpdateBanner(
+                                    version = version,
+                                    onDownload = {
+                                        runCatching {
+                                            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(store.apkUrl())))
+                                        }
+                                    },
+                                    onDismiss = {
+                                        store.dismissedUpdateVersion = version
+                                        updateVersion = null
+                                    },
+                                )
+                            }
+                            NoticeList(
+                                snapshot = snapshot,
+                                query = query,
+                                onQueryChange = { query = it },
+                                sourceFilter = sourceFilter,
+                                onSourceFilter = { sourceFilter = it },
+                                favOnly = tab == 1,
+                                read = read,
+                                fav = fav,
+                                onOpen = { notice ->
+                                    read = (read + notice.id).toMutableSet()
+                                    store.saveRead(read)
+                                    runCatching {
+                                        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(notice.url)))
+                                    }
+                                },
+                                onToggleFav = { notice ->
+                                    fav = (if (notice.id in fav) fav - notice.id else fav + notice.id).toMutableSet()
+                                    store.saveFav(fav)
+                                },
+                            )
+                        }
                         2 -> StatsScreen(snapshot)
                         else -> SettingsScreen(
                             store = store,
@@ -246,9 +269,41 @@ fun NoticeRadarApp(store: Store) {
     }
 }
 
+/** 打开应用就告诉用户有新版本（以前只有进"设置"才看得到，等于没提示）。 */
 @Composable
-private fun AppHeader(title: String, subtitle: String, refreshing: Boolean, onRefresh: () -> Unit) {
+private fun UpdateBanner(version: String, onDownload: () -> Unit, onDismiss: () -> Unit) {
     Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 12.dp, vertical = 8.dp)
+            .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(12.dp))
+            .padding(start = 12.dp, end = 4.dp, top = 8.dp, bottom = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Column(Modifier.weight(1f)) {
+            Text(
+                "发现新版本 v$version",
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Bold,
+                color = MaterialTheme.colorScheme.onPrimary,
+            )
+            Text(
+                "下载后可直接覆盖安装，收藏与已读不会丢",
+                fontSize = 11.sp,
+                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f),
+            )
+        }
+        TextButton(onClick = onDownload) {
+            Text("下载", fontSize = 13.sp, color = MaterialTheme.colorScheme.onPrimary)
+        }
+        TextButton(onClick = onDismiss) {
+            Text("✕", fontSize = 13.sp, color = MaterialTheme.colorScheme.onPrimary)
+        }
+    }
+}
+
+@Composable
+private fun AppHeader(title: String, subtitle: String, refreshing: Boolean, onRefresh: () -> Unit) {    Row(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -785,7 +840,8 @@ private fun SettingsScreen(
                                     remoteVersion = remote
                                     versionHint = when {
                                         remote == null -> "连不上版本服务器（离线也能正常用）"
-                                        remote > store.appVersion() -> "发现新版本 v$remote"
+                                        // 必须按数字比较：字符串比较会把 0.10.3 当成比 0.8.0 旧（老 bug）
+                                        compareVersions(remote, store.appVersion()) > 0 -> "发现新版本 v$remote"
                                         else -> "已是最新（检查时间 ${SimpleDateFormat("HH:mm:ss", Locale.US).format(Date())}）"
                                     }
                                 }
@@ -793,7 +849,7 @@ private fun SettingsScreen(
                         ) { Text("检查更新", fontSize = 13.sp) }
                     }
                     val remote = remoteVersion
-                    if (remote != null && remote > store.appVersion()) {
+                    if (remote != null && compareVersions(remote, store.appVersion()) > 0) {
                         Spacer(Modifier.height(8.dp))
                         Button(
                             onClick = {

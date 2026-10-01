@@ -7,24 +7,18 @@ export interface NotifyOutcome {
 }
 
 /**
- * 推送通道。目标：让消息真正落到**微信**里，而且失败时能看懂为什么。
+ * 推送通道。目标是"消息能到手机上，且失败时看得懂为什么"。
  *
- * 关于"微信授权"必须先说清现实（个人项目拿不到微信官方推送）：
- *   · 微信服务号的模板消息 / 订阅通知：需要**已认证的服务号**（企业主体 + 300 元/年认证），
- *     还要自建服务器做 OAuth 拿 openid —— 个人主体申请不到模板消息，这条路走不通。
- *   · 所以"推到微信"实际有三条个人可行的路，本项目全部支持：
- *       1. wxpusher   —— 微信扫码登录 → 创建应用 → 关注「WxPusher」公众号完成授权，
- *                        之后消息由公众号直达你的微信（最接近"微信授权"的形态）
- *       2. wecom-bot  —— 企业微信群机器人：建个群加机器人即可；开启"微信插件"后微信也能收到
- *       3. wecom-app  —— 企业微信自建应用消息：能发给指定人，同样可经微信插件落到微信
- *   · Server酱（原有通道）本质是第三方中转，免费版每天有条数上限。
+ * 通道：
+ *   · serverchan —— Server酱，转发到微信（本项目主用通道）
+ *   · webhook    —— 通用 JSON POST（飞书/钉钉/自建服务）
+ *   · email      —— SMTP（需要可选依赖 nodemailer）
+ *   · stdout     —— 只打印，本地调试用
  *
  * 环境变量（放进 GitHub Actions secrets 或本机 .env 即可）：
  *   SERVERCHAN_KEY                                  Server酱 SendKey（SCT…）
- *   WECOM_BOT_WEBHOOK                               企业微信群机器人完整 webhook
- *   WECOM_CORP_ID / WECOM_SECRET / WECOM_AGENT_ID / WECOM_TOUSER
- *   WXPUSHER_APP_TOKEN / WXPUSHER_UIDS（逗号分隔）/ WXPUSHER_TOPIC_IDS
  *   SMTP_URL 或 SMTP_HOST + SMTP_USER + SMTP_PASS / MAIL_TO / MAIL_FROM
+ *   NOTICE_RADAR_WEBHOOK（或配置里的 urlEnv）
  */
 
 const RETRYABLE = /timeout|ECONNRESET|ENOTFOUND|EAI_AGAIN|socket|network|HTTP 5\d\d|fetch failed|aborted/i;
@@ -62,7 +56,7 @@ function reasonOf(text: string): string {
 /** 配额类错误单独提示：它属于"配置没问题但发不出去"，最容易让人困惑。 */
 function quotaHint(text: string): string {
   if (/quota|余额|限制|超限|上限|limit|too many|今日.*条/i.test(text)) {
-    return '（像是配额用尽：Server酱免费版每天有条数上限，建议再加企业微信或 WxPusher 通道，见 docs/wechat.md）';
+    return '（像是配额用尽：Server酱免费版每天有条数上限）';
   }
   return '';
 }
@@ -99,115 +93,6 @@ async function sendServerChan(key: string, title: string, markdown: string): Pro
     const ok = result.status < 500 && /"code"\s*:\s*0/.test(result.text);
     if (ok) return { channel, ok: true, detail: `HTTP ${result.status} 已投递` };
     return { channel, ok: false, detail: `HTTP ${result.status} ${reasonOf(result.text)}${quotaHint(result.text)}` };
-  } catch (e) {
-    return { channel, ok: false, detail: (e as Error).message };
-  }
-}
-
-// ---------------------------------------------------------------- 企业微信
-
-/** 企业微信群机器人：免费、无需审核；开"微信插件"后能在微信里收到。 */
-async function sendWecomBot(webhook: string, title: string, markdown: string): Promise<NotifyOutcome> {
-  const channel = 'wecom-bot';
-  if (!webhook) {
-    return { channel, ok: false, detail: '缺少 webhook（设置环境变量 WECOM_BOT_WEBHOOK，或在配置里改 urlEnv）' };
-  }
-  if (!/^https:\/\/qyapi\.weixin\.qq\.com\/cgi-bin\/webhook\/send\?key=/.test(webhook)) {
-    return { channel, ok: false, detail: 'webhook 格式不对：应是 https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=…' };
-  }
-  // 群机器人没有独立标题字段，把标题并进正文首行
-  const content = `**${title}**\n${markdown}`.slice(0, 4000);
-  try {
-    const result = await withRetry(
-      () => postJson(webhook, { msgtype: 'markdown', markdown: { content } }),
-      (r) => r.status < 500 && /"errcode"\s*:\s*0/.test(r.text),
-    );
-    const ok = result.status < 500 && /"errcode"\s*:\s*0/.test(result.text);
-    return ok
-      ? { channel, ok: true, detail: `HTTP ${result.status} 已投递（企业微信群）` }
-      : { channel, ok: false, detail: `HTTP ${result.status} ${reasonOf(result.text)}` };
-  } catch (e) {
-    return { channel, ok: false, detail: (e as Error).message };
-  }
-}
-
-/** 企业微信自建应用：能发给指定人（touser）。 */
-async function sendWecomApp(title: string, markdown: string): Promise<NotifyOutcome> {
-  const channel = 'wecom-app';
-  const corpId = process.env.WECOM_CORP_ID ?? '';
-  const secret = process.env.WECOM_SECRET ?? '';
-  const agentId = process.env.WECOM_AGENT_ID ?? '';
-  const toUser = process.env.WECOM_TOUSER ?? '@all';
-  if (!corpId || !secret || !agentId) {
-    return { channel, ok: false, detail: '缺少 WECOM_CORP_ID / WECOM_SECRET / WECOM_AGENT_ID（见 docs/wechat.md）' };
-  }
-  try {
-    const tokenRes = await fetch(
-      `https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=${encodeURIComponent(corpId)}&corpsecret=${encodeURIComponent(secret)}`,
-      { signal: AbortSignal.timeout(12000) },
-    );
-    const tokenText = await tokenRes.text();
-    const token = (JSON.parse(tokenText) as { access_token?: string }).access_token;
-    if (!token) return { channel, ok: false, detail: `取 access_token 失败：${reasonOf(tokenText)}` };
-
-    const content = `**${title}**\n${markdown}`.slice(0, 4000);
-    const result = await withRetry(
-      () =>
-        postJson(`https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=${encodeURIComponent(token)}`, {
-          touser: toUser,
-          msgtype: 'markdown',
-          agentid: Number(agentId),
-          markdown: { content },
-        }),
-      (r) => r.status < 500 && /"errcode"\s*:\s*0/.test(r.text),
-    );
-    const ok = result.status < 500 && /"errcode"\s*:\s*0/.test(result.text);
-    return ok
-      ? { channel, ok: true, detail: `HTTP ${result.status} 已投递（应用消息 → ${toUser}）` }
-      : { channel, ok: false, detail: `HTTP ${result.status} ${reasonOf(result.text)}` };
-  } catch (e) {
-    return { channel, ok: false, detail: (e as Error).message };
-  }
-}
-
-// ---------------------------------------------------------------- WxPusher
-
-/** WxPusher：微信扫码关注公众号即完成授权，之后消息由公众号直达微信。 */
-async function sendWxPusher(title: string, markdown: string, url?: string): Promise<NotifyOutcome> {
-  const channel = 'wxpusher';
-  const appToken = process.env.WXPUSHER_APP_TOKEN ?? '';
-  const uids = (process.env.WXPUSHER_UIDS ?? '')
-    .split(',')
-    .map((s) => s.trim())
-    .filter(Boolean);
-  const topicIds = (process.env.WXPUSHER_TOPIC_IDS ?? '')
-    .split(',')
-    .map((s) => s.trim())
-    .filter(Boolean)
-    .map(Number)
-    .filter((n) => Number.isFinite(n));
-  if (!appToken) return { channel, ok: false, detail: '缺少 WXPUSHER_APP_TOKEN（见 docs/wechat.md）' };
-  if (uids.length === 0 && topicIds.length === 0) {
-    return { channel, ok: false, detail: '缺少 WXPUSHER_UIDS（你在 WxPusher 后台的 UID）或 WXPUSHER_TOPIC_IDS' };
-  }
-  try {
-    const result = await withRetry(
-      () =>
-        postJson('https://wxpusher.zjiecode.com/api/send/message', {
-          appToken,
-          content: markdown,
-          summary: title.slice(0, 20),
-          contentType: 3, // 3 = markdown
-          uids,
-          topicIds,
-          ...(url ? { url } : {}),
-        }),
-      (r) => r.status < 500 && /"code"\s*:\s*1000/.test(r.text),
-    );
-    const ok = result.status < 500 && /"code"\s*:\s*1000/.test(result.text);
-    return ok
-      ? { channel, ok: true, detail: `HTTP ${result.status} 已投递 → ${uids.length || topicIds.length} 个接收方` }
-      : { channel, ok: false, detail: `HTTP ${result.status} ${reasonOf(result.text)}` };
   } catch (e) {
     return { channel, ok: false, detail: (e as Error).message };
   }
@@ -344,19 +229,6 @@ export async function notifyAll(channels: NotifyConfig[], title: string, markdow
     if (cfg.type === 'serverchan') {
       const key = process.env[cfg.keyEnv ?? 'SERVERCHAN_KEY'] ?? '';
       outcomes.push(await sendServerChan(key, title, markdown));
-      continue;
-    }
-    if (cfg.type === 'wecom-bot') {
-      const url = cfg.url ?? process.env[cfg.urlEnv ?? 'WECOM_BOT_WEBHOOK'] ?? '';
-      outcomes.push(await sendWecomBot(url, title, markdown));
-      continue;
-    }
-    if (cfg.type === 'wecom-app') {
-      outcomes.push(await sendWecomApp(title, markdown));
-      continue;
-    }
-    if (cfg.type === 'wxpusher') {
-      outcomes.push(await sendWxPusher(title, markdown, cfg.url));
       continue;
     }
     if (cfg.type === 'email') {

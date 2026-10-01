@@ -61,7 +61,7 @@ const sourceSchema = z.object({
 });
 
 const notifySchema = z.object({
-  type: z.enum(['serverchan', 'webhook', 'stdout', 'email', 'wecom-bot', 'wecom-app', 'wxpusher']),
+  type: z.enum(['serverchan', 'webhook', 'stdout', 'email']),
   enabled: z.boolean().default(true),
   /** 密钥从哪个环境变量读（默认 SERVERCHAN_KEY） */
   keyEnv: z.string().optional(),
