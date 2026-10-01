@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-01T14:51:43.696Z",
+  "updatedAt": "2026-10-01T14:57:38.223Z",
   "sources": {
     "jwc-important": [
       "fail",
@@ -47,7 +47,6 @@
       "ok"
     ],
     "news-notice": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -66,7 +65,8 @@
       "ok",
       "fail",
       "fail",
-      "fail"
+      "fail",
+      "ok"
     ],
     "news-academic": [
       "fail",
@@ -91,7 +91,6 @@
       "ok"
     ],
     "gr-notice": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -110,7 +109,8 @@
       "ok",
       "fail",
       "fail",
-      "fail"
+      "fail",
+      "ok"
     ],
     "math-jwgg": [
       "ok"
