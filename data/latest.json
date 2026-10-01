@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-28T06:55:54.158Z",
+  "generatedAt": "2026-10-01T09:50:59.942Z",
   "results": [
     {
       "sourceId": "jwc-important",
@@ -10,7 +10,7 @@
       "error": null,
       "status": 200,
       "bytes": 28693,
-      "tookMs": 1685,
+      "tookMs": 2633,
       "items": [
         {
           "id": "393edb8d41cfee20",
@@ -173,7 +173,7 @@
       "error": null,
       "status": 200,
       "bytes": 31566,
-      "tookMs": 303,
+      "tookMs": 329,
       "items": [
         {
           "id": "46e2a04970a512bc",
@@ -332,16 +332,48 @@
       "sourceName": "新闻网·公告",
       "url": "https://news.uestc.edu.cn/?n=UestcNews.Front.CategoryV2.Page&CatId=68",
       "adapter": "html-list",
+      "ok": false,
+      "error": "fetch failed",
+      "status": null,
+      "bytes": 0,
+      "tookMs": 3897,
+      "items": []
+    },
+    {
+      "sourceId": "news-academic",
+      "sourceName": "新闻网·学术",
+      "url": "https://news.uestc.edu.cn/?n=UestcNews.Front.CategoryV2.Page&CatId=66",
+      "adapter": "html-list",
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 98531,
-      "tookMs": 1797,
+      "bytes": 98750,
+      "tookMs": 1042,
       "items": [
         {
-          "id": "8f9c670f22bec8f3",
-          "sourceId": "news-notice",
-          "sourceName": "新闻网·公告",
+          "id": "93d4a6f442c55ef0",
+          "sourceId": "news-academic",
+          "sourceName": "新闻网·学术",
+          "school": "uestc",
+          "title": "校史馆国庆期间闭馆公告",
+          "url": "https://news.uestc.edu.cn/info/1017/44108.htm",
+          "date": "2026-09-30",
+          "tag": "公告"
+        },
+        {
+          "id": "e2dd0b8238f589a0",
+          "sourceId": "news-academic",
+          "sourceName": "新闻网·学术",
+          "school": "uestc",
+          "title": "关于加强2026年国庆节假期安全工作的通知",
+          "url": "https://news.uestc.edu.cn/info/1017/44059.htm",
+          "date": "2026-09-29",
+          "tag": "公告"
+        },
+        {
+          "id": "2fbaf9b38aa99cf4",
+          "sourceId": "news-academic",
+          "sourceName": "新闻网·学术",
           "school": "uestc",
           "title": "学者论坛：超导百年：材料、强关联机理与 AI 逆向设计",
           "url": "https://news.uestc.edu.cn/info/1015/43921.htm",
@@ -349,33 +381,13 @@
           "tag": "学术"
         },
         {
-          "id": "24cd74c243c20b98",
-          "sourceId": "news-notice",
-          "sourceName": "新闻网·公告",
+          "id": "1c02bd7e5e570880",
+          "sourceId": "news-academic",
+          "sourceName": "新闻网·学术",
           "school": "uestc",
           "title": "名师讲堂：Geometry, Mesh, and Higher-Order Finite Elements",
           "url": "https://news.uestc.edu.cn/info/1015/43893.htm",
           "date": "2026-09-24",
-          "tag": "学术"
-        },
-        {
-          "id": "0edfd3b717b54776",
-          "sourceId": "news-notice",
-          "sourceName": "新闻网·公告",
-          "school": "uestc",
-          "title": "电子科技大学校史馆试运行公告",
-          "url": "https://news.uestc.edu.cn/info/1017/43867.htm",
-          "date": "2026-09-24",
-          "tag": "公告"
-        },
-        {
-          "id": "6a460cf85bc22591",
-          "sourceId": "news-notice",
-          "sourceName": "新闻网·公告",
-          "school": "uestc",
-          "title": "成电讲坛 | The Human Edge — Why the World Needs You More Than Ever 人之优势 —— 为何世界比以往更需要你",
-          "url": "https://news.uestc.edu.cn/info/1015/43797.htm",
-          "date": "2026-09-22",
           "tag": "学术"
         }
       ]
@@ -388,8 +400,8 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 34573,
-      "tookMs": 2567,
+      "bytes": 34689,
+      "tookMs": 2605,
       "items": [
         {
           "id": "3e5b2e445b6f2d58",
@@ -622,25 +634,25 @@
   ],
   "fresh": [
     {
-      "id": "46e2a04970a512bc",
-      "sourceId": "jwc-student",
-      "sourceName": "教务处·学生事务公告",
+      "id": "2fbaf9b38aa99cf4",
+      "sourceId": "news-academic",
+      "sourceName": "新闻网·学术",
       "school": "uestc",
-      "title": "关于2026-2027-1学期本科生退课及补选课的通知",
-      "url": "https://www.jwc.uestc.edu.cn/info/a6c974d61855132589f852b5ad5ff97c",
-      "date": "2026-09-02",
-      "tag": "教管",
+      "title": "学者论坛：超导百年：材料、强关联机理与 AI 逆向设计",
+      "url": "https://news.uestc.edu.cn/info/1015/43921.htm",
+      "date": "2026-09-25",
+      "tag": "学术",
       "alsoIn": []
     },
     {
-      "id": "fa4fd9559a3c408e",
-      "sourceId": "jwc-student",
-      "sourceName": "教务处·学生事务公告",
+      "id": "1c02bd7e5e570880",
+      "sourceId": "news-academic",
+      "sourceName": "新闻网·学术",
       "school": "uestc",
-      "title": "关于大面积课程开学缓补考安排的通知",
-      "url": "https://www.jwc.uestc.edu.cn/info/30d196608fe3a20ae08ada0b22a573a4",
-      "date": "2026-01-20",
-      "tag": "考试",
+      "title": "名师讲堂：Geometry, Mesh, and Higher-Order Finite Elements",
+      "url": "https://news.uestc.edu.cn/info/1015/43893.htm",
+      "date": "2026-09-24",
+      "tag": "学术",
       "alsoIn": []
     }
   ]

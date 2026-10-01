@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-01T08:44:07.256Z",
-  "total": 41,
+  "generatedAt": "2026-10-01T09:51:02.261Z",
+  "total": 43,
   "bySource": [
     {
       "sourceId": "math-jwgg",
@@ -26,9 +26,26 @@
       "sourceId": "news-notice",
       "sourceName": "新闻网·公告",
       "count": 3
+    },
+    {
+      "sourceId": "news-academic",
+      "sourceName": "新闻网·学术",
+      "count": 2
     }
   ],
   "items": [
+    {
+      "id": "2fbaf9b38aa99cf4",
+      "sourceId": "news-academic",
+      "sourceName": "新闻网·学术",
+      "school": "uestc",
+      "title": "学者论坛：超导百年：材料、强关联机理与 AI 逆向设计",
+      "url": "https://news.uestc.edu.cn/info/1015/43921.htm",
+      "date": "2026-09-25",
+      "tag": "学术",
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-01T09:51:01.790Z"
+    },
     {
       "id": "8f9c670f22bec8f3",
       "sourceId": "news-notice",
@@ -40,6 +57,18 @@
       "tag": "学术",
       "alsoIn": [],
       "firstSeenAt": "2026-09-28T12:00:56.521Z"
+    },
+    {
+      "id": "1c02bd7e5e570880",
+      "sourceId": "news-academic",
+      "sourceName": "新闻网·学术",
+      "school": "uestc",
+      "title": "名师讲堂：Geometry, Mesh, and Higher-Order Finite Elements",
+      "url": "https://news.uestc.edu.cn/info/1015/43893.htm",
+      "date": "2026-09-24",
+      "tag": "学术",
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-01T09:51:01.790Z"
     },
     {
       "id": "24cd74c243c20b98",
