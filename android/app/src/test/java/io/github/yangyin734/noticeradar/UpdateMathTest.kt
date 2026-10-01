@@ -16,12 +16,12 @@ class UpdateMathTest {
 
     @Test
     fun `进度百分比：正常、未知总量、超额都处理`() {
-        assertEquals(-1, progressPercent(0, 100), "总量未知时用 -1 表示不确定进度")
-        assertEquals(-1, progressPercent(-1, 100))
+        assertEquals("总量未知时用 -1 表示不确定进度", -1, progressPercent(0, 100))
+        assertEquals("总量为负也当作未知", -1, progressPercent(-1, 100))
         assertEquals(0, progressPercent(1000, 0))
         assertEquals(50, progressPercent(1000, 500))
         assertEquals(100, progressPercent(1000, 1000))
-        assertEquals(100, progressPercent(1000, 1200), "读多了也不能超过 100")
+        assertEquals("读多了也不能超过 100", 100, progressPercent(1000, 1200))
         assertEquals(33, progressPercent(300, 100))
     }
 
@@ -29,7 +29,7 @@ class UpdateMathTest {
     fun `更新包文件名带版本号，且不含危险字符`() {
         assertEquals("notice-radar-0.10.8.apk", apkFileName("0.10.8"))
         assertEquals("notice-radar-v0.10.8.apk", apkFileName(" v0.10.8 "))
-        assertEquals("notice-radar-1_2_3.apk", apkFileName("1/2\\3"), "斜杠要换成下划线，避免路径越界")
+        assertEquals("斜杠要换成下划线，避免路径越界", "notice-radar-1_2_3.apk", apkFileName("1/2\\3"))
         assertEquals("notice-radar-unknown.apk", apkFileName(""))
     }
 
@@ -44,10 +44,10 @@ class UpdateMathTest {
     fun `像不像 APK：zip 头 PK 且体积够大才算`() {
         val pk = byteArrayOf(0x50.toByte(), 0x4B.toByte(), 0x03.toByte(), 0x04.toByte())
         assertTrue(looksLikeApk(pk, 6_000_000))
-        assertFalse(looksLikeApk(pk, 100_000), "太小 —— 多半是错误页，不是安装包")
+        assertFalse("太小 —— 多半是错误页，不是安装包", looksLikeApk(pk, 100_000))
         assertFalse(
-            looksLikeApk(byteArrayOf(0x3C.toByte(), 0x21.toByte()), 6_000_000),
             "以 <! 开头是 HTML，绝不能当安装包",
+            looksLikeApk(byteArrayOf(0x3C.toByte(), 0x21.toByte()), 6_000_000),
         )
         assertFalse(looksLikeApk(ByteArray(0), 6_000_000))
     }

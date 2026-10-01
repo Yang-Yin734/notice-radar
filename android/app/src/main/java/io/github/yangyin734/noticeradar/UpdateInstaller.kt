@@ -47,7 +47,8 @@ object UpdateInstaller {
         try {
             val code = conn.responseCode
             if (code !in 200..299) throw IllegalStateException("下载失败：HTTP $code")
-            val total = conn.contentLengthLong
+            // 不能用 contentLengthLong（API 24+，本项目 minSdk 23）：从响应头自己解析
+            val total = conn.getHeaderField("Content-Length")?.trim()?.toLongOrNull() ?: -1L
             val tmp = File(updateDir(context), "${target.name}.part")
 
             conn.inputStream.use { input ->
@@ -64,12 +65,15 @@ object UpdateInstaller {
                 }
             }
 
-            // 兜底检查：别把限流页/错误页当安装包交给系统
+            // 兜底检查：别把限流页/错误页当安装包交给系统（长度要先取，别在删除之后再读）
+            val size = tmp.length()
             val header = ByteArray(2)
             tmp.inputStream().use { it.read(header) }
-            if (!looksLikeApk(header, tmp.length())) {
+            if (!looksLikeApk(header, size)) {
                 tmp.delete()
-                throw IllegalStateException("下载到的不是安装包（${humanSize(tmp.length())}，可能是网络被拦或限流），请稍后重试或用浏览器打开")
+                throw IllegalStateException(
+                    "下载到的不是安装包（${humanSize(size)}，可能是网络被拦或限流），请稍后重试或用浏览器打开",
+                )
             }
 
             if (target.exists()) target.delete()
@@ -92,6 +96,7 @@ object UpdateInstaller {
 
     /** 跳到"安装未知应用"授权页（用户点一下允许即可）。 */
     fun openInstallPermissionSettings(context: Context) {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return // 这个设置页 API 26 才有
         runCatching {
             val intent = Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES)
                 .setData(Uri.parse("package:${context.packageName}"))
