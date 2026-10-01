@@ -11,7 +11,8 @@ import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 const repo = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const buildDir = path.join(repo, 'deploy', 'serverless', 'build');
+// 允许指向任意目录：既可以对 build/ 自检，也可以对"从 zip 解压出来的目录"自检
+const buildDir = process.env.APP_DIR ?? path.join(repo, 'deploy', 'serverless', 'build');
 
 if (!fs.existsSync(path.join(buildDir, 'dist-serverless', 'cli.js'))) {
   console.error('✗ 还没有打包产物。先跑：npm run build:serverless');

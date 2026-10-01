@@ -74,19 +74,11 @@ execFileSync(bin('npm'), ['install', '--omit=dev', '--no-audit', '--no-fund', '-
 });
 
 log('压缩为 zip');
-if (process.platform === 'win32') {
-  execFileSync(
-    'powershell',
-    [
-      '-NoProfile',
-      '-Command',
-      `Compress-Archive -Path '${pkgDir}\\*' -DestinationPath '${zipPath}' -Force`,
-    ],
-    { stdio: 'inherit' },
-  );
-} else {
-  execFileSync('zip', ['-qr', zipPath, '.'], { cwd: pkgDir, stdio: 'inherit' });
-}
+// 不能用 Compress-Archive / ZipFile.CreateFromDirectory：Windows 上它们会把条目名写成反斜杠，
+// Linux 运行时解压后文件名会带字面量反斜杠，代码目录直接找不到。所以用自己的写入器。
+const { makeZip } = await import('./make-zip.mjs');
+const entries = makeZip(pkgDir, zipPath);
+console.log(`  已写入 ${entries} 个条目（路径一律正斜杠）`);
 
 const size = (fs.statSync(zipPath).size / 1024 / 1024).toFixed(1);
 console.log('');

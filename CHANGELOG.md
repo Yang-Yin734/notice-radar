@@ -29,7 +29,12 @@
   窗口内没有新通知就**什么都不发**（不打扰）
 - 两种模式：`MODE=window`（默认窗口 15 分钟，配 10 分钟定时器 → 近实时）与
   `MODE=digest`（24 小时窗口，每天一次 → 完整兜底）
-- `node tools/verify-serverless.mjs`：**部署前自检**，用打包产物真抓一遍但不发送
+- `node tools/verify-serverless.mjs`：**部署前自检**，用打包产物真抓一遍但不发送；
+  也支持 `APP_DIR=<解压目录>` 对"从 zip 解压出来的产物"自检（最接近云端真实情况）
+- `tools/make-zip.mjs`：自带 ZIP 写入器。**必须自己写**：Windows 上 `Compress-Archive` 与
+  `.NET ZipFile.CreateFromDirectory` 都会把条目名写成反斜杠（实测 2070/2074 条），
+  而云函数运行时是 Linux —— 解压后文件名会带着字面量反斜杠，代码目录直接找不到，部署必失败。
+  已实测：重打后反斜杠条目为 0，解压出来的产物自检通过
 - 步骤见 [deploy/serverless/README.md](deploy/serverless/README.md)
 
 ### 顺带修掉一个真 bug（是自检脚本抓出来的）
