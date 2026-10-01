@@ -331,6 +331,57 @@ sources:
 
 它靠把"见过哪些通知 ID"提交回 `data/state.json` 实现增量推送——**不需要服务器、不需要数据库**。
 
+### 新用户开启微信推送：5 步
+
+> 推送走 **Server酱 → 微信**。下面是完整清单，照做大约 5 分钟。
+
+**第 1 步 · 拿 SendKey（约 1 分钟）**
+
+1. 打开 <https://sct.ftqq.com> → 用**微信扫码登录**
+2. 按页面提示**关注「方糖」服务号** ← **这一步没做，密钥再对也收不到消息**
+3. 复制 **SendKey**（形如 `SCT` 开头的一串）
+
+> 免费版每天有条数上限（页面上能看到额度）；配额用尽时本项目会明确提示"像是配额用尽"，不会让你以为是代码坏了。
+
+**第 2 步 · 建自己的仓库（约 1 分钟）**
+
+- 点仓库右上角 **Fork**，或 **Use this template** 建一个新仓库
+- 建议**保持 Public**：私有仓库的 Actions 有分钟数限额，而且 60 天无提交会被停用定时任务
+
+**第 3 步 · 改成你学校的源（约 1 分钟）**
+
+- 编辑 `config/schools/uestc.yaml`（或照 [docs/add-your-school.md](docs/add-your-school.md) 加自己学校），把 `sources` 换成你关注的栏目
+
+**第 4 步 · 填密钥（约 1 分钟）**
+
+- 仓库 **Settings → Secrets and variables → Actions → Secrets → New repository secret**
+- 名字必须是 `SERVERCHAN_KEY`，值粘贴第 1 步的 SendKey（**不要加引号或空格**）
+- 顺手看一眼同页 **Variables**：`PUSH_ENABLED` 不存在 = 默认开启；想暂停推送就建一个值填 `false`
+
+**第 5 步 · 验证（约 1 分钟）**
+
+- **Actions → notify-test → Run workflow**（只发一条测试消息，不抓站点）
+- 微信收到「推送通道测试」就成功了；也可以直接看仓库里的 `data/last-notify.json`（推送结果会提交回仓库，便于查证）
+
+**本机想先试试？** 把 SendKey 写进项目根目录的 `.env`（已被 gitignore）：
+
+```bash
+cp .env.example .env   # 填入 SERVERCHAN_KEY=SCT...
+node src/cli.ts test-notify          # 只发一条测试消息
+node src/cli.ts run --dry            # 演练：抓取但不写状态、不推送
+```
+
+**常见卡点**
+
+| 现象 | 原因 |
+|---|---|
+| 密钥填对了却收不到 | 没关注「方糖」服务号（第 1 步第 2 点），或微信里屏蔽了该服务号 |
+| 一直没推送 | 仓库 60 天没有提交 → GitHub 自动停用了定时任务（Actions 页面会有提示）；或 `PUSH_ENABLED` 被设成了 `false` |
+| 报"配额用尽" | Server酱免费版每天有上限；等次日重置，或换其他通道（邮件 / webhook） |
+| 某个源一直没消息 | 站内有 JS 挑战的源默认跳过，需要 `--allow-browser`（见「合规与边界」） |
+| 收不到"新版本"提示 | 应用要 0.10.4 以上才会检查版本（早期版本用字符串比较，比不出 0.11 vs 0.9） |
+
+
 只在**真有新通知**时才写状态与产物，所以不会每 20 分钟空转出一个提交（否则一天 72 个，提交历史会被淹掉）。也正因如此：**本地要推之前先 `git pull --rebase`**，不然容易撞上机器人刚提交的状态。
 
 两个必须知道的限制：
