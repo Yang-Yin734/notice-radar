@@ -41,28 +41,6 @@ val VERSION_URLS = DATA_URLS.map { it.substringBefore("dashboard-data.json") + "
 
 const val REPO_SLUG = "Yang-Yin734/notice-radar"
 
-/**
- * 版本号比较（**必须按数字逐段比**，不能直接比字符串）。
- *
- * 踩过的坑：原来写的是 `remote > store.appVersion()`，也就是字符串比较 ——
- * 于是 "0.10.3" < "0.8.0"（逐字符比到 '1' vs '8'），装了 0.8.0 的手机永远显示"已是最新"，
- * 新版本发不出去。这个函数就是为了修掉它。
- *
- * 规则：按 '.' 拆段，逐段按整数比；缺的段当 0（1.2 == 1.2.0）；非法段当 0。
- * 返回 >0 表示 a 更新，<0 表示 a 更旧，0 表示相同。
- */
-fun compareVersions(a: String?, b: String?): Int {
-    val pa = (a ?: "").trim().removePrefix("v").split('.')
-    val pb = (b ?: "").trim().removePrefix("v").split('.')
-    val n = maxOf(pa.size, pb.size)
-    for (i in 0 until n) {
-        val x = pa.getOrNull(i)?.takeWhile { it.isDigit() }?.toIntOrNull() ?: 0
-        val y = pb.getOrNull(i)?.takeWhile { it.isDigit() }?.toIntOrNull() ?: 0
-        if (x != y) return if (x > y) 1 else -1
-    }
-    return 0
-}
-
 fun labelOf(url: String): String = when {
     url.contains("jsdelivr") -> "jsDelivr 镜像"
     url.contains("statically") -> "Statically 镜像"

@@ -49,6 +49,6 @@ class VersionTest {
         assertTrue(compareVersions("1.0.0", null) > 0)
         assertTrue(compareVersions(null, "1.0.0") < 0)
         assertEquals(0, compareVersions("abc", "0"))
-        assertTrue(compareVersions("0.10.3-beta", "0.10.3") == 0, "带后缀时按数字段比较，不崩")
+        assertEquals(0, compareVersions("0.10.3-beta", "0.10.3"))
     }
 }
