@@ -111,6 +111,12 @@ const alertsSchema = z.object({
    * 只看单次失败会把"网络天气"当成故障 —— 实测真的误报过（4 个源同时告警，下一轮就恢复正常）。
    */
   failureStreak: z.number().int().positive().default(3),
+  /**
+   * 「网络天气」的门槛：当**所有**源都以网络层错误一起失败（fetch failed / 超时 / DNS）时，
+   * 说明是 runner 到国内站点整体不通 —— 这事用户处理不了，也不该反复打扰，
+   * 所以只在远高于普通阈值时才提醒。默认 12（20 分钟一轮 ≈ 4 小时持续不通）。
+   */
+  weatherStreak: z.number().int().positive().default(12),
   /** 同一个源的告警最短间隔（小时）—— 别每 20 分钟吵一次 */
   throttleHours: z.number().positive().default(12),
   /** 某源连续这么多天没有新通知，就怀疑它挂了（只在日报顶部提示，不当急事推） */

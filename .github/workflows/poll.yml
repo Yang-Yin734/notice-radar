@@ -56,13 +56,14 @@ jobs:
         run: |
           # 境内学校站点在境外 runner 上偶发整体不可达（跨境网络抖动，实测约每 3 次 1 次）。
           # 单源失败不影响退出码，只有全部源都失败才返回非零，所以重试放在这一层。
-          for attempt in 1 2 3 4; do
+          # 6 次 + 逐步拉长间隔：尽量"抖过去"，让通知晚到一点而不是丢掉（状态没写，成功那轮会补发）。
+          for attempt in 1 2 3 4 5 6; do
             if node src/cli.ts run --json=data/latest.json --delay=1500; then
               echo "outcome=ok" >> "$GITHUB_OUTPUT"
               exit 0
             fi
-            if [ "$attempt" -lt 4 ]; then
-              wait=$((attempt * 20 + 10))   # 30 / 50 / 70 秒
+            if [ "$attempt" -lt 6 ]; then
+              wait=$((attempt * 30))   # 30 / 60 / 90 / 120 / 150 秒
               echo "::warning::第 ${attempt} 次抓取失败（可能所有源都不可达），${wait} 秒后重试"
               sleep "$wait"
             fi

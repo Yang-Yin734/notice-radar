@@ -20,6 +20,7 @@ import {
   detectProblems,
   detectSilence,
   failureStreak,
+  isNetworkWeather,
   loadAlerts,
   problemTitle,
   renderProblemMarkdown,
@@ -655,15 +656,24 @@ async function cmdRun(flags: Flags): Promise<number> {
     console.log(`    ⚠ ${p.sourceName}：${p.detail} —— ${note}`);
   }
 
+  // 整轮网络不通（所有源都是 fetch failed 这类网络层错误）= 网络天气：
+  // 用户处理不了，而且状态没被改动、下一轮成功会照常补发，所以要用高得多的阈值才提醒。
+  const weather = isNetworkWeather(problems, { totalSources: results.filter((r) => !r.skipped).length });
+  const minStreak = weather ? cfg.alerts.weatherStreak : cfg.alerts.failureStreak;
+  if (weather) {
+    console.log(
+      `▸ 本轮所有源都是网络层失败（runner 到国内站点不通）→ 按「网络天气」处理：` +
+        `连续 ${cfg.alerts.weatherStreak} 次（约 4 小时）才提醒；通知不会丢，下一轮成功会补发`,
+    );
+  }
+
   const { confirmed, pending } = confirmByStreak(
     problems,
     Object.fromEntries(Object.entries(runsRecord.state.sources).map(([id, list]) => [id, failureStreak(list)])),
-    cfg.alerts.failureStreak,
+    minStreak,
   );
   if (pending.length > 0) {
-    console.log(
-      `▸ ${pending.length} 个源本轮失败，但未达连续 ${cfg.alerts.failureStreak} 次，暂不告警（多半是网络抖动）`,
-    );
+    console.log(`▸ ${pending.length} 个源本轮失败，但未达连续 ${minStreak} 次，暂不告警`);
   }
 
   if (cfg.alerts.failureNotify && confirmed.length > 0 && flags.notify && !flags.dry) {

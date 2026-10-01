@@ -99,6 +99,31 @@ export function throttleProblems(
   return { send, record: { lastAlertAt, updatedAt: now.toISOString() } };
 }
 
+/** 网络层错误：连都连不上（DNS/TCP/TLS/超时），而不是站点返回了错误码。 */
+const NETWORK_ERROR =
+  /fetch failed|timeout|timed out|ENOTFOUND|EAI_AGAIN|ECONNRESET|ECONNREFUSED|ETIMEDOUT|socket|aborted|network|getaddrinfo/i;
+
+export function isNetworkError(detail: string): boolean {
+  return NETWORK_ERROR.test(detail ?? '');
+}
+
+/**
+ * 本轮是不是「整轮网络不通」（= 网络天气）。
+ *
+ * 判据（两条都要满足）：
+ *   1. **所有**参与抓取的源都失败了（有源是好的就说明线路通，那属于单源故障，要正常告警）
+ *   2. 失败原因都是**网络层**错误（连不上），而不是站点返回了错误码或解析不出条目
+ *
+ * 为什么要这么严：这种情况用户处理不了（是 runner 到国内站点的跨境网络问题），
+ * 而且状态文件没被改动、下一轮成功时会照常补发 —— 所以不该按普通故障阈值反复提醒。
+ */
+export function isNetworkWeather(problems: SourceProblem[], options: { totalSources?: number } = {}): boolean {
+  if (problems.length === 0) return false;
+  // 有源没失败 → 线路是通的，这是单源故障，不能当"天气"放过
+  if (typeof options.totalSources === 'number' && problems.length < options.totalSources) return false;
+  return problems.every((p) => p.kind === 'fetch-failed' && isNetworkError(p.detail));
+}
+
 /** 末尾连续失败了多少次（决定"这是网络抖动还是真故障"）。 */
 export function failureStreak(list: ('ok' | 'fail')[] | undefined): number {
   if (!list || list.length === 0) return 0;

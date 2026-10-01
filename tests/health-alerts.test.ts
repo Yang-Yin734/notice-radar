@@ -7,6 +7,8 @@ import {
   detectSilence,
   emptyAlerts,
   failureStreak,
+  isNetworkError,
+  isNetworkWeather,
   loadAlerts,
   problemTitle,
   renderProblemMarkdown,
@@ -104,6 +106,38 @@ test('health：告警正文写清"连续几次"、是否所有源一起挂、以
   assert.match(md, /所有源一起失败/, '要说明可能只是网络问题，避免用户白折腾');
   assert.match(md, /radr health/, '给出排查命令');
   assert.match(md, /alerts\.failureNotify/, '告诉用户怎么关掉这类提醒');
+});
+
+test('health：整轮网络不通（fetch failed × 全部源）判为「网络天气」，用更高的阈值', () => {
+  assert.equal(isNetworkError('fetch failed'), true);
+  assert.equal(isNetworkError('connect ETIMEDOUT 1.2.3.4:443'), true);
+  assert.equal(isNetworkError('getaddrinfo ENOTFOUND www.jwc.uestc.edu.cn'), true);
+  assert.equal(isNetworkError('HTTP 404'), false, '站点回了错误码 = 不是连不上');
+  assert.equal(isNetworkError('页面抓到了，但没解析出任何条目'), false);
+
+  const networkProblems = detectProblems([
+    result({ sourceId: 'a', sourceName: 'A', ok: false, error: 'fetch failed' }),
+    result({ sourceId: 'b', sourceName: 'B', ok: false, error: 'fetch failed' }),
+  ]);
+  assert.equal(isNetworkWeather(networkProblems, { totalSources: 2 }), true, '全部源网络层失败 = 网络天气');
+
+  // 混了非网络错误 → 不是纯网络天气（可能有源真的坏了，按普通阈值处理）
+  const mixed = detectProblems([
+    result({ sourceId: 'a', sourceName: 'A', ok: false, error: 'fetch failed' }),
+    result({ sourceId: 'b', sourceName: 'B', error: null, items: [] }),
+  ]);
+  assert.equal(isNetworkWeather(mixed, { totalSources: 2 }), false);
+
+  // 只有部分源失败 → 线路是通的，属于单源故障，必须照常告警（不能当"天气"放过）
+  assert.equal(
+    isNetworkWeather([networkProblems[0]], { totalSources: 2 }),
+    false,
+    '5 个源里只挂 1 个，那正是需要提醒的情况',
+  );
+  // 但只配了这一个源、它又网络不通 → 确实是整轮不通
+  assert.equal(isNetworkWeather([networkProblems[0]], { totalSources: 1 }), true);
+  assert.equal(isNetworkWeather([], { totalSources: 3 }), false);
+  assert.equal(isNetworkWeather(networkProblems), true, '没传总数时退化为"错误类型全为网络层"');
 });
 
 test('health：同一个源在节流窗口内只告警一次，过期后会再报', () => {

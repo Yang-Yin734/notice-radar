@@ -77,6 +77,8 @@ alerts:
   failureNotify: true     # 抓取失败 / 解析出 0 条 → 推微信告警
   failureStreak: 3        # **连续**失败 3 次才告警（每 20 分钟一轮 ≈ 1 小时都不通）
                           # 单次失败不算：runner 抓国内站点约每 3 次有 1 次整体不通，否则会误报
+  weatherStreak: 12       # 若**所有源一起以网络层错误失败**（fetch failed = 网络天气），
+                          # 这事你处理不了，只在连续 12 次（约 4 小时）时才提醒
   throttleHours: 12       # 同一个源 12 小时内只告警一次
   silenceDays: 14         # 某源连续 14 天没新通知 → 日报顶部提示
   warmupDays: 3           # 归档观察不满 3 天，不下「从未抓到过」的结论
