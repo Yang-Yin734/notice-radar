@@ -194,11 +194,7 @@ fun NoticeRadarApp(store: Store) {
                             updateVersion?.let { version ->
                                 UpdateBanner(
                                     version = version,
-                                    onDownload = {
-                                        runCatching {
-                                            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(store.apkUrl())))
-                                        }
-                                    },
+                                    apkUrl = store.apkUrl(),
                                     onDismiss = {
                                         store.dismissedUpdateVersion = version
                                         updateVersion = null
@@ -270,35 +266,104 @@ fun NoticeRadarApp(store: Store) {
 
 /** 打开应用就告诉用户有新版本（以前只有进"设置"才看得到，等于没提示）。 */
 @Composable
-private fun UpdateBanner(version: String, onDownload: () -> Unit, onDismiss: () -> Unit) {
-    Row(
+private fun UpdateBanner(version: String, apkUrl: String, onDismiss: () -> Unit) {
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 12.dp, vertical = 8.dp)
             .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(12.dp))
-            .padding(start = 12.dp, end = 4.dp, top = 8.dp, bottom = 8.dp),
-        verticalAlignment = Alignment.CenterVertically,
+            .padding(horizontal = 12.dp, vertical = 8.dp),
     ) {
-        Column(Modifier.weight(1f)) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Column(Modifier.weight(1f)) {
+                Text(
+                    "发现新版本 v$version",
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onPrimary,
+                )
+                Text(
+                    "应用内直接下载安装，收藏与已读不会丢",
+                    fontSize = 11.sp,
+                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f),
+                )
+            }
+            TextButton(onClick = onDismiss) {
+                Text("✕", fontSize = 13.sp, color = MaterialTheme.colorScheme.onPrimary)
+            }
+        }
+        InAppUpdateRow(version = version, apkUrl = apkUrl, onPrimary = true)
+    }
+}
+
+/**
+ * 应用内更新：下载 → 调起系统安装器。
+ *
+ * 为什么要有它：以前点"更新"是打开浏览器去 GitHub 下载，用户得自己找安装包再安装，
+ * 于是"一次又一次去 GitHub 装"。现在应用自己下载并直接调起安装器。
+ * 注意：Android 不允许静默安装，系统还会让用户点一次「安装」，这一步绕不过去。
+ */
+@Composable
+private fun InAppUpdateRow(version: String, apkUrl: String, onPrimary: Boolean = false) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
+    val handler = remember { android.os.Handler(android.os.Looper.getMainLooper()) }
+    var busy by remember { mutableStateOf(false) }
+    var progress by remember { mutableStateOf(-1) }
+    var hint by remember { mutableStateOf<String?>(null) }
+
+    val textColor = if (onPrimary) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
+    val subColor = if (onPrimary) MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f) else MaterialTheme.colorScheme.onSurfaceVariant
+
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Button(
+            enabled = !busy,
+            onClick = {
+                scope.launch {
+                    busy = true
+                    progress = -1
+                    hint = "正在下载…"
+                    val result = withContext(Dispatchers.IO) {
+                        runCatching {
+                            // 进度回调来自 IO 线程，切回主线程再写 Compose 状态
+                            UpdateInstaller.download(context, apkUrl, version) { pct -> handler.post { progress = pct } }
+                        }
+                    }
+                    busy = false
+                    result.fold(
+                        onSuccess = { file ->
+                            val err = UpdateInstaller.install(context, file)
+                            hint = err ?: "已调起系统安装器，点「安装」即可覆盖升级"
+                        },
+                        onFailure = { e ->
+                            hint = (e.message ?: "下载失败") + "。可点右边用浏览器打开下载"
+                        },
+                    )
+                }
+            },
+        ) {
             Text(
-                "发现新版本 v$version",
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onPrimary,
-            )
-            Text(
-                "下载后可直接覆盖安装，收藏与已读不会丢",
-                fontSize = 11.sp,
-                color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f),
+                when {
+                    busy && progress >= 0 -> "下载中 $progress%"
+                    busy -> "下载中…"
+                    else -> "应用内更新"
+                },
+                fontSize = 13.sp,
             )
         }
-        TextButton(onClick = onDownload) {
-            Text("下载", fontSize = 13.sp, color = MaterialTheme.colorScheme.onPrimary)
-        }
-        TextButton(onClick = onDismiss) {
-            Text("✕", fontSize = 13.sp, color = MaterialTheme.colorScheme.onPrimary)
+        Spacer(Modifier.width(8.dp))
+        TextButton(onClick = { openUrl(context, apkUrl) }) {
+            Text("浏览器打开", fontSize = 12.5.sp, color = if (onPrimary) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.primary)
         }
     }
+    hint?.let {
+        Text(it, fontSize = 11.sp, color = subColor)
+    }
+    Text(
+        "如果下载慢：GitHub 在国内时快时慢，可稍后重试或用「浏览器打开」",
+        fontSize = 10.5.sp,
+        color = subColor,
+    )
 }
 
 @Composable
@@ -977,12 +1042,7 @@ private fun SettingsScreen(
                     val remote = remoteVersion
                     if (remote != null && compareVersions(remote, store.appVersion()) > 0) {
                         Spacer(Modifier.height(8.dp))
-                        Button(
-                            onClick = {
-                                runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(store.apkUrl()))) }
-                            },
-                            modifier = Modifier.fillMaxWidth(),
-                        ) { Text("下载新版本 v$remote（可直接覆盖安装）", fontSize = 13.sp) }
+                        InAppUpdateRow(version = remote, apkUrl = store.apkUrl())
                     }
                 }
             }

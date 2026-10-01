@@ -4,6 +4,8 @@
     <!-- 只有刷新数据、下载新版本时才联网；界面完全在应用内部，断网也能打开 -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <!-- 应用内更新：下载好 APK 后调起系统安装器（Android 8+ 需要这条；用户仍要点一次"安装"） -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <application
         android:allowBackup="true"
@@ -24,6 +26,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- 把下载到应用私有目录的 APK 以 content:// 形式交给系统安装器（Android 7+ 必须这样传文件） -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="io.github.yangyin734.noticeradar.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>
