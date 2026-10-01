@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-30T23:46:51.045Z",
+  "updatedAt": "2026-10-01T00:15:13.170Z",
   "sources": {
     "jwc-important": [
       "ok",
@@ -70,6 +70,12 @@
       "fail",
       "ok",
       "fail",
+      "ok"
+    ],
+    "math-jwgg": [
+      "ok"
+    ],
+    "math-xsgz": [
       "ok"
     ]
   }
