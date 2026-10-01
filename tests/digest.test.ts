@@ -8,6 +8,7 @@ import {
   renderDigestMarkdown,
   renderDigestText,
   rollingRange,
+  truncateForPush,
   yesterdayRange,
 } from '../src/core/digest.ts';
 import type { Notice } from '../src/types.ts';
@@ -135,6 +136,17 @@ test('digest：Markdown 版带链接和标签，纯文本版带裸链接', () =>
   const text = renderDigestText(digest, { appUrl: 'https://app.example/' });
   assert.match(text, /https:\/\/x\.edu\.cn\/a/, '纯文本版保留可点链接');
   assert.match(text, /【教务处】1 条/);
+});
+
+test('digest：推送正文超长时截断并如实标注（Server酱 上限约 32KB）', () => {
+  const short = 'abc\n';
+  assert.deepEqual(truncateForPush(short, 100), { text: short, truncated: false });
+
+  const long = '通知内容\n'.repeat(50);
+  const cut = truncateForPush(long, 100);
+  assert.equal(cut.truncated, true);
+  assert.ok(cut.text.length < long.length);
+  assert.match(cut.text, /内容过长/, '截断了就必须说明，不能假装发全了');
 });
 
 test('digest：滚动窗口按小时计算', () => {

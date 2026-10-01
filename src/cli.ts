@@ -38,6 +38,7 @@ import {
   renderDigestMarkdown,
   renderDigestText,
   rollingRange,
+  truncateForPush,
   yesterdayRange,
 } from './core/digest.ts';
 import { notifyAll } from './notify/index.ts';
@@ -108,6 +109,8 @@ interface Flags {
   days: number | null;
   /** 只跑指定源（逗号分隔），调试单个源用（issue #2） */
   only: string | null;
+  /** digest：推送**全部归档**（不分时间窗、不截断）—— 用来验证推送链路 */
+  all: boolean;
   /** test-notify：只测某个通道（issue：微信通道多了，要能单独验） */
   channel: string | null;
 }
@@ -140,6 +143,7 @@ function parseFlags(argv: string[]): Flags {
     maxExplicit: get('max') ? Number(get('max')) : null,
     days: get('days') ? Number(get('days')) : null,
     only: get('only'),
+    all: argv.includes('--all'),
     channel: get('channel'),
   };
 }
@@ -365,11 +369,13 @@ async function cmdDigest(flags: Flags): Promise<number> {
   const historyFile = path.join(path.dirname(flags.state), 'history.json');
   const history = loadHistory(historyFile);
 
-  const range = flags.date
-    ? beijingDayRange(flags.date)
-    : flags.hours
-      ? rollingRange(flags.hours)
-      : yesterdayRange();
+  const range = flags.all
+    ? { since: new Date(0), until: new Date(Date.now() + 60_000), label: '全部归档', shortLabel: '全部归档' }
+    : flags.date
+      ? beijingDayRange(flags.date)
+      : flags.hours
+        ? rollingRange(flags.hours)
+        : yesterdayRange();
 
   let name = '校园通知雷达';
   let appUrl = 'https://yang-yin734.github.io/notice-radar/';
@@ -385,8 +391,9 @@ async function cmdDigest(flags: Flags): Promise<number> {
 
   const digest = buildDigest(history, {
     ...range,
-    maxItems: flags.maxExplicit ?? cfg?.push.digestMaxItems ?? 40,
-    maxPerSource: cfg?.push.digestMaxPerSource ?? 8,
+    // --all：把所有归档都列出来（测试推送链路用），不按时间窗也不截断
+    maxItems: flags.all ? history.items.length : (flags.maxExplicit ?? cfg?.push.digestMaxItems ?? 40),
+    maxPerSource: flags.all ? history.items.length : (cfg?.push.digestMaxPerSource ?? 8),
     appUrl,
   });
 
@@ -394,7 +401,8 @@ async function cmdDigest(flags: Flags): Promise<number> {
   const silence = cfg ? detectSilence(history, cfg.sources, defaultAlertOptions(cfg.alerts)) : [];
   const notice = renderSilenceNotice(silence);
   const markdown = renderDigestMarkdown(digest, { name, appUrl, notice });
-  const title = digestTitle(digest, name);
+  const title = flags.all ? `${name} · 全部 ${digest.total} 条通知`.slice(0, 32) : digestTitle(digest, name);
+  const payload = truncateForPush(markdown);
 
   if (flags.json) {
     fs.mkdirSync(path.dirname(flags.json), { recursive: true });
@@ -424,8 +432,13 @@ async function cmdDigest(flags: Flags): Promise<number> {
     console.log(`▸ ${digest.label} 没有新通知，按默认策略**不打扰**（要强发加 --force）`);
     return 0;
   }
-  const outcomes = await notifyAll(channels ?? [], title, markdown);
+  if (payload.truncated) {
+    console.log(`▸ 正文 ${markdown.length} 字符，超过推送上限已截断到 ${payload.text.length} 字符（已如实标注）`);
+  }
+  const outcomes = await notifyAll(channels ?? [], title, payload.text);
   for (const o of outcomes) console.log(`  ${o.ok ? '✓' : '✗'} ${o.channel}：${o.detail}`);
+  // 与 run/test-notify 一致：推送结果留痕，能从提交记录查证（密钥已脱敏）
+  if (!flags.dry) console.log(`  · 推送结果已记录到 ${writeNotifyLog(flags.state, title, digest.total, outcomes)}`);
   const anyOk = outcomes.some((o) => o.ok);
   console.log(anyOk ? `▸ 日报已发送（${digest.total} 条）` : '✗ 没有任何通道发送成功');
   return anyOk ? 0 : 1;
@@ -835,8 +848,9 @@ function usage(): void {
   radr test-notify [--config=路径] [--channel=通道]     只发一条测试消息，验证推送密钥配好没有（serverchan/email/webhook/stdout）
   radr dashboard [--out=docs/index.html]               把历史归档渲染成静态仪表盘（GitHub Pages 用）
   radr stats     [--state=data/state.json] [--json=文件]  通知频次统计（来源/标签/周/星期分布）
-  radr digest    [--date=YYYY-MM-DD | --hours=24] [--max=条数] [--out=文件] [--notify] [--force]
+  radr digest    [--date=YYYY-MM-DD | --hours=24 | --all] [--max=条数] [--out=文件] [--notify] [--force]
                                                        每日日报：把一天的新通知合成一条消息（默认只预览）
+                                                       --all = 推送**全部归档**（验证推送链路用，不截断）
   radr schools   [--json=文件]                         列出已知学校预设与维护者（适配器市场）
   radr health    [--config=路径] [--json=文件] [--notify]  抓取健康检查：哪些源长期没动静（只读归档，不联网）
   radr tiers     [--days=14] [--json=文件]             查看关键词分档：哪些会立刻推、哪些进日报

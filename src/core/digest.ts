@@ -128,6 +128,16 @@ export function buildDigest(history: History, options: DigestOptions): Digest {
   };
 }
 
+/** 推送正文的长度保护：Server酱 的 desp 上限约 32KB，超了要截断并**如实说明**。 */
+export function truncateForPush(text: string, max = 28_000): { text: string; truncated: boolean } {
+  if (text.length <= max) return { text, truncated: false };
+  const head = text.slice(0, max).replace(/\n[^\n]*$/, ''); // 尽量切在整行边界
+  return {
+    text: `${head}\n\n> ⚠️ 内容过长，上面是前 ${head.length} 个字符；完整内容见应用或归档。\n`,
+    truncated: true,
+  };
+}
+
 /** 推送标题（Server酱 限 32 字，这里一律裁到 32）。 */
 export function digestTitle(digest: Digest, name = '校园通知雷达'): string {
   const text = digest.empty ? `${name} · ${digest.shortLabel} 无新通知` : `${name} · ${digest.shortLabel} 新增 ${digest.total} 条`;

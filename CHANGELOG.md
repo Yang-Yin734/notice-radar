@@ -2,6 +2,27 @@
 
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## v0.10.5 — 2026-10-01
+
+### 新增
+
+- **`radr digest --all`**：把**全部归档**合成一条消息推送（不分时间窗、不按来源截断），
+  用来验证推送链路。实测 43 条 / 6 个来源，标题「电子科技大学 · 全部 43 条通知」，
+  Server酱 返回 `HTTP 200 已投递` ✓
+- **正文长度保护**：超过 28,000 字符会截断并**如实标注**（Server酱 的 `desp` 上限约 32KB），
+  不会假装"发全了" —— `truncateForPush()` + 单元测试
+- `digest` 发送时也写 `data/last-notify.json`（与 `run` / `test-notify` 一致，密钥脱敏），
+  推送结果可从提交记录查证
+
+### 验证
+
+```bash
+node src/cli.ts digest --all            # 预览：43 条（不发送）
+node src/cli.ts digest --all --notify   # 真发：✓ serverchan HTTP 200 已投递
+```
+
+测试 102/102。注意：Server酱 免费版每天有条数上限，别频繁跑这种全量测试。
+
 ## v0.10.4 — 2026-10-01
 
 ### 移除
