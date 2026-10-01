@@ -58,6 +58,16 @@ const sourceSchema = z.object({
   note: z.string().optional(),
   /** 覆盖全局 alerts.silenceDays：这个源多久没动静就该怀疑（例如假期本来就不发） */
   silenceDays: z.number().int().positive().optional(),
+  /**
+   * 覆盖全局 alerts.failureStreak：这个源**连续**失败多少次才告警。
+   * 对"境外 runner 抓不稳"的站点（学校 WAF 只放行国内 IP）值得调大。
+   */
+  failureStreak: z.number().int().positive().optional(),
+  /**
+   * 关掉这个源的"抓取失败告警"（默认 true）。
+   * 适合已确认"站点只对国内 IP 友好、云端抓不稳"的源；日报里的静默提示仍会兜底。
+   */
+  alertOnFailure: z.boolean().default(true),
 });
 
 const notifySchema = z.object({

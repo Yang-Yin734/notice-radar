@@ -266,7 +266,10 @@ sources:
     name: 研究生院·通知
     url: https://gr.uestc.edu.cn/tongzhi/
     adapter: uestc/gr
-    note: 站点带 JS 挑战 WAF，偶发失败属正常；对大一主要是推免/保研/夏令营相关
+    note: 站点带 JS 挑战 WAF，**对境外 IP 更严**：本机（国内）实测 200/20 条，云端只有约四成成功率。
+    # 给它单独的阈值：连续 8 次（约 2.7 小时）才提醒，避免反复打扰。
+    # 若连这种提醒都不想要，把下一行换成 alertOnFailure: false（日报里的静默提示仍会兜底）。
+    failureStreak: 8
     include:
       - 推免
       - 保研

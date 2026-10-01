@@ -28,6 +28,8 @@ import {
   renderSilenceText,
   saveAlerts,
   silenceTitle,
+  streakThreshold,
+  successRate,
   throttleProblems,
   defaultAlertOptions,
 } from './core/health.ts';
@@ -663,16 +665,9 @@ async function cmdRun(flags: Flags): Promise<number> {
   const streakOf = (sourceId: string) => failureStreak(runsRecord.state.sources[sourceId]);
 
   const problems = detectProblems(results);
-  for (const p of problems) {
-    const streak = streakOf(p.sourceId);
-    const note = streak >= cfg.alerts.failureStreak ? `连续第 ${streak} 次` : `本轮失败（第 ${streak} 次）`;
-    console.log(`    ⚠ ${p.sourceName}：${p.detail} —— ${note}`);
-  }
-
   // 整轮网络不通（所有源都是 fetch failed 这类网络层错误）= 网络天气：
   // 用户处理不了，而且状态没被改动、下一轮成功会照常补发，所以要用高得多的阈值才提醒。
   const weather = isNetworkWeather(problems, { totalSources: results.filter((r) => !r.skipped).length });
-  const minStreak = weather ? cfg.alerts.weatherStreak : cfg.alerts.failureStreak;
   if (weather) {
     console.log(
       `▸ 本轮所有源都是网络层失败（runner 到国内站点不通）→ 按「网络天气」处理：` +
@@ -680,13 +675,41 @@ async function cmdRun(flags: Flags): Promise<number> {
     );
   }
 
+  // 阈值按源算：长期不稳的源（例如只对国内 IP 友好的 WAF 站点）自动放宽，
+  // 否则以 60% 的失败率、阈值 3，一两个小时就会骚扰用户一次（实测就是这样）。
+  const sourceById = new Map(cfg.sources.map((s) => [s.id, s]));
+  const rateOf = (id: string) => successRate(runsRecord.state.sources[id]);
+  const rateTextOf = (id: string) => {
+    const list = runsRecord.state.sources[id];
+    if (!list || list.length === 0) return null;
+    const ok = list.filter((x) => x === 'ok').length;
+    return `近 ${list.length} 次成功 ${ok} 次`;
+  };
+  const thresholdOf = (id: string) => {
+    const base = weather ? cfg.alerts.weatherStreak : cfg.alerts.failureStreak;
+    return streakThreshold(base, rateOf(id), sourceById.get(id)?.failureStreak);
+  };
+
+  for (const p of problems) {
+    const streak = streakOf(p.sourceId);
+    const need = thresholdOf(p.sourceId);
+    const note = streak >= need ? `连续第 ${streak} 次（阈值 ${need}）` : `本轮失败（第 ${streak} 次，阈值 ${need}）`;
+    console.log(`    ⚠ ${p.sourceName}：${p.detail} —— ${note}`);
+  }
+
+  // 显式关掉告警的源（alertOnFailure: false）不参与告警；日志与日报里仍能看到它
+  const alertable = problems.filter((p) => sourceById.get(p.sourceId)?.alertOnFailure !== false);
+  if (alertable.length < problems.length) {
+    console.log(`▸ ${problems.length - alertable.length} 个源配置了 alertOnFailure: false，不参与告警`);
+  }
+
   const { confirmed, pending } = confirmByStreak(
-    problems,
+    alertable,
     Object.fromEntries(Object.entries(runsRecord.state.sources).map(([id, list]) => [id, failureStreak(list)])),
-    minStreak,
+    thresholdOf,
   );
   if (pending.length > 0) {
-    console.log(`▸ ${pending.length} 个源本轮失败，但未达连续 ${minStreak} 次，暂不告警`);
+    console.log(`▸ ${pending.length} 个源本轮失败，但未达各自阈值，暂不告警`);
   }
 
   if (cfg.alerts.failureNotify && confirmed.length > 0 && flags.notify && !flags.dry) {
@@ -702,7 +725,12 @@ async function cmdRun(flags: Flags): Promise<number> {
       const outcomes = await notifyAll(
         cfg.notify,
         problemTitle(send, cfg.name),
-        renderProblemMarkdown(send, cfg.name, { streakOf, allFailed, minStreak: cfg.alerts.failureStreak }),
+        renderProblemMarkdown(send, cfg.name, {
+          streakOf,
+          allFailed,
+          minStreak: cfg.alerts.failureStreak,
+          rateOf: rateTextOf,
+        }),
       );
       for (const o of outcomes) console.log(`  ${o.ok ? '✓' : '✗'} 告警[${o.channel}] ${o.detail}`);
       if (outcomes.some((o) => o.ok)) {

@@ -16,6 +16,8 @@ import {
   renderSilenceText,
   saveAlerts,
   silenceTitle,
+  streakThreshold,
+  successRate,
   throttleProblems,
 } from '../src/core/health.ts';
 import type { History } from '../src/core/history.ts';
@@ -138,6 +140,50 @@ test('health：整轮网络不通（fetch failed × 全部源）判为「网络�
   assert.equal(isNetworkWeather([networkProblems[0]], { totalSources: 1 }), true);
   assert.equal(isNetworkWeather([], { totalSources: 3 }), false);
   assert.equal(isNetworkWeather(networkProblems), true, '没传总数时退化为"错误类型全为网络层"');
+});
+
+test('health：长期不稳的源自动放宽阈值（否则会反复骚扰用户）', () => {
+  // 实测背景：研究生院站点对境外 IP 更严，云端成功率只有 35~40%
+  assert.equal(streakThreshold(3, 0.35), 6, '成功率低于 70% → 至少 6 次才提醒');
+  assert.equal(streakThreshold(3, 0.69), 6);
+  assert.equal(streakThreshold(3, 0.7), 3, '70% 及以上按全局阈值');
+  assert.equal(streakThreshold(3, 1.0), 3);
+  assert.equal(streakThreshold(3, null), 3, '没有历史记录时不乱放宽');
+  assert.equal(streakThreshold(12, 0.2), 12, '已经更高的阈值（如网络天气）不会被调小');
+  assert.equal(streakThreshold(3, 0.35, 8), 8, '配置里显式写的优先');
+  assert.equal(streakThreshold(3, 1.0, 5), 5);
+
+  assert.equal(successRate(['ok', 'fail', 'ok', 'fail']), 0.5);
+  assert.equal(successRate([]), null);
+  assert.equal(successRate(undefined), null);
+});
+
+test('health：按源给阈值时，各源互不影响', () => {
+  const problems = detectProblems([
+    result({ sourceId: 'flaky', sourceName: '不稳的源', ok: false, error: 'fetch failed' }),
+    result({ sourceId: 'solid', sourceName: '稳的源', ok: false, error: 'fetch failed' }),
+  ]);
+  const streaks = { flaky: 3, solid: 3 };
+  const { confirmed, pending } = confirmByStreak(problems, streaks, (id) => (id === 'flaky' ? 6 : 3));
+  assert.deepEqual(confirmed.map((p) => p.sourceId), ['solid'], '稳的源到 3 就报，不稳的要等到 6');
+  assert.deepEqual(pending.map((p) => p.sourceId), ['flaky']);
+});
+
+test('health：只有单源失败时，正文给出"多半是该站点对境外 IP 更严"的提示', () => {
+  const problems = detectProblems([
+    result({ sourceId: 'gr', sourceName: '研究生院·通知', ok: false, error: 'fetch failed' }),
+  ]);
+  const md = renderProblemMarkdown(problems, '电子科技大学', {
+    streakOf: () => 3,
+    allFailed: false,
+    minStreak: 3,
+    rateOf: () => '近 20 次成功 7 次',
+  });
+  assert.match(md, /近 20 次成功 7 次/, '要附上历史近况，帮用户判断是不是"本来就不稳"');
+  assert.match(md, /对境外 IP 更严/, '要给出最可能的原因');
+  assert.match(md, /radr doctor --only=源id/, '要给出可操作的验证命令');
+  assert.match(md, /alertOnFailure: false/, '要告诉用户怎么彻底关掉');
+  assert.ok(!md.includes('所有源一起失败'), '只有单源失败时不该说"所有源一起失败"');
 });
 
 test('health：同一个源在节流窗口内只告警一次，过期后会再报', () => {

@@ -135,22 +135,45 @@ export function failureStreak(list: ('ok' | 'fail')[] | undefined): number {
   return streak;
 }
 
+/** 该源最近记录的构成（用于"这源本来就不稳"的判断与展示） */
+export function successRate(list: ('ok' | 'fail')[] | undefined): number | null {
+  if (!list || list.length === 0) return null;
+  return list.filter((x) => x === 'ok').length / list.length;
+}
+
+/**
+ * 算出某个源该用多大的"连续失败"阈值。
+ *
+ * 为什么不能一刀切：有些源（比如带 WAF 的研究生院站点）对**境外 IP** 更严，
+ * 在 GitHub runner 上长期只有三四成成功率 —— 对它们用普通阈值会反复误报，
+ * 而用户对此毫无办法（本机能抓、runner 抓不到）。所以：
+ *   · 配置里显式写了 failureStreak → 用它（以管理员配置为准）
+ *   · 否则：该源历史成功率低于 70% 时，把阈值抬到至少 6（约 2 小时持续不通才提醒）
+ */
+export function streakThreshold(globalStreak: number, rate: number | null, override?: number): number {
+  if (typeof override === 'number' && override > 0) return override;
+  if (rate !== null && rate < 0.7) return Math.max(globalStreak, 6);
+  return globalStreak;
+}
+
 /**
  * 只留下"连续失败够多次"的问题。
  *
  * 为什么必须这样过滤：GitHub runner 抓国内站点本来就约每 3 次有 1 次整体不通，
  * 单次失败多半是网络天气。实测真踩过：4 个源在同一秒一起告警，下一轮就全部恢复正常。
+ * thresholds 可以是单一数字，也可以是"按源给阈值"的回调（长期不稳的源单独放宽）。
  */
 export function confirmByStreak(
   problems: SourceProblem[],
   streaks: Map<string, number> | Record<string, number>,
-  minStreak: number,
+  thresholds: number | ((sourceId: string) => number),
 ): { confirmed: SourceProblem[]; pending: SourceProblem[] } {
   const get = (id: string): number => (streaks instanceof Map ? (streaks.get(id) ?? 0) : (streaks[id] ?? 0));
+  const thresholdOf = typeof thresholds === 'number' ? () => thresholds : thresholds;
   const confirmed: SourceProblem[] = [];
   const pending: SourceProblem[] = [];
   for (const p of problems) {
-    if (get(p.sourceId) >= minStreak) confirmed.push(p);
+    if (get(p.sourceId) >= thresholdOf(p.sourceId)) confirmed.push(p);
     else pending.push(p);
   }
   return { confirmed, pending };
@@ -162,6 +185,8 @@ export interface ProblemRenderOptions {
   /** 本轮是不是所有源都失败了（那就更可能是网络天气） */
   allFailed?: boolean;
   minStreak?: number;
+  /** 该源的历史近况（如「近 20 次成功 7 次」），帮用户判断"是不是本来就不稳" */
+  rateOf?: (sourceId: string) => string | null;
 }
 
 export function renderProblemMarkdown(
@@ -169,7 +194,7 @@ export function renderProblemMarkdown(
   name = '校园通知雷达',
   options: ProblemRenderOptions = {},
 ): string {
-  const { streakOf, allFailed, minStreak } = options;
+  const { streakOf, allFailed, minStreak, rateOf } = options;
   const lines: string[] = [];
   lines.push(`# ${name} · 抓取异常（${problems.length} 个源）`);
   lines.push('');
@@ -181,12 +206,19 @@ export function renderProblemMarkdown(
     const label = p.kind === 'fetch-failed' ? '抓取失败' : '抓到了但解析不出条目';
     const streak = streakOf?.(p.sourceId);
     const times = streak && streak > 1 ? `（连续 ${streak} 次）` : '';
-    lines.push(`- **${p.sourceName}**${times}：${label} —— ${p.detail}`);
+    const rate = rateOf?.(p.sourceId);
+    lines.push(`- **${p.sourceName}**${times}：${label} —— ${p.detail}${rate ? `　<sub>${rate}</sub>` : ''}`);
   }
   lines.push('');
   if (allFailed) {
     lines.push('> 注意：本轮**所有源一起失败**，多半是 runner 到国内站点的网络问题；');
     lines.push('> 之所以还是提醒你，是因为它已经连续失败到阈值了。');
+    lines.push('');
+  } else if (problems.some((p) => p.kind === 'fetch-failed')) {
+    lines.push('> 只有它失败、其它源正常 → 线路是通的，**多半是该站点对境外 IP 更严**（部分学校 WAF 会这样）。');
+    lines.push('> 本机跑一次即可确认：`radr doctor --only=源id`（本机在国内时通常能正常抓到）。');
+    lines.push('> 若确认是这种情况：调大该源的 `failureStreak`，或设 `alertOnFailure: false` 不再提醒');
+    lines.push('> （日报里的「静默提示」仍会兜底：真坏上两周还是会被点出来）。');
     lines.push('');
   }
   lines.push('排查顺序：');
