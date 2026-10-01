@@ -173,6 +173,7 @@ fun NoticeRadarApp(store: Store) {
                         title = "校园通知雷达",
                         subtitle = snapshot?.let { "${it.items.size} 条 · 未读 ${it.items.count { n -> n.id !in read }}" } ?: "加载中…",
                         refreshing = refreshing,
+                        onToggleTheme = { store.themeOverride = !dark },
                         onRefresh = {
                             scope.launch {
                                 refreshing = true
@@ -230,8 +231,6 @@ fun NoticeRadarApp(store: Store) {
                         else -> SettingsScreen(
                             store = store,
                             snapshot = snapshot,
-                            dark = dark,
-                            onToggleTheme = { store.themeOverride = !dark },
                             onClearRead = { read = mutableSetOf(); store.saveRead(emptySet()) },
                             onClearFav = { fav = mutableSetOf(); store.saveFav(emptySet()) },
                             onRefreshData = {
@@ -303,7 +302,14 @@ private fun UpdateBanner(version: String, onDownload: () -> Unit, onDismiss: () 
 }
 
 @Composable
-private fun AppHeader(title: String, subtitle: String, refreshing: Boolean, onRefresh: () -> Unit) {    Row(
+private fun AppHeader(
+    title: String,
+    subtitle: String,
+    refreshing: Boolean,
+    onToggleTheme: () -> Unit,
+    onRefresh: () -> Unit,
+) {
+    Row(
         modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -311,6 +317,10 @@ private fun AppHeader(title: String, subtitle: String, refreshing: Boolean, onRe
         Spacer(Modifier.width(8.dp))
         Text(subtitle, fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Spacer(Modifier.weight(1f))
+        // 与网页版一致：顶栏一个按钮，点一下就切深浅色（不再是设置里的开关）
+        TextButton(onClick = onToggleTheme) {
+            Text("◐", fontSize = 17.sp)
+        }
         TextButton(onClick = onRefresh, enabled = !refreshing) {
             Text(if (refreshing) "刷新中…" else "刷新", fontSize = 13.sp)
         }
@@ -697,8 +707,6 @@ private fun SettingsCard(title: String, content: @Composable () -> Unit) {
 private fun SettingsScreen(
     store: Store,
     snapshot: Snapshot?,
-    dark: Boolean,
-    onToggleTheme: () -> Unit,
     onClearRead: () -> Unit,
     onClearFav: () -> Unit,
     onRefreshData: () -> Unit,
@@ -880,20 +888,6 @@ private fun SettingsScreen(
                         TextButton(onClick = onClearRead) { Text("清除已读", fontSize = 13.sp) }
                         TextButton(onClick = onClearFav) { Text("清除收藏", fontSize = 13.sp) }
                     }
-                }
-            }
-        }
-
-        // 外观
-        item {
-            SettingsCard(title = "外观") {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Column(Modifier.weight(1f)) {
-                        Text(if (dark) "深色模式" else "浅色模式", fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface)
-                        Spacer(Modifier.height(2.dp))
-                        Text("跟随系统深浅色，也可以在这里手动切换", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                    }
-                    Switch(checked = dark, onCheckedChange = { onToggleTheme() })
                 }
             }
         }
