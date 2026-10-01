@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 只暴露应用私有目录里的 updates 子目录（下载的更新包），别的都不给 -->
+<paths>
+    <cache-path name="updates" path="updates/" />
+</paths>
