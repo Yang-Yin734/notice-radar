@@ -20,3 +20,8 @@ android/app/src/main/assets/
 keystore.txt
 *.apk
 *.aab
+
+# 云函数打包产物：本地生成的，需要时用 npm run build:serverless 重新生成
+dist-serverless/
+deploy/serverless/build/
+deploy/serverless/*.zip

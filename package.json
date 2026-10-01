@@ -1,6 +1,6 @@
 {
   "name": "notice-radar",
-  "version": "0.10.9",
+  "version": "0.10.10",
   "description": "把高校官网通知变成可订阅、可关键词过滤、能推到手机的信息流 —— 配置驱动，任何学校都能接",
   "type": "module",
   "license": "MIT",
@@ -39,6 +39,8 @@
     "dashboard": "node src/cli.ts dashboard",
     "make-keystore": "node tools/make-android-keystore.mjs",
     "capture": "node tools/capture-fixtures.mjs",
+    "build:serverless": "node tools/build-serverless.mjs",
+    "verify:serverless": "node tools/verify-serverless.mjs",
     "prepare": "npm run build",
     "prepack": "npm run build"
   },

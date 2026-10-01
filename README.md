@@ -314,6 +314,23 @@ powershell -File tools\install-local-task.ps1 -Uninstall
 
 > ⚠️ **别和云端同时跑**：两边各记一份"已见"状态，同一条通知会推两次。
 > 本机接管后请把仓库 Variables 里的 `PUSH_ENABLED` 改成 `false`（或直接禁用 poll / poll-math 工作流）。
+
+### 不想开自己电脑？用手边的国内云函数（免费）
+
+如果不想让电脑一直开着，可以把抓取放到**国内云函数**（阿里云函数计算 FC / 腾讯云云函数 SCF，
+两家都有长期免费额度）—— 成功率与"本机在国内跑"同级，且完全无状态、不用买任何存储：
+
+```bash
+npm run build:serverless      # 打出可直接上传的 zip（约 3 MB）
+node tools/verify-serverless.mjs   # 部署前自检：真抓一遍但不发送
+```
+
+完整步骤（含环境变量、定时触发器、两种模式、排查表）见
+[deploy/serverless/README.md](deploy/serverless/README.md)。
+
+> 两种模式：`MODE=window`（窗口 15 分钟 + 每 10 分钟触发 → 近实时）、
+> `MODE=digest`（24 小时窗口 + 每天一次 → 完整兜底，没新通知就不发）。
+> 建议两个都建：一个负责快，一个负责不漏。它不更新仓库里的网页/应用归档（那部分仍由 GitHub Actions 负责）。
 >
 > 说明：网页版与应用目前从 GitHub Pages / jsDelivr 取数据（**接收推送不受影响**）。
 > 想让"读通知"也脱离 GitHub：把 `docs/` 放到自己的服务器或国内对象存储即可，

@@ -417,9 +417,9 @@ async function cmdDigest(flags: Flags): Promise<number> {
     console.log(`▸ 日报 Markdown 已写入 ${flags.out}`);
   }
 
-  if (!flags.send) {
+  if (!flags.send || flags.dry) {
     console.log(
-      `▸ 预览模式（不会发送）· 时间窗：${digest.label} · 共 ${digest.total} 条` +
+      `${flags.dry ? '▸ 演练模式（--dry：不发送）' : '▸ 预览模式（不会发送）'} · 时间窗：${digest.label} · 共 ${digest.total} 条` +
         (silence.length ? ` · ${silence.length} 个源疑似异常` : ''),
     );
     console.log(`  推送标题：${title}`);
