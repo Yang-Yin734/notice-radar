@@ -41,6 +41,13 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+
+    testOptions {
+        unitTests {
+            // 单元测试碰到 Android 框架方法时返回默认值而不是抛 Stub!（我们只测纯逻辑）
+            isReturnDefaultValues = true
+        }
+    }
 }
 
 dependencies {
@@ -52,6 +59,8 @@ dependencies {
     implementation 'androidx.core:core-ktx:1.15.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.7'
 
-    // 单元测试（版本号比较这种纯逻辑必须有测试：它出过错，导致新版本发不出去）
+    // 单元测试（版本号比较、推送结果解析这类纯逻辑必须有测试：它们出错会让用户看到错误的结论）
     testImplementation 'junit:junit:4.13.2'
+    // 真实的 org.json（单元测试里 android.jar 的 org.json 是抛 Stub! 的桩，测不了真解析）
+    testImplementation 'org.json:json:20240303'
 }
