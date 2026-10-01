@@ -265,6 +265,54 @@ git pull 同步云端状态 ──成功──► 跑全部 6 个源（本地状
 
 > 如果你根本不想开电脑也照收通知，那这个任务可以删掉（云端 08:00 已经覆盖学院）：
 > `Unregister-ScheduledTask -TaskName 'notice-radar-daily' -Confirm:$false`
+
+## 完全不用 GitHub：在本机（或国内机器）跑
+
+**先说结论：推送本来就不经过 GitHub。** 整条链路是 `radr run` → Server酱 → 微信，
+GitHub Actions 只是"帮你定时执行 `radr run`"的免费 runner。所以把它换到任何一台机器上都行：
+
+| 跑在哪 | 成本 | 抓国内站点 | 要不要一直开机 |
+|---|---|---|---|
+| **自己的电脑**（Windows 计划任务） | 0 | ✓ 直连，没有跨境抖动 | 是（开机才推） |
+| **国内小服务器**（轻量云 ~¥10/月） | 低 | ✓✓ 最稳 | 不用 |
+| **NAS / 树莓派 / 旧手机 Termux** | 0（用现有硬件） | ✓ | 不用 |
+| Gitee 等国内托管 | 0 | ✓ | 不用，但要改造流水线，限制较多 |
+
+> 顺带解决一个老问题：GitHub 的 runner 在境外，抓国内学校站点**约每 3 次有 1 次整体不通**。
+> 换到国内机器上跑就没有这回事了 —— 学院那两个 WAF 源也不再需要 Xvfb，直接开真浏览器即可。
+
+**Windows 一键安装（本机）**：
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File tools\install-local-task.ps1
+```
+
+它会：检查 Node 版本与 `.env` 里的 `SERVERCHAN_KEY` → 装依赖 →
+把**状态放在仓库外**（默认 `%USERPROFILE%\notice-radar-data`，**完全不碰 git**）→
+注册计划任务（默认每 30 分钟抓一次 + 每天 09:00 抓学院源）→ **立刻试跑一次并打印日志尾部**。
+
+| 参数 | 作用 |
+|---|---|
+| `-IntervalMinutes 15` | 抓取间隔（默认 30 分钟） |
+| `-DataDir D:\radar-data` | 状态与日志目录（默认 `%USERPROFILE%\notice-radar-data`） |
+| `-SkipMath` | 不注册学院（WAF）源的每日任务 |
+| `-AllowBrowser` | 让主任务也抓"需要浏览器"的源（会短暂弹窗，默认关） |
+| `-Uninstall` | 卸载这两个计划任务 |
+
+```powershell
+# 看结果 / 手动跑一次 / 卸载
+Get-Content "$env:USERPROFILE\notice-radar-data\run.log" -Tail 40
+Start-ScheduledTask -TaskName notice-radar-local
+powershell -File tools\install-local-task.ps1 -Uninstall
+```
+
+> ⚠️ **别和云端同时跑**：两边各记一份"已见"状态，同一条通知会推两次。
+> 本机接管后请把仓库 Variables 里的 `PUSH_ENABLED` 改成 `false`（或直接禁用 poll / poll-math 工作流）。
+>
+> 说明：网页版与应用目前从 GitHub Pages / jsDelivr 取数据（**接收推送不受影响**）。
+> 想让"读通知"也脱离 GitHub：把 `docs/` 放到自己的服务器或国内对象存储即可，
+> 应用里的镜像地址在 `android/.../AppData.kt` 的 `DATA_URLS`、网页版在 `dataUrls`。
+
 > 想让它也能跑全量，把脚本里的 `$startProxy` 改成 `$true`（自动拉起代理再同步）。
 
 注册计划任务（每天 09:00）：
