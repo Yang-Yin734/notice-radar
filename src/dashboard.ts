@@ -812,6 +812,8 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     });
     // 回过头的用户：直接恢复上次选的学校
     if (state.school) ensureIndex().then(function () { return applySchool(state.school); });
+    // 深链：URL 带 #school 时直接打开"设置 → 学校/学院"（也方便自动化验证）
+    if (location.hash === '#school') { showView('settings'); picker.hidden = false; ensureIndex(); }
   })();
   // ---------- 数据刷新：内置/缓存永远可用，网络按镜像顺序尝试 ----------
   var KEY_DATA_CACHE = 'notice-radar:data-cache';
