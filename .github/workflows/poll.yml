@@ -93,6 +93,13 @@ jobs:
           node tools/build-schools.mjs
 
       - name: 提交状态（下次只报新增）+ 仪表盘
+        # ⚠ 必须 always()：故障判定报红时本步骤原本被跳过 → data/health.json 里
+        # 「连续失败次数 + reported」永远存不下来 → 下一次运行又从旧计数+1 再红一次，
+        # 于是跨境网络抖动期间每 10 分钟一封失败邮件（"每个故障期只红一次"的设计失效）。
+        # 带上 always() 后：报红那一轮会把计数与 reported 落盘，后续轮次自动静默到恢复；
+        # 顺带把失败轮的 data/runs.json 也留下（自适应阈值要靠它算成功率）。
+        # 抓取失败时 data/state.json 本来就不会被写，所以这里不会提交"半个状态"。
+        if: always()
         run: |
           git config user.name "notice-radar-bot"
           git config user.email "notice-radar-bot@users.noreply.github.com"
