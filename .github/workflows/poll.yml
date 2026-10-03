@@ -85,9 +85,12 @@ jobs:
       - name: 抓取其它学校（只采集不通知）
         # 全国名单里陆续接入的学校：各自的预设里都标了 collectOnly ——
         # 条目照常进归档、仪表盘与按校数据文件（docs/data/schools/<id>.json），
-        # 但不推微信、不进日报、失败也不影响主链路（所以这里非零退出只记 warning）。
-        # 主抓取失败时跳过：网络都不通，没必要再打别的学校站点。
-        if: steps.fetch.outputs.outcome == 'ok'
+        # 但不推微信、不进日报。
+        #
+        # 为什么用 always()：主抓取失败**不代表**别的学校抓不到 —— 电子科技大学在教育网，
+        # 另外几所在商用网，实测出现过"uestc 5 个源全挂、西南财经大学照常 10 条"的情况。
+        # 这几所都是 collectOnly：抓不到只记 warning，不影响主链路、不影响 CI 结论。
+        if: always()
         run: |
           shopt -s nullglob
           for cfg in config/schools/*.yaml; do
