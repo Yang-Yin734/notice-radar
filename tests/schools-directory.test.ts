@@ -15,17 +15,72 @@ const DIRECTORY = 'config/schools/directory.tsv';
 const CURATED = 'config/schools/curated.json';
 const INDEX = 'docs/data/schools/index.json';
 
-function readDirectory() {
+interface DirectoryRow {
+  code: string;
+  name: string;
+  province: string;
+  city: string;
+  level: string;
+  authority: string;
+  note: string;
+}
+
+interface CuratedSchool {
+  name: string;
+  code: string;
+  pinyin: string;
+  abbr: string;
+  city?: string;
+  province?: string;
+}
+
+interface IndexEntry {
+  id: string;
+  name: string;
+  province: string;
+  level: string;
+  city?: string;
+  code?: string;
+  status?: string;
+  file?: string;
+  units?: { id: string; name: string; count: number }[];
+  total?: number;
+  featured?: boolean;
+}
+
+function readDirectory(): { header: string[]; rows: DirectoryRow[] } {
   const text = fs.readFileSync(DIRECTORY, 'utf8').trim();
   const lines = text.split('\n');
   const header = lines[0].split('\t');
   const rows = lines.slice(1).map((line) => {
     const cells = line.split('\t');
-    const row = {};
-    header.forEach((h, i) => (row[h] = cells[i] ?? ''));
-    return row;
+    const pick = (name: string) => cells[header.indexOf(name)] ?? '';
+    return {
+      code: pick('code'),
+      name: pick('name'),
+      province: pick('province'),
+      city: pick('city'),
+      level: pick('level'),
+      authority: pick('authority'),
+      note: pick('note'),
+    };
   });
   return { header, rows };
+}
+
+function readCurated(): Record<string, CuratedSchool> {
+  const parsed = JSON.parse(fs.readFileSync(CURATED, 'utf8')) as {
+    schools: Record<string, CuratedSchool>;
+    _excluded?: Record<string, string>;
+  };
+  return parsed.schools;
+}
+
+function readIndex(): { schools: IndexEntry[]; counts: Record<string, number> } {
+  return JSON.parse(fs.readFileSync(INDEX, 'utf8')) as {
+    schools: IndexEntry[];
+    counts: Record<string, number>;
+  };
 }
 
 test('全国高校名单：字段齐全、学校标识码唯一、层次只有三种', () => {
@@ -48,7 +103,8 @@ test('全国高校名单：字段齐全、学校标识码唯一、层次只有�
     assert.ok(['本科', '专科', '成人'].includes(r.level), `${r.name} 层次异常：${r.level}`);
   }
 
-  const levels = rows.reduce((acc, r) => ((acc[r.level] = (acc[r.level] ?? 0) + 1), acc), {});
+  const levels: Record<string, number> = {};
+  for (const r of rows) levels[r.level] = (levels[r.level] ?? 0) + 1;
   assert.equal(levels['本科'], 1365, '本科数量与教育部公布的不一致');
   assert.equal(levels['专科'], 1554, '高职（专科）数量与教育部公布的不一致');
   assert.equal(levels['成人'], 248, '成人高校数量与教育部公布的不一致');
@@ -60,12 +116,12 @@ test('全国高校名单：字段齐全、学校标识码唯一、层次只有�
 test('人工维护的重点高校：都必须在官方名单里，且 id 唯一', () => {
   const { rows } = readDirectory();
   const byCode = new Map(rows.map((r) => [r.code, r]));
-  const curated = JSON.parse(fs.readFileSync(CURATED, 'utf8'));
+  const curated = readCurated();
 
-  const ids = Object.keys(curated.schools);
+  const ids = Object.keys(curated);
   assert.ok(ids.length >= 100, `重点高校只有 ${ids.length} 所，像是被误删了`);
 
-  for (const [id, s] of Object.entries(curated.schools)) {
+  for (const [id, s] of Object.entries(curated)) {
     const official = byCode.get(s.code);
     assert.ok(official, `${id}（${s.name}）的学校标识码 ${s.code} 不在官方名单里`);
     assert.equal(
@@ -77,23 +133,22 @@ test('人工维护的重点高校：都必须在官方名单里，且 id 唯一'
   }
 
   // 短 id 不能和别人的学校标识码撞车（否则目录里两条记录的 id 会重复）
-  const allIds = [...ids];
-  assert.equal(new Set(allIds).size, allIds.length, '重点高校的 id 有重复');
+  assert.equal(new Set(ids).size, ids.length, '重点高校的 id 有重复');
 });
 
 test('选校目录：包含全部学校，已接入的必须带数据文件与学院列表', () => {
   const { rows } = readDirectory();
-  const curated = JSON.parse(fs.readFileSync(CURATED, 'utf8'));
-  const index = JSON.parse(fs.readFileSync(INDEX, 'utf8'));
+  const curated = readCurated();
+  const index = readIndex();
 
   assert.equal(index.schools.length, rows.length, 'index.json 的学校数与官方名单不一致');
   assert.equal(index.counts.total, rows.length);
-  assert.equal(index.counts.featured, Object.keys(curated.schools).length, '重点高校数量与 curated.json 对不上');
+  assert.equal(index.counts.featured, Object.keys(curated).length, '重点高校数量与 curated.json 对不上');
   assert.equal(index.counts.bachelor, 1365);
   assert.equal(index.counts.vocational, 1554);
   assert.equal(index.counts.adult, 248);
 
-  const ids = new Set();
+  const ids = new Set<string>();
   for (const s of index.schools) {
     assert.ok(s.id && s.name && s.province && s.level, `目录条目缺字段：${JSON.stringify(s).slice(0, 120)}`);
     assert.ok(!ids.has(s.id), `目录里 id 重复：${s.id}`);
@@ -104,7 +159,7 @@ test('选校目录：包含全部学校，已接入的必须带数据文件与�
     }
     assert.ok(s.file && s.file.endsWith('.json'), `${s.name} 缺数据文件名`);
     assert.ok(Array.isArray(s.units) && s.units.length > 0, `${s.name} 应有学院/栏目列表`);
-    assert.ok(s.total > 0, `${s.name} 的条目数应为正`);
+    assert.ok((s.total ?? 0) > 0, `${s.name} 的条目数应为正`);
   }
 
   const active = index.schools.filter((s) => s.status === 'active');
