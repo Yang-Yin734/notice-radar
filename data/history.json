@@ -1,7 +1,19 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-01T09:51:01.790Z",
+  "updatedAt": "2026-10-03T00:13:57.223Z",
   "items": [
+    {
+      "id": "286698afdbbfeb84",
+      "sourceId": "math-jwgg",
+      "sourceName": "数学科学学院·教务公告",
+      "school": "uestc",
+      "title": "2026-2027-1学期“微积分I”、“线性代数与空间解析几何”课程答疑安排",
+      "url": "https://www.math.uestc.edu.cn/info/1043/10280.htm",
+      "date": "2026-09-30",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-03T00:13:57.223Z"
+    },
     {
       "id": "2fbaf9b38aa99cf4",
       "sourceId": "news-academic",

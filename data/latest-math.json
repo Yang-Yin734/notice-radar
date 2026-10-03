@@ -1,0 +1,344 @@
+{
+  "generatedAt": "2026-10-03T00:13:57.222Z",
+  "results": [
+    {
+      "sourceId": "math-jwgg",
+      "sourceName": "数学科学学院·教务公告",
+      "url": "https://www.math.uestc.edu.cn/tzgg1/jwgg.htm",
+      "adapter": "html-list",
+      "ok": true,
+      "error": null,
+      "status": 200,
+      "bytes": 22799,
+      "tookMs": 17016,
+      "items": [
+        {
+          "id": "286698afdbbfeb84",
+          "sourceId": "math-jwgg",
+          "sourceName": "数学科学学院·教务公告",
+          "school": "uestc",
+          "title": "2026-2027-1学期“微积分I”、“线性代数与空间解析几何”课程答疑安排",
+          "url": "https://www.math.uestc.edu.cn/info/1043/10280.htm",
+          "date": "2026-09-30",
+          "tag": null
+        },
+        {
+          "id": "c52fd4f6c243e1c6",
+          "sourceId": "math-jwgg",
+          "sourceName": "数学科学学院·教务公告",
+          "school": "uestc",
+          "title": "数学科学学院2027届优秀应届本科毕业生推免生工作实施细则",
+          "url": "https://www.math.uestc.edu.cn/info/1043/10200.htm",
+          "date": "2026-09-03",
+          "tag": null
+        },
+        {
+          "id": "4db7477301ea670c",
+          "sourceId": "math-jwgg",
+          "sourceName": "数学科学学院·教务公告",
+          "school": "uestc",
+          "title": "数学科学学院关于聘任2026-2027-1学期研究生助教（本科课程）的通知",
+          "url": "https://www.math.uestc.edu.cn/info/1043/10185.htm",
+          "date": "2026-08-27",
+          "tag": null
+        },
+        {
+          "id": "33731e865f7069a2",
+          "sourceId": "math-jwgg",
+          "sourceName": "数学科学学院·教务公告",
+          "school": "uestc",
+          "title": "数学科学学院2026-2027-1学期免听免修课程清单",
+          "url": "https://www.math.uestc.edu.cn/info/1043/10089.htm",
+          "date": "2026-07-03",
+          "tag": null
+        },
+        {
+          "id": "e261030a4dcfdc4c",
+          "sourceId": "math-jwgg",
+          "sourceName": "数学科学学院·教务公告",
+          "school": "uestc",
+          "title": "关于2025-2026-2学期举办“微积分II疑难分析讲座（三）”的通知",
+          "url": "https://www.math.uestc.edu.cn/info/1043/10028.htm",
+          "date": "2026-06-04",
+          "tag": null
+        },
+        {
+          "id": "85042fb56925a3eb",
+          "sourceId": "math-jwgg",
+          "sourceName": "数学科学学院·教务公告",
+          "school": "uestc",
+          "title": "数学科学学院2026年本科生荣誉计划（荣誉学位）证书审核情况公示",
+          "url": "https://www.math.uestc.edu.cn/info/1043/10008.htm",
+          "date": "2026-06-01",
+          "tag": null
+        },
+        {
+          "id": "f2e566fb928b84cc",
+          "sourceId": "math-jwgg",
+          "sourceName": "数学科学学院·教务公告",
+          "school": "uestc",
+          "title": "关于公布数学科学学院2027届推免工作智育成绩计算细则和科创成果类加分细则的通知",
+          "url": "https://www.math.uestc.edu.cn/info/1043/9968.htm",
+          "date": "2026-05-20",
+          "tag": null
+        },
+        {
+          "id": "33d9f2f8cefe3ffb",
+          "sourceId": "math-jwgg",
+          "sourceName": "数学科学学院·教务公告",
+          "school": "uestc",
+          "title": "关于2025-2026-2学期举办“微积分II疑难分析讲座（二）”的通知",
+          "url": "https://www.math.uestc.edu.cn/info/1043/9963.htm",
+          "date": "2026-05-14",
+          "tag": null
+        },
+        {
+          "id": "09604b68b9b2a015",
+          "sourceId": "math-jwgg",
+          "sourceName": "数学科学学院·教务公告",
+          "school": "uestc",
+          "title": "关于数学科学学院2022级本科生毕业设计（论文）答辩及后期工作的通知",
+          "url": "https://www.math.uestc.edu.cn/info/1043/9947.htm",
+          "date": "2026-05-09",
+          "tag": null
+        },
+        {
+          "id": "dc7d5f7f1c5efbf1",
+          "sourceId": "math-jwgg",
+          "sourceName": "数学科学学院·教务公告",
+          "school": "uestc",
+          "title": "2026年电子科技大学第二十六届数学建模竞赛通知",
+          "url": "https://www.math.uestc.edu.cn/info/1043/9932.htm",
+          "date": "2026-04-30",
+          "tag": null
+        },
+        {
+          "id": "ea6a437842b5d7d7",
+          "sourceId": "math-jwgg",
+          "sourceName": "数学科学学院·教务公告",
+          "school": "uestc",
+          "title": "关于2025-2026-2学期举办“微积分II疑难分析讲座（一）”的通知",
+          "url": "https://www.math.uestc.edu.cn/info/1043/9902.htm",
+          "date": "2026-04-21",
+          "tag": null
+        },
+        {
+          "id": "7611db9a25a1a48c",
+          "sourceId": "math-jwgg",
+          "sourceName": "数学科学学院·教务公告",
+          "school": "uestc",
+          "title": "关于数学科学学院2022级本科毕业设计中期检查的通知",
+          "url": "https://www.math.uestc.edu.cn/info/1043/9785.htm",
+          "date": "2026-03-23",
+          "tag": null
+        },
+        {
+          "id": "fbb4660dc2626c95",
+          "sourceId": "math-jwgg",
+          "sourceName": "数学科学学院·教务公告",
+          "school": "uestc",
+          "title": "数学科学学院关于聘任2025-2026-2学期研究生助教（本科课程）的通知",
+          "url": "https://www.math.uestc.edu.cn/info/1043/9739.htm",
+          "date": "2026-02-26",
+          "tag": null
+        },
+        {
+          "id": "88c123d07ef3c449",
+          "sourceId": "math-jwgg",
+          "sourceName": "数学科学学院·教务公告",
+          "school": "uestc",
+          "title": "数学科学学院2025-2026-2学期免听免修课程清单",
+          "url": "https://www.math.uestc.edu.cn/info/1043/9688.htm",
+          "date": "2026-01-08",
+          "tag": null
+        },
+        {
+          "id": "bb6a8dee06b3ca08",
+          "sourceId": "math-jwgg",
+          "sourceName": "数学科学学院·教务公告",
+          "school": "uestc",
+          "title": "关于数学科学学院2022级本科毕业设计初期检查的通知",
+          "url": "https://www.math.uestc.edu.cn/info/1043/9658.htm",
+          "date": "2025-12-26",
+          "tag": null
+        }
+      ]
+    },
+    {
+      "sourceId": "math-xsgz",
+      "sourceName": "数学科学学院·学生工作",
+      "url": "https://www.math.uestc.edu.cn/tzgg1/xsgz.htm",
+      "adapter": "html-list",
+      "ok": true,
+      "error": null,
+      "status": 200,
+      "bytes": 22588,
+      "tookMs": 6572,
+      "items": [
+        {
+          "id": "37e735c6e4c9e45b",
+          "sourceId": "math-xsgz",
+          "sourceName": "数学科学学院·学生工作",
+          "school": "uestc",
+          "title": "数学科学学院2026年研究生奖学金（国家、学业）评定实施细则公布",
+          "url": "https://www.math.uestc.edu.cn/info/1044/9693.htm",
+          "date": "2026-01-13",
+          "tag": null
+        },
+        {
+          "id": "bd3c0b61318d2d89",
+          "sourceId": "math-xsgz",
+          "sourceName": "数学科学学院·学生工作",
+          "school": "uestc",
+          "title": "数学科学学院关于2026年研究生国家奖学金评定的通知",
+          "url": "https://www.math.uestc.edu.cn/info/1044/10270.htm",
+          "date": "2026-09-20",
+          "tag": null
+        },
+        {
+          "id": "e5e900ae1b07e121",
+          "sourceId": "math-xsgz",
+          "sourceName": "数学科学学院·学生工作",
+          "school": "uestc",
+          "title": "数学科学学院关于2026-2027学年研究生学业奖学金评定的通知",
+          "url": "https://www.math.uestc.edu.cn/info/1044/10258.htm",
+          "date": "2026-09-17",
+          "tag": null
+        },
+        {
+          "id": "2d797ed35d4100ba",
+          "sourceId": "math-xsgz",
+          "sourceName": "数学科学学院·学生工作",
+          "school": "uestc",
+          "title": "关于开展2026-2027学年电子科技大学研究生特殊困难补助申请工作的通知",
+          "url": "https://www.math.uestc.edu.cn/info/1044/10257.htm",
+          "date": "2026-09-15",
+          "tag": null
+        },
+        {
+          "id": "ccf4ccdd6fcb8911",
+          "sourceId": "math-xsgz",
+          "sourceName": "数学科学学院·学生工作",
+          "school": "uestc",
+          "title": "关于做好2027届毕业生求职创业补贴申报工作的通知",
+          "url": "https://www.math.uestc.edu.cn/info/1044/10256.htm",
+          "date": "2026-09-15",
+          "tag": null
+        },
+        {
+          "id": "b7c7254df1596f24",
+          "sourceId": "math-xsgz",
+          "sourceName": "数学科学学院·学生工作",
+          "school": "uestc",
+          "title": "“华为杯” 第二十三届中国研究生数学建模竞赛参赛通知（电子科技大学）",
+          "url": "https://www.math.uestc.edu.cn/info/1044/10184.htm",
+          "date": "2026-08-27",
+          "tag": null
+        },
+        {
+          "id": "77bee9b25deaac0c",
+          "sourceId": "math-xsgz",
+          "sourceName": "数学科学学院·学生工作",
+          "school": "uestc",
+          "title": "数学科学学院2026年暑假学生安全须知",
+          "url": "https://www.math.uestc.edu.cn/info/1044/10119.htm",
+          "date": "2026-07-16",
+          "tag": null
+        },
+        {
+          "id": "b3a3d67d56d8020c",
+          "sourceId": "math-xsgz",
+          "sourceName": "数学科学学院·学生工作",
+          "school": "uestc",
+          "title": "2026年毕业生奖励名单公示",
+          "url": "https://www.math.uestc.edu.cn/info/1044/10018.htm",
+          "date": "2026-06-01",
+          "tag": null
+        },
+        {
+          "id": "eccf1b97a5ce4a3a",
+          "sourceId": "math-xsgz",
+          "sourceName": "数学科学学院·学生工作",
+          "school": "uestc",
+          "title": "2026年电子科技大学第二十六届数学建模竞赛通知",
+          "url": "https://www.math.uestc.edu.cn/info/1044/9930.htm",
+          "date": "2026-04-30",
+          "tag": null
+        },
+        {
+          "id": "d298aef478efdf4b",
+          "sourceId": "math-xsgz",
+          "sourceName": "数学科学学院·学生工作",
+          "school": "uestc",
+          "title": "2026年劳动节放假学生安全须知",
+          "url": "https://www.math.uestc.edu.cn/info/1044/9922.htm",
+          "date": "2026-04-27",
+          "tag": null
+        },
+        {
+          "id": "3154449738138c1b",
+          "sourceId": "math-xsgz",
+          "sourceName": "数学科学学院·学生工作",
+          "school": "uestc",
+          "title": "关于开展2025年度电子科技大学研究生“优秀竞赛团队”奖评选的通知",
+          "url": "https://www.math.uestc.edu.cn/info/1044/9870.htm",
+          "date": "2026-04-10",
+          "tag": null
+        },
+        {
+          "id": "6e09feddc2fc1fc3",
+          "sourceId": "math-xsgz",
+          "sourceName": "数学科学学院·学生工作",
+          "school": "uestc",
+          "title": "关于开展2026年电子科技大学“研究生党员标兵” 评选的通知",
+          "url": "https://www.math.uestc.edu.cn/info/1044/9861.htm",
+          "date": "2026-04-07",
+          "tag": null
+        },
+        {
+          "id": "21a5e410ae0e6c0d",
+          "sourceId": "math-xsgz",
+          "sourceName": "数学科学学院·学生工作",
+          "school": "uestc",
+          "title": "关于举办2026年数学科学学院学生党员微党课大赛的通知",
+          "url": "https://www.math.uestc.edu.cn/info/1044/9859.htm",
+          "date": "2026-04-07",
+          "tag": null
+        },
+        {
+          "id": "68b97b091ab8f428",
+          "sourceId": "math-xsgz",
+          "sourceName": "数学科学学院·学生工作",
+          "school": "uestc",
+          "title": "关于评选学生先进个人及标兵的通知",
+          "url": "https://www.math.uestc.edu.cn/info/1044/9839.htm",
+          "date": "2026-03-31",
+          "tag": null
+        },
+        {
+          "id": "d61abc9d0314b3ba",
+          "sourceId": "math-xsgz",
+          "sourceName": "数学科学学院·学生工作",
+          "school": "uestc",
+          "title": "2026年清明节假期学生安全须知",
+          "url": "https://www.math.uestc.edu.cn/info/1044/9829.htm",
+          "date": "2026-03-31",
+          "tag": null
+        }
+      ]
+    }
+  ],
+  "fresh": [
+    {
+      "id": "286698afdbbfeb84",
+      "sourceId": "math-jwgg",
+      "sourceName": "数学科学学院·教务公告",
+      "school": "uestc",
+      "title": "2026-2027-1学期“微积分I”、“线性代数与空间解析几何”课程答疑安排",
+      "url": "https://www.math.uestc.edu.cn/info/1043/10280.htm",
+      "date": "2026-09-30",
+      "tag": null,
+      "alsoIn": []
+    }
+  ]
+}
