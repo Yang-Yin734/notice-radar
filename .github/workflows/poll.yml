@@ -87,7 +87,10 @@ jobs:
         run: node src/cli.ts doctor --delay=1500 || true
 
       - name: 重建通知归档仪表盘（GitHub Pages）
-        run: node src/cli.ts dashboard
+        run: |
+          node src/cli.ts dashboard
+          # 同时重建"学校目录 + 按校拆分的数据"（网页/应用的选校功能读它）
+          node tools/build-schools.mjs
 
       - name: 提交状态（下次只报新增）+ 仪表盘
         run: |
