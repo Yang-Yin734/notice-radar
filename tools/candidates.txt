@@ -1,5 +1,17 @@
 # 候选学校教务处/本科生院首页（id 与 directory.tsv / curated.json 一致）
 # 用法：node tools/probe-batch.mjs tools/candidates.txt
+#
+# 这一轮（2026-10-03）的结果，留在文件里当记录：
+#   ✓ tju   天津大学    → oaa.tju.edu.cn/bszy/tzgg.htm（已接入，collectOnly）
+#   ✗ dlut  大连理工    → 列表页结构特殊，试不出可用选择器
+#   ✗ hnu   湖南大学    → 列表页没解析出日期
+#   ✗ jlu   吉林大学    → 列表页结构特殊
+#   ✗ scut  华南理工    → 首页抓取失败（连接层面）
+#   ✗ seu   东南大学    → 自动探测选到的是"部门简介"（已用"像通知率"挡掉）
+#   ✗ tongji 同济大学   → 列表页结构特殊
+#   ✗ xmu   厦门大学    → 自动探测选到的是详情页，不是列表
+#   ✗ whu   武汉大学    → 自动探测选到的是"学院风采"新闻（已用"像通知率"挡掉）
+#   ✗ buaa  北京航空航天 → 站点只对校园网开放（校外访问返回 69 字节"请在校园网环境下访问"），接不了
 tju     https://oaa.tju.edu.cn/
 dlut    https://teach.dlut.edu.cn/
 hnu     https://jwc.hnu.edu.cn/

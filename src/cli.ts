@@ -619,7 +619,13 @@ async function cmdRun(flags: Flags): Promise<number> {
     const kept = filterItems([r], cfg).length;
     const isNew = fresh.filter((n) => n.sourceId === r.sourceId).length;
     const mark = r.skipped ? '⏭' : r.ok ? (r.items.length === 0 ? '⚠' : '✓') : '✗';
-    console.log(`  ${mark} ${r.sourceName}：解析 ${r.items.length} → 过滤后 ${kept} → 新增 ${isNew}${r.ok ? '' : ` (${r.error})`}`);
+    // 带上 HTTP 状态与体积：云端"解析 0 条"时，只有这样才分得清"拿回了挑战页（几 KB）"
+    // 还是"页面几十 KB 但选择器不匹配"（前者是站点在挡，后者要改选择器）
+    const size = r.bytes ? `${Math.round(r.bytes / 1024)}KB` : '—';
+    const http = r.status ? `${r.status}/${size}` : size;
+    console.log(
+      `  ${mark} ${r.sourceName}：${http} 解析 ${r.items.length} → 过滤后 ${kept} → 新增 ${isNew}${r.ok ? '' : ` (${r.error})`}`,
+    );
   }
 
   // 「只采集不通知」的源：条目照常进归档/仪表盘/按校数据，但不进推送与日报

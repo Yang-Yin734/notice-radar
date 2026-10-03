@@ -236,19 +236,6 @@ test('通用 html-list：天津大学（标题在 h2 里）', () => {
   );
 });
 
-test('通用 html-list：北京航空航天大学（标题取 h5，别把日期并进标题）', () => {
-  checkListFixture(
-    'buaa',
-    'jiaowu-xszq.html',
-    {
-      id: 'jiaowu-xszq',
-      baseUrl: 'https://jiaowu.buaa.edu.cn/tzgg/xszq.htm',
-      selectors: { item: 'div.n_bt ul li', title: 'h5', link: 'a@href', date: 'i' },
-    },
-    { min: 5, urlOk: /^https:\/\/jiaowu\.buaa\.edu\.cn\// },
-  );
-});
-
 test('研究生院适配器：只认详情页链接，避免把导航项当成通知', () => {
   const html = fixture('gr-notice.html');
   const items = grAdapter.parse({ source: source({ id: 'gr-notice', adapter: 'uestc/gr' }), school: 'uestc', html });
