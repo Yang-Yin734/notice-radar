@@ -56,3 +56,60 @@ if (!version.version) {
 
 console.log(`✓ 已准备 ${INCLUDE.length} 个文件（${(bytes / 1024).toFixed(0)} KB）→ ${path.relative(process.cwd(), assetsDir)}`);
 console.log(`  内置数据：${data.items.length} 条，生成于 ${data.generatedAt}；应用版本 v${version.version}`);
+
+// ---- 选校数据：学校目录 + 每所已接入学校的数据 ----
+//
+// 为什么要打进 APK：应用设置里的「学校 / 学院」在没有网络时也要能用。
+// 只放 dashboard-data.json 的话，冷启动/断网时 bundledSchoolIndex() 直接抛异常 →
+// 界面提示"学校目录取不到"，用户以为选校功能坏了（数据其实早就发布了）。
+const schoolsSrc = path.join(docsDir, 'data', 'schools');
+const indexSrc = path.join(schoolsSrc, 'index.json');
+
+if (!fs.existsSync(indexSrc)) {
+  console.error(`缺少 ${path.relative(process.cwd(), indexSrc)}（先跑 node tools/build-schools.mjs）`);
+  process.exit(1);
+}
+
+const schoolIndex = JSON.parse(fs.readFileSync(indexSrc, 'utf8'));
+const allSchools = Array.isArray(schoolIndex.schools) ? schoolIndex.schools : [];
+const activeSchools = allSchools.filter((s) => s.status === 'active' && s.file);
+if (allSchools.length === 0) {
+  console.error('学校目录里没有任何学校');
+  process.exit(1);
+}
+if (activeSchools.length === 0) {
+  console.error('学校目录里没有已接入（status=active）的学校，应用里选校会全是"待接入"');
+  process.exit(1);
+}
+
+const schoolsOut = path.join(assetsDir, 'schools');
+fs.mkdirSync(schoolsOut, { recursive: true });
+fs.copyFileSync(indexSrc, path.join(schoolsOut, 'index.json'));
+let bytes2 = fs.statSync(indexSrc).size;
+const copied = [];
+
+for (const s of activeSchools) {
+  const src = path.join(schoolsSrc, s.file);
+  if (!fs.existsSync(src)) {
+    console.error(`目录里 ${s.name} 是 active，但缺少数据文件 ${s.file}（数据不一致，先重跑 build-schools）`);
+    process.exit(1);
+  }
+  const payload = JSON.parse(fs.readFileSync(src, 'utf8'));
+  if (!Array.isArray(payload.items) || payload.items.length === 0) {
+    console.error(`${s.file} 里没有通知条目，选中该校会是空列表`);
+    process.exit(1);
+  }
+  if (!payload.items.every((n) => n.id && n.title && n.url && n.unit !== undefined)) {
+    console.error(`${s.file} 的条目缺字段（id/title/url/unit），按学院过滤会漏通知`);
+    process.exit(1);
+  }
+  fs.copyFileSync(src, path.join(schoolsOut, s.file));
+  bytes2 += fs.statSync(src).size;
+  copied.push(s);
+}
+
+console.log(`✓ 已准备选校数据（${(bytes2 / 1024).toFixed(0)} KB）→ ${path.relative(process.cwd(), schoolsOut)}`);
+console.log(`  学校目录 ${allSchools.length} 所（已接入 ${activeSchools.length} 所，待接入 ${allSchools.length - activeSchools.length} 所）`);
+for (const s of copied) {
+  console.log(`  · ${s.name}（${s.file}）：${s.total} 条，学院/栏目 ${(s.units ?? []).length} 个`);
+}

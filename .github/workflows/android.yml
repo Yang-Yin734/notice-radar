@@ -13,6 +13,7 @@ on:
       - 'android/**'
       - 'src/dashboard.ts'
       - 'tools/prepare-android-assets.mjs'
+      - 'tools/build-schools.mjs'
       - 'tools/android-version.mjs'
       - '.github/workflows/android.yml'
 
@@ -46,8 +47,11 @@ jobs:
 
       - name: 生成应用界面与数据（随后被打包进 APK）
         run: |
-          node src/cli.ts dashboard
-          node tools/prepare-android-assets.mjs
+          # tee 到 /tmp：这一步失败时没有 Actions 日志可看（国内网络），
+          # 只能靠"失败摘要"步骤把日志发成提交评论读回来
+          node src/cli.ts dashboard 2>&1 | tee /tmp/prepare.log
+          node tools/build-schools.mjs 2>&1 | tee -a /tmp/prepare.log
+          node tools/prepare-android-assets.mjs 2>&1 | tee -a /tmp/prepare.log
 
       - name: 准备签名密钥
         run: |
@@ -113,6 +117,24 @@ jobs:
             exit 1
           }
           echo "  内置数据条数：$(unzip -p notice-radar.apk assets/data/dashboard-data.json | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>console.log(JSON.parse(s).items.length))")"
+          echo "--- 选校数据是否真的在包里（决定断网时能不能选校）---"
+          # 只放 dashboard-data.json 的话，断网冷启动时 bundledSchoolIndex() 会抛异常，
+          # 界面提示"学校目录取不到" —— 数据明明早就发布了，用户却以为选校坏了。
+          unzip -l notice-radar.apk | grep -q 'assets/data/schools/index.json' || {
+            echo "::error::APK 里没有学校目录（assets/data/schools/index.json），断网时选校功能不可用"
+            exit 1
+          }
+          SCHOOL_JSON=$(unzip -p notice-radar.apk assets/data/schools/index.json)
+          SCHOOL_SUMMARY=$(printf '%s' "$SCHOOL_JSON" | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{const j=JSON.parse(s);console.log(j.schools.length+' 所学校，已接入 '+j.schools.filter(x=>x.status==='active').length+' 所')})")
+          echo "  学校目录：$SCHOOL_SUMMARY"
+          ACTIVE_FILES=$(printf '%s' "$SCHOOL_JSON" | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{const j=JSON.parse(s);console.log(j.schools.filter(x=>x.status==='active'&&x.file).map(x=>x.file).join(' '))})")
+          for f in $ACTIVE_FILES; do
+            unzip -l notice-radar.apk | grep -q "assets/data/schools/$f" || {
+              echo "::error::已接入学校的数据文件 $f 没打进 APK，选中该校会是空列表"
+              exit 1
+            }
+          done
+          echo "✓ 选校数据已在包里：$ACTIVE_FILES"
           echo "--- 镜像数据源是否编译进代码（国内可达性）---"
           # Compose 会让方法数超过 64K，AGP 自动分 dex —— 所以要扫所有 classes*.dex
           if unzip -p notice-radar.apk 'classes*.dex' | grep -aq 'cdn.jsdelivr.net'; then
@@ -171,16 +193,25 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          # 注意：这步本身绝不能失败 —— 它失败就等于"构建失败且没有任何线索"。
+          # 上一版就栽在 grep 没匹配到行时返回 1，被默认的 set -e 直接判成步骤失败。
+          set +e
           {
             echo "Android 构建/校验失败（${{ github.sha }}）"
             echo ''
             echo '```'
             grep -E 'e: file|error:|FAILURE|What went wrong|Caused by|Unresolved|Execution failed|BUILD FAILED|::error' /tmp/gradle.log 2>/dev/null | head -40
+            echo '--- gradle.log 末尾 ---'
+            tail -60 /tmp/gradle.log 2>/dev/null || echo '（没有 /tmp/gradle.log）'
+            echo '--- prepare.log 末尾 ---'
+            tail -40 /tmp/prepare.log 2>/dev/null || echo '（没有 /tmp/prepare.log）'
             echo '--- verify ---'
-            tail -60 /tmp/verify.log 2>/dev/null
+            tail -60 /tmp/verify.log 2>/dev/null || echo '（没有 /tmp/verify.log）'
             echo '```'
-          } > /tmp/comment.md
-          gh api "repos/${{ github.repository }}/commits/${{ github.sha }}/comments" -F body=@/tmp/comment.md >/dev/null 2>&1 || true
+          } > /tmp/comment.md 2>&1
+          cat /tmp/comment.md
+          gh api "repos/${{ github.repository }}/commits/${{ github.sha }}/comments" -F body=@/tmp/comment.md \
+            || echo "::warning::提交评论发不出去（令牌权限？），详见本步骤日志"
           echo "::notice::失败摘要已作为提交评论发出"
 
       - name: 上传 APK 作为构建产物（保留 90 天）

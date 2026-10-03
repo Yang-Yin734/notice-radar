@@ -22,6 +22,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -873,6 +874,255 @@ private fun SettingsCard(title: String, content: @Composable () -> Unit) {
             Spacer(Modifier.height(10.dp))
             content()
         }
+    }
+}
+
+// ---------------------------------------------------------------- 学校 / 学院选择
+
+/**
+ * 学院 chips 的换行排版：按估算宽度贪心分行。
+ * 刻意不用 FlowRow（实验 API）：这里数据量很小、估算够用，少一个编译期风险点。
+ */
+private fun unitRows(units: List<SchoolUnit>, maxWidth: Int = 300): List<List<SchoolUnit>> {
+    val rows = mutableListOf<MutableList<SchoolUnit>>()
+    var width = 0
+    for (u in units) {
+        // 中文按 13dp/字估宽，再加左右内边距与条目数
+        val w = 30 + u.name.length * 13 + (if (u.count > 0) 26 else 0)
+        if (rows.isEmpty() || (width > 0 && width + w > maxWidth)) {
+            rows.add(mutableListOf())
+            width = 0
+        }
+        rows.last().add(u)
+        width += w + 6
+    }
+    return rows
+}
+
+/** 学校目录里的一行：校名 + 城市 + 已接入/待接入（待接入只解释，不假装能切） */
+@Composable
+private fun SchoolOptionRow(school: SchoolInfo, selected: Boolean, onClick: () -> Unit) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                if (selected) MaterialTheme.colorScheme.surfaceVariant else Color.Transparent,
+                RoundedCornerShape(10.dp),
+            )
+            .clickable { onClick() }
+            .padding(horizontal = 10.dp, vertical = 8.dp),
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                school.name,
+                fontSize = 13.5.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = if (school.active) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+            if (school.city.isNotEmpty()) {
+                Spacer(Modifier.width(6.dp))
+                Text(school.city, fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+        }
+        Text(
+            if (school.active) "已接入" + (if (school.total > 0) " · ${school.total} 条" else "") else "待接入",
+            fontSize = 11.sp,
+            color = if (school.active) Color(0xFF2F9E44) else MaterialTheme.colorScheme.onSurfaceVariant,
+        )
+    }
+}
+
+/**
+ * 设置里的「学校 / 学院」卡片，与网页端设置里那一套流程一致：
+ *   搜索学校 → 选一所（pending）→ 勾选学院（可多选，默认全不选）→ 确认切换（弹窗二次确认）。
+ *
+ * 目录与该校数据都由上层取（onNeedIndex / onSwitchSchool），这里只管界面自己的临时状态
+ * （是否展开、搜索词、待确认学校）；偏好改动立刻上抛保存，切走应用也不丢。
+ */
+@Composable
+private fun SchoolPickerCard(
+    schoolId: String,
+    schoolName: String,
+    units: Set<String>,
+    schoolIndex: List<SchoolInfo>?,
+    indexLoading: Boolean,
+    onNeedIndex: () -> Unit,
+    onUnitsChange: (Set<String>) -> Unit,
+    onSwitchSchool: (SchoolInfo) -> Unit,
+) {
+    var open by remember { mutableStateOf(false) }
+    var query by remember { mutableStateOf("") }
+    // 点目录里的学校只是"预备选定"，勾完学院再确认切换（与网页端一致）
+    var pending by remember { mutableStateOf<SchoolInfo?>(null) }
+    var asking by remember { mutableStateOf(false) }
+    var note by remember { mutableStateOf<String?>(null) }
+
+    // 学院面板优先跟着"待确认的学校"；没有待确认的就跟着当前学校（老用户也能补勾学院）
+    val viewing = pending ?: schoolIndex?.firstOrNull { it.id == schoolId }
+
+    SettingsCard(title = "学校 / 学院") {
+        Column {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Column(Modifier.weight(1f)) {
+                    Text(
+                        if (schoolId.isEmpty()) {
+                            "未选择（正在显示默认学校）"
+                        } else {
+                            "当前：$schoolName" + (if (units.isEmpty()) "（还没勾选学院）" else "（已选 ${units.size} 个学院）")
+                        },
+                        fontSize = 14.sp,
+                        color = MaterialTheme.colorScheme.onSurface,
+                    )
+                    Spacer(Modifier.height(2.dp))
+                    Text(
+                        "切换后列表只显示该校数据；学院默认全不选（勾了才显示）",
+                        fontSize = 11.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+                TextButton(onClick = {
+                    open = !open
+                    if (open) onNeedIndex()
+                }) { Text(if (open) "收起" else "选择", fontSize = 13.sp) }
+            }
+
+            if (open) {
+                Spacer(Modifier.height(8.dp))
+                OutlinedTextField(
+                    value = query,
+                    onValueChange = { query = it },
+                    singleLine = true,
+                    placeholder = { Text("搜索学校：校名 / 城市 / 拼音 / 简称", fontSize = 13.sp) },
+                    modifier = Modifier.fillMaxWidth(),
+                )
+                Spacer(Modifier.height(6.dp))
+
+                val list = schoolIndex
+                if (list == null) {
+                    Text(
+                        if (indexLoading) "正在取学校目录…" else "学校目录取不到（镜像/网络问题），稍后再试",
+                        fontSize = 12.5.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                } else {
+                    val hit = searchSchools(list, query)
+                    if (hit.isEmpty()) {
+                        Text(
+                            "没找到匹配的学校。可试试校名、城市或拼音（例如 dianzi、成都）",
+                            fontSize = 12.5.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    hit.forEach { s ->
+                        SchoolOptionRow(
+                            school = s,
+                            selected = s.id == pending?.id,
+                            onClick = {
+                                if (s.active) {
+                                    pending = s
+                                    note = "已选「${s.name}」。勾选你关心的学院，然后点下面的「确认切换」。"
+                                } else {
+                                    // 待接入的必须说清楚为什么不能选，否则用户以为应用坏了
+                                    note = "「${s.name}」还没有接入：需要有该校栏目的配置才能抓取。" +
+                                        "接入方法见仓库 docs/add-your-school.md。"
+                                }
+                            },
+                        )
+                    }
+                }
+
+                viewing?.let { s ->
+                    if (s.units.isNotEmpty()) {
+                        Spacer(Modifier.height(10.dp))
+                        Text(
+                            "${s.name} · 学院 / 栏目",
+                            fontSize = 12.5.sp,
+                            fontWeight = FontWeight.SemiBold,
+                            color = MaterialTheme.colorScheme.onSurface,
+                        )
+                        Spacer(Modifier.height(2.dp))
+                        Text("默认全不选，勾选你关心的（可多选）", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                        Spacer(Modifier.height(6.dp))
+                        unitRows(s.units).forEach { row ->
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(bottom = 6.dp),
+                            ) {
+                                row.forEach { u ->
+                                    FilterChip(
+                                        text = if (u.count > 0) "${u.name} ${u.count}" else u.name,
+                                        active = u.name in units,
+                                        onClick = {
+                                            onUnitsChange(if (u.name in units) units - u.name else units + u.name)
+                                        },
+                                    )
+                                    Spacer(Modifier.width(6.dp))
+                                }
+                            }
+                        }
+                        Row(verticalAlignment = Alignment.CenterVertically) {
+                            TextButton(onClick = { onUnitsChange(s.units.map { it.name }.toSet()) }) {
+                                Text("全选", fontSize = 12.5.sp)
+                            }
+                            TextButton(onClick = { onUnitsChange(emptySet()) }) {
+                                Text("全不选", fontSize = 12.5.sp)
+                            }
+                        }
+                    } else if (s.active) {
+                        Spacer(Modifier.height(8.dp))
+                        Text(
+                            "这所学校没有学院/栏目数据，选中后直接显示该校全部通知。",
+                            fontSize = 11.5.sp,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                }
+
+                note?.let {
+                    Spacer(Modifier.height(4.dp))
+                    Text(it, fontSize = 11.5.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+
+                val ready = pending
+                if (ready != null && ready.active) {
+                    Spacer(Modifier.height(8.dp))
+                    Button(onClick = { asking = true }, modifier = Modifier.fillMaxWidth()) {
+                        Text("确认切换到「${ready.name}」", fontSize = 13.sp)
+                    }
+                }
+            }
+        }
+    }
+
+    // 二次确认：切换会立刻换掉整个列表，不能点一下就当切了
+    val target = pending
+    if (asking && target != null) {
+        AlertDialog(
+            onDismissRequest = { asking = false },
+            title = { Text("切换到「${target.name}」？", fontSize = 15.sp) },
+            text = {
+                val unitText = if (units.isEmpty()) {
+                    "（还没勾选学院，列表会提示你先勾选）"
+                } else {
+                    "（已选 ${units.size} 个学院：${units.joinToString("、")}）"
+                }
+                Text("将立即刷新为该学校的通知" + unitText, fontSize = 13.sp)
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    asking = false
+                    onSwitchSchool(target)
+                    pending = null
+                    note = null
+                    open = false
+                    query = ""
+                }) { Text("确认切换") }
+            },
+            dismissButton = {
+                TextButton(onClick = { asking = false }) { Text("取消") }
+            },
+        )
     }
 }
 
