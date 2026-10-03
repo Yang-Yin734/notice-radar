@@ -7,7 +7,7 @@ import java.io.BufferedReader
 import java.net.HttpURLConnection
 import java.net.URL
 
-/** 一条通知。字段与网页版 dashboard-data.json 对齐。 */
+/** 一条通知。字段与网页版 dashboard-data.json 对齐（unit 只在按校数据里出现）。 */
 data class Notice(
     val id: String,
     val title: String,
@@ -17,6 +17,7 @@ data class Notice(
     val sourceId: String,
     val sourceName: String,
     val firstSeenAt: String,
+    val unit: String? = null,
 )
 
 data class SourceStat(val sourceId: String, val sourceName: String, val count: Int)
@@ -124,6 +125,44 @@ fun parseSchoolPayload(json: String): Pair<Int, List<String>>? {
     }
 }
 
+/**
+ * 条目属于哪个学院/栏目：数据里带 unit 就用它，否则按源名「教务处·重要公告」取前缀。
+ * 与网页版 unitOf() 同一套规则 —— 两边过滤结果必须一致，否则用户会以为应用"漏通知"。
+ */
+fun unitOf(n: Notice): String {
+    val explicit = n.unit
+    if (!explicit.isNullOrEmpty()) return explicit
+    return n.sourceName.substringBefore("·").ifEmpty { "其它" }
+}
+
+/**
+ * 列表过滤（与网页版 visible() 同一套规则）。
+ *
+ * 刻意做成**纯函数**（只吃数据、不碰界面与网络），这样"选了学校却什么都看不到"这类
+ * 最容易被用户当成 bug 的行为，能被 JVM 单测直接钉住：
+ *   - 没主动选过学校（schoolId 为空）→ 照旧全部显示，老用户不受影响；
+ *   - 选过学校但一个学院都没勾 → **什么都不显示**（界面会提示"请先勾选学院"），
+ *     这是产品要求，不能擅自"贴心地"显示全部；
+ *   - 勾了学院 → 只看勾选的那些学院/栏目。
+ */
+fun filterNotices(
+    items: List<Notice>,
+    query: String,
+    sourceFilter: String?,
+    favOnly: Boolean,
+    fav: Set<String>,
+    schoolId: String,
+    units: Set<String>,
+): List<Notice> {
+    val q = query.trim().lowercase()
+    return items.filter { n ->
+        (!favOnly || n.id in fav) &&
+            (sourceFilter == null || n.sourceId == sourceFilter) &&
+            (schoolId.isEmpty() || (units.isNotEmpty() && unitOf(n) in units)) &&
+            (q.isEmpty() || (n.title + " " + (n.tag ?: "") + " " + n.sourceName).lowercase().contains(q))
+    }
+}
+
 /** Server酱：微信扫码授权 + 关注服务号的入口（SendKey 在那里拿） */
 const val SERVERCHAN_URL = "https://sct.ftqq.com"
 
@@ -201,6 +240,7 @@ object Json {
                     sourceId = n.optString("sourceId"),
                     sourceName = n.optString("sourceName"),
                     firstSeenAt = n.optString("firstSeenAt"),
+                    unit = n.optString("unit").ifEmpty { null },
                 )
             }
             if (items.isEmpty()) {
@@ -285,30 +325,82 @@ class Store(private val ctx: Context) {
         get() = prefs.getString("schoolId", "") ?: ""
         set(value) = prefs.edit().putString("schoolId", value).apply()
 
+    /**
+     * 已选学校的数据文件名（如 uestc.json）。
+     * 单独记一份是**为了离线也能恢复**：冷启动时不必先联网取目录就知道该读哪个文件。
+     */
+    var schoolFile: String
+        get() = prefs.getString("schoolFile", "") ?: ""
+        set(value) = prefs.edit().putString("schoolFile", value).apply()
+
     /** 已勾选的学院/栏目（空集合 = 全不选，这是产品要求的默认值） */
     fun schoolUnits(): Set<String> = HashSet(prefs.getStringSet("schoolUnits", emptySet()) ?: emptySet())
 
     fun saveSchoolUnits(units: Set<String>) =
         prefs.edit().putStringSet("schoolUnits", HashSet(units)).apply()
 
-    /** 学校目录：按 DATA_URLS 的镜像顺序试，全失败返回空表（界面据此提示"取不到"） */
+    /** 学校目录：先按 DATA_URLS 的镜像顺序试，全失败就退回**内置目录**（离线也要能选校） */
     fun fetchSchoolIndex(): List<SchoolInfo> {
         for (url in schoolUrls("index.json")) {
             val raw = Net.get(url) ?: continue
             val list = parseSchoolIndex(raw)
             if (list.isNotEmpty()) return list
         }
-        return emptyList()
+        return bundledSchoolIndex()
     }
 
-    /** 拉某校的数据文件，返回（快照, 来源标签）或 null（与 refresh() 同一套镜像逻辑） */
+    /** 打包在 APK 里的学校目录（没有就返回空表，界面据此提示"取不到"） */
+    fun bundledSchoolIndex(): List<SchoolInfo> = try {
+        assets.open("data/schools/index.json").bufferedReader().use(BufferedReader::readText)
+            .let(::parseSchoolIndex)
+    } catch (e: Exception) {
+        emptyList()
+    }
+
+    /** 打包在 APK 里的某校数据（离线切换学校用） */
+    fun bundledSchool(file: String): Snapshot? = try {
+        assets.open("data/schools/$file").bufferedReader().use(BufferedReader::readText)
+            .let(Json::parseSnapshot)
+    } catch (e: Exception) {
+        null
+    }
+
+    /** 上次成功拉到的某校数据（只在文件对得上时才用，避免串校） */
+    fun cachedSchool(file: String): Snapshot? =
+        if (file.isNotEmpty() && prefs.getString("schoolFile", "") == file) {
+            prefs.getString("schoolDataJson", null)?.let(Json::parseSnapshot)
+        } else {
+            null
+        }
+
+    private fun cacheSchool(file: String, raw: String, source: String) {
+        prefs.edit()
+            .putString("schoolFile", file)
+            .putString("schoolDataJson", raw)
+            .putString("schoolSource", source)
+            .putLong("schoolAt", System.currentTimeMillis())
+            .apply()
+    }
+
+    fun schoolSource(): String = prefs.getString("schoolSource", "") ?: ""
+
+    fun schoolAt(): Long = prefs.getLong("schoolAt", 0L)
+
+    /**
+     * 拉某校的数据文件：网络（按镜像顺序）→ 本机缓存 → APK 内置。
+     * 三级兜底是刻意的：用户选了学校之后，**哪怕离线也不该突然变回默认学校的数据**。
+     */
     fun refreshSchool(file: String): Pair<Snapshot, String>? {
         if (file.isEmpty()) return null
         for (url in schoolUrls(file)) {
             val raw = Net.get(url) ?: continue
             val snap = Json.parseSnapshot(raw) ?: continue
-            return snap to labelOf(url)
+            val label = labelOf(url)
+            cacheSchool(file, raw, label)
+            return snap to label
         }
+        cachedSchool(file)?.let { return it to "本机缓存" }
+        bundledSchool(file)?.let { return it to "内置数据" }
         return null
     }
 
