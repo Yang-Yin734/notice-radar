@@ -278,6 +278,44 @@ class Store(private val ctx: Context) {
         return null
     }
 
+    // ------------------------------------------------ 选校：偏好 + 数据拉取
+
+    /** 已选学校 id（空 = 没主动选过 → 继续显示默认数据，老用户不受影响） */
+    var schoolId: String
+        get() = prefs.getString("schoolId", "") ?: ""
+        set(value) = prefs.edit().putString("schoolId", value).apply()
+
+    /** 已勾选的学院/栏目（空集合 = 全不选，这是产品要求的默认值） */
+    fun schoolUnits(): Set<String> = HashSet(prefs.getStringSet("schoolUnits", emptySet()) ?: emptySet())
+
+    fun saveSchoolUnits(units: Set<String>) =
+        prefs.edit().putStringSet("schoolUnits", HashSet(units)).apply()
+
+    /** 学校目录：按 DATA_URLS 的镜像顺序试，全失败返回空表（界面据此提示"取不到"） */
+    fun fetchSchoolIndex(): List<SchoolInfo> {
+        for (url in schoolUrls("index.json")) {
+            val raw = Net.get(url) ?: continue
+            val list = parseSchoolIndex(raw)
+            if (list.isNotEmpty()) return list
+        }
+        return emptyList()
+    }
+
+    /** 拉某校的数据文件，返回（快照, 来源标签）或 null（与 refresh() 同一套镜像逻辑） */
+    fun refreshSchool(file: String): Pair<Snapshot, String>? {
+        if (file.isEmpty()) return null
+        for (url in schoolUrls(file)) {
+            val raw = Net.get(url) ?: continue
+            val snap = Json.parseSnapshot(raw) ?: continue
+            return snap to labelOf(url)
+        }
+        return null
+    }
+
+    /** 把 dashboard-data.json 的地址换成 data/schools/<file>（与网页端同一套推导，四个镜像都能用） */
+    private fun schoolUrls(file: String): List<String> =
+        DATA_URLS.map { it.substringBefore("dashboard-data.json") + "data/schools/" + file }
+
     fun remoteVersion(): String? {
         for (url in VERSION_URLS) {
             val raw = Net.get(url) ?: continue
