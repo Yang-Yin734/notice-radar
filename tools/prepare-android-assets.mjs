@@ -77,6 +77,12 @@ if (allSchools.length === 0) {
   console.error('学校目录里没有任何学校');
   process.exit(1);
 }
+// 全国名单是 3167 所（2025 版）。这里卡一个下限，防止"目录被截断/生成失败"却照常出包，
+// 装出来变成"只有十几所学校可选"还查不出原因。教育部名单只会缓慢增长，2500 是安全下限。
+if (allSchools.length < 2500) {
+  console.error(`学校目录只有 ${allSchools.length} 所，远少于全国名单（约 3167 所），先查 tools/build-schools.mjs`);
+  process.exit(1);
+}
 if (activeSchools.length === 0) {
   console.error('学校目录里没有已接入（status=active）的学校，应用里选校会全是"待接入"');
   process.exit(1);

@@ -301,7 +301,8 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
         <button class="iconbtn" id="school-pick">选择</button>
       </div>
       <div id="school-picker" hidden>
-        <input id="school-search" placeholder="搜索学校：校名 / 城市 / 拼音 / 简称（如 dianzi、成都）" autocomplete="off">
+        <input id="school-search" placeholder="搜索学校：校名 / 省份 / 城市（如 成都、电子科技）" autocomplete="off">
+        <div id="school-count" class="hint" style="margin:6px 0 2px"></div>
         <div id="school-list"></div>
         <div id="unit-box" hidden>
           <div class="row">
@@ -695,28 +696,56 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
       });
     });
   }
+  /**
+   * 排序：已接入 → 重点（人工挑选的 152 所）→ 本科 → 专科 → 成人 → 校名。
+   * 名单有 3167 所，不排序的话搜「大学」得到的是官方名单顺序（按省份），很难用。
+   */
+  function schoolRank(s) {
+    var level = s.level === '本科' ? 0 : s.level === '专科' ? 1 : 2;
+    return (s.status === 'active' ? 0 : 1) * 1000 + (s.featured ? 0 : 1) * 100 + level * 10;
+  }
+  function schoolSort(a, b) {
+    var d = schoolRank(a) - schoolRank(b);
+    return d !== 0 ? d : String(a.name).localeCompare(String(b.name), 'zh');
+  }
+  /** 命中校名 / 省份 / 城市 / 拼音 / 简称 / 学校标识码 */
+  function schoolMatches(s, qq) {
+    return [s.name, s.province, s.city, s.pinyin, s.abbr, s.code].some(function (v) {
+      return String(v == null ? '' : v).toLowerCase().indexOf(qq) >= 0;
+    });
+  }
   function renderSchoolList(q) {
     var list = document.getElementById('school-list');
+    var countEl = document.getElementById('school-count');
     if (!list) return;
     var all = (schoolIndex && schoolIndex.schools) || [];
     var qq = String(q || '').trim().toLowerCase();
-    var hit = all.filter(function (s) {
-      if (!qq) return s.status === 'active'; // 没输关键词时只给"已接入"的，避免长篇目录
-      return [s.name, s.city, s.pinyin, s.abbr].some(function (v) {
-        return String(v || '').toLowerCase().indexOf(qq) >= 0;
-      });
-    }).sort(function (a, b) { return (a.status === 'active' ? 0 : 1) - (b.status === 'active' ? 0 : 1); }).slice(0, 40);
+    // 没输关键词时只给「已接入 + 重点高校」：3167 所全列出来既慢又没用
+    var pool = qq
+      ? all.filter(function (s) { return schoolMatches(s, qq); })
+      : all.filter(function (s) { return s.status === 'active' || s.featured; });
+    var hit = pool.slice().sort(schoolSort);
+    var activeCount = 0;
+    for (var i = 0; i < all.length; i++) if (all[i].status === 'active') activeCount++;
+    if (countEl) {
+      countEl.textContent = qq
+        ? '匹配 ' + hit.length + ' 所' + (hit.length > 40 ? '（只显示前 40 所，继续输入可缩小范围）' : '')
+        : '全国共 ' + all.length + ' 所高校（已接入 ' + activeCount + ' 所）· 直接搜校名 / 省份 / 城市';
+    }
+    hit = hit.slice(0, 40);
 
     if (!hit.length) {
-      list.innerHTML = '<p class="hint">没找到匹配的学校。可试试校名、城市或拼音（例如 dianzi、成都）。</p>';
+      list.innerHTML = '<p class="hint">没找到匹配的学校。可试试校名、省份或城市（例如 成都、电子科技）。</p>';
       return;
     }
     list.innerHTML = hit.map(function (s) {
       var active = s.status === 'active';
+      var where = [s.province, s.city].filter(Boolean).join(' · ');
+      var level = s.level === '本科' ? '' : '<span style="opacity:.7">' + esc(s.level) + '</span> ';
       return '<button data-school="' + esc(s.id) + '" style="display:block;width:100%;text-align:left;' +
         'margin:5px 0;padding:8px 10px;border-radius:10px;border:1px solid var(--line,#8884);' +
-        'background:transparent;opacity:' + (active ? '1' : '.55') + ';cursor:pointer;color:inherit">' +
-        '<b>' + esc(s.name) + '</b> <span style="opacity:.7">' + esc(s.city || '') + '</span> ' +
+        'background:transparent;opacity:' + (active ? '1' : '.75') + ';cursor:pointer;color:inherit">' +
+        '<b>' + esc(s.name) + '</b> ' + level + '<span style="opacity:.7">' + esc(where) + '</span> ' +
         (active
           ? '<span style="color:#2f9e44">已接入' + (s.total ? ' · ' + s.total + ' 条' : '') + '</span>'
           : '<span style="opacity:.7">待接入</span>') +
@@ -730,12 +759,32 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     var el = document.getElementById('school-note');
     if (el) el.textContent = text || '';
   }
+  function hideConfirm() {
+    var btn = document.getElementById('school-confirm');
+    if (btn) btn.hidden = true;
+  }
+  /**
+   * 还没接入的学校：说清原因，并给一条带校名预填的「申请接入」直达链接。
+   * 全国名单里有 3166 所还没接入 —— 与其让用户干看着，不如让需求直接变成 issue。
+   */
+  function showRequestNote(s) {
+    state.pendingSchool = null;
+    hideConfirm();
+    renderUnitChips(null);
+    var el = document.getElementById('school-note');
+    if (!el) return;
+    var url = 'https://github.com/Yang-Yin734/notice-radar/issues/new?template=adapter-request.yml' +
+      '&title=' + encodeURIComponent('[adapter] ' + s.name) + '&school=' + encodeURIComponent(s.name);
+    el.innerHTML =
+      esc('「' + s.name + '」还没有接入：需要有该校栏目的选择器配置才能抓取。') +
+      '<a href="' + url + '" target="_blank" rel="noopener" style="margin-left:6px">申请接入这所学校 ›</a>' +
+      '<br><span style="opacity:.8">接入方法见 docs/add-your-school.md —— 大多数站点一段 YAML 就行，欢迎直接提 PR。</span>';
+  }
   function chooseSchool(id) {
     var s = schoolById(id);
     if (!s) return;
     if (s.status !== 'active') {
-      note('「' + s.name + '」还没有接入：需要有该校栏目的选择器配置才能抓取。' +
-        '接入方法见 docs/add-your-school.md（欢迎按流程提 PR，登记到 registry.json 即可）。');
+      showRequestNote(s);
       return;
     }
     state.pendingSchool = id;

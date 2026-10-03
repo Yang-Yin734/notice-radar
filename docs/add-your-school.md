@@ -67,6 +67,21 @@ sources:
     exclude: [招标, 采购, 中标]
 ```
 
+### 学校 id 怎么定（全国名单已经在了）
+
+`school:` 必须是 `config/schools/directory.tsv`（教育部《全国高等学校名单》，3167 所）里某所学校的 **id**：
+
+- 名单里**没给短 id** 的学校（绝大多数），id 就是**学校标识码**（10 位数字，例如四川大学 `4151010610`）→
+  写 `school: 4151010610`，配置文件就叫 `config/schools/4151010610.yaml`；
+- 想用更好记的短 id（像电子科技大学的 `uestc`），先往 `config/schools/curated.json` 的 `schools` 里加一条
+  （`code` 必须与名单一致，可顺手补 `pinyin` / `abbr`，让拼音与简称也能搜到），再用这个短 id 命名配置文件。
+
+**别改已有学校的 id**：数据文件名（`docs/data/schools/<id>.json`）与用户本机记住的"我选了哪所学校"
+用的都是它 —— 改了老用户的选择就失效（这就是电子科技大学一直叫 `uestc` 的原因）。
+
+抓过一轮之后，`tools/build-schools.mjs` 会按真实抓到的数据把这所学校自动标成 `active` 并生成数据文件，
+**不需要手工改状态**。名单的列含义、刷新方式与核对流程见 [config/schools/README.md](../config/schools/README.md)。
+
 ## 第 3 步：自检
 
 ```bash

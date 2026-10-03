@@ -1,0 +1,1224 @@
+{
+  "_readme": "人工维护：给重点高校一个短 id（数据文件名与用户偏好都用它）与拼音/简称检索词。学校标识码、省、市、层次以 config/schools/directory.tsv（教育部官方名单）为准，这里不重复维护。不在本表里的学校，id 就等于学校标识码。",
+  "_excluded": {
+    "国防科技大学": "军校。教育部《全国高等学校名单》不含军队院校（那是另一套名单），所以官方名单里没有它；要做的话得另找来源，不能编一个标识码进来。"
+  },
+  "schools": {
+    "uestc": {
+      "name": "电子科技大学",
+      "code": "4151010614",
+      "city": "成都市",
+      "province": "四川省",
+      "pinyin": "dianzikejidaxue",
+      "abbr": "dzkjdx"
+    },
+    "tsinghua": {
+      "name": "清华大学",
+      "code": "4111010003",
+      "city": "",
+      "province": "北京市",
+      "pinyin": "qinghuadaxue",
+      "abbr": "qhdx"
+    },
+    "pku": {
+      "name": "北京大学",
+      "code": "4111010001",
+      "city": "",
+      "province": "北京市",
+      "pinyin": "beijingdaxue",
+      "abbr": "bjdx"
+    },
+    "ruc": {
+      "name": "中国人民大学",
+      "code": "4111010002",
+      "city": "",
+      "province": "北京市",
+      "pinyin": "zhongguorenmindaxue",
+      "abbr": "zgrmdx"
+    },
+    "buaa": {
+      "name": "北京航空航天大学",
+      "code": "4111010006",
+      "city": "",
+      "province": "北京市",
+      "pinyin": "beijinghangkonghangtiandaxue",
+      "abbr": "bjbhhkhtdx"
+    },
+    "bit": {
+      "name": "北京理工大学",
+      "code": "4111010007",
+      "city": "",
+      "province": "北京市",
+      "pinyin": "beijingligongdaxue",
+      "abbr": "bjlgdx"
+    },
+    "bnu": {
+      "name": "北京师范大学",
+      "code": "4111010027",
+      "city": "",
+      "province": "北京市",
+      "pinyin": "beijingshifandaxue",
+      "abbr": "bjsfdx"
+    },
+    "cau": {
+      "name": "中国农业大学",
+      "code": "4111010019",
+      "city": "",
+      "province": "北京市",
+      "pinyin": "zhongguonongyedaxue",
+      "abbr": "zgnydx"
+    },
+    "bucm": {
+      "name": "北京中医药大学",
+      "code": "4111010026",
+      "city": "",
+      "province": "北京市",
+      "pinyin": "beijingzhongyiyaodaxue",
+      "abbr": "bjzyydx"
+    },
+    "bfsu": {
+      "name": "北京外国语大学",
+      "code": "4111010030",
+      "city": "",
+      "province": "北京市",
+      "pinyin": "beijingwaiguoyudaxue",
+      "abbr": "bjwgydx"
+    },
+    "uibe": {
+      "name": "对外经济贸易大学",
+      "code": "4111010036",
+      "city": "",
+      "province": "北京市",
+      "pinyin": "duiwaijingjimaoyidaxue",
+      "abbr": "dwjjmydx"
+    },
+    "cufe": {
+      "name": "中央财经大学",
+      "code": "4111010034",
+      "city": "",
+      "province": "北京市",
+      "pinyin": "zhongyangcaijingdaxue",
+      "abbr": "zycjdx"
+    },
+    "bupt": {
+      "name": "北京邮电大学",
+      "code": "4111010013",
+      "city": "",
+      "province": "北京市",
+      "pinyin": "beijingyoudiandaxue",
+      "abbr": "bjyddx"
+    },
+    "bjtu": {
+      "name": "北京交通大学",
+      "code": "4111010004",
+      "city": "",
+      "province": "北京市",
+      "pinyin": "beijingjiaotongdaxue",
+      "abbr": "bjjtdx"
+    },
+    "ustb": {
+      "name": "北京科技大学",
+      "code": "4111010008",
+      "city": "",
+      "province": "北京市",
+      "pinyin": "beijingkejidaxue",
+      "abbr": "bjkjdx"
+    },
+    "bjut": {
+      "name": "北京工业大学",
+      "code": "4111010005",
+      "city": "",
+      "province": "北京市",
+      "pinyin": "beijinggongyedaxue",
+      "abbr": "bjgydx"
+    },
+    "nankai": {
+      "name": "南开大学",
+      "code": "4112010055",
+      "city": "",
+      "province": "天津市",
+      "pinyin": "nankaidaxue",
+      "abbr": "nkdx"
+    },
+    "tju": {
+      "name": "天津大学",
+      "code": "4112010056",
+      "city": "",
+      "province": "天津市",
+      "pinyin": "tianjindaxue",
+      "abbr": "tjdx"
+    },
+    "hebut": {
+      "name": "河北工业大学",
+      "code": "4113010080",
+      "city": "天津市",
+      "province": "河北省",
+      "pinyin": "hebeigongyedaxue",
+      "abbr": "hbgydx"
+    },
+    "hit": {
+      "name": "哈尔滨工业大学",
+      "code": "4123010213",
+      "city": "哈尔滨市",
+      "province": "黑龙江省",
+      "pinyin": "haerbingongyedaxue",
+      "abbr": "hebgydx"
+    },
+    "hrbeu": {
+      "name": "哈尔滨工程大学",
+      "code": "4123010217",
+      "city": "哈尔滨市",
+      "province": "黑龙江省",
+      "pinyin": "haerbingongchengdaxue",
+      "abbr": "hebgcdx"
+    },
+    "neau": {
+      "name": "东北农业大学",
+      "code": "4123010224",
+      "city": "哈尔滨市",
+      "province": "黑龙江省",
+      "pinyin": "dongbeinongyedaxue",
+      "abbr": "dbnydx"
+    },
+    "dlut": {
+      "name": "大连理工大学",
+      "code": "4121010141",
+      "city": "大连市",
+      "province": "辽宁省",
+      "pinyin": "dalianligongdaxue",
+      "abbr": "dllgdx"
+    },
+    "neu": {
+      "name": "东北大学",
+      "code": "4121010145",
+      "city": "沈阳市",
+      "province": "辽宁省",
+      "pinyin": "dongbeidaxue",
+      "abbr": "dbdx"
+    },
+    "jlu": {
+      "name": "吉林大学",
+      "code": "4122010183",
+      "city": "长春市",
+      "province": "吉林省",
+      "pinyin": "jilindaxue",
+      "abbr": "jldx"
+    },
+    "neaucc": {
+      "name": "东北师范大学",
+      "code": "4122010200",
+      "city": "长春市",
+      "province": "吉林省",
+      "pinyin": "dongbeishifandaxue",
+      "abbr": "dbsfdx"
+    },
+    "fudan": {
+      "name": "复旦大学",
+      "code": "4131010246",
+      "city": "",
+      "province": "上海市",
+      "pinyin": "fudandaxue",
+      "abbr": "fddx"
+    },
+    "sjtu": {
+      "name": "上海交通大学",
+      "code": "4131010248",
+      "city": "",
+      "province": "上海市",
+      "pinyin": "shanghaijiaotongdaxue",
+      "abbr": "shjtdx"
+    },
+    "tongji": {
+      "name": "同济大学",
+      "code": "4131010247",
+      "city": "",
+      "province": "上海市",
+      "pinyin": "tongjidaxue",
+      "abbr": "tjdx"
+    },
+    "ecnu": {
+      "name": "华东师范大学",
+      "code": "4131010269",
+      "city": "",
+      "province": "上海市",
+      "pinyin": "huadongshifandaxue",
+      "abbr": "hdsfdx"
+    },
+    "ecust": {
+      "name": "华东理工大学",
+      "code": "4131010251",
+      "city": "",
+      "province": "上海市",
+      "pinyin": "huadongligongdaxue",
+      "abbr": "hdlgdx"
+    },
+    "dhu": {
+      "name": "东华大学",
+      "code": "4131010255",
+      "city": "",
+      "province": "上海市",
+      "pinyin": "donghuadaxue",
+      "abbr": "dhdx"
+    },
+    "shufe": {
+      "name": "上海财经大学",
+      "code": "4131010272",
+      "city": "",
+      "province": "上海市",
+      "pinyin": "shanghaicaijingdaxue",
+      "abbr": "shcjdx"
+    },
+    "shisu": {
+      "name": "上海外国语大学",
+      "code": "4131010271",
+      "city": "",
+      "province": "上海市",
+      "pinyin": "shanghaiwaiguoyudaxue",
+      "abbr": "shwgydx"
+    },
+    "nju": {
+      "name": "南京大学",
+      "code": "4132010284",
+      "city": "南京市",
+      "province": "江苏省",
+      "pinyin": "nanjingdaxue",
+      "abbr": "njdx"
+    },
+    "seu": {
+      "name": "东南大学",
+      "code": "4132010286",
+      "city": "南京市",
+      "province": "江苏省",
+      "pinyin": "dongnandaxue",
+      "abbr": "dndx"
+    },
+    "nuaa": {
+      "name": "南京航空航天大学",
+      "code": "4132010287",
+      "city": "南京市",
+      "province": "江苏省",
+      "pinyin": "nanjinghangkonghangtiandaxue",
+      "abbr": "njhkhkhtdx"
+    },
+    "njust": {
+      "name": "南京理工大学",
+      "code": "4132010288",
+      "city": "南京市",
+      "province": "江苏省",
+      "pinyin": "nanjingligongdaxue",
+      "abbr": "njlgdx"
+    },
+    "hhu": {
+      "name": "河海大学",
+      "code": "4132010294",
+      "city": "南京市",
+      "province": "江苏省",
+      "pinyin": "hehaidaxue",
+      "abbr": "hhdx"
+    },
+    "njau": {
+      "name": "南京农业大学",
+      "code": "4132010307",
+      "city": "南京市",
+      "province": "江苏省",
+      "pinyin": "nanjingnongyedaxue",
+      "abbr": "njnydx"
+    },
+    "cpu": {
+      "name": "中国药科大学",
+      "code": "4132010316",
+      "city": "南京市",
+      "province": "江苏省",
+      "pinyin": "zhongguoyaokedaxue",
+      "abbr": "zgykdx"
+    },
+    "njupt": {
+      "name": "南京邮电大学",
+      "code": "4132010293",
+      "city": "南京市",
+      "province": "江苏省",
+      "pinyin": "nanjingyoudiandaxue",
+      "abbr": "njyddx"
+    },
+    "zju": {
+      "name": "浙江大学",
+      "code": "4133010335",
+      "city": "杭州市",
+      "province": "浙江省",
+      "pinyin": "zhejiangdaxue",
+      "abbr": "zjdx"
+    },
+    "hdu": {
+      "name": "杭州电子科技大学",
+      "code": "4133010336",
+      "city": "杭州市",
+      "province": "浙江省",
+      "pinyin": "hangzhoudianzikejidaxue",
+      "abbr": "hzdzkjdx"
+    },
+    "zjut": {
+      "name": "浙江工业大学",
+      "code": "4133010337",
+      "city": "杭州市",
+      "province": "浙江省",
+      "pinyin": "zhejianggongyedaxue",
+      "abbr": "zjgydx"
+    },
+    "ustc": {
+      "name": "中国科学技术大学",
+      "code": "4134010358",
+      "city": "合肥市",
+      "province": "安徽省",
+      "pinyin": "zhongguokexuejishudaxue",
+      "abbr": "zgkxjsdx"
+    },
+    "hfut": {
+      "name": "合肥工业大学",
+      "code": "4134010359",
+      "city": "合肥市",
+      "province": "安徽省",
+      "pinyin": "hefeigongyedaxue",
+      "abbr": "hfgydx"
+    },
+    "ahu": {
+      "name": "安徽大学",
+      "code": "4134010357",
+      "city": "合肥市",
+      "province": "安徽省",
+      "pinyin": "anhuidaxue",
+      "abbr": "ahdx"
+    },
+    "xmu": {
+      "name": "厦门大学",
+      "code": "4135010384",
+      "city": "厦门市",
+      "province": "福建省",
+      "pinyin": "xiamendaxue",
+      "abbr": "xmdx"
+    },
+    "fzu": {
+      "name": "福州大学",
+      "code": "4135010386",
+      "city": "福州市",
+      "province": "福建省",
+      "pinyin": "fuzhoudaxue",
+      "abbr": "fzdx"
+    },
+    "fjtcm": {
+      "name": "福建中医药大学",
+      "code": "4135010393",
+      "city": "福州市",
+      "province": "福建省",
+      "pinyin": "fujianzhongyiyaodaxue",
+      "abbr": "fjzyydx"
+    },
+    "jnu": {
+      "name": "暨南大学",
+      "code": "4144010559",
+      "city": "广州市",
+      "province": "广东省",
+      "pinyin": "jinandaxue",
+      "abbr": "jndx"
+    },
+    "scut": {
+      "name": "华南理工大学",
+      "code": "4144010561",
+      "city": "广州市",
+      "province": "广东省",
+      "pinyin": "huananligongdaxue",
+      "abbr": "hnlgdx"
+    },
+    "sysu": {
+      "name": "中山大学",
+      "code": "4144010558",
+      "city": "广州市",
+      "province": "广东省",
+      "pinyin": "zhongshandaxue",
+      "abbr": "zsdx"
+    },
+    "scau": {
+      "name": "华南农业大学",
+      "code": "4144010564",
+      "city": "广州市",
+      "province": "广东省",
+      "pinyin": "huanannongyedaxue",
+      "abbr": "hnnydx"
+    },
+    "gdut": {
+      "name": "广东工业大学",
+      "code": "4144011845",
+      "city": "广州市",
+      "province": "广东省",
+      "pinyin": "guangdonggongyedaxue",
+      "abbr": "gdgydx"
+    },
+    "szu": {
+      "name": "深圳大学",
+      "code": "4144010590",
+      "city": "深圳市",
+      "province": "广东省",
+      "pinyin": "shenzhendaxue",
+      "abbr": "szdx"
+    },
+    "sustech": {
+      "name": "南方科技大学",
+      "code": "4144014325",
+      "city": "深圳市",
+      "province": "广东省",
+      "pinyin": "nanfangkejidaxue",
+      "abbr": "nfkjdx"
+    },
+    "hust": {
+      "name": "华中科技大学",
+      "code": "4142010487",
+      "city": "武汉市",
+      "province": "湖北省",
+      "pinyin": "huazhongkejidaxue",
+      "abbr": "hzkjdx"
+    },
+    "whu": {
+      "name": "武汉大学",
+      "code": "4142010486",
+      "city": "武汉市",
+      "province": "湖北省",
+      "pinyin": "wuhandaxue",
+      "abbr": "whdx"
+    },
+    "cug": {
+      "name": "中国地质大学（武汉）",
+      "code": "4142010491",
+      "city": "武汉市",
+      "province": "湖北省",
+      "pinyin": "zhongguodizhidaxue",
+      "abbr": "zgdzdx"
+    },
+    "ccnu": {
+      "name": "华中师范大学",
+      "code": "4142010511",
+      "city": "武汉市",
+      "province": "湖北省",
+      "pinyin": "huazhongshifandaxue",
+      "abbr": "hzsfdx"
+    },
+    "wut": {
+      "name": "武汉理工大学",
+      "code": "4142010497",
+      "city": "武汉市",
+      "province": "湖北省",
+      "pinyin": "wuhanligongdaxue",
+      "abbr": "whlgdx"
+    },
+    "znufe": {
+      "name": "中南财经政法大学",
+      "code": "4142010520",
+      "city": "武汉市",
+      "province": "湖北省",
+      "pinyin": "zhongnancaijingzhengfadaxue",
+      "abbr": "zncjzfdx"
+    },
+    "hbut": {
+      "name": "湖北工业大学",
+      "code": "4142010500",
+      "city": "武汉市",
+      "province": "湖北省",
+      "pinyin": "hubeigongyedaxue",
+      "abbr": "hbgydx"
+    },
+    "csu": {
+      "name": "中南大学",
+      "code": "4143010533",
+      "city": "长沙市",
+      "province": "湖南省",
+      "pinyin": "zhongnandaxue",
+      "abbr": "zndx"
+    },
+    "hnu": {
+      "name": "湖南大学",
+      "code": "4143010532",
+      "city": "长沙市",
+      "province": "湖南省",
+      "pinyin": "hunandaxue",
+      "abbr": "hndx"
+    },
+    "hunnu": {
+      "name": "湖南师范大学",
+      "code": "4143010542",
+      "city": "长沙市",
+      "province": "湖南省",
+      "pinyin": "hunanshifandaxue",
+      "abbr": "hnsfdx"
+    },
+    "zzu": {
+      "name": "郑州大学",
+      "code": "4141010459",
+      "city": "郑州市",
+      "province": "河南省",
+      "pinyin": "zhengzhoudaxue",
+      "abbr": "zzdx"
+    },
+    "henu": {
+      "name": "河南大学",
+      "code": "4141010475",
+      "city": "开封市",
+      "province": "河南省",
+      "pinyin": "henandaxue",
+      "abbr": "hndx"
+    },
+    "sdu": {
+      "name": "山东大学",
+      "code": "4137010422",
+      "city": "济南市",
+      "province": "山东省",
+      "pinyin": "shandongdaxue",
+      "abbr": "sddx"
+    },
+    "ouc": {
+      "name": "中国海洋大学",
+      "code": "4137010423",
+      "city": "青岛市",
+      "province": "山东省",
+      "pinyin": "zhongguohaiyangdaxue",
+      "abbr": "zghydx"
+    },
+    "upc": {
+      "name": "中国石油大学（华东）",
+      "code": "4137010425",
+      "city": "青岛市",
+      "province": "山东省",
+      "pinyin": "zhongguoshiyoudaxue",
+      "abbr": "zgsydx"
+    },
+    "qdu": {
+      "name": "青岛大学",
+      "code": "4137011065",
+      "city": "青岛市",
+      "province": "山东省",
+      "pinyin": "qingdaodaxue",
+      "abbr": "qddx"
+    },
+    "ncu": {
+      "name": "南昌大学",
+      "code": "4136010403",
+      "city": "南昌市",
+      "province": "江西省",
+      "pinyin": "nanchangdaxue",
+      "abbr": "ncdx"
+    },
+    "jxufe": {
+      "name": "江西财经大学",
+      "code": "4136010421",
+      "city": "南昌市",
+      "province": "江西省",
+      "pinyin": "jiangxicaijingdaxue",
+      "abbr": "jxcjdx"
+    },
+    "cqc": {
+      "name": "重庆大学",
+      "code": "4150010611",
+      "city": "",
+      "province": "重庆市",
+      "pinyin": "chongqingdaxue",
+      "abbr": "cqdx"
+    },
+    "swu": {
+      "name": "西南大学",
+      "code": "4150010635",
+      "city": "",
+      "province": "重庆市",
+      "pinyin": "xinandidaxue",
+      "abbr": "xndx"
+    },
+    "cqut": {
+      "name": "重庆理工大学",
+      "code": "4150011660",
+      "city": "",
+      "province": "重庆市",
+      "pinyin": "chongqingligongdaxue",
+      "abbr": "cqlgdx"
+    },
+    "scu": {
+      "name": "四川大学",
+      "code": "4151010610",
+      "city": "成都市",
+      "province": "四川省",
+      "pinyin": "sichuandaxue",
+      "abbr": "scdx"
+    },
+    "swjtu": {
+      "name": "西南交通大学",
+      "code": "4151010613",
+      "city": "成都市",
+      "province": "四川省",
+      "pinyin": "xinanjiaotongdaxue",
+      "abbr": "xnjtdx"
+    },
+    "swufe": {
+      "name": "西南财经大学",
+      "code": "4151010651",
+      "city": "成都市",
+      "province": "四川省",
+      "pinyin": "xinandacaijingdaxue",
+      "abbr": "xndcjdx"
+    },
+    "cdut": {
+      "name": "成都理工大学",
+      "code": "4151010616",
+      "city": "成都市",
+      "province": "四川省",
+      "pinyin": "chengduligongdaxue",
+      "abbr": "cdlgdx"
+    },
+    "sicau": {
+      "name": "四川农业大学",
+      "code": "4151010626",
+      "city": "雅安市",
+      "province": "四川省",
+      "pinyin": "sichuannongyedaxue",
+      "abbr": "scnydx"
+    },
+    "xidian": {
+      "name": "西安电子科技大学",
+      "code": "4161010701",
+      "city": "西安市",
+      "province": "陕西省",
+      "pinyin": "xidiandianzikejidaxue",
+      "abbr": "xddzkjdx"
+    },
+    "xjtu": {
+      "name": "西安交通大学",
+      "code": "4161010698",
+      "city": "西安市",
+      "province": "陕西省",
+      "pinyin": "xianjiaotongdaxue",
+      "abbr": "xajtdx"
+    },
+    "nwpu": {
+      "name": "西北工业大学",
+      "code": "4161010699",
+      "city": "西安市",
+      "province": "陕西省",
+      "pinyin": "xibeigongyedaxue",
+      "abbr": "xbgydx"
+    },
+    "nwu": {
+      "name": "西北大学",
+      "code": "4161010697",
+      "city": "西安市",
+      "province": "陕西省",
+      "pinyin": "xibeidaxue",
+      "abbr": "xbdx"
+    },
+    "snnu": {
+      "name": "陕西师范大学",
+      "code": "4161010718",
+      "city": "西安市",
+      "province": "陕西省",
+      "pinyin": "shanxishifandaxue",
+      "abbr": "sxsfdx"
+    },
+    "chd": {
+      "name": "长安大学",
+      "code": "4161010710",
+      "city": "西安市",
+      "province": "陕西省",
+      "pinyin": "changanndaxue",
+      "abbr": "cadx"
+    },
+    "lzu": {
+      "name": "兰州大学",
+      "code": "4162010730",
+      "city": "兰州市",
+      "province": "甘肃省",
+      "pinyin": "lanzhoudaxue",
+      "abbr": "lzdx"
+    },
+    "xjau": {
+      "name": "新疆大学",
+      "code": "4165010755",
+      "city": "乌鲁木齐市",
+      "province": "新疆维吾尔自治区",
+      "pinyin": "xinjiangdaxue",
+      "abbr": "xjdx"
+    },
+    "ynu": {
+      "name": "云南大学",
+      "code": "4153010673",
+      "city": "昆明市",
+      "province": "云南省",
+      "pinyin": "yunnandaxue",
+      "abbr": "yndx"
+    },
+    "kmust": {
+      "name": "昆明理工大学",
+      "code": "4153010674",
+      "city": "昆明市",
+      "province": "云南省",
+      "pinyin": "kunmingligongdaxue",
+      "abbr": "kmlgdx"
+    },
+    "gzu": {
+      "name": "贵州大学",
+      "code": "4152010657",
+      "city": "贵阳市",
+      "province": "贵州省",
+      "pinyin": "guizhoudaxue",
+      "abbr": "gzdx"
+    },
+    "gxu": {
+      "name": "广西大学",
+      "code": "4145010593",
+      "city": "南宁市",
+      "province": "广西壮族自治区",
+      "pinyin": "guangxidaxue",
+      "abbr": "gxdx"
+    },
+    "hnu2": {
+      "name": "海南大学",
+      "code": "4146010589",
+      "city": "海口市",
+      "province": "海南省",
+      "pinyin": "hainandaxue",
+      "abbr": "hndx"
+    },
+    "nmgdx": {
+      "name": "内蒙古大学",
+      "code": "4115010126",
+      "city": "呼和浩特市",
+      "province": "内蒙古自治区",
+      "pinyin": "neimenggudaxue",
+      "abbr": "nmgdx"
+    },
+    "nxu": {
+      "name": "宁夏大学",
+      "code": "4164010749",
+      "city": "银川市",
+      "province": "宁夏回族自治区",
+      "pinyin": "ningxiadaxue",
+      "abbr": "nxdx"
+    },
+    "qhu": {
+      "name": "青海大学",
+      "code": "4163010743",
+      "city": "西宁市",
+      "province": "青海省",
+      "pinyin": "qinghaidaxue",
+      "abbr": "qhdx"
+    },
+    "xza": {
+      "name": "西藏大学",
+      "code": "4154010694",
+      "city": "拉萨市",
+      "province": "西藏自治区",
+      "pinyin": "xizangdaxue",
+      "abbr": "xzdx"
+    },
+    "swpu": {
+      "name": "西南石油大学",
+      "code": "4151010615",
+      "city": "成都市",
+      "province": "四川省",
+      "pinyin": "xinanshiyoudaxue",
+      "abbr": "xnsydx"
+    },
+    "sues": {
+      "name": "上海工程技术大学",
+      "code": "4131010856",
+      "city": "",
+      "province": "上海市",
+      "pinyin": "shanghaigongchengjishudaxue",
+      "abbr": "shgcjsdx"
+    },
+    "shu": {
+      "name": "上海大学",
+      "code": "4131010280",
+      "city": "",
+      "province": "上海市",
+      "pinyin": "shanghaidaxue",
+      "abbr": "shdx"
+    },
+    "usst": {
+      "name": "上海理工大学",
+      "code": "4131010252",
+      "city": "",
+      "province": "上海市",
+      "pinyin": "shanghailigongdaxue",
+      "abbr": "shlgdx"
+    },
+    "njtech": {
+      "name": "南京工业大学",
+      "code": "4132010291",
+      "city": "南京市",
+      "province": "江苏省",
+      "pinyin": "nanjinggongyedaxue",
+      "abbr": "njgydx"
+    },
+    "njuat": {
+      "name": "南京信息工程大学",
+      "code": "4132010300",
+      "city": "南京市",
+      "province": "江苏省",
+      "pinyin": "nanjingxinxigongchengdaxue",
+      "abbr": "njxxgcdx"
+    },
+    "jiangnan": {
+      "name": "江南大学",
+      "code": "4132010295",
+      "city": "无锡市",
+      "province": "江苏省",
+      "pinyin": "jiangnandaxue",
+      "abbr": "jndx"
+    },
+    "suda": {
+      "name": "苏州大学",
+      "code": "4132010285",
+      "city": "苏州市",
+      "province": "江苏省",
+      "pinyin": "suzhoudaxue",
+      "abbr": "szdx"
+    },
+    "yzu": {
+      "name": "扬州大学",
+      "code": "4132011117",
+      "city": "扬州市",
+      "province": "江苏省",
+      "pinyin": "yangzhoudaxue",
+      "abbr": "yzdx"
+    },
+    "ujs": {
+      "name": "江苏大学",
+      "code": "4132010299",
+      "city": "镇江市",
+      "province": "江苏省",
+      "pinyin": "jiangsudaxue",
+      "abbr": "jsdx"
+    },
+    "hznu": {
+      "name": "杭州师范大学",
+      "code": "4133010346",
+      "city": "杭州市",
+      "province": "浙江省",
+      "pinyin": "hangzhoushifandaxue",
+      "abbr": "hzsfdx"
+    },
+    "zafu": {
+      "name": "浙江农林大学",
+      "code": "4133010341",
+      "city": "杭州市",
+      "province": "浙江省",
+      "pinyin": "zhejiangnonglindaxue",
+      "abbr": "zjnldx"
+    },
+    "wzu": {
+      "name": "温州大学",
+      "code": "4133010351",
+      "city": "温州市",
+      "province": "浙江省",
+      "pinyin": "wenzhoudaxue",
+      "abbr": "wzdx"
+    },
+    "ahu2": {
+      "name": "安徽师范大学",
+      "code": "4134010370",
+      "city": "芜湖市",
+      "province": "安徽省",
+      "pinyin": "anhuishifandaxue",
+      "abbr": "ahsfdx"
+    },
+    "hfuu": {
+      "name": "合肥大学",
+      "code": "4134011059",
+      "city": "合肥市",
+      "province": "安徽省",
+      "pinyin": "hefeixueyuan",
+      "abbr": "hfxy"
+    },
+    "fafu": {
+      "name": "福建农林大学",
+      "code": "4135010389",
+      "city": "福州市",
+      "province": "福建省",
+      "pinyin": "fujiannonglindaxue",
+      "abbr": "fjnldx"
+    },
+    "jmu": {
+      "name": "集美大学",
+      "code": "4135010390",
+      "city": "厦门市",
+      "province": "福建省",
+      "pinyin": "jimeidaxue",
+      "abbr": "jmdx"
+    },
+    "gdufs": {
+      "name": "广东外语外贸大学",
+      "code": "4144011846",
+      "city": "广州市",
+      "province": "广东省",
+      "pinyin": "guangdongwaiyuwaimaodaxue",
+      "abbr": "gdwywmdx"
+    },
+    "gzhu": {
+      "name": "广州大学",
+      "code": "4144011078",
+      "city": "广州市",
+      "province": "广东省",
+      "pinyin": "guangzhoudaxue",
+      "abbr": "gzdx"
+    },
+    "scnu": {
+      "name": "华南师范大学",
+      "code": "4144010574",
+      "city": "广州市",
+      "province": "广东省",
+      "pinyin": "huananshifandaxue",
+      "abbr": "hnsfdx"
+    },
+    "dgut": {
+      "name": "东莞理工学院",
+      "code": "4144011819",
+      "city": "东莞市",
+      "province": "广东省",
+      "pinyin": "dongguanligongxueyuan",
+      "abbr": "dglgxy"
+    },
+    "guet": {
+      "name": "桂林电子科技大学",
+      "code": "4145010595",
+      "city": "桂林市",
+      "province": "广西壮族自治区",
+      "pinyin": "guilindianzikejidaxue",
+      "abbr": "gldzkjdx"
+    },
+    "gxnu": {
+      "name": "广西师范大学",
+      "code": "4145010602",
+      "city": "桂林市",
+      "province": "广西壮族自治区",
+      "pinyin": "guangxishifandaxue",
+      "abbr": "gxsfdx"
+    },
+    "hainanu": {
+      "name": "海南师范大学",
+      "code": "4146011658",
+      "city": "海口市",
+      "province": "海南省",
+      "pinyin": "hainanshifandaxue",
+      "abbr": "hnsfdx"
+    },
+    "hnust": {
+      "name": "湖南科技大学",
+      "code": "4143010534",
+      "city": "湘潭市",
+      "province": "湖南省",
+      "pinyin": "hunankejidaxue",
+      "abbr": "hnkjdx"
+    },
+    "csuft": {
+      "name": "中南林业科技大学",
+      "code": "4143010538",
+      "city": "长沙市",
+      "province": "湖南省",
+      "pinyin": "zhongnanlinyekejidaxue",
+      "abbr": "znlykjdx"
+    },
+    "hpu": {
+      "name": "河南理工大学",
+      "code": "4141010460",
+      "city": "焦作市",
+      "province": "河南省",
+      "pinyin": "henanligongdaxue",
+      "abbr": "hnlgdx"
+    },
+    "haust": {
+      "name": "河南科技大学",
+      "code": "4141010464",
+      "city": "洛阳市",
+      "province": "河南省",
+      "pinyin": "henankejidaxue",
+      "abbr": "hnkjdx"
+    },
+    "sdust": {
+      "name": "山东科技大学",
+      "code": "4137010424",
+      "city": "青岛市",
+      "province": "山东省",
+      "pinyin": "shandongkejidaxue",
+      "abbr": "sdkjdx"
+    },
+    "sdut": {
+      "name": "山东理工大学",
+      "code": "4137010433",
+      "city": "淄博市",
+      "province": "山东省",
+      "pinyin": "shandongligongdaxue",
+      "abbr": "sdlgdx"
+    },
+    "qau": {
+      "name": "青岛农业大学",
+      "code": "4137010435",
+      "city": "青岛市",
+      "province": "山东省",
+      "pinyin": "qingdaonongyedaxue",
+      "abbr": "qdnydx"
+    },
+    "tyut": {
+      "name": "太原理工大学",
+      "code": "4114010112",
+      "city": "太原市",
+      "province": "山西省",
+      "pinyin": "taiyuanligongdaxue",
+      "abbr": "tylgdx"
+    },
+    "sxu": {
+      "name": "山西大学",
+      "code": "4114010108",
+      "city": "太原市",
+      "province": "山西省",
+      "pinyin": "shanxidaxue",
+      "abbr": "sxdx"
+    },
+    "nuc": {
+      "name": "中北大学",
+      "code": "4114010110",
+      "city": "太原市",
+      "province": "山西省",
+      "pinyin": "zhongbeidaxue",
+      "abbr": "zbdx"
+    },
+    "imut": {
+      "name": "内蒙古工业大学",
+      "code": "4115010128",
+      "city": "呼和浩特市",
+      "province": "内蒙古自治区",
+      "pinyin": "neimenggugongyedaxue",
+      "abbr": "nmggydx"
+    },
+    "lntu": {
+      "name": "辽宁工程技术大学",
+      "code": "4121010147",
+      "city": "阜新市",
+      "province": "辽宁省",
+      "pinyin": "liaoninggongchengjishudaxue",
+      "abbr": "lngcjsdx"
+    },
+    "syau": {
+      "name": "沈阳农业大学",
+      "code": "4121010157",
+      "city": "沈阳市",
+      "province": "辽宁省",
+      "pinyin": "shenyangnongyedaxue",
+      "abbr": "synydx"
+    },
+    "dlnu": {
+      "name": "大连民族大学",
+      "code": "4121012026",
+      "city": "大连市",
+      "province": "辽宁省",
+      "pinyin": "dalianminzudaxue",
+      "abbr": "dlmzdx"
+    },
+    "jlau": {
+      "name": "吉林农业大学",
+      "code": "4122010193",
+      "city": "长春市",
+      "province": "吉林省",
+      "pinyin": "jilinnongyedaxue",
+      "abbr": "jlnydx"
+    },
+    "ccut": {
+      "name": "长春工业大学",
+      "code": "4122010190",
+      "city": "长春市",
+      "province": "吉林省",
+      "pinyin": "changchungongyedaxue",
+      "abbr": "ccgydx"
+    },
+    "hrbeu2": {
+      "name": "东北林业大学",
+      "code": "4123010225",
+      "city": "哈尔滨市",
+      "province": "黑龙江省",
+      "pinyin": "dongbeilinyedaxue",
+      "abbr": "dblydx"
+    },
+    "hlju": {
+      "name": "黑龙江大学",
+      "code": "4123010212",
+      "city": "哈尔滨市",
+      "province": "黑龙江省",
+      "pinyin": "heilongjiangdaxue",
+      "abbr": "hljdx"
+    },
+    "xaut": {
+      "name": "西安理工大学",
+      "code": "4161010700",
+      "city": "西安市",
+      "province": "陕西省",
+      "pinyin": "xianligongdaxue",
+      "abbr": "xalgdx"
+    },
+    "xust": {
+      "name": "西安科技大学",
+      "code": "4161010704",
+      "city": "西安市",
+      "province": "陕西省",
+      "pinyin": "xiankejidaxue",
+      "abbr": "xakjdx"
+    },
+    "xaau": {
+      "name": "西安航空学院",
+      "code": "4161011736",
+      "city": "西安市",
+      "province": "陕西省",
+      "pinyin": "xianhangkongxueyuan",
+      "abbr": "xahkxy"
+    },
+    "gsau": {
+      "name": "甘肃农业大学",
+      "code": "4162010733",
+      "city": "兰州市",
+      "province": "甘肃省",
+      "pinyin": "gansunongyedaxue",
+      "abbr": "gsnydx"
+    },
+    "lzjtu": {
+      "name": "兰州交通大学",
+      "code": "4162010732",
+      "city": "兰州市",
+      "province": "甘肃省",
+      "pinyin": "lanzhoujiaotongdaxue",
+      "abbr": "lzjtdx"
+    },
+    "nxmu": {
+      "name": "宁夏医科大学",
+      "code": "4164010752",
+      "city": "银川市",
+      "province": "宁夏回族自治区",
+      "pinyin": "ningxiayikedaxue",
+      "abbr": "nxykdx"
+    },
+    "qhu2": {
+      "name": "青海师范大学",
+      "code": "4163010746",
+      "city": "西宁市",
+      "province": "青海省",
+      "pinyin": "qinghaishifandaxue",
+      "abbr": "qhsfdx"
+    },
+    "ynau": {
+      "name": "云南农业大学",
+      "code": "4153010676",
+      "city": "昆明市",
+      "province": "云南省",
+      "pinyin": "yunnannongyedaxue",
+      "abbr": "ynnydx"
+    },
+    "gznc": {
+      "name": "贵州师范大学",
+      "code": "4152010663",
+      "city": "贵阳市",
+      "province": "贵州省",
+      "pinyin": "guizhoushifandaxue",
+      "abbr": "gzsfdx"
+    }
+  }
+}

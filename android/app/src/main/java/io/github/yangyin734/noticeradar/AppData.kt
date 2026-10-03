@@ -51,9 +51,13 @@ data class SchoolUnit(val name: String, val count: Int)
 data class SchoolInfo(
     val id: String,
     val name: String,
+    val province: String,
     val city: String,
+    val level: String,
+    val code: String,
     val pinyin: String,
     val abbr: String,
+    val featured: Boolean,
     val status: String,
     val file: String?,
     val units: List<SchoolUnit>,
@@ -61,6 +65,9 @@ data class SchoolInfo(
 ) {
     /** 只有 active 才真的能抓到通知；pending 只是目录条目，不能假装能用 */
     val active: Boolean get() = status == "active" && !file.isNullOrEmpty()
+
+    /** 展示用位置：「四川省 · 成都市」（直辖市与成人高校可能没有城市） */
+    val where: String get() = listOf(province, city).filter { it.isNotEmpty() }.joinToString(" · ")
 }
 
 /**
@@ -83,9 +90,14 @@ fun parseSchoolIndex(json: String): List<SchoolInfo> {
             SchoolInfo(
                 id = id,
                 name = o.optString("name"),
+                province = o.optString("province"),
                 city = o.optString("city"),
+                level = o.optString("level"),
+                // 短 id 的学校会在目录里单列 code；其余学校的 id 就是学校标识码
+                code = o.optString("code").ifEmpty { id },
                 pinyin = o.optString("pinyin"),
                 abbr = o.optString("abbr"),
+                featured = o.optBoolean("featured"),
                 status = o.optString("status"),
                 file = o.optString("file").ifEmpty { null },
                 units = units,
@@ -98,16 +110,38 @@ fun parseSchoolIndex(json: String): List<SchoolInfo> {
 }
 
 /**
- * 按关键词筛选学校：命中校名 / 城市 / 拼音 / 简称；已接入的永远排在前面。
- * 关键词为空时**只给已接入的**（否则一打开就是 150 多所的长列表，很难用）。
+ * 按关键词筛选学校：命中校名 / 省份 / 城市 / 拼音 / 简称 / 学校标识码；
+ * 已接入 → 重点高校 → 本科 → 专科 → 成人，再按校名。
+ *
+ * 关键词为空时给的是「已接入 + 重点高校」，**不是全部**：全国名单有 3167 所，
+ * 一次列出来既慢又没法用（用户是来搜的，不是来翻目录的）。
  */
 fun searchSchools(list: List<SchoolInfo>, query: String, limit: Int = 40): List<SchoolInfo> {
     val q = query.trim().lowercase()
     val hit = list.filter { s ->
-        if (q.isEmpty()) return@filter s.active
-        listOf(s.name, s.city, s.pinyin, s.abbr).any { it.lowercase().contains(q) }
+        if (q.isEmpty()) return@filter s.active || s.featured
+        listOf(s.name, s.province, s.city, s.pinyin, s.abbr, s.code).any { it.lowercase().contains(q) }
     }
-    return hit.sortedWith(compareBy({ if (it.active) 0 else 1 }, { it.name })).take(limit)
+    return hit
+        .sortedWith(
+            compareBy(
+                { if (it.active) 0 else 1 },
+                { if (it.featured) 0 else 1 },
+                { when (it.level) { "本科" -> 0; "专科" -> 1; else -> 2 } },
+                { it.name },
+            ),
+        )
+        .take(limit)
+}
+
+/**
+ * 「申请接入这所学校」的直达 issue 链接（校名预填）。
+ * 全国名单里绝大多数学校还没接入，与其让用户干看着，不如让需求一键变成 issue。
+ */
+fun requestIssueUrl(schoolName: String): String {
+    val title = java.net.URLEncoder.encode("[adapter] $schoolName", "UTF-8")
+    val school = java.net.URLEncoder.encode(schoolName, "UTF-8")
+    return "https://github.com/$REPO_SLUG/issues/new?template=adapter-request.yml&title=$title&school=$school"
 }
 
 /** 解析某校的数据文件，返回 (条目数, 学院名列表) —— 切换后用来确认真拿到了数据 */
@@ -267,9 +301,15 @@ object Net {
             connectTimeout = timeoutMs
             readTimeout = timeoutMs
             setRequestProperty("Accept", "application/json")
+            // 全国学校目录有 500 KB 上下：镜像站都支持 gzip，不声明的话手机要下全量。
+            // 只在自己声明了、且响应确实带 Content-Encoding: gzip 时才解压，避免解错。
+            setRequestProperty("Accept-Encoding", "gzip")
             setRequestProperty("User-Agent", "notice-radar-app")
         }
-        val text = conn.inputStream.bufferedReader().use(BufferedReader::readText)
+        val raw = conn.inputStream
+        val gzipped = conn.contentEncoding?.contains("gzip", ignoreCase = true) == true
+        val stream = if (gzipped) java.util.zip.GZIPInputStream(raw) else raw
+        val text = stream.bufferedReader().use(BufferedReader::readText)
         conn.disconnect()
         text
     } catch (e: Exception) {

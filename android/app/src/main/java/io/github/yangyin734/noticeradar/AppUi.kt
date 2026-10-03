@@ -899,7 +899,7 @@ private fun unitRows(units: List<SchoolUnit>, maxWidth: Int = 300): List<List<Sc
     return rows
 }
 
-/** 学校目录里的一行：校名 + 城市 + 已接入/待接入（待接入只解释，不假装能切） */
+/** 学校目录里的一行：校名 + 层次 + 省份城市 + 已接入/待接入（待接入只解释，不假装能切） */
 @Composable
 private fun SchoolOptionRow(school: SchoolInfo, selected: Boolean, onClick: () -> Unit) {
     Column(
@@ -919,16 +919,30 @@ private fun SchoolOptionRow(school: SchoolInfo, selected: Boolean, onClick: () -
                 fontWeight = FontWeight.SemiBold,
                 color = if (school.active) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            if (school.city.isNotEmpty()) {
+            // 本科是默认预期，只有专科/成人这种"和你以为的不一样"才标出来
+            if (school.level.isNotEmpty() && school.level != "本科") {
                 Spacer(Modifier.width(6.dp))
-                Text(school.city, fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Text(
+                    school.level,
+                    fontSize = 10.5.sp,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(20.dp))
+                        .padding(horizontal = 6.dp, vertical = 1.dp),
+                )
             }
         }
-        Text(
-            if (school.active) "已接入" + (if (school.total > 0) " · ${school.total} 条" else "") else "待接入",
-            fontSize = 11.sp,
-            color = if (school.active) Color(0xFF2F9E44) else MaterialTheme.colorScheme.onSurfaceVariant,
-        )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            if (school.where.isNotEmpty()) {
+                Text(school.where, fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                Spacer(Modifier.width(8.dp))
+            }
+            Text(
+                if (school.active) "已接入" + (if (school.total > 0) " · ${school.total} 条" else "") else "待接入",
+                fontSize = 11.sp,
+                color = if (school.active) Color(0xFF2F9E44) else MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
     }
 }
 
@@ -956,6 +970,9 @@ private fun SchoolPickerCard(
     var pending by remember { mutableStateOf<SchoolInfo?>(null) }
     var asking by remember { mutableStateOf(false) }
     var note by remember { mutableStateOf<String?>(null) }
+    // 点了"还没接入"的学校时，给一条"申请接入"的直达 issue（校名预填）
+    var requestFor by remember { mutableStateOf<SchoolInfo?>(null) }
+    val context = LocalContext.current
 
     // 学院面板优先跟着"待确认的学校"；没有待确认的就跟着当前学校（老用户也能补勾学院）
     val viewing = pending ?: schoolIndex?.firstOrNull { it.id == schoolId }
@@ -992,7 +1009,7 @@ private fun SchoolPickerCard(
                     value = query,
                     onValueChange = { query = it },
                     singleLine = true,
-                    placeholder = { Text("搜索学校：校名 / 城市 / 拼音 / 简称", fontSize = 13.sp) },
+                    placeholder = { Text("搜索学校：校名 / 省份 / 城市（如 成都、电子科技）", fontSize = 13.sp) },
                     modifier = Modifier.fillMaxWidth(),
                 )
                 Spacer(Modifier.height(6.dp))
@@ -1005,10 +1022,21 @@ private fun SchoolPickerCard(
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 } else {
-                    val hit = searchSchools(list, query)
+                    // 命中数要报给用户（名单有 3167 所），所以先取全量再截断显示
+                    val matched = searchSchools(list, query, limit = Int.MAX_VALUE)
+                    Text(
+                        if (query.isBlank()) {
+                            "全国共 ${list.size} 所高校（已接入 ${list.count { it.active }} 所）· 直接搜校名 / 省份 / 城市"
+                        } else {
+                            "匹配 ${matched.size} 所" + if (matched.size > 40) "（只显示前 40 所，继续输入可缩小范围）" else ""
+                        },
+                        fontSize = 11.5.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                    val hit = matched.take(40)
                     if (hit.isEmpty()) {
                         Text(
-                            "没找到匹配的学校。可试试校名、城市或拼音（例如 dianzi、成都）",
+                            "没找到匹配的学校。可试试校名、省份或城市（例如 成都、电子科技）",
                             fontSize = 12.5.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
@@ -1020,11 +1048,13 @@ private fun SchoolPickerCard(
                             onClick = {
                                 if (s.active) {
                                     pending = s
+                                    requestFor = null
                                     note = "已选「${s.name}」。勾选你关心的学院，然后点下面的「确认切换」。"
                                 } else {
                                     // 待接入的必须说清楚为什么不能选，否则用户以为应用坏了
-                                    note = "「${s.name}」还没有接入：需要有该校栏目的配置才能抓取。" +
-                                        "接入方法见仓库 docs/add-your-school.md。"
+                                    pending = null
+                                    requestFor = s
+                                    note = "「${s.name}」还没有接入：需要有该校栏目的选择器配置才能抓取。"
                                 }
                             },
                         )
@@ -1084,6 +1114,18 @@ private fun SchoolPickerCard(
                     Text(it, fontSize = 11.5.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
                 }
 
+                // 还没接入的学校：让需求一键变成 issue（校名已预填），别让用户干看着
+                requestFor?.let { s ->
+                    TextButton(onClick = { openUrl(context, requestIssueUrl(s.name)) }) {
+                        Text("申请接入这所学校 ›", fontSize = 12.5.sp)
+                    }
+                    Text(
+                        "接入方法见仓库 docs/add-your-school.md —— 大多数站点一段 YAML 就行",
+                        fontSize = 11.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+
                 val ready = pending
                 if (ready != null && ready.active) {
                     Spacer(Modifier.height(8.dp))
@@ -1114,6 +1156,7 @@ private fun SchoolPickerCard(
                     asking = false
                     onSwitchSchool(target)
                     pending = null
+                    requestFor = null
                     note = null
                     open = false
                     query = ""

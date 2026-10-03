@@ -10,7 +10,7 @@
 [![android-apk](https://github.com/Yang-Yin734/notice-radar/actions/workflows/android.yml/badge.svg)](https://github.com/Yang-Yin734/notice-radar/actions/workflows/android.yml)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![node](https://img.shields.io/badge/node-%3E%3D22.18-339933.svg)](package.json)
-[![version](https://img.shields.io/badge/version-v0.10.11-4d6bfe.svg)](CHANGELOG.md)
+[![version](https://img.shields.io/badge/version-v0.10.12-4d6bfe.svg)](CHANGELOG.md)
 
 ### 📲 [**下载 Android 安装包（APK）**](https://github.com/Yang-Yin734/notice-radar/releases/download/android-latest/notice-radar.apk)
 
@@ -536,7 +536,7 @@ config/
 - [x] **M2.5** 升级为**手机/电脑都能用的 PWA 应用**：底部标签栏、收藏与已读、深色模式、可添加到主屏幕、离线可用（[Release v0.3.0](../../releases)）
 - [x] **M3** 发布到 npm（`npx notice-radar`）+ 通知频次统计（`radr stats`）+ 适配器市场（[registry.json](config/schools/registry.json)，CI 校验"不许有野生预设"）
 - [ ] **M4** 多校聚合（一个订阅里混多所学校）+ 主题订阅（按关键词而不是按学校）+ iOS Web Push
-      —— 其中「在应用里选学校 / 选学院」已先行落地（见上面「选学校 / 选学院」）
+      —— 其中「全国 3167 所的选校 / 逐校接入」已先行落地（见上面「选学校 / 选学院」）
 
 ## 应用：手机、电脑都能用
 
@@ -565,12 +565,13 @@ config/
 
 ## 选学校 / 选学院
 
-网页版和 Android 应用的「设置」最上面都有一张 **学校 / 学院** 卡片：
+网页版和 Android 应用的「设置」最上面都有一张 **学校 / 学院** 卡片，**全国 3167 所高校**都在里面：
 
-1. **搜索学校**：校名、城市、拼音、简称都能搜（`dianzi`、`成都`、`dzkjdx` 都行）
+1. **搜索学校**：校名、省份、城市、学校标识码都能搜（`成都`、`浙江`、`电子科技`、`4151010614` 都行）
 2. **选一所**，再**勾选你关心的学院 / 栏目**（可多选，默认**全不选**）
 3. 点 **确认切换**（有二次确认，因为这会立刻换掉整个列表）→ 列表与「刷新」从此只针对这所学校
 
+关键词为空时给的是「已接入 + 重点高校」，不是把 3167 所全倒出来 —— 名单是用来搜的，不是用来翻的。
 偏好只存本机（网页版 `localStorage`，应用 `SharedPreferences`），不上传。网页版还能用深链
 `https://yang-yin734.github.io/notice-radar/#school` 直接打开选择器。
 
@@ -578,18 +579,24 @@ config/
 
 | 设计 | 为什么 |
 |---|---|
-| **目录不撒谎**：153 所里只有电子科技大学是 `active`（真抓过、能出通知），其余标 `pending` | 点 `pending` 的学校会明确说"还没接入"并给出 [接入方法](docs/add-your-school.md)，而不是假装能选、选完给你一片空白 |
+| **目录不撒谎**：3167 所里只有电子科技大学是 `active`（真抓过、能出通知），其余一律 `pending` | 点 `pending` 的学校会明确说"还没接入"，并给一条**带校名预填的「申请接入」直达 issue** —— 需求直接变成 issue，而不是让用户干看着 |
 | **勾了学院才显示**：选过学校却一个学院都没勾 → 列表提示你去勾 | 这是产品要求，不擅自"贴心"地显示全部；**没主动选过学校的老用户完全不受影响** |
 | **学院列表以配置为准**，不从"已有条目"里推 | 某个栏目当前 0 条（研究生院近期没发通知）也照样选得到，不会从选择列表里消失 |
 | **应用断网也能选**：`assets/data/schools/**` 随 APK 打包 | 冷启动先恢复"上次那所学校"的缓存/内置数据，不会因为重启悄悄变回默认学校 |
 
-数据是网页版与应用**共用的同一份**，由 `node tools/build-schools.mjs` 从已发布的 `docs/dashboard-data.json`
-重新组织一遍（**不碰抓取与推送链路**）：
+名单从哪来：**教育部《全国高等学校名单》**（截至 2025-06-20，共 3167 所 = 本科 1365 + 高职专科 1554 + 成人 248）。
+`tools/moe-refresh.mjs` 抓官方 `.xls` 附件、转成 `config/schools/directory.tsv` 并与页面公布的总数逐项对账；
+列含义、刷新命令、核对方式见 **[config/schools/README.md](config/schools/README.md)**。
+
+`node tools/build-schools.mjs` 再把这份名单与已发布的 `docs/dashboard-data.json` 组织成产物
+（**不碰抓取与推送链路**）：
 
 | 文件 | 内容 |
 |---|---|
-| `docs/data/schools/index.json` | 学校目录：校名 / 城市 / 拼音 / 简称 / 学院列表 / 状态 / 条数 |
-| `docs/data/schools/<学校id>.json` | 该校通知（按学院 / 栏目分组，条目带 `unit` 字段） |
+| `docs/data/schools/index.json` | 全部 3167 所的目录：校名 / 省份 / 城市 / 层次 / 重点标记 / 状态 / 学院列表 |
+| `docs/data/schools/<学校id>.json` | **已接入**学校的通知（按学院 / 栏目分组，条目带 `unit` 字段） |
+| `config/schools/directory.tsv` | 官方名单原始数据（多带主管部门与备注），刷新用 |
+| `config/schools/curated.json` | 人工维护：重点高校的短 id 与拼音、简称 |
 
 ## 在应用里控制推送与更新
 

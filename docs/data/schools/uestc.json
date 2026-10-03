@@ -1,8 +1,9 @@
 {
  "school": "uestc",
  "name": "电子科技大学",
- "city": "成都",
- "generatedAt": "2026-10-03T05:52:53.839Z",
+ "province": "四川省",
+ "city": "成都市",
+ "generatedAt": "2026-10-03T06:23:17.107Z",
  "total": 44,
  "bySource": [
   {
