@@ -2,8 +2,40 @@
  "school": "uestc",
  "name": "电子科技大学",
  "city": "成都",
- "generatedAt": "2026-10-03T05:10:37.060Z",
+ "generatedAt": "2026-10-03T05:20:58.638Z",
  "total": 44,
+ "bySource": [
+  {
+   "sourceId": "math-jwgg",
+   "sourceName": "数学科学学院·教务公告",
+   "count": 16
+  },
+  {
+   "sourceId": "news-academic",
+   "sourceName": "新闻网·学术",
+   "count": 2
+  },
+  {
+   "sourceId": "news-notice",
+   "sourceName": "新闻网·公告",
+   "count": 3
+  },
+  {
+   "sourceId": "math-xsgz",
+   "sourceName": "数学科学学院·学生工作",
+   "count": 6
+  },
+  {
+   "sourceId": "jwc-student",
+   "sourceName": "教务处·学生事务公告",
+   "count": 13
+  },
+  {
+   "sourceId": "jwc-important",
+   "sourceName": "教务处·重要公告",
+   "count": 4
+  }
+ ],
  "units": [
   {
    "id": "数学科学学院",
