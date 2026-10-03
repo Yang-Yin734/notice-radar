@@ -1,0 +1,118 @@
+{
+ "school": "swufe",
+ "name": "西南财经大学",
+ "province": "四川省",
+ "city": "成都市",
+ "generatedAt": "2026-10-03T07:29:14.493Z",
+ "total": 7,
+ "bySource": [
+  {
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "count": 7
+  }
+ ],
+ "units": [
+  {
+   "id": "教务处",
+   "name": "教务处",
+   "sources": [
+    "教务处·通知公告"
+   ],
+   "count": 7
+  }
+ ],
+ "items": [
+  {
+   "id": "1e8331a1cb39858f",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "swufe",
+   "title": "关于2026届本科毕业生提前预约办理毕业证、 学位证翻译件的通知",
+   "url": "https://jwc.swufe.edu.cn/info/1025/38611.htm",
+   "date": "2026-06-05",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T07:29:14.156Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "15cca6faa94e11a9",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "swufe",
+   "title": "关于2026年西南财经大学大学生创新训练项目拟申报结果的公示",
+   "url": "https://jwc.swufe.edu.cn/info/1025/38551.htm",
+   "date": "2026-05-26",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T07:29:14.156Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "88ffdac31218b582",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "swufe",
+   "title": "关于查询2025-2026-2学期本科期末考试安排及打印准考证的通知",
+   "url": "https://jwc.swufe.edu.cn/info/1025/38541.htm",
+   "date": "2026-05-20",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T07:29:14.156Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "6cc73ba3b7ae5877",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "swufe",
+   "title": "关于2026届本科毕业生网上核对学籍信息的通知",
+   "url": "https://jwc.swufe.edu.cn/info/1025/38501.htm",
+   "date": "2026-04-23",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T07:29:14.156Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "6d29c0eb0040fd57",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "swufe",
+   "title": "关于2026年全国大学生英语竞赛初赛成绩查询的通知",
+   "url": "https://jwc.swufe.edu.cn/info/1025/38491.htm",
+   "date": "2026-04-16",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T07:29:14.156Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "0d9c09bce47b9e6f",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "swufe",
+   "title": "关于2027届本科毕业生电子图像采集的通知",
+   "url": "https://jwc.swufe.edu.cn/info/1025/38481.htm",
+   "date": "2026-04-13",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T07:29:14.156Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "c57f404f636e69e4",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "swufe",
+   "title": "关于2025-2026-2学期跨专业课程退课的通知",
+   "url": "https://jwc.swufe.edu.cn/info/1025/38451.htm",
+   "date": "2026-04-03",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T07:29:14.156Z",
+   "unit": "教务处"
+  }
+ ]
+}
