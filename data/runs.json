@@ -1,9 +1,8 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-03T14:34:11.378Z",
+  "updatedAt": "2026-10-03T16:39:20.385Z",
   "sources": {
     "jwc-important": [
-      "fail",
       "ok",
       "fail",
       "fail",
@@ -22,10 +21,10 @@
       "fail",
       "fail",
       "ok",
+      "fail",
       "fail"
     ],
     "jwc-student": [
-      "fail",
       "ok",
       "fail",
       "fail",
@@ -44,10 +43,10 @@
       "fail",
       "fail",
       "ok",
+      "fail",
       "fail"
     ],
     "news-notice": [
-      "ok",
       "fail",
       "fail",
       "ok",
@@ -66,12 +65,12 @@
       "fail",
       "fail",
       "ok",
+      "fail",
       "fail"
     ],
     "news-academic": [
       "fail",
       "fail",
-      "fail",
       "ok",
       "fail",
       "fail",
@@ -88,10 +87,10 @@
       "fail",
       "fail",
       "ok",
+      "fail",
       "fail"
     ],
     "gr-notice": [
-      "fail",
       "ok",
       "fail",
       "fail",
@@ -110,6 +109,7 @@
       "fail",
       "fail",
       "ok",
+      "fail",
       "fail"
     ],
     "math-jwgg": [
