@@ -741,11 +741,18 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     list.innerHTML = hit.map(function (s) {
       var active = s.status === 'active';
       var where = [s.province, s.city].filter(Boolean).join(' · ');
+      var tags = s.tags || [];
+      // 双一流是官方标签，最有用；民办次之（两者不会同时出现）
+      var badge = tags.indexOf('双一流') >= 0
+        ? '<span style="color:#2f6fed">双一流</span> '
+        : tags.indexOf('民办') >= 0
+          ? '<span style="opacity:.7">民办</span> '
+          : '';
       var level = s.level === '本科' ? '' : '<span style="opacity:.7">' + esc(s.level) + '</span> ';
       return '<button data-school="' + esc(s.id) + '" style="display:block;width:100%;text-align:left;' +
         'margin:5px 0;padding:8px 10px;border-radius:10px;border:1px solid var(--line,#8884);' +
         'background:transparent;opacity:' + (active ? '1' : '.75') + ';cursor:pointer;color:inherit">' +
-        '<b>' + esc(s.name) + '</b> ' + level + '<span style="opacity:.7">' + esc(where) + '</span> ' +
+        '<b>' + esc(s.name) + '</b> ' + badge + level + '<span style="opacity:.7">' + esc(where) + '</span> ' +
         (active
           ? '<span style="color:#2f9e44">已接入' + (s.total ? ' · ' + s.total + ' 条' : '') + '</span>'
           : '<span style="opacity:.7">待接入</span>') +

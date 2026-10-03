@@ -21,11 +21,12 @@ class SchoolParseTest {
 
     private val index = """
         {
-          "counts": { "total": 6, "active": 1, "pending": 5 },
+          "counts": { "total": 7, "active": 1, "pending": 6 },
           "schools": [
             { "id": "uestc", "name": "电子科技大学", "province": "四川省", "city": "成都市",
               "level": "本科", "code": "4151010614", "pinyin": "dianzikejidaxue", "abbr": "dzkjdx",
-              "featured": true, "status": "active", "file": "uestc.json", "total": 43,
+              "featured": true, "tags": ["双一流", "教育部直属"], "status": "active",
+              "file": "uestc.json", "total": 43,
               "units": [ { "id": "数学科学学院", "name": "数学科学学院", "count": 21 },
                          { "id": "研究生院", "name": "研究生院", "count": 0 } ] },
             { "id": "hdu", "name": "杭州电子科技大学", "province": "浙江省", "city": "杭州市",
@@ -38,7 +39,9 @@ class SchoolParseTest {
             { "id": "4133010337", "name": "浙江警官职业学院", "province": "浙江省", "city": "杭州市",
               "level": "专科", "status": "pending" },
             { "id": "4234050569", "name": "合肥职工科技大学", "province": "安徽省",
-              "level": "成人", "status": "pending" }
+              "level": "成人", "status": "pending" },
+            { "id": "4144012345", "name": "某某职业学院", "province": "广东省", "city": "广州市",
+              "level": "专科", "tags": ["民办"], "status": "pending" }
           ]
         }
     """.trimIndent()
@@ -46,13 +49,23 @@ class SchoolParseTest {
     @Test
     fun `能解析目录，并区分已接入与待接入`() {
         val list = parseSchoolIndex(index)
-        assertEquals(6, list.size)
+        assertEquals(7, list.size)
         val uestc = list.first { it.id == "uestc" }
         assertTrue("uestc 应为已接入", uestc.active)
         assertEquals(43, uestc.total)
         assertEquals(2, uestc.units.size)
         assertEquals("研究生院 当前 0 条也必须能选到", 0, uestc.units[1].count)
         assertFalse("pending 不能算可用", list.first { it.id == "hdu" }.active)
+    }
+
+    @Test
+    fun `解析标签：双一流优先展示，民办次之`() {
+        val list = parseSchoolIndex(index)
+        val uestc = list.first { it.id == "uestc" }
+        assertEquals(listOf("双一流", "教育部直属"), uestc.tags)
+        assertEquals("双一流", uestc.tag)
+        assertEquals("民办", list.first { it.id == "4144012345" }.tag)
+        assertNull("没有标签的学校 tag 为 null（列表里不显示标签）", list.first { it.id == "hdu" }.tag)
     }
 
     @Test

@@ -58,6 +58,7 @@ data class SchoolInfo(
     val pinyin: String,
     val abbr: String,
     val featured: Boolean,
+    val tags: List<String>,
     val status: String,
     val file: String?,
     val units: List<SchoolUnit>,
@@ -68,6 +69,13 @@ data class SchoolInfo(
 
     /** 展示用位置：「四川省 · 成都市」（直辖市与成人高校可能没有城市） */
     val where: String get() = listOf(province, city).filter { it.isNotEmpty() }.joinToString(" · ")
+
+    /** 最值得在列表里露出来的那个标签：双一流是官方标签，其次民办 */
+    val tag: String? get() = when {
+        tags.contains("双一流") -> "双一流"
+        tags.contains("民办") -> "民办"
+        else -> null
+    }
 }
 
 /**
@@ -87,6 +95,8 @@ fun parseSchoolIndex(json: String): List<SchoolInfo> {
                 val name = u.optString("name")
                 if (name.isEmpty()) null else SchoolUnit(name = name, count = u.optInt("count", 0))
             }
+            val tagsArr = o.optJSONArray("tags") ?: JSONArray()
+            val tags = (0 until tagsArr.length()).mapNotNull { j -> tagsArr.optString(j).ifEmpty { null } }
             SchoolInfo(
                 id = id,
                 name = o.optString("name"),
@@ -98,6 +108,7 @@ fun parseSchoolIndex(json: String): List<SchoolInfo> {
                 pinyin = o.optString("pinyin"),
                 abbr = o.optString("abbr"),
                 featured = o.optBoolean("featured"),
+                tags = tags,
                 status = o.optString("status"),
                 file = o.optString("file").ifEmpty { null },
                 units = units,

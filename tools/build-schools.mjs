@@ -30,6 +30,7 @@ const dataFile = path.join(repo, 'docs', 'dashboard-data.json');
 const outDir = path.join(repo, 'docs', 'data', 'schools');
 const directoryFile = path.join(repo, 'config', 'schools', 'directory.tsv');
 const curatedFile = path.join(repo, 'config', 'schools', 'curated.json');
+const tagsFile = path.join(repo, 'config', 'schools', 'tags.json');
 
 // ---------------------------------------------------------------- 读两份来源
 
@@ -58,10 +59,27 @@ function loadCurated() {
   return { schools: parsed.schools ?? {}, excluded: parsed._excluded ?? {} };
 }
 
+/**
+ * 外部来源的标签（目前只有「双一流」，见 config/schools/tags.json）。
+ * 返回 标签名 → 学校标识码集合。
+ */
+function loadTags() {
+  if (!fs.existsSync(tagsFile)) return {};
+  const parsed = JSON.parse(fs.readFileSync(tagsFile, 'utf8'));
+  const out = {};
+  for (const [k, v] of Object.entries(parsed)) {
+    if (k.startsWith('_') || !Array.isArray(v)) continue;
+    out[k] = new Set(v);
+  }
+  return out;
+}
+
 // ---------------------------------------------------------------- 拼出完整目录
 
 const directory = loadDirectory();
 const curated = loadCurated().schools;
+const externalTags = loadTags();
+const doubleFirst = externalTags['双一流'] ?? new Set();
 
 const curatedByCode = new Map();
 for (const [id, c] of Object.entries(curated)) {
@@ -75,15 +93,34 @@ for (const [, c] of curatedByCode) {
     throw new Error(`curated.json 里的 ${c.name}（${c.code}）不在官方名单里 —— 学校可能改名了，重跑 moe-refresh 后修正`);
   }
 }
+for (const code of doubleFirst) {
+  if (!knownCodes.has(code)) throw new Error(`tags.json 里的学校标识码 ${code} 不在官方名单里`);
+}
 
 /** id 规则：人工给了短 id 就用它，否则用学校标识码 */
 function idOf(code) {
   return curatedByCode.get(code)?.id ?? code;
 }
 
+/**
+ * 一所学校的标签。
+ * 「双一流」来自外部名单（config/schools/tags.json，教育部 2022 年公布）；
+ * 其余两个直接从官方名单的字段推出来，没有引入第二个数据源：
+ *   主管部门 = 教育部 → 教育部直属；备注 = 民办 → 民办；备注以「中外合作办学」开头 → 中外合作办学
+ */
+function tagsOf(row) {
+  const out = [];
+  if (doubleFirst.has(row.code)) out.push('双一流');
+  if (row.authority === '教育部') out.push('教育部直属');
+  if (row.note === '民办') out.push('民办');
+  else if (String(row.note).startsWith('中外合作办学')) out.push('中外合作办学');
+  return out;
+}
+
 /** 目录条目（客户端选校读的字段；authority/note 留在 TSV 里，不进 index.json 省体积） */
 function schoolEntry(row) {
   const c = curatedByCode.get(row.code);
+  const tags = tagsOf(row);
   return {
     id: idOf(row.code),
     code: row.code,
@@ -91,7 +128,10 @@ function schoolEntry(row) {
     province: row.province,
     city: row.city,
     level: row.level,
-    ...(c ? { pinyin: c.pinyin, abbr: c.abbr, featured: true } : {}),
+    ...(c ? { pinyin: c.pinyin, abbr: c.abbr } : {}),
+    // 「值得优先看」= 官方双一流 ∪ 人工挑选的重点高校（后者含几所非双一流但很知名的学校）
+    ...(c || tags.includes('双一流') ? { featured: true } : {}),
+    ...(tags.length ? { tags } : {}),
   };
 }
 
@@ -117,6 +157,7 @@ function compactEntry(e) {
   if (e.pinyin) o.pinyin = e.pinyin;
   if (e.abbr) o.abbr = e.abbr;
   if (e.featured) o.featured = true;
+  if (e.tags?.length) o.tags = e.tags;
   o.status = e.status;
   if (e.status === 'active') {
     o.file = e.file;
@@ -248,6 +289,7 @@ function build() {
     active: activeEntries.length,
     pending: schools.length - activeEntries.length,
     featured: schools.filter((s) => s.featured).length,
+    doubleFirst: doubleFirst.size,
     bachelor: schools.filter((s) => s.level === '本科').length,
     vocational: schools.filter((s) => s.level === '专科').length,
     adult: schools.filter((s) => s.level === '成人').length,
