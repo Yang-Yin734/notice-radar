@@ -431,12 +431,16 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
 
   function visible() {
     var q = state.query.trim().toLowerCase();
-    // 只在"用户主动选过学校"之后才按学院过滤：否则（首次打开）保持原来的全部显示
-    var unitFilter = state.school && state.units.length > 0 ? state.units : null;
     return state.items.filter(function (it) {
       if (state.filter === 'fav' && !state.fav.has(it.id)) return false;
       if (state.source !== 'all' && it.sourceId !== state.source) return false;
-      if (unitFilter && unitFilter.indexOf(unitOf(it)) < 0) return false;
+      // 主动选过学校之后：
+      //   勾了学院 → 只看勾选的；一个都没勾 → 什么都不显示（列表会提示"请选择你关心的学院"）
+      // 没主动选过学校 → 保持原来的全部显示（老用户不受影响）
+      if (state.school) {
+        if (!state.units.length) return false;
+        if (state.units.indexOf(unitOf(it)) < 0) return false;
+      }
       if (!q) return true;
       return (it.title + ' ' + (it.tag || '') + ' ' + it.sourceName).toLowerCase().indexOf(q) >= 0;
     });
@@ -798,14 +802,15 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
       applySchool(s.id).then(function (ok) { if (ok) picker.hidden = true; });
     });
     document.getElementById('unit-all').addEventListener('click', function () {
-      var s = schoolById(state.pendingSchool);
+      // 注意：确认切换后 pendingSchool 会被清空，所以这里两个都要看
+      var s = schoolById(state.pendingSchool || state.school);
       if (!s) return;
       state.units = (s.units || []).map(function (u) { return u.name; });
       lsWrite(KEY_UNITS, state.units);
       renderUnitChips(s); renderSchoolState(); renderList();
     });
     document.getElementById('unit-none').addEventListener('click', function () {
-      var s = schoolById(state.pendingSchool);
+      var s = schoolById(state.pendingSchool || state.school);
       state.units = [];
       lsWrite(KEY_UNITS, state.units);
       renderUnitChips(s); renderSchoolState(); renderList();
