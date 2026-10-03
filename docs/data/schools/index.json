@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-02T18:11:42.272Z",
+ "generatedAt": "2026-10-03T05:03:52.353Z",
  "note": "status=active 表示真抓过、能出通知；pending 只是目录条目，选中会提示尚未接入。接入方法见 docs/add-your-school.md",
  "counts": {
   "total": 153,
@@ -19,7 +19,7 @@
     {
      "id": "数学科学学院",
      "name": "数学科学学院",
-     "count": 21
+     "count": 22
     },
     {
      "id": "教务处",
@@ -37,8 +37,8 @@
      "count": 0
     }
    ],
-   "total": 43,
-   "updatedAt": "2026-10-02T18:11:42.272Z"
+   "total": 44,
+   "updatedAt": "2026-10-03T05:03:52.353Z"
   },
   {
    "id": "tsinghua",

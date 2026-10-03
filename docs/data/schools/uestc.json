@@ -2,17 +2,49 @@
  "school": "uestc",
  "name": "电子科技大学",
  "city": "成都",
- "generatedAt": "2026-10-02T18:11:42.272Z",
- "total": 43,
+ "generatedAt": "2026-10-03T05:03:52.353Z",
+ "total": 44,
+ "bySource": [
+  {
+   "sourceId": "math-jwgg",
+   "sourceName": "数学科学学院·教务公告",
+   "count": 16
+  },
+  {
+   "sourceId": "news-academic",
+   "sourceName": "新闻网·学术",
+   "count": 2
+  },
+  {
+   "sourceId": "news-notice",
+   "sourceName": "新闻网·公告",
+   "count": 3
+  },
+  {
+   "sourceId": "math-xsgz",
+   "sourceName": "数学科学学院·学生工作",
+   "count": 6
+  },
+  {
+   "sourceId": "jwc-student",
+   "sourceName": "教务处·学生事务公告",
+   "count": 13
+  },
+  {
+   "sourceId": "jwc-important",
+   "sourceName": "教务处·重要公告",
+   "count": 4
+  }
+ ],
  "units": [
   {
    "id": "数学科学学院",
    "name": "数学科学学院",
    "sources": [
-    "数学科学学院·学生工作",
-    "数学科学学院·教务公告"
+    "数学科学学院·教务公告",
+    "数学科学学院·学生工作"
    ],
-   "count": 21
+   "count": 22
   },
   {
    "id": "教务处",
@@ -40,6 +72,19 @@
   }
  ],
  "items": [
+  {
+   "id": "286698afdbbfeb84",
+   "sourceId": "math-jwgg",
+   "sourceName": "数学科学学院·教务公告",
+   "school": "uestc",
+   "title": "2026-2027-1学期“微积分I”、“线性代数与空间解析几何”课程答疑安排",
+   "url": "https://www.math.uestc.edu.cn/info/1043/10280.htm",
+   "date": "2026-09-30",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T00:13:57.223Z",
+   "unit": "数学科学学院"
+  },
   {
    "id": "2fbaf9b38aa99cf4",
    "sourceId": "news-academic",

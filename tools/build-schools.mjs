@@ -251,6 +251,17 @@ function build() {
     units.sort((a, b) => b.count - a.count || a.name.localeCompare(b.name, 'zh'));
 
     const file = `${sid}.json`;
+    // bySource 与 dashboard-data.json 保持一致：应用端解析快照时用它渲染"渠道 chips"，
+    // 缺了不会崩（解析器对空数组有兜底），但界面上会少一排筛选按钮
+    const bySource = [];
+    for (const it of items) {
+      let s = bySource.find((x) => x.sourceId === it.sourceId);
+      if (!s) {
+        s = { sourceId: it.sourceId, sourceName: it.sourceName, count: 0 };
+        bySource.push(s);
+      }
+      s.count += 1;
+    }
     fs.writeFileSync(
       path.join(outDir, file),
       `${JSON.stringify(
@@ -260,6 +271,7 @@ function build() {
           city: meta.city,
           generatedAt: data.generatedAt,
           total: items.length,
+          bySource,
           units,
           items: items.map((it) => ({ ...it, unit: unitOf(it.sourceName) })),
         },
