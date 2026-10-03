@@ -1,0 +1,105 @@
+{
+ "school": "xidian",
+ "name": "西安电子科技大学",
+ "province": "陕西省",
+ "city": "西安市",
+ "generatedAt": "2026-10-03T16:50:43.927Z",
+ "total": 6,
+ "bySource": [
+  {
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "count": 6
+  }
+ ],
+ "units": [
+  {
+   "id": "教务处",
+   "name": "教务处",
+   "sources": [
+    "教务处·通知公告"
+   ],
+   "count": 6
+  }
+ ],
+ "items": [
+  {
+   "id": "f2cdacefbf84176d",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "xidian",
+   "title": "西安电子科技大学关于做好 2023级本科生毕业设计（论文）工作的通知",
+   "url": "https://jwc.xidian.edu.cn/info/1012/23423.htm",
+   "date": "2026-09-29",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T16:50:43.598Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "690e6d08e41e684f",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "xidian",
+   "title": "关于2026～2027学年第一学期重修选课的通知",
+   "url": "https://jwc.xidian.edu.cn/info/1012/23353.htm",
+   "date": "2026-09-16",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T16:50:43.598Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "a69c5612f258e591",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "xidian",
+   "title": "关于2026年下半年全国大学英语四、六级考试报名的通知",
+   "url": "https://jwc.xidian.edu.cn/info/1012/23343.htm",
+   "date": "2026-09-14",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T16:50:43.598Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "fb43cd44a866ab8e",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "xidian",
+   "title": "关于2026~2027学年第一学期2026级学生选课的通知",
+   "url": "https://jwc.xidian.edu.cn/info/1012/23283.htm",
+   "date": "2026-09-09",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T16:50:43.598Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "9f636ea236c440fd",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "xidian",
+   "title": "关于2025级本科生《物理实验（Ⅱ）》实验选课及《物理实验（I）》课程补考的通知",
+   "url": "https://jwc.xidian.edu.cn/info/1012/23243.htm",
+   "date": "2026-09-07",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T16:50:43.598Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "04f36dd0e0e6cff5",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "xidian",
+   "title": "关于2026~2027学年第一学期2023、2024、2025级学生选课的通知",
+   "url": "https://jwc.xidian.edu.cn/info/1012/23223.htm",
+   "date": "2026-09-01",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T16:50:43.598Z",
+   "unit": "教务处"
+  }
+ ]
+}

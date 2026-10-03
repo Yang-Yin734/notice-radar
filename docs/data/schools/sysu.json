@@ -1,0 +1,66 @@
+{
+ "school": "sysu",
+ "name": "中山大学",
+ "province": "广东省",
+ "city": "广州市",
+ "generatedAt": "2026-10-03T16:50:43.927Z",
+ "total": 3,
+ "bySource": [
+  {
+   "sourceId": "jwb-tzgg",
+   "sourceName": "教务部·通知通告",
+   "count": 3
+  }
+ ],
+ "units": [
+  {
+   "id": "教务部",
+   "name": "教务部",
+   "sources": [
+    "教务部·通知通告"
+   ],
+   "count": 3
+  }
+ ],
+ "items": [
+  {
+   "id": "d76a3f8ed8a5e8c7",
+   "sourceId": "jwb-tzgg",
+   "sourceName": "教务部·通知通告",
+   "school": "sysu",
+   "title": "快来报名！第二届全国高校“启真问智”教育教学人工智能大赛火热报名中！",
+   "url": "https://mp.weixin.qq.com/s/lfxliy3RsBm2PSWwOyFDMg",
+   "date": "2026-09-23",
+   "tag": "通知通告",
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T16:50:39.366Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "c5ca82a44a5a0e22",
+   "sourceId": "jwb-tzgg",
+   "sourceName": "教务部·通知通告",
+   "school": "sysu",
+   "title": "教务部、医学教育处关于做好2026年下半年全国大学英语四、六级考试相关工作的通知",
+   "url": "https://jwb.sysu.edu.cn/article/4541",
+   "date": "2026-09-13",
+   "tag": "通知通告",
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T16:50:39.366Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "8e19f93fe33690f4",
+   "sourceId": "jwb-tzgg",
+   "sourceName": "教务部·通知通告",
+   "school": "sysu",
+   "title": "大学英语四、六级报名快要开始啦！速来了解报名流程",
+   "url": "https://mp.weixin.qq.com/s/iKU0dPKifc2StktOgzyYog",
+   "date": "2026-09-13",
+   "tag": "通知通告",
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T16:50:39.366Z",
+   "unit": "教务部"
+  }
+ ]
+}

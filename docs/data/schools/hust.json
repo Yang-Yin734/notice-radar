@@ -1,0 +1,183 @@
+{
+ "school": "hust",
+ "name": "华中科技大学",
+ "province": "湖北省",
+ "city": "武汉市",
+ "generatedAt": "2026-10-03T16:50:43.927Z",
+ "total": 12,
+ "bySource": [
+  {
+   "sourceId": "ugs-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "count": 12
+  }
+ ],
+ "units": [
+  {
+   "id": "本科生院",
+   "name": "本科生院",
+   "sources": [
+    "本科生院·通知公告"
+   ],
+   "count": 12
+  }
+ ],
+ "items": [
+  {
+   "id": "ae4325e4334a8a88",
+   "sourceId": "ugs-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "school": "hust",
+   "title": "关于公布2026级各类实验班学生录取名单的通知",
+   "url": "https://ugs.hust.edu.cn/info/1142/7602.htm",
+   "date": "2026-09-30",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T16:50:34.573Z",
+   "unit": "本科生院"
+  },
+  {
+   "id": "0b62a5ad576e4f56",
+   "sourceId": "ugs-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "school": "hust",
+   "title": "关于公布2024级电子信息工程（2+2种子班）学生录取名单的通知",
+   "url": "https://ugs.hust.edu.cn/info/1142/7601.htm",
+   "date": "2026-09-30",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T16:50:34.573Z",
+   "unit": "本科生院"
+  },
+  {
+   "id": "1c9da9f1a3f09de6",
+   "sourceId": "ugs-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "school": "hust",
+   "title": "关于做好2026～2027学年本科生学分清理及成绩信息清理工作的通知",
+   "url": "https://ugs.hust.edu.cn/info/1142/7587.htm",
+   "date": "2026-09-29",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T16:50:34.573Z",
+   "unit": "本科生院"
+  },
+  {
+   "id": "ac4f3a9f1ac236d3",
+   "sourceId": "ugs-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "school": "hust",
+   "title": "关于做好华中科技大学2026年秋季学期微专业报名工作的通知",
+   "url": "https://ugs.hust.edu.cn/info/1142/7585.htm",
+   "date": "2026-09-23",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T16:50:34.573Z",
+   "unit": "本科生院"
+  },
+  {
+   "id": "2a6f44f5c07024fc",
+   "sourceId": "ugs-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "school": "hust",
+   "title": "关于2026级生物医学工程（医工交叉启明实验班）学生补录名单的公示",
+   "url": "https://ugs.hust.edu.cn/info/1142/7584.htm",
+   "date": "2026-09-22",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T16:50:34.573Z",
+   "unit": "本科生院"
+  },
+  {
+   "id": "a1668faab36e3f72",
+   "sourceId": "ugs-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "school": "hust",
+   "title": "中国国际大学生创新大赛(2026)华中科技大学校赛获奖名单公示",
+   "url": "https://ugs.hust.edu.cn/info/1142/7580.htm",
+   "date": "2026-09-18",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T16:50:34.573Z",
+   "unit": "本科生院"
+  },
+  {
+   "id": "00c94d44122a1d3c",
+   "sourceId": "ugs-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "school": "hust",
+   "title": "关于做好2026～2027学年度主校区2026级普通本科生体育选课工作的通知",
+   "url": "https://ugs.hust.edu.cn/info/1142/7579.htm",
+   "date": "2026-09-18",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T16:50:34.573Z",
+   "unit": "本科生院"
+  },
+  {
+   "id": "2eb0c6fa17d99263",
+   "sourceId": "ugs-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "school": "hust",
+   "title": "关于做好2026～2027学年度第一学期主校区本科生“中国语文”选课工作的通知",
+   "url": "https://ugs.hust.edu.cn/info/1142/7569.htm",
+   "date": "2026-09-16",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T16:50:34.573Z",
+   "unit": "本科生院"
+  },
+  {
+   "id": "e97bec9762ed2d4e",
+   "sourceId": "ugs-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "school": "hust",
+   "title": "关于2024级电子信息工程（2+2种子班）录取名单的公示",
+   "url": "https://ugs.hust.edu.cn/info/1142/7567.htm",
+   "date": "2026-09-15",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T16:50:34.573Z",
+   "unit": "本科生院"
+  },
+  {
+   "id": "ca13a07ffa622233",
+   "sourceId": "ugs-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "school": "hust",
+   "title": "关于对我校2026年省级本科智慧课程建设项目拟推荐申报名单进行公示的通知",
+   "url": "https://ugs.hust.edu.cn/info/1142/7564.htm",
+   "date": "2026-09-15",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T16:50:34.573Z",
+   "unit": "本科生院"
+  },
+  {
+   "id": "6bfa0918da1a7596",
+   "sourceId": "ugs-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "school": "hust",
+   "title": "关于2026级各类实验班录取名单的公示",
+   "url": "https://ugs.hust.edu.cn/info/1142/7563.htm",
+   "date": "2026-09-15",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T16:50:34.573Z",
+   "unit": "本科生院"
+  },
+  {
+   "id": "ded82f60a7e1c5a8",
+   "sourceId": "ugs-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "school": "hust",
+   "title": "关于公示我校2026年拟申请增设新专业申报材料的通知",
+   "url": "https://ugs.hust.edu.cn/info/1142/7553.htm",
+   "date": "2026-09-07",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T16:50:34.573Z",
+   "unit": "本科生院"
+  }
+ ]
+}

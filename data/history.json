@@ -1,7 +1,31 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-03T07:29:14.156Z",
+  "updatedAt": "2026-10-03T16:50:43.598Z",
   "items": [
+    {
+      "id": "ae4325e4334a8a88",
+      "sourceId": "ugs-tzgg",
+      "sourceName": "本科生院·通知公告",
+      "school": "hust",
+      "title": "关于公布2026级各类实验班学生录取名单的通知",
+      "url": "https://ugs.hust.edu.cn/info/1142/7602.htm",
+      "date": "2026-09-30",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-03T16:50:34.573Z"
+    },
+    {
+      "id": "0b62a5ad576e4f56",
+      "sourceId": "ugs-tzgg",
+      "sourceName": "本科生院·通知公告",
+      "school": "hust",
+      "title": "关于公布2024级电子信息工程（2+2种子班）学生录取名单的通知",
+      "url": "https://ugs.hust.edu.cn/info/1142/7601.htm",
+      "date": "2026-09-30",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-03T16:50:34.573Z"
+    },
     {
       "id": "286698afdbbfeb84",
       "sourceId": "math-jwgg",
@@ -13,6 +37,30 @@
       "tag": null,
       "alsoIn": [],
       "firstSeenAt": "2026-10-03T00:13:57.223Z"
+    },
+    {
+      "id": "f2cdacefbf84176d",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "xidian",
+      "title": "西安电子科技大学关于做好 2023级本科生毕业设计（论文）工作的通知",
+      "url": "https://jwc.xidian.edu.cn/info/1012/23423.htm",
+      "date": "2026-09-29",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-03T16:50:43.598Z"
+    },
+    {
+      "id": "1c9da9f1a3f09de6",
+      "sourceId": "ugs-tzgg",
+      "sourceName": "本科生院·通知公告",
+      "school": "hust",
+      "title": "关于做好2026～2027学年本科生学分清理及成绩信息清理工作的通知",
+      "url": "https://ugs.hust.edu.cn/info/1142/7587.htm",
+      "date": "2026-09-29",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-03T16:50:34.573Z"
     },
     {
       "id": "2fbaf9b38aa99cf4",
@@ -63,6 +111,42 @@
       "firstSeenAt": "2026-09-28T12:00:56.521Z"
     },
     {
+      "id": "d76a3f8ed8a5e8c7",
+      "sourceId": "jwb-tzgg",
+      "sourceName": "教务部·通知通告",
+      "school": "sysu",
+      "title": "快来报名！第二届全国高校“启真问智”教育教学人工智能大赛火热报名中！",
+      "url": "https://mp.weixin.qq.com/s/lfxliy3RsBm2PSWwOyFDMg",
+      "date": "2026-09-23",
+      "tag": "通知通告",
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-03T16:50:39.366Z"
+    },
+    {
+      "id": "ac4f3a9f1ac236d3",
+      "sourceId": "ugs-tzgg",
+      "sourceName": "本科生院·通知公告",
+      "school": "hust",
+      "title": "关于做好华中科技大学2026年秋季学期微专业报名工作的通知",
+      "url": "https://ugs.hust.edu.cn/info/1142/7585.htm",
+      "date": "2026-09-23",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-03T16:50:34.573Z"
+    },
+    {
+      "id": "2a6f44f5c07024fc",
+      "sourceId": "ugs-tzgg",
+      "sourceName": "本科生院·通知公告",
+      "school": "hust",
+      "title": "关于2026级生物医学工程（医工交叉启明实验班）学生补录名单的公示",
+      "url": "https://ugs.hust.edu.cn/info/1142/7584.htm",
+      "date": "2026-09-22",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-03T16:50:34.573Z"
+    },
+    {
       "id": "6a460cf85bc22591",
       "sourceId": "news-notice",
       "sourceName": "新闻网·公告",
@@ -87,6 +171,30 @@
       "firstSeenAt": "2026-09-28T12:00:56.521Z"
     },
     {
+      "id": "a1668faab36e3f72",
+      "sourceId": "ugs-tzgg",
+      "sourceName": "本科生院·通知公告",
+      "school": "hust",
+      "title": "中国国际大学生创新大赛(2026)华中科技大学校赛获奖名单公示",
+      "url": "https://ugs.hust.edu.cn/info/1142/7580.htm",
+      "date": "2026-09-18",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-03T16:50:34.573Z"
+    },
+    {
+      "id": "00c94d44122a1d3c",
+      "sourceId": "ugs-tzgg",
+      "sourceName": "本科生院·通知公告",
+      "school": "hust",
+      "title": "关于做好2026～2027学年度主校区2026级普通本科生体育选课工作的通知",
+      "url": "https://ugs.hust.edu.cn/info/1142/7579.htm",
+      "date": "2026-09-18",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-03T16:50:34.573Z"
+    },
+    {
       "id": "e5e900ae1b07e121",
       "sourceId": "math-xsgz",
       "sourceName": "数学科学学院·学生工作",
@@ -97,6 +205,138 @@
       "tag": null,
       "alsoIn": [],
       "firstSeenAt": "2026-09-28T12:00:56.521Z"
+    },
+    {
+      "id": "690e6d08e41e684f",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "xidian",
+      "title": "关于2026～2027学年第一学期重修选课的通知",
+      "url": "https://jwc.xidian.edu.cn/info/1012/23353.htm",
+      "date": "2026-09-16",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-03T16:50:43.598Z"
+    },
+    {
+      "id": "2eb0c6fa17d99263",
+      "sourceId": "ugs-tzgg",
+      "sourceName": "本科生院·通知公告",
+      "school": "hust",
+      "title": "关于做好2026～2027学年度第一学期主校区本科生“中国语文”选课工作的通知",
+      "url": "https://ugs.hust.edu.cn/info/1142/7569.htm",
+      "date": "2026-09-16",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-03T16:50:34.573Z"
+    },
+    {
+      "id": "e97bec9762ed2d4e",
+      "sourceId": "ugs-tzgg",
+      "sourceName": "本科生院·通知公告",
+      "school": "hust",
+      "title": "关于2024级电子信息工程（2+2种子班）录取名单的公示",
+      "url": "https://ugs.hust.edu.cn/info/1142/7567.htm",
+      "date": "2026-09-15",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-03T16:50:34.573Z"
+    },
+    {
+      "id": "ca13a07ffa622233",
+      "sourceId": "ugs-tzgg",
+      "sourceName": "本科生院·通知公告",
+      "school": "hust",
+      "title": "关于对我校2026年省级本科智慧课程建设项目拟推荐申报名单进行公示的通知",
+      "url": "https://ugs.hust.edu.cn/info/1142/7564.htm",
+      "date": "2026-09-15",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-03T16:50:34.573Z"
+    },
+    {
+      "id": "6bfa0918da1a7596",
+      "sourceId": "ugs-tzgg",
+      "sourceName": "本科生院·通知公告",
+      "school": "hust",
+      "title": "关于2026级各类实验班录取名单的公示",
+      "url": "https://ugs.hust.edu.cn/info/1142/7563.htm",
+      "date": "2026-09-15",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-03T16:50:34.573Z"
+    },
+    {
+      "id": "a69c5612f258e591",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "xidian",
+      "title": "关于2026年下半年全国大学英语四、六级考试报名的通知",
+      "url": "https://jwc.xidian.edu.cn/info/1012/23343.htm",
+      "date": "2026-09-14",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-03T16:50:43.598Z"
+    },
+    {
+      "id": "c5ca82a44a5a0e22",
+      "sourceId": "jwb-tzgg",
+      "sourceName": "教务部·通知通告",
+      "school": "sysu",
+      "title": "教务部、医学教育处关于做好2026年下半年全国大学英语四、六级考试相关工作的通知",
+      "url": "https://jwb.sysu.edu.cn/article/4541",
+      "date": "2026-09-13",
+      "tag": "通知通告",
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-03T16:50:39.366Z"
+    },
+    {
+      "id": "8e19f93fe33690f4",
+      "sourceId": "jwb-tzgg",
+      "sourceName": "教务部·通知通告",
+      "school": "sysu",
+      "title": "大学英语四、六级报名快要开始啦！速来了解报名流程",
+      "url": "https://mp.weixin.qq.com/s/iKU0dPKifc2StktOgzyYog",
+      "date": "2026-09-13",
+      "tag": "通知通告",
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-03T16:50:39.366Z"
+    },
+    {
+      "id": "fb43cd44a866ab8e",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "xidian",
+      "title": "关于2026~2027学年第一学期2026级学生选课的通知",
+      "url": "https://jwc.xidian.edu.cn/info/1012/23283.htm",
+      "date": "2026-09-09",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-03T16:50:43.598Z"
+    },
+    {
+      "id": "9f636ea236c440fd",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "xidian",
+      "title": "关于2025级本科生《物理实验（Ⅱ）》实验选课及《物理实验（I）》课程补考的通知",
+      "url": "https://jwc.xidian.edu.cn/info/1012/23243.htm",
+      "date": "2026-09-07",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-03T16:50:43.598Z"
+    },
+    {
+      "id": "ded82f60a7e1c5a8",
+      "sourceId": "ugs-tzgg",
+      "sourceName": "本科生院·通知公告",
+      "school": "hust",
+      "title": "关于公示我校2026年拟申请增设新专业申报材料的通知",
+      "url": "https://ugs.hust.edu.cn/info/1142/7553.htm",
+      "date": "2026-09-07",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-03T16:50:34.573Z"
     },
     {
       "id": "c52fd4f6c243e1c6",
@@ -121,6 +361,18 @@
       "tag": "教管",
       "alsoIn": [],
       "firstSeenAt": "2026-09-28T12:00:56.521Z"
+    },
+    {
+      "id": "04f36dd0e0e6cff5",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "xidian",
+      "title": "关于2026~2027学年第一学期2023、2024、2025级学生选课的通知",
+      "url": "https://jwc.xidian.edu.cn/info/1012/23223.htm",
+      "date": "2026-09-01",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-03T16:50:43.598Z"
     },
     {
       "id": "0c5f024343c65473",
