@@ -111,8 +111,15 @@ fun NoticeRadarApp(store: Store) {
     var toast by remember { mutableStateOf<String?>(null) }
     // 新版本提示：打开应用就检查一次（以前只在"设置 → 应用更新"里查，用户根本看不到）
     var updateVersion by remember { mutableStateOf<String?>(null) }
+    // 选校：学校 id / 已勾选学院 / 学校目录。全部只在本机记忆（schoolId 为空 = 没主动选过）
+    var schoolId by remember { mutableStateOf(store.schoolId) }
+    var units by remember { mutableStateOf(store.schoolUnits()) }
+    var schoolIndex by remember { mutableStateOf<List<SchoolInfo>?>(null) }
+    var indexLoading by remember { mutableStateOf(false) }
+    val schoolName = schoolIndex?.firstOrNull { it.id == schoolId }?.name ?: schoolId
 
-    // 打开：先用内置/缓存（零网络），再静默尝试镜像
+    // 打开：先用内置/缓存（零网络），再静默尝试镜像。
+    // 选过学校的用户，直接恢复**那所学校**的数据 —— 不能因为重启就悄悄变回默认学校。
     LaunchedEffect(Unit) {
         val bundled = store.bundled()
         val cached = store.cached()
@@ -121,15 +128,34 @@ fun NoticeRadarApp(store: Store) {
             cached != null && bundled == null -> cached
             else -> bundled
         }
+        // 离线也先给"上次那所学校"的缓存/内置数据，避免闪回默认学校
+        if (store.schoolId.isNotEmpty() && store.schoolFile.isNotEmpty()) {
+            (store.cachedSchool(store.schoolFile) ?: store.bundledSchool(store.schoolFile))?.let { snapshot = it }
+        }
         withContext(Dispatchers.IO) {
-            val fresh = store.refresh()
-            if (fresh != null) {
-                val (snap, label) = fresh
-                val current = snapshot?.generatedAt ?: ""
-                if (snap.generatedAt > current) {
-                    withContext(Dispatchers.Main) {
-                        snapshot = snap
-                        toast = "已更新 ${snap.items.size} 条（$label）"
+            val selected = store.schoolId
+            if (selected.isNotEmpty()) {
+                // schoolFile 缺失（老数据/异常）时用目录补上，否则读不到该校数据
+                val file = store.schoolFile.ifEmpty {
+                    store.fetchSchoolIndex().firstOrNull { it.id == selected }?.file ?: ""
+                }
+                if (file.isNotEmpty()) {
+                    store.schoolFile = file
+                    val fresh = store.refreshSchool(file)
+                    if (fresh != null) {
+                        withContext(Dispatchers.Main) { snapshot = fresh.first }
+                    }
+                }
+            } else {
+                val fresh = store.refresh()
+                if (fresh != null) {
+                    val (snap, label) = fresh
+                    val current = snapshot?.generatedAt ?: ""
+                    if (snap.generatedAt > current) {
+                        withContext(Dispatchers.Main) {
+                            snapshot = snap
+                            toast = "已更新 ${snap.items.size} 条（$label）"
+                        }
                     }
                 }
             }
@@ -138,6 +164,38 @@ fun NoticeRadarApp(store: Store) {
             if (remote != null && compareVersions(remote, store.appVersion()) > 0 && remote != store.dismissedUpdateVersion) {
                 withContext(Dispatchers.Main) { updateVersion = remote }
             }
+        }
+    }
+
+    /** 读学校目录（进"设置 → 学校/学院"时才真的去请求；失败就给内置目录） */
+    fun loadSchoolIndex() {
+        if (schoolIndex != null || indexLoading) return
+        indexLoading = true
+        scope.launch {
+            val list = withContext(Dispatchers.IO) { store.fetchSchoolIndex() }
+            indexLoading = false
+            schoolIndex = list
+            if (list.isEmpty()) toast = "学校目录取不到，稍后再试"
+        }
+    }
+
+    /** 切换学校：立刻拉该校数据；失败就保持原样并提示（绝不清空已有通知） */
+    fun switchSchool(school: SchoolInfo) {
+        val file = school.file ?: return
+        scope.launch {
+            refreshing = true
+            val fresh = withContext(Dispatchers.IO) { store.refreshSchool(file) }
+            refreshing = false
+            if (fresh == null) {
+                toast = "「${school.name}」的数据暂时取不到（镜像/网络问题），仍显示原来的通知"
+                return@launch
+            }
+            store.schoolId = school.id
+            store.schoolFile = file
+            schoolId = school.id
+            snapshot = fresh.first
+            sourceFilter = null
+            toast = "已切换到 ${school.name}" + if (units.isEmpty()) "（还没勾选学院）" else "（已选 ${units.size} 个学院）"
         }
     }
 
@@ -177,13 +235,22 @@ fun NoticeRadarApp(store: Store) {
                         onRefresh = {
                             scope.launch {
                                 refreshing = true
-                                val fresh = withContext(Dispatchers.IO) { store.refresh() }
+                                // 选过学校就刷新"那所学校"的数据，否则刷新默认数据
+                                val file = store.schoolFile
+                                val fresh = withContext(Dispatchers.IO) {
+                                    if (store.schoolId.isNotEmpty() && file.isNotEmpty()) store.refreshSchool(file) else store.refresh()
+                                }
                                 refreshing = false
-                                if (fresh != null && fresh.first.generatedAt > (snapshot?.generatedAt ?: "")) {
+                                if (fresh == null) {
+                                    toast = "连不上数据源，继续用本机数据"
+                                } else if (store.schoolId.isNotEmpty() && file.isNotEmpty()) {
+                                    snapshot = fresh.first
+                                    toast = "已更新 ${fresh.first.items.size} 条（${fresh.second}）"
+                                } else if (fresh.first.generatedAt > (snapshot?.generatedAt ?: "")) {
                                     snapshot = fresh.first
                                     toast = "已更新 ${fresh.first.items.size} 条（${fresh.second}）"
                                 } else {
-                                    toast = if (fresh == null) "连不上数据源，继续用本机数据" else "已是最新"
+                                    toast = "已是最新"
                                 }
                             }
                         },
@@ -210,6 +277,8 @@ fun NoticeRadarApp(store: Store) {
                                 favOnly = tab == 1,
                                 read = read,
                                 fav = fav,
+                                schoolId = schoolId,
+                                units = units,
                                 onOpen = { notice ->
                                     read = (read + notice.id).toMutableSet()
                                     store.saveRead(read)
@@ -227,12 +296,26 @@ fun NoticeRadarApp(store: Store) {
                         else -> SettingsScreen(
                             store = store,
                             snapshot = snapshot,
+                            schoolId = schoolId,
+                            schoolName = schoolName,
+                            units = units,
+                            schoolIndex = schoolIndex,
+                            indexLoading = indexLoading,
+                            onNeedIndex = { loadSchoolIndex() },
+                            onUnitsChange = { next ->
+                                units = next
+                                store.saveSchoolUnits(next)
+                            },
+                            onSwitchSchool = { school -> switchSchool(school) },
                             onClearRead = { read = mutableSetOf(); store.saveRead(emptySet()) },
                             onClearFav = { fav = mutableSetOf(); store.saveFav(emptySet()) },
                             onRefreshData = {
                                 scope.launch {
                                     refreshing = true
-                                    val fresh = withContext(Dispatchers.IO) { store.refresh() }
+                                    val file = store.schoolFile
+                                    val fresh = withContext(Dispatchers.IO) {
+                                        if (store.schoolId.isNotEmpty() && file.isNotEmpty()) store.refreshSchool(file) else store.refresh()
+                                    }
                                     refreshing = false
                                     if (fresh != null) {
                                         snapshot = fresh.first
@@ -409,19 +492,17 @@ private fun NoticeList(
     favOnly: Boolean,
     read: Set<String>,
     fav: Set<String>,
+    schoolId: String,
+    units: Set<String>,
     onOpen: (Notice) -> Unit,
     onToggleFav: (Notice) -> Unit,
 ) {
     val all = snapshot?.items ?: emptyList()
     val sources = snapshot?.bySource ?: emptyList()
 
-    val filtered = remember(all, query, sourceFilter, favOnly, fav) {
-        val q = query.trim().lowercase()
-        all.filter { n ->
-            (!favOnly || n.id in fav) &&
-                (sourceFilter == null || n.sourceId == sourceFilter) &&
-                (q.isEmpty() || (n.title + " " + (n.tag ?: "") + " " + n.sourceName).lowercase().contains(q))
-        }
+    // 过滤规则全在 filterNotices（纯函数，有 JVM 单测钉住"选了学校却没勾学院 = 什么都不显示"）
+    val filtered = remember(all, query, sourceFilter, favOnly, fav, schoolId, units) {
+        filterNotices(all, query, sourceFilter, favOnly, fav, schoolId, units)
     }
 
     val rows = remember(filtered) {
@@ -460,9 +541,16 @@ private fun NoticeList(
         if (rows.isEmpty()) {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 Text(
-                    if (favOnly) "还没有收藏，点通知卡片右下角的 ☆" else "没有匹配的通知",
+                    when {
+                        // 选过学校但一个学院都没勾：这是产品要求的默认状态，必须说清楚去哪儿勾
+                        schoolId.isNotEmpty() && units.isEmpty() ->
+                            "请选择你关心的学院：设置 → 学校 / 学院 → 勾选后这里就会显示该学院的通知。"
+                        favOnly -> "还没有收藏，点通知卡片右下角的 ☆"
+                        else -> "没有匹配的通知"
+                    },
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontSize = 14.sp,
+                    modifier = Modifier.padding(horizontal = 24.dp),
                 )
             }
             return
@@ -792,6 +880,14 @@ private fun SettingsCard(title: String, content: @Composable () -> Unit) {
 private fun SettingsScreen(
     store: Store,
     snapshot: Snapshot?,
+    schoolId: String,
+    schoolName: String,
+    units: Set<String>,
+    schoolIndex: List<SchoolInfo>?,
+    indexLoading: Boolean,
+    onNeedIndex: () -> Unit,
+    onUnitsChange: (Set<String>) -> Unit,
+    onSwitchSchool: (SchoolInfo) -> Unit,
     onClearRead: () -> Unit,
     onClearFav: () -> Unit,
     onRefreshData: () -> Unit,
@@ -834,6 +930,20 @@ private fun SettingsScreen(
         contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
         verticalArrangement = Arrangement.spacedBy(10.dp),
     ) {
+        // 学校 / 学院（选校功能；放在最前面，因为"看哪所学校"决定了下面一切）
+        item {
+            SchoolPickerCard(
+                schoolId = schoolId,
+                schoolName = schoolName,
+                units = units,
+                schoolIndex = schoolIndex,
+                indexLoading = indexLoading,
+                onNeedIndex = onNeedIndex,
+                onUnitsChange = onUnitsChange,
+                onSwitchSchool = onSwitchSchool,
+            )
+        }
+
         // 微信推送
         item {
             SettingsCard(title = "微信推送") {
@@ -1058,7 +1168,15 @@ private fun SettingsScreen(
                         color = MaterialTheme.colorScheme.onSurface,
                     )
                     Spacer(Modifier.height(2.dp))
-                    Text("来源：${store.dataSource}（打开应用不联网，联网时按镜像自动刷新）", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Text(
+                        if (schoolId.isNotEmpty()) {
+                            "来源：$schoolName 的学校数据 · ${store.schoolSource().ifEmpty { "本机缓存" }}（打开应用不联网，联网时按镜像自动刷新）"
+                        } else {
+                            "来源：${store.dataSource}（打开应用不联网，联网时按镜像自动刷新）"
+                        },
+                        fontSize = 11.sp,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
                     Spacer(Modifier.height(10.dp))
                     Row {
                         Button(onClick = onRefreshData, enabled = !busy) { Text("立即刷新", fontSize = 13.sp) }
