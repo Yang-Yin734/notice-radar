@@ -1,12 +1,13 @@
 {
- "generatedAt": "2026-10-03T05:52:53.839Z",
+ "generatedAt": "2026-10-03T06:42:22.236Z",
  "source": "教育部《全国高等学校名单》（config/schools/directory.tsv，见 config/schools/README.md）",
  "note": "status=active 表示真抓过、能出通知；pending 只是目录条目，选中会提示尚未接入。接入方法见 docs/add-your-school.md",
  "counts": {
   "total": 3167,
   "active": 1,
   "pending": 3166,
-  "featured": 152,
+  "featured": 196,
+  "doubleFirst": 144,
   "bachelor": 1365,
   "vocational": 1554,
   "adult": 248
@@ -21,6 +22,10 @@
    "pinyin": "beijingdaxue",
    "abbr": "bjdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -32,6 +37,10 @@
    "pinyin": "zhongguorenmindaxue",
    "abbr": "zgrmdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -43,6 +52,10 @@
    "pinyin": "qinghuadaxue",
    "abbr": "qhdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -54,6 +67,10 @@
    "pinyin": "beijingjiaotongdaxue",
    "abbr": "bjjtdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -65,6 +82,9 @@
    "pinyin": "beijinggongyedaxue",
    "abbr": "bjgydx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -76,6 +96,9 @@
    "pinyin": "beijinghangkonghangtiandaxue",
    "abbr": "bjbhhkhtdx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -87,6 +110,9 @@
    "pinyin": "beijingligongdaxue",
    "abbr": "bjlgdx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -98,6 +124,10 @@
    "pinyin": "beijingkejidaxue",
    "abbr": "bjkjdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -112,6 +142,11 @@
    "name": "北京化工大学",
    "province": "北京市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -137,6 +172,10 @@
    "pinyin": "beijingyoudiandaxue",
    "abbr": "bjyddx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -176,6 +215,10 @@
    "pinyin": "zhongguonongyedaxue",
    "abbr": "zgnydx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -190,6 +233,11 @@
    "name": "北京林业大学",
    "province": "北京市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -197,6 +245,10 @@
    "name": "北京协和医学院",
    "province": "北京市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -215,6 +267,10 @@
    "pinyin": "beijingzhongyiyaodaxue",
    "abbr": "bjzyydx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -226,6 +282,10 @@
    "pinyin": "beijingshifandaxue",
    "abbr": "bjsfdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -233,6 +293,10 @@
    "name": "首都师范大学",
    "province": "北京市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -251,6 +315,10 @@
    "pinyin": "beijingwaiguoyudaxue",
    "abbr": "bjwgydx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -265,6 +333,9 @@
    "name": "北京语言大学",
    "province": "北京市",
    "level": "本科",
+   "tags": [
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -272,6 +343,11 @@
    "name": "中国传媒大学",
    "province": "北京市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -283,6 +359,10 @@
    "pinyin": "zhongyangcaijingdaxue",
    "abbr": "zycjdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -294,6 +374,10 @@
    "pinyin": "duiwaijingjimaoyidaxue",
    "abbr": "dwjjmydx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -322,6 +406,10 @@
    "name": "外交学院",
    "province": "北京市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -329,6 +417,10 @@
    "name": "中国人民公安大学",
    "province": "北京市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -336,6 +428,9 @@
    "name": "国际关系学院",
    "province": "北京市",
    "level": "本科",
+   "tags": [
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -343,6 +438,10 @@
    "name": "北京体育大学",
    "province": "北京市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -350,6 +449,11 @@
    "name": "中央音乐学院",
    "province": "北京市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -357,6 +461,10 @@
    "name": "中国音乐学院",
    "province": "北京市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -364,6 +472,11 @@
    "name": "中央美术学院",
    "province": "北京市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -371,6 +484,11 @@
    "name": "中央戏剧学院",
    "province": "北京市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -399,6 +517,10 @@
    "name": "中央民族大学",
    "province": "北京市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -406,6 +528,11 @@
    "name": "中国政法大学",
    "province": "北京市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -413,6 +540,11 @@
    "name": "华北电力大学",
    "province": "北京市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -434,6 +566,11 @@
    "name": "中国矿业大学（北京）",
    "province": "北京市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -441,6 +578,11 @@
    "name": "中国石油大学（北京）",
    "province": "北京市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -448,6 +590,11 @@
    "name": "中国地质大学（北京）",
    "province": "北京市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -462,6 +609,9 @@
    "name": "北京城市学院",
    "province": "北京市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -490,6 +640,9 @@
    "name": "首都师范大学科德学院",
    "province": "北京市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -497,6 +650,9 @@
    "name": "北京金融科技学院",
    "province": "北京市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -504,6 +660,9 @@
    "name": "北京邮电大学世纪学院",
    "province": "北京市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -511,6 +670,9 @@
    "name": "北京工业大学耿丹学院",
    "province": "北京市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -525,6 +687,9 @@
    "name": "北京第二外国语学院中瑞酒店管理学院",
    "province": "北京市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -532,6 +697,10 @@
    "name": "中国科学院大学",
    "province": "北京市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -616,6 +785,9 @@
    "name": "北京北大方正软件职业技术学院",
    "province": "北京市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -623,6 +795,9 @@
    "name": "北京经贸职业学院",
    "province": "北京市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -630,6 +805,9 @@
    "name": "北京经济技术职业学院",
    "province": "北京市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -644,6 +822,9 @@
    "name": "北京汇佳职业学院",
    "province": "北京市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -651,6 +832,9 @@
    "name": "北京科技经营管理学院",
    "province": "北京市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -658,6 +842,9 @@
    "name": "北京科技职业学院",
    "province": "北京市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -665,6 +852,9 @@
    "name": "北京培黎职业学院",
    "province": "北京市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -686,6 +876,9 @@
    "name": "北京艺术传媒职业学院",
    "province": "北京市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -714,6 +907,9 @@
    "name": "北京网络职业学院",
    "province": "北京市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -725,6 +921,10 @@
    "pinyin": "nankaidaxue",
    "abbr": "nkdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -736,6 +936,10 @@
    "pinyin": "tianjindaxue",
    "abbr": "tjdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -750,6 +954,10 @@
    "name": "天津工业大学",
    "province": "天津市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -778,6 +986,10 @@
    "name": "天津医科大学",
    "province": "天津市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -785,6 +997,10 @@
    "name": "天津中医药大学",
    "province": "天津市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -855,6 +1071,9 @@
    "name": "天津天狮学院",
    "province": "天津市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -869,6 +1088,9 @@
    "name": "天津外国语大学滨海外事学院",
    "province": "天津市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -876,6 +1098,9 @@
    "name": "天津传媒学院",
    "province": "天津市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -883,6 +1108,9 @@
    "name": "天津商业大学宝德学院",
    "province": "天津市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -890,6 +1118,9 @@
    "name": "天津医科大学临床医学院",
    "province": "天津市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -897,6 +1128,9 @@
    "name": "南开大学滨海学院",
    "province": "天津市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -904,6 +1138,9 @@
    "name": "天津师范大学津沽学院",
    "province": "天津市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -911,6 +1148,9 @@
    "name": "天津理工大学中环信息学院",
    "province": "天津市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -918,6 +1158,9 @@
    "name": "北京科技大学天津学院",
    "province": "天津市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -925,6 +1168,9 @@
    "name": "天津仁爱学院",
    "province": "天津市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -932,6 +1178,9 @@
    "name": "天津财经大学珠江学院",
    "province": "天津市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -1114,6 +1363,9 @@
    "name": "天津滨海汽车工程职业学院",
    "province": "天津市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -1150,6 +1402,9 @@
    "pinyin": "hebeigongyedaxue",
    "abbr": "hbgydx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -1398,6 +1653,9 @@
    "province": "河北省",
    "city": "石家庄市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -1406,6 +1664,9 @@
    "province": "河北省",
    "city": "石家庄市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -1414,6 +1675,9 @@
    "province": "河北省",
    "city": "石家庄市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -1422,6 +1686,9 @@
    "province": "河北省",
    "city": "保定市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -1430,6 +1697,9 @@
    "province": "河北省",
    "city": "石家庄市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -1438,6 +1708,9 @@
    "province": "河北省",
    "city": "保定市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -1446,6 +1719,9 @@
    "province": "河北省",
    "city": "唐山市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -1462,6 +1738,9 @@
    "province": "河北省",
    "city": "石家庄市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -1470,6 +1749,9 @@
    "province": "河北省",
    "city": "石家庄市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -1478,6 +1760,9 @@
    "province": "河北省",
    "city": "石家庄市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -1494,6 +1779,9 @@
    "province": "河北省",
    "city": "邯郸市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -1510,6 +1798,9 @@
    "province": "河北省",
    "city": "秦皇岛市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -1518,6 +1809,9 @@
    "province": "河北省",
    "city": "石家庄市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -1526,6 +1820,9 @@
    "province": "河北省",
    "city": "石家庄市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -1534,6 +1831,9 @@
    "province": "河北省",
    "city": "保定市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -1542,6 +1842,9 @@
    "province": "河北省",
    "city": "唐山市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -1550,6 +1853,9 @@
    "province": "河北省",
    "city": "保定市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -1558,6 +1864,9 @@
    "province": "河北省",
    "city": "廊坊市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -1566,6 +1875,9 @@
    "province": "河北省",
    "city": "廊坊市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -1574,6 +1886,9 @@
    "province": "河北省",
    "city": "沧州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -1582,6 +1897,9 @@
    "province": "河北省",
    "city": "廊坊市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -1726,6 +2044,9 @@
    "province": "河北省",
    "city": "石家庄市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -1734,6 +2055,9 @@
    "province": "河北省",
    "city": "石家庄市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -1774,6 +2098,9 @@
    "province": "河北省",
    "city": "石家庄市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -1870,6 +2197,9 @@
    "province": "河北省",
    "city": "石家庄市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -1878,6 +2208,9 @@
    "province": "河北省",
    "city": "石家庄市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -1886,6 +2219,9 @@
    "province": "河北省",
    "city": "石家庄市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -1918,6 +2254,9 @@
    "province": "河北省",
    "city": "石家庄市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -1926,6 +2265,9 @@
    "province": "河北省",
    "city": "石家庄市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -1942,6 +2284,9 @@
    "province": "河北省",
    "city": "石家庄市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -1966,6 +2311,9 @@
    "province": "河北省",
    "city": "石家庄市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -2046,6 +2394,9 @@
    "province": "河北省",
    "city": "沧州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -2062,6 +2413,9 @@
    "province": "河北省",
    "city": "唐山市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -2094,6 +2448,9 @@
    "province": "河北省",
    "city": "唐山市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -2102,6 +2459,9 @@
    "province": "河北省",
    "city": "邢台市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -2126,6 +2486,9 @@
    "province": "河北省",
    "city": "沧州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -2134,6 +2497,9 @@
    "province": "河北省",
    "city": "邯郸市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -2150,6 +2516,9 @@
    "province": "河北省",
    "city": "邢台市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -2158,6 +2527,9 @@
    "province": "河北省",
    "city": "石家庄市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -2166,6 +2538,9 @@
    "province": "河北省",
    "city": "石家庄市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -2178,6 +2553,9 @@
    "pinyin": "shanxidaxue",
    "abbr": "sxdx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -2210,6 +2588,9 @@
    "pinyin": "taiyuanligongdaxue",
    "abbr": "tylgdx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -2338,6 +2719,9 @@
    "province": "山西省",
    "city": "太原市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -2362,6 +2746,9 @@
    "province": "山西省",
    "city": "晋中市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -2378,6 +2765,9 @@
    "province": "山西省",
    "city": "晋中市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -2394,6 +2784,9 @@
    "province": "山西省",
    "city": "晋中市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -2402,6 +2795,9 @@
    "province": "山西省",
    "city": "太原市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -2410,6 +2806,9 @@
    "province": "山西省",
    "city": "太原市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -2426,6 +2825,9 @@
    "province": "山西省",
    "city": "运城市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -2586,6 +2988,9 @@
    "province": "山西省",
    "city": "临汾市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -2650,6 +3055,9 @@
    "province": "山西省",
    "city": "晋中市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -2666,6 +3074,9 @@
    "province": "山西省",
    "city": "晋中市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -2690,6 +3101,9 @@
    "province": "山西省",
    "city": "太原市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -2834,6 +3248,9 @@
    "province": "山西省",
    "city": "大同市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -2846,6 +3263,9 @@
    "pinyin": "neimenggudaxue",
    "abbr": "nmgdx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -2954,6 +3374,9 @@
    "province": "内蒙古自治区",
    "city": "呼和浩特市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -2962,6 +3385,9 @@
    "province": "内蒙古自治区",
    "city": "呼和浩特市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -3018,6 +3444,9 @@
    "province": "内蒙古自治区",
    "city": "呼和浩特市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -3138,6 +3567,9 @@
    "province": "内蒙古自治区",
    "city": "呼和浩特市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -3146,6 +3578,9 @@
    "province": "内蒙古自治区",
    "city": "呼和浩特市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -3154,6 +3589,9 @@
    "province": "内蒙古自治区",
    "city": "赤峰市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -3162,6 +3600,9 @@
    "province": "内蒙古自治区",
    "city": "呼和浩特市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -3194,6 +3635,9 @@
    "province": "内蒙古自治区",
    "city": "呼和浩特市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -3218,6 +3662,9 @@
    "province": "内蒙古自治区",
    "city": "呼和浩特市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -3242,6 +3689,9 @@
    "province": "内蒙古自治区",
    "city": "巴彦淖尔市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -3282,6 +3732,10 @@
    "province": "辽宁省",
    "city": "沈阳市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -3294,6 +3748,10 @@
    "pinyin": "dalianligongdaxue",
    "abbr": "dllgdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -3330,6 +3788,10 @@
    "pinyin": "dongbeidaxue",
    "abbr": "dbdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -3382,6 +3844,10 @@
    "province": "辽宁省",
    "city": "大连市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -3562,6 +4028,9 @@
    "province": "辽宁省",
    "city": "大连市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -3630,6 +4099,9 @@
    "province": "辽宁省",
    "city": "锦州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -3638,6 +4110,9 @@
    "province": "辽宁省",
    "city": "大连市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -3646,6 +4121,9 @@
    "province": "辽宁省",
    "city": "辽阳市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -3654,6 +4132,9 @@
    "province": "辽宁省",
    "city": "沈阳市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -3662,6 +4143,9 @@
    "province": "辽宁省",
    "city": "抚顺市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -3670,6 +4154,9 @@
    "province": "辽宁省",
    "city": "大连市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -3678,6 +4165,9 @@
    "province": "辽宁省",
    "city": "大连市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -3686,6 +4176,9 @@
    "province": "辽宁省",
    "city": "沈阳市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -3694,6 +4187,9 @@
    "province": "辽宁省",
    "city": "大连市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -3702,6 +4198,9 @@
    "province": "辽宁省",
    "city": "锦州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -3710,6 +4209,9 @@
    "province": "辽宁省",
    "city": "大连市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -3718,6 +4220,9 @@
    "province": "辽宁省",
    "city": "锦州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -3726,6 +4231,9 @@
    "province": "辽宁省",
    "city": "大连市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -3734,6 +4242,9 @@
    "province": "辽宁省",
    "city": "沈阳市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -3742,6 +4253,9 @@
    "province": "辽宁省",
    "city": "大连市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -3750,6 +4264,9 @@
    "province": "辽宁省",
    "city": "沈阳市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -3758,6 +4275,9 @@
    "province": "辽宁省",
    "city": "沈阳市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -3766,6 +4286,9 @@
    "province": "辽宁省",
    "city": "沈阳市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -3774,6 +4297,9 @@
    "province": "辽宁省",
    "city": "大连市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -3782,6 +4308,9 @@
    "province": "辽宁省",
    "city": "葫芦岛市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -3790,6 +4319,9 @@
    "province": "辽宁省",
    "city": "沈阳市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -3950,6 +4482,9 @@
    "province": "辽宁省",
    "city": "大连市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -3974,6 +4509,9 @@
    "province": "辽宁省",
    "city": "沈阳市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -4014,6 +4552,9 @@
    "province": "辽宁省",
    "city": "大连市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -4022,6 +4563,9 @@
    "province": "辽宁省",
    "city": "大连市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -4038,6 +4582,9 @@
    "province": "辽宁省",
    "city": "大连市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -4086,6 +4633,9 @@
    "province": "辽宁省",
    "city": "大连市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -4094,6 +4644,9 @@
    "province": "辽宁省",
    "city": "大连市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -4102,6 +4655,9 @@
    "province": "辽宁省",
    "city": "大连市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -4158,6 +4714,9 @@
    "province": "辽宁省",
    "city": "沈阳市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -4218,6 +4777,10 @@
    "pinyin": "jilindaxue",
    "abbr": "jldx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -4226,6 +4789,10 @@
    "province": "吉林省",
    "city": "延边朝鲜族自治州",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -4302,6 +4869,10 @@
    "pinyin": "dongbeishifandaxue",
    "abbr": "dbsfdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -4382,6 +4953,9 @@
    "province": "吉林省",
    "city": "长春市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -4430,6 +5004,9 @@
    "province": "吉林省",
    "city": "长春市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -4438,6 +5015,9 @@
    "province": "吉林省",
    "city": "长春市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -4446,6 +5026,9 @@
    "province": "吉林省",
    "city": "长春市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -4454,6 +5037,9 @@
    "province": "吉林省",
    "city": "长春市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -4462,6 +5048,9 @@
    "province": "吉林省",
    "city": "长春市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -4470,6 +5059,9 @@
    "province": "吉林省",
    "city": "长春市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -4478,6 +5070,9 @@
    "province": "吉林省",
    "city": "长春市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -4486,6 +5081,9 @@
    "province": "吉林省",
    "city": "长春市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -4494,6 +5092,9 @@
    "province": "吉林省",
    "city": "四平市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -4502,6 +5103,9 @@
    "province": "吉林省",
    "city": "长春市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -4510,6 +5114,9 @@
    "province": "吉林省",
    "city": "长春市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -4598,6 +5205,9 @@
    "province": "吉林省",
    "city": "长春市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -4646,6 +5256,9 @@
    "province": "吉林省",
    "city": "长春市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -4678,6 +5291,9 @@
    "province": "吉林省",
    "city": "长春市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -4694,6 +5310,9 @@
    "province": "吉林省",
    "city": "长春市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -4702,6 +5321,9 @@
    "province": "吉林省",
    "city": "延边朝鲜族自治州",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -4718,6 +5340,9 @@
    "province": "吉林省",
    "city": "长春市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -4726,6 +5351,9 @@
    "province": "吉林省",
    "city": "长春市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -4734,6 +5362,9 @@
    "province": "吉林省",
    "city": "通化市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -4758,6 +5389,9 @@
    "province": "吉林省",
    "city": "长春市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -4790,6 +5424,9 @@
    "pinyin": "haerbingongyedaxue",
    "abbr": "hebgydx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -4810,6 +5447,9 @@
    "pinyin": "haerbingongchengdaxue",
    "abbr": "hebgcdx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -4854,6 +5494,9 @@
    "pinyin": "dongbeinongyedaxue",
    "abbr": "dbnydx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -4866,6 +5509,10 @@
    "pinyin": "dongbeilinyedaxue",
    "abbr": "dblydx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -4986,6 +5633,9 @@
    "province": "黑龙江省",
    "city": "哈尔滨市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -4994,6 +5644,9 @@
    "province": "黑龙江省",
    "city": "哈尔滨市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5010,6 +5663,9 @@
    "province": "黑龙江省",
    "city": "齐齐哈尔市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5018,6 +5674,9 @@
    "province": "黑龙江省",
    "city": "哈尔滨市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5026,6 +5685,9 @@
    "province": "黑龙江省",
    "city": "哈尔滨市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5034,6 +5696,9 @@
    "province": "黑龙江省",
    "city": "哈尔滨市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5042,6 +5707,9 @@
    "province": "黑龙江省",
    "city": "哈尔滨市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5050,6 +5718,9 @@
    "province": "黑龙江省",
    "city": "哈尔滨市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5058,6 +5729,9 @@
    "province": "黑龙江省",
    "city": "哈尔滨市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5066,6 +5740,9 @@
    "province": "黑龙江省",
    "city": "哈尔滨市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5074,6 +5751,9 @@
    "province": "黑龙江省",
    "city": "哈尔滨市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5082,6 +5762,9 @@
    "province": "黑龙江省",
    "city": "哈尔滨市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5250,6 +5933,9 @@
    "province": "黑龙江省",
    "city": "哈尔滨市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5274,6 +5960,9 @@
    "province": "黑龙江省",
    "city": "哈尔滨市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5290,6 +5979,9 @@
    "province": "黑龙江省",
    "city": "佳木斯市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5346,6 +6038,9 @@
    "province": "黑龙江省",
    "city": "哈尔滨市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5386,6 +6081,9 @@
    "province": "黑龙江省",
    "city": "齐齐哈尔市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5410,6 +6108,9 @@
    "province": "黑龙江省",
    "city": "哈尔滨市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5418,6 +6119,9 @@
    "province": "黑龙江省",
    "city": "哈尔滨市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5426,6 +6130,9 @@
    "province": "黑龙江省",
    "city": "齐齐哈尔市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5437,6 +6144,10 @@
    "pinyin": "fudandaxue",
    "abbr": "fddx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -5448,6 +6159,10 @@
    "pinyin": "tongjidaxue",
    "abbr": "tjdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -5459,6 +6174,10 @@
    "pinyin": "shanghaijiaotongdaxue",
    "abbr": "shjtdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -5470,6 +6189,10 @@
    "pinyin": "huadongligongdaxue",
    "abbr": "hdlgdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -5499,6 +6222,10 @@
    "pinyin": "donghuadaxue",
    "abbr": "dhdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -5527,6 +6254,10 @@
    "name": "上海海洋大学",
    "province": "上海市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -5534,6 +6265,10 @@
    "name": "上海中医药大学",
    "province": "上海市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -5545,6 +6280,10 @@
    "pinyin": "huadongshifandaxue",
    "abbr": "hdsfdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -5563,6 +6302,10 @@
    "pinyin": "shanghaiwaiguoyudaxue",
    "abbr": "shwgydx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -5574,6 +6317,10 @@
    "pinyin": "shanghaicaijingdaxue",
    "abbr": "shcjdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -5602,6 +6349,10 @@
    "name": "上海体育大学",
    "province": "上海市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -5609,6 +6360,10 @@
    "name": "上海音乐学院",
    "province": "上海市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -5627,6 +6382,9 @@
    "pinyin": "shanghaidaxue",
    "abbr": "shdx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -5666,6 +6424,9 @@
    "name": "上海杉达学院",
    "province": "上海市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5694,6 +6455,9 @@
    "name": "上海立达学院",
    "province": "上海市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5701,6 +6465,9 @@
    "name": "上海建桥学院",
    "province": "上海市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5708,6 +6475,9 @@
    "name": "上海兴伟学院",
    "province": "上海市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5715,6 +6485,9 @@
    "name": "上海中侨职业技术大学",
    "province": "上海市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5722,6 +6495,9 @@
    "name": "上海视觉艺术学院",
    "province": "上海市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5729,6 +6505,9 @@
    "name": "上海外国语大学贤达经济人文学院",
    "province": "上海市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5736,6 +6515,9 @@
    "name": "上海师范大学天华学院",
    "province": "上海市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5743,6 +6525,10 @@
    "name": "上海科技大学",
    "province": "上海市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -5750,6 +6536,9 @@
    "name": "上海纽约大学",
    "province": "上海市",
    "level": "本科",
+   "tags": [
+    "中外合作办学"
+   ],
    "status": "pending"
   },
   {
@@ -5764,6 +6553,9 @@
    "name": "上海东海职业技术学院",
    "province": "上海市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5771,6 +6563,9 @@
    "name": "上海工商职业技术学院",
    "province": "上海市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5820,6 +6615,9 @@
    "name": "上海震旦职业学院",
    "province": "上海市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5827,6 +6625,9 @@
    "name": "上海民远职业技术学院",
    "province": "上海市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5834,6 +6635,9 @@
    "name": "上海欧华职业技术学院",
    "province": "上海市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5841,6 +6645,9 @@
    "name": "上海思博职业技术学院",
    "province": "上海市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5855,6 +6662,9 @@
    "name": "上海济光职业技术学院",
    "province": "上海市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5862,6 +6672,9 @@
    "name": "上海工商外国语职业学院",
    "province": "上海市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5883,6 +6696,9 @@
    "name": "上海邦德职业技术学院",
    "province": "上海市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5890,6 +6706,9 @@
    "name": "上海电影艺术职业学院",
    "province": "上海市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5897,6 +6716,9 @@
    "name": "上海中华职业技术学院",
    "province": "上海市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -5965,6 +6787,10 @@
    "pinyin": "nanjingdaxue",
    "abbr": "njdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -5977,6 +6803,9 @@
    "pinyin": "suzhoudaxue",
    "abbr": "szdx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -5989,6 +6818,10 @@
    "pinyin": "dongnandaxue",
    "abbr": "dndx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -6001,6 +6834,9 @@
    "pinyin": "nanjinghangkonghangtiandaxue",
    "abbr": "njhkhkhtdx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -6013,6 +6849,9 @@
    "pinyin": "nanjingligongdaxue",
    "abbr": "njlgdx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -6029,6 +6868,11 @@
    "province": "江苏省",
    "city": "徐州市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -6061,6 +6905,9 @@
    "pinyin": "nanjingyoudiandaxue",
    "abbr": "njyddx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -6073,6 +6920,10 @@
    "pinyin": "hehaidaxue",
    "abbr": "hhdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -6085,6 +6936,10 @@
    "pinyin": "jiangnandaxue",
    "abbr": "jndx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -6093,6 +6948,10 @@
    "province": "江苏省",
    "city": "南京市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -6117,6 +6976,9 @@
    "pinyin": "nanjingxinxigongchengdaxue",
    "abbr": "njxxgcdx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -6145,6 +7007,10 @@
    "pinyin": "nanjingnongyedaxue",
    "abbr": "njnydx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -6153,6 +7019,10 @@
    "province": "江苏省",
    "city": "南京市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -6169,6 +7039,10 @@
    "province": "江苏省",
    "city": "南京市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -6181,6 +7055,10 @@
    "pinyin": "zhongguoyaokedaxue",
    "abbr": "zgykdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -6189,6 +7067,10 @@
    "province": "江苏省",
    "city": "南京市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -6305,6 +7187,9 @@
    "province": "江苏省",
    "city": "南京市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6369,6 +7254,9 @@
    "province": "江苏省",
    "city": "南通市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6385,6 +7273,9 @@
    "province": "江苏省",
    "city": "南京市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6401,6 +7292,9 @@
    "province": "江苏省",
    "city": "无锡市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6417,6 +7311,9 @@
    "province": "江苏省",
    "city": "徐州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6425,6 +7322,9 @@
    "province": "江苏省",
    "city": "南京市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6433,6 +7333,9 @@
    "province": "江苏省",
    "city": "南京市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6441,6 +7344,9 @@
    "province": "江苏省",
    "city": "南京市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6449,6 +7355,9 @@
    "province": "江苏省",
    "city": "南京市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6457,6 +7366,9 @@
    "province": "江苏省",
    "city": "泰州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6465,6 +7377,9 @@
    "province": "江苏省",
    "city": "泰州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6473,6 +7388,9 @@
    "province": "江苏省",
    "city": "南京市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6481,6 +7399,9 @@
    "province": "江苏省",
    "city": "镇江市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6489,6 +7410,9 @@
    "province": "江苏省",
    "city": "连云港市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6497,6 +7421,9 @@
    "province": "江苏省",
    "city": "泰州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6521,6 +7448,9 @@
    "province": "江苏省",
    "city": "苏州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6529,6 +7459,9 @@
    "province": "江苏省",
    "city": "南京市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6537,6 +7470,9 @@
    "province": "江苏省",
    "city": "镇江市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6545,6 +7481,9 @@
    "province": "江苏省",
    "city": "扬州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6553,6 +7492,9 @@
    "province": "江苏省",
    "city": "徐州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6561,6 +7503,9 @@
    "province": "江苏省",
    "city": "扬州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6569,6 +7514,9 @@
    "province": "江苏省",
    "city": "南京市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6577,6 +7525,9 @@
    "province": "江苏省",
    "city": "苏州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6585,6 +7536,9 @@
    "province": "江苏省",
    "city": "泰州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6593,6 +7547,9 @@
    "province": "江苏省",
    "city": "南通市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6601,6 +7558,9 @@
    "province": "江苏省",
    "city": "南京市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6625,6 +7585,9 @@
    "province": "江苏省",
    "city": "苏州市",
    "level": "本科",
+   "tags": [
+    "中外合作办学"
+   ],
    "status": "pending"
   },
   {
@@ -6633,6 +7596,9 @@
    "province": "江苏省",
    "city": "昆山市",
    "level": "本科",
+   "tags": [
+    "中外合作办学"
+   ],
    "status": "pending"
   },
   {
@@ -6689,6 +7655,9 @@
    "province": "江苏省",
    "city": "盐城市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6761,6 +7730,9 @@
    "province": "江苏省",
    "city": "徐州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6769,6 +7741,9 @@
    "province": "江苏省",
    "city": "苏州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6809,6 +7784,9 @@
    "province": "江苏省",
    "city": "南京市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6865,6 +7843,9 @@
    "province": "江苏省",
    "city": "苏州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6945,6 +7926,9 @@
    "province": "江苏省",
    "city": "无锡市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6953,6 +7937,9 @@
    "province": "江苏省",
    "city": "淮安市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6969,6 +7956,9 @@
    "province": "江苏省",
    "city": "南京市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6977,6 +7967,9 @@
    "province": "江苏省",
    "city": "南京市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6985,6 +7978,9 @@
    "province": "江苏省",
    "city": "无锡市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -6993,6 +7989,9 @@
    "province": "江苏省",
    "city": "无锡市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -7001,6 +8000,9 @@
    "province": "江苏省",
    "city": "南京市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -7041,6 +8043,9 @@
    "province": "江苏省",
    "city": "常州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -7089,6 +8094,9 @@
    "province": "江苏省",
    "city": "扬州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -7129,6 +8137,9 @@
    "province": "江苏省",
    "city": "镇江市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -7169,6 +8180,9 @@
    "province": "江苏省",
    "city": "苏州市",
    "level": "专科",
+   "tags": [
+    "中外合作办学"
+   ],
    "status": "pending"
   },
   {
@@ -7177,6 +8191,9 @@
    "province": "江苏省",
    "city": "苏州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -7185,6 +8202,9 @@
    "province": "江苏省",
    "city": "南京市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -7217,6 +8237,9 @@
    "province": "江苏省",
    "city": "苏州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -7249,6 +8272,9 @@
    "province": "江苏省",
    "city": "宿迁市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -7297,6 +8323,9 @@
    "province": "江苏省",
    "city": "扬州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -7421,6 +8450,10 @@
    "pinyin": "zhejiangdaxue",
    "abbr": "zjdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -7577,6 +8610,10 @@
    "province": "浙江省",
    "city": "杭州市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -7649,6 +8686,10 @@
    "province": "浙江省",
    "city": "宁波市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -7665,6 +8706,9 @@
    "province": "浙江省",
    "city": "杭州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -7673,6 +8717,9 @@
    "province": "浙江省",
    "city": "绍兴市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -7681,6 +8728,9 @@
    "province": "浙江省",
    "city": "宁波市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -7713,6 +8763,9 @@
    "province": "浙江省",
    "city": "金华市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -7721,6 +8774,9 @@
    "province": "浙江省",
    "city": "杭州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -7729,6 +8785,9 @@
    "province": "浙江省",
    "city": "金华市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -7737,6 +8796,9 @@
    "province": "浙江省",
    "city": "宁波市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -7745,6 +8807,9 @@
    "province": "浙江省",
    "city": "杭州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -7753,6 +8818,9 @@
    "province": "浙江省",
    "city": "杭州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -7761,6 +8829,9 @@
    "province": "浙江省",
    "city": "绍兴市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -7769,6 +8840,9 @@
    "province": "浙江省",
    "city": "温州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -7777,6 +8851,9 @@
    "province": "浙江省",
    "city": "杭州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -7785,6 +8862,9 @@
    "province": "浙江省",
    "city": "杭州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -7817,6 +8897,9 @@
    "province": "浙江省",
    "city": "杭州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -7833,6 +8916,9 @@
    "province": "浙江省",
    "city": "杭州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -7841,6 +8927,9 @@
    "province": "浙江省",
    "city": "嘉兴市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -7849,6 +8938,9 @@
    "province": "浙江省",
    "city": "温州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -7857,6 +8949,9 @@
    "province": "浙江省",
    "city": "嘉兴市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -7865,6 +8960,9 @@
    "province": "浙江省",
    "city": "金华市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -7889,6 +8987,9 @@
    "province": "浙江省",
    "city": "杭州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -7921,6 +9022,9 @@
    "province": "浙江省",
    "city": "宁波市",
    "level": "本科",
+   "tags": [
+    "中外合作办学"
+   ],
    "status": "pending"
   },
   {
@@ -7929,6 +9033,9 @@
    "province": "浙江省",
    "city": "温州市",
    "level": "本科",
+   "tags": [
+    "中外合作办学"
+   ],
    "status": "pending"
   },
   {
@@ -7953,6 +9060,9 @@
    "province": "浙江省",
    "city": "宁波市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -8073,6 +9183,9 @@
    "province": "浙江省",
    "city": "杭州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -8121,6 +9234,9 @@
    "province": "浙江省",
    "city": "绍兴市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -8145,6 +9261,9 @@
    "province": "浙江省",
    "city": "温州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -8177,6 +9296,9 @@
    "province": "浙江省",
    "city": "杭州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -8185,6 +9307,9 @@
    "province": "浙江省",
    "city": "嘉兴市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -8193,6 +9318,9 @@
    "province": "浙江省",
    "city": "杭州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -8249,6 +9377,9 @@
    "province": "浙江省",
    "city": "台州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -8257,6 +9388,9 @@
    "province": "浙江省",
    "city": "金华市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -8289,6 +9423,9 @@
    "province": "浙江省",
    "city": "湖州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -8297,6 +9434,9 @@
    "province": "浙江省",
    "city": "金华市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -8321,6 +9461,9 @@
    "province": "浙江省",
    "city": "湖州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -8333,6 +9476,9 @@
    "pinyin": "anhuidaxue",
    "abbr": "ahdx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -8345,6 +9491,9 @@
    "pinyin": "zhongguokexuejishudaxue",
    "abbr": "zgkxjsdx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -8357,6 +9506,10 @@
    "pinyin": "hefeigongyedaxue",
    "abbr": "hfgydx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -8545,6 +9698,9 @@
    "province": "安徽省",
    "city": "合肥市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -8581,6 +9737,9 @@
    "province": "安徽省",
    "city": "合肥市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -8589,6 +9748,9 @@
    "province": "安徽省",
    "city": "合肥市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -8605,6 +9767,9 @@
    "province": "安徽省",
    "city": "合肥市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -8613,6 +9778,9 @@
    "province": "安徽省",
    "city": "蚌埠市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -8629,6 +9797,9 @@
    "province": "安徽省",
    "city": "芜湖市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -8637,6 +9808,9 @@
    "province": "安徽省",
    "city": "马鞍山市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -8645,6 +9819,9 @@
    "province": "安徽省",
    "city": "合肥市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -8653,6 +9830,9 @@
    "province": "安徽省",
    "city": "合肥市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -8661,6 +9841,9 @@
    "province": "安徽省",
    "city": "芜湖市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -8669,6 +9852,9 @@
    "province": "安徽省",
    "city": "合肥市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -8677,6 +9863,9 @@
    "province": "安徽省",
    "city": "阜阳市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -8685,6 +9874,9 @@
    "province": "安徽省",
    "city": "淮北市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -8701,6 +9893,9 @@
    "province": "安徽省",
    "city": "马鞍山市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -8797,6 +9992,9 @@
    "province": "安徽省",
    "city": "合肥市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -8869,6 +10067,9 @@
    "province": "安徽省",
    "city": "合肥市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -8941,6 +10142,9 @@
    "province": "安徽省",
    "city": "合肥市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -8997,6 +10201,9 @@
    "province": "安徽省",
    "city": "阜阳市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9109,6 +10316,9 @@
    "province": "安徽省",
    "city": "合肥市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9125,6 +10335,9 @@
    "province": "安徽省",
    "city": "合肥市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9133,6 +10346,9 @@
    "province": "安徽省",
    "city": "合肥市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9141,6 +10357,9 @@
    "province": "安徽省",
    "city": "合肥市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9149,6 +10368,9 @@
    "province": "安徽省",
    "city": "蚌埠市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9157,6 +10379,9 @@
    "province": "安徽省",
    "city": "阜阳市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9181,6 +10406,9 @@
    "province": "安徽省",
    "city": "淮南市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9189,6 +10417,9 @@
    "province": "安徽省",
    "city": "淮北市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9197,6 +10428,9 @@
    "province": "安徽省",
    "city": "合肥市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9253,6 +10487,9 @@
    "province": "安徽省",
    "city": "芜湖市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9285,6 +10522,9 @@
    "province": "安徽省",
    "city": "合肥市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9309,6 +10549,9 @@
    "province": "安徽省",
    "city": "黄山市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9317,6 +10560,9 @@
    "province": "安徽省",
    "city": "宿州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9325,6 +10571,9 @@
    "province": "安徽省",
    "city": "芜湖市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9333,6 +10582,9 @@
    "province": "安徽省",
    "city": "芜湖市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9341,6 +10593,9 @@
    "province": "安徽省",
    "city": "蚌埠市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9361,6 +10616,10 @@
    "pinyin": "xiamendaxue",
    "abbr": "xmdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -9381,6 +10640,9 @@
    "pinyin": "fuzhoudaxue",
    "abbr": "fzdx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -9537,6 +10799,9 @@
    "province": "福建省",
    "city": "泉州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9553,6 +10818,9 @@
    "province": "福建省",
    "city": "厦门市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9561,6 +10829,9 @@
    "province": "福建省",
    "city": "泉州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9569,6 +10840,9 @@
    "province": "福建省",
    "city": "泉州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9577,6 +10851,9 @@
    "province": "福建省",
    "city": "泉州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9585,6 +10862,9 @@
    "province": "福建省",
    "city": "福州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9593,6 +10873,9 @@
    "province": "福建省",
    "city": "厦门市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9601,6 +10884,9 @@
    "province": "福建省",
    "city": "福州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9609,6 +10895,9 @@
    "province": "福建省",
    "city": "漳州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9617,6 +10906,9 @@
    "province": "福建省",
    "city": "福州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9625,6 +10917,9 @@
    "province": "福建省",
    "city": "厦门市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9633,6 +10928,9 @@
    "province": "福建省",
    "city": "福州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9641,6 +10939,9 @@
    "province": "福建省",
    "city": "福州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9657,6 +10958,9 @@
    "province": "福建省",
    "city": "泉州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9665,6 +10969,9 @@
    "province": "福建省",
    "city": "福州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9673,6 +10980,9 @@
    "province": "福建省",
    "city": "福州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9689,6 +10999,9 @@
    "province": "福建省",
    "city": "福州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9729,6 +11042,9 @@
    "province": "福建省",
    "city": "福州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9809,6 +11125,9 @@
    "province": "福建省",
    "city": "福州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9817,6 +11136,9 @@
    "province": "福建省",
    "city": "泉州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9825,6 +11147,9 @@
    "province": "福建省",
    "city": "泉州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9841,6 +11166,9 @@
    "province": "福建省",
    "city": "福州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9849,6 +11177,9 @@
    "province": "福建省",
    "city": "厦门市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9857,6 +11188,9 @@
    "province": "福建省",
    "city": "厦门市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9865,6 +11199,9 @@
    "province": "福建省",
    "city": "福州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9945,6 +11282,9 @@
    "province": "福建省",
    "city": "福州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9953,6 +11293,9 @@
    "province": "福建省",
    "city": "厦门市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9961,6 +11304,9 @@
    "province": "福建省",
    "city": "厦门市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9985,6 +11331,9 @@
    "province": "福建省",
    "city": "厦门市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -9993,6 +11342,9 @@
    "province": "福建省",
    "city": "厦门市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10001,6 +11353,9 @@
    "province": "福建省",
    "city": "漳州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10009,6 +11364,9 @@
    "province": "福建省",
    "city": "漳州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10017,6 +11375,9 @@
    "province": "福建省",
    "city": "南平市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10033,6 +11394,9 @@
    "province": "福建省",
    "city": "泉州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10041,6 +11405,9 @@
    "province": "福建省",
    "city": "泉州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10049,6 +11416,9 @@
    "province": "福建省",
    "city": "厦门市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10073,6 +11443,9 @@
    "province": "福建省",
    "city": "泉州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10081,6 +11454,9 @@
    "province": "福建省",
    "city": "福州市",
    "level": "专科",
+   "tags": [
+    "中外合作办学"
+   ],
    "status": "pending"
   },
   {
@@ -10101,6 +11477,9 @@
    "pinyin": "nanchangdaxue",
    "abbr": "ncdx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -10225,6 +11604,9 @@
    "province": "江西省",
    "city": "南昌市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10289,6 +11671,9 @@
    "province": "江西省",
    "city": "新余市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10297,6 +11682,9 @@
    "province": "江西省",
    "city": "南昌市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10305,6 +11693,9 @@
    "province": "江西省",
    "city": "南昌市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10313,6 +11704,9 @@
    "province": "江西省",
    "city": "南昌市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10321,6 +11715,9 @@
    "province": "江西省",
    "city": "南昌市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10329,6 +11726,9 @@
    "province": "江西省",
    "city": "南昌市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10337,6 +11737,9 @@
    "province": "江西省",
    "city": "南昌市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10345,6 +11748,9 @@
    "province": "江西省",
    "city": "九江市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10353,6 +11759,9 @@
    "province": "江西省",
    "city": "南昌市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10369,6 +11778,9 @@
    "province": "江西省",
    "city": "南昌市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10385,6 +11797,9 @@
    "province": "江西省",
    "city": "景德镇市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10393,6 +11808,9 @@
    "province": "江西省",
    "city": "南昌市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10409,6 +11827,9 @@
    "province": "江西省",
    "city": "南昌市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10417,6 +11838,9 @@
    "province": "江西省",
    "city": "赣州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10425,6 +11849,9 @@
    "province": "江西省",
    "city": "南昌市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10433,6 +11860,9 @@
    "province": "江西省",
    "city": "南昌市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10449,6 +11879,9 @@
    "province": "江西省",
    "city": "南昌市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10489,6 +11922,9 @@
    "province": "江西省",
    "city": "九江市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10649,6 +12085,9 @@
    "province": "江西省",
    "city": "南昌市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10753,6 +12192,9 @@
    "province": "江西省",
    "city": "南昌市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10769,6 +12211,9 @@
    "province": "江西省",
    "city": "新余市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10785,6 +12230,9 @@
    "province": "江西省",
    "city": "新余市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10793,6 +12241,9 @@
    "province": "江西省",
    "city": "九江市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10801,6 +12252,9 @@
    "province": "江西省",
    "city": "南昌市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10833,6 +12287,9 @@
    "province": "江西省",
    "city": "南昌市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10841,6 +12298,9 @@
    "province": "江西省",
    "city": "景德镇市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10881,6 +12341,9 @@
    "province": "江西省",
    "city": "宜春市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10897,6 +12360,9 @@
    "province": "江西省",
    "city": "南昌市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10945,6 +12411,9 @@
    "province": "江西省",
    "city": "九江市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10953,6 +12422,9 @@
    "province": "江西省",
    "city": "赣州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10977,6 +12449,9 @@
    "province": "江西省",
    "city": "宜春市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -10985,6 +12460,9 @@
    "province": "江西省",
    "city": "抚州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11001,6 +12479,9 @@
    "province": "江西省",
    "city": "鹰潭市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11025,6 +12506,9 @@
    "province": "江西省",
    "city": "赣州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11033,6 +12517,9 @@
    "province": "江西省",
    "city": "赣州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11045,6 +12532,10 @@
    "pinyin": "shandongdaxue",
    "abbr": "sddx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -11057,6 +12548,10 @@
    "pinyin": "zhongguohaiyangdaxue",
    "abbr": "zghydx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -11081,6 +12576,10 @@
    "pinyin": "zhongguoshiyoudaxue",
    "abbr": "zgsydx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -11305,6 +12804,9 @@
    "province": "山东省",
    "city": "淄博市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11313,6 +12815,9 @@
    "province": "山东省",
    "city": "青岛市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11397,6 +12902,9 @@
    "province": "山东省",
    "city": "烟台市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11405,6 +12913,9 @@
    "province": "山东省",
    "city": "潍坊市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11413,6 +12924,9 @@
    "province": "山东省",
    "city": "济南市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11421,6 +12935,9 @@
    "province": "山东省",
    "city": "青岛市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11429,6 +12946,9 @@
    "province": "山东省",
    "city": "青岛市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11437,6 +12957,9 @@
    "province": "山东省",
    "city": "济南市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11445,6 +12968,9 @@
    "province": "山东省",
    "city": "济南市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11453,6 +12979,9 @@
    "province": "山东省",
    "city": "济南市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11461,6 +12990,9 @@
    "province": "山东省",
    "city": "烟台市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11469,6 +13001,9 @@
    "province": "山东省",
    "city": "聊城市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11477,6 +13012,9 @@
    "province": "山东省",
    "city": "青岛市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11485,6 +13023,9 @@
    "province": "山东省",
    "city": "潍坊市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11493,6 +13034,9 @@
    "province": "山东省",
    "city": "济南市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11509,6 +13053,9 @@
    "province": "山东省",
    "city": "日照市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11517,6 +13064,9 @@
    "province": "山东省",
    "city": "泰安市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11525,6 +13075,9 @@
    "province": "山东省",
    "city": "德州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11533,6 +13086,9 @@
    "province": "山东省",
    "city": "威海市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11541,6 +13097,9 @@
    "province": "山东省",
    "city": "青岛市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11549,6 +13108,9 @@
    "province": "山东省",
    "city": "烟台市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11557,6 +13119,9 @@
    "province": "山东省",
    "city": "济南市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11565,6 +13130,9 @@
    "province": "山东省",
    "city": "泰安市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11573,6 +13141,9 @@
    "province": "山东省",
    "city": "烟台市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11605,6 +13176,9 @@
    "province": "山东省",
    "city": "青岛市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11685,6 +13259,9 @@
    "province": "山东省",
    "city": "济宁市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11797,6 +13374,9 @@
    "province": "山东省",
    "city": "德州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11805,6 +13385,9 @@
    "province": "山东省",
    "city": "泰安市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11813,6 +13396,9 @@
    "province": "山东省",
    "city": "济南市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11837,6 +13423,9 @@
    "province": "山东省",
    "city": "青岛市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11925,6 +13514,9 @@
    "province": "山东省",
    "city": "青岛市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -11949,6 +13541,9 @@
    "province": "山东省",
    "city": "潍坊市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12021,6 +13616,9 @@
    "province": "山东省",
    "city": "济南市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12125,6 +13723,9 @@
    "province": "山东省",
    "city": "青岛市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12165,6 +13766,9 @@
    "province": "山东省",
    "city": "潍坊市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12197,6 +13801,9 @@
    "province": "山东省",
    "city": "济南市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12221,6 +13828,9 @@
    "province": "山东省",
    "city": "烟台市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12229,6 +13839,9 @@
    "province": "山东省",
    "city": "日照市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12277,6 +13890,9 @@
    "province": "山东省",
    "city": "青岛市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12285,6 +13901,9 @@
    "province": "山东省",
    "city": "潍坊市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12293,6 +13912,9 @@
    "province": "山东省",
    "city": "滨州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12309,6 +13931,9 @@
    "province": "山东省",
    "city": "潍坊市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12317,6 +13942,9 @@
    "province": "山东省",
    "city": "烟台市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12325,6 +13953,9 @@
    "province": "山东省",
    "city": "德州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12333,6 +13964,9 @@
    "province": "山东省",
    "city": "日照市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12365,6 +13999,9 @@
    "province": "山东省",
    "city": "济宁市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12373,6 +14010,9 @@
    "province": "山东省",
    "city": "日照市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12381,6 +14021,9 @@
    "province": "山东省",
    "city": "枣庄市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12389,6 +14032,9 @@
    "province": "山东省",
    "city": "临沂市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12397,6 +14043,9 @@
    "province": "山东省",
    "city": "菏泽市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12417,6 +14066,9 @@
    "pinyin": "zhengzhoudaxue",
    "abbr": "zzdx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -12517,6 +14169,9 @@
    "pinyin": "henandaxue",
    "abbr": "hndx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -12709,6 +14364,9 @@
    "province": "河南省",
    "city": "郑州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12725,6 +14383,9 @@
    "province": "河南省",
    "city": "郑州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12733,6 +14394,9 @@
    "province": "河南省",
    "city": "郑州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12749,6 +14413,9 @@
    "province": "河南省",
    "city": "郑州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12757,6 +14424,9 @@
    "province": "河南省",
    "city": "焦作市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12765,6 +14435,9 @@
    "province": "河南省",
    "city": "商丘市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12773,6 +14446,9 @@
    "province": "河南省",
    "city": "开封市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12781,6 +14457,9 @@
    "province": "河南省",
    "city": "郑州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12789,6 +14468,9 @@
    "province": "河南省",
    "city": "信阳市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12797,6 +14479,9 @@
    "province": "河南省",
    "city": "安阳市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12805,6 +14490,9 @@
    "province": "河南省",
    "city": "新乡市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12813,6 +14501,9 @@
    "province": "河南省",
    "city": "新乡市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12821,6 +14512,9 @@
    "province": "河南省",
    "city": "郑州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12829,6 +14523,9 @@
    "province": "河南省",
    "city": "郑州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12837,6 +14534,9 @@
    "province": "河南省",
    "city": "商丘市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12845,6 +14545,9 @@
    "province": "河南省",
    "city": "郑州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12853,6 +14556,9 @@
    "province": "河南省",
    "city": "周口市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12861,6 +14567,9 @@
    "province": "河南省",
    "city": "郑州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12869,6 +14578,9 @@
    "province": "河南省",
    "city": "郑州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12877,6 +14589,9 @@
    "province": "河南省",
    "city": "郑州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12885,6 +14600,9 @@
    "province": "河南省",
    "city": "漯河市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -12901,6 +14619,9 @@
    "province": "河南省",
    "city": "郑州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13117,6 +14838,9 @@
    "province": "河南省",
    "city": "郑州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13133,6 +14857,9 @@
    "province": "河南省",
    "city": "郑州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13221,6 +14948,9 @@
    "province": "河南省",
    "city": "郑州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13237,6 +14967,9 @@
    "province": "河南省",
    "city": "郑州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13269,6 +15002,9 @@
    "province": "河南省",
    "city": "焦作市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13277,6 +15013,9 @@
    "province": "河南省",
    "city": "许昌市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13285,6 +15024,9 @@
    "province": "河南省",
    "city": "郑州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13293,6 +15035,9 @@
    "province": "河南省",
    "city": "郑州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13301,6 +15046,9 @@
    "province": "河南省",
    "city": "新乡市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13357,6 +15105,9 @@
    "province": "河南省",
    "city": "信阳市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13365,6 +15116,9 @@
    "province": "河南省",
    "city": "鹤壁市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13373,6 +15127,9 @@
    "province": "河南省",
    "city": "南阳市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13381,6 +15138,9 @@
    "province": "河南省",
    "city": "郑州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13421,6 +15181,9 @@
    "province": "河南省",
    "city": "郑州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13453,6 +15216,9 @@
    "province": "河南省",
    "city": "洛阳市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13469,6 +15235,9 @@
    "province": "河南省",
    "city": "平顶山市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13517,6 +15286,9 @@
    "province": "河南省",
    "city": "信阳市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13549,6 +15321,9 @@
    "province": "河南省",
    "city": "郑州市",
    "level": "专科",
+   "tags": [
+    "中外合作办学"
+   ],
    "status": "pending"
   },
   {
@@ -13605,6 +15380,9 @@
    "province": "河南省",
    "city": "安阳市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13613,6 +15391,9 @@
    "province": "河南省",
    "city": "郑州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13621,6 +15402,9 @@
    "province": "河南省",
    "city": "郑州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13629,6 +15413,9 @@
    "province": "河南省",
    "city": "郑州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13661,6 +15448,9 @@
    "province": "河南省",
    "city": "郑州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13669,6 +15459,9 @@
    "province": "河南省",
    "city": "郑州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13717,6 +15510,9 @@
    "province": "河南省",
    "city": "焦作市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13725,6 +15521,9 @@
    "province": "河南省",
    "city": "开封市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13733,6 +15532,9 @@
    "province": "河南省",
    "city": "洛阳市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13741,6 +15543,9 @@
    "province": "河南省",
    "city": "郑州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13749,6 +15554,9 @@
    "province": "河南省",
    "city": "郑州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13757,6 +15565,9 @@
    "province": "河南省",
    "city": "郑州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13765,6 +15576,9 @@
    "province": "河南省",
    "city": "郑州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13781,6 +15595,9 @@
    "province": "河南省",
    "city": "信阳市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13789,6 +15606,9 @@
    "province": "河南省",
    "city": "信阳市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13797,6 +15617,9 @@
    "province": "河南省",
    "city": "周口市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13805,6 +15628,9 @@
    "province": "河南省",
    "city": "新乡市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13813,6 +15639,9 @@
    "province": "河南省",
    "city": "开封市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13821,6 +15650,9 @@
    "province": "河南省",
    "city": "开封市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13829,6 +15661,9 @@
    "province": "河南省",
    "city": "周口市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13837,6 +15672,9 @@
    "province": "河南省",
    "city": "平顶山市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -13849,6 +15687,10 @@
    "pinyin": "wuhandaxue",
    "abbr": "whdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -13861,6 +15703,10 @@
    "pinyin": "huazhongkejidaxue",
    "abbr": "hzkjdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -13897,6 +15743,10 @@
    "pinyin": "zhongguodizhidaxue",
    "abbr": "zgdzdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -13925,6 +15775,10 @@
    "pinyin": "wuhanligongdaxue",
    "abbr": "whlgdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -13945,6 +15799,11 @@
    "province": "湖北省",
    "city": "武汉市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -13965,6 +15824,10 @@
    "pinyin": "huazhongshifandaxue",
    "abbr": "hzsfdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -14025,6 +15888,10 @@
    "pinyin": "zhongnancaijingzhengfadaxue",
    "abbr": "zncjzfdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -14153,6 +16020,9 @@
    "province": "湖北省",
    "city": "武汉市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14161,6 +16031,9 @@
    "province": "湖北省",
    "city": "武汉市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14169,6 +16042,9 @@
    "province": "湖北省",
    "city": "武汉市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14177,6 +16053,9 @@
    "province": "湖北省",
    "city": "武汉市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14185,6 +16064,9 @@
    "province": "湖北省",
    "city": "武汉市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14193,6 +16075,9 @@
    "province": "湖北省",
    "city": "武汉市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14201,6 +16086,9 @@
    "province": "湖北省",
    "city": "武汉市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14209,6 +16097,9 @@
    "province": "湖北省",
    "city": "武汉市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14217,6 +16108,9 @@
    "province": "湖北省",
    "city": "宜昌市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14225,6 +16119,9 @@
    "province": "湖北省",
    "city": "武汉市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14233,6 +16130,9 @@
    "province": "湖北省",
    "city": "武汉市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14241,6 +16141,9 @@
    "province": "湖北省",
    "city": "武汉市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14249,6 +16152,9 @@
    "province": "湖北省",
    "city": "武汉市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14257,6 +16163,9 @@
    "province": "湖北省",
    "city": "武汉市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14265,6 +16174,9 @@
    "province": "湖北省",
    "city": "武汉市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14273,6 +16185,9 @@
    "province": "湖北省",
    "city": "荆州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14281,6 +16196,9 @@
    "province": "湖北省",
    "city": "荆州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14289,6 +16207,9 @@
    "province": "湖北省",
    "city": "武汉市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14297,6 +16218,9 @@
    "province": "湖北省",
    "city": "十堰市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14305,6 +16229,9 @@
    "province": "湖北省",
    "city": "十堰市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14313,6 +16240,9 @@
    "province": "湖北省",
    "city": "恩施土家族苗族自治州",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14321,6 +16251,9 @@
    "province": "湖北省",
    "city": "武汉市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14329,6 +16262,9 @@
    "province": "湖北省",
    "city": "武汉市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14337,6 +16273,9 @@
    "province": "湖北省",
    "city": "黄石市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14345,6 +16284,9 @@
    "province": "湖北省",
    "city": "襄阳市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14353,6 +16295,9 @@
    "province": "湖北省",
    "city": "孝感市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14361,6 +16306,9 @@
    "province": "湖北省",
    "city": "武汉市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14369,6 +16317,9 @@
    "province": "湖北省",
    "city": "武汉市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14377,6 +16328,9 @@
    "province": "湖北省",
    "city": "武汉市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14385,6 +16339,9 @@
    "province": "湖北省",
    "city": "武汉市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14393,6 +16350,9 @@
    "province": "湖北省",
    "city": "武汉市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14401,6 +16361,9 @@
    "province": "湖北省",
    "city": "武汉市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14425,6 +16388,9 @@
    "province": "湖北省",
    "city": "宜昌市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14513,6 +16479,9 @@
    "province": "湖北省",
    "city": "武汉市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14649,6 +16618,9 @@
    "province": "湖北省",
    "city": "武汉市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14657,6 +16629,9 @@
    "province": "湖北省",
    "city": "武汉市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14665,6 +16640,9 @@
    "province": "湖北省",
    "city": "武汉市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14673,6 +16651,9 @@
    "province": "湖北省",
    "city": "武汉市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14681,6 +16662,9 @@
    "province": "湖北省",
    "city": "武汉市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14689,6 +16673,9 @@
    "province": "湖北省",
    "city": "武汉市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14761,6 +16748,9 @@
    "province": "湖北省",
    "city": "黄冈市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14873,6 +16863,9 @@
    "province": "湖北省",
    "city": "荆州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14897,6 +16890,9 @@
    "province": "湖北省",
    "city": "武汉市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14905,6 +16901,9 @@
    "province": "湖北省",
    "city": "咸宁市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14913,6 +16912,9 @@
    "province": "湖北省",
    "city": "孝感市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -14945,6 +16947,10 @@
    "province": "湖南省",
    "city": "湘潭市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -14965,6 +16971,10 @@
    "pinyin": "hunandaxue",
    "abbr": "hndx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -14977,6 +16987,10 @@
    "pinyin": "zhongnandaxue",
    "abbr": "zndx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -15037,6 +17051,9 @@
    "pinyin": "hunanshifandaxue",
    "abbr": "hnsfdx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -15125,6 +17142,9 @@
    "province": "湖南省",
    "city": "长沙市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -15213,6 +17233,9 @@
    "province": "湖南省",
    "city": "长沙市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -15221,6 +17244,9 @@
    "province": "湖南省",
    "city": "湘潭市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -15229,6 +17255,9 @@
    "province": "湖南省",
    "city": "株洲市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -15237,6 +17266,9 @@
    "province": "湖南省",
    "city": "湘潭市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -15245,6 +17277,9 @@
    "province": "湖南省",
    "city": "衡阳市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -15253,6 +17288,9 @@
    "province": "湖南省",
    "city": "湘潭市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -15269,6 +17307,9 @@
    "province": "湖南省",
    "city": "长沙市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -15277,6 +17318,9 @@
    "province": "湖南省",
    "city": "长沙市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -15285,6 +17329,9 @@
    "province": "湖南省",
    "city": "常德市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -15293,6 +17340,9 @@
    "province": "湖南省",
    "city": "岳阳市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -15301,6 +17351,9 @@
    "province": "湖南省",
    "city": "衡阳市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -15309,6 +17362,9 @@
    "province": "湖南省",
    "city": "湘潭市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -15317,6 +17373,9 @@
    "province": "湖南省",
    "city": "长沙市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -15325,6 +17384,9 @@
    "province": "湖南省",
    "city": "张家界市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -15333,6 +17395,9 @@
    "province": "湖南省",
    "city": "长沙市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -15349,6 +17414,9 @@
    "province": "湖南省",
    "city": "常德市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -15357,6 +17425,9 @@
    "province": "湖南省",
    "city": "长沙市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -15365,6 +17436,9 @@
    "province": "湖南省",
    "city": "衡阳市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -15373,6 +17447,9 @@
    "province": "湖南省",
    "city": "湘潭市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -15389,6 +17466,9 @@
    "province": "湖南省",
    "city": "长沙市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -15685,6 +17765,9 @@
    "province": "湖南省",
    "city": "长沙市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -15693,6 +17776,9 @@
    "province": "湖南省",
    "city": "娄底市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -15845,6 +17931,9 @@
    "province": "湖南省",
    "city": "长沙市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -15861,6 +17950,9 @@
    "province": "湖南省",
    "city": "长沙市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -15869,6 +17961,9 @@
    "province": "湖南省",
    "city": "长沙市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -15885,6 +17980,9 @@
    "province": "湖南省",
    "city": "常德市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -15893,6 +17991,9 @@
    "province": "湖南省",
    "city": "衡阳市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -15901,6 +18002,9 @@
    "province": "湖南省",
    "city": "长沙市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -15933,6 +18037,9 @@
    "province": "湖南省",
    "city": "湘潭市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16029,6 +18136,9 @@
    "province": "湖南省",
    "city": "长沙市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16037,6 +18147,9 @@
    "province": "湖南省",
    "city": "长沙市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16045,6 +18158,9 @@
    "province": "湖南省",
    "city": "岳阳市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16053,6 +18169,9 @@
    "province": "湖南省",
    "city": "郴州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16061,6 +18180,9 @@
    "province": "湖南省",
    "city": "衡阳市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16085,6 +18207,9 @@
    "province": "湖南省",
    "city": "长沙市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16093,6 +18218,9 @@
    "province": "湖南省",
    "city": "长沙市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16101,6 +18229,9 @@
    "province": "湖南省",
    "city": "株洲市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16109,6 +18240,9 @@
    "province": "湖南省",
    "city": "衡阳市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16117,6 +18251,9 @@
    "province": "湖南省",
    "city": "郴州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16125,6 +18262,9 @@
    "province": "湖南省",
    "city": "岳阳市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16133,6 +18273,9 @@
    "province": "湖南省",
    "city": "邵阳市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16145,6 +18288,10 @@
    "pinyin": "zhongshandaxue",
    "abbr": "zsdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -16157,6 +18304,9 @@
    "pinyin": "jinandaxue",
    "abbr": "jndx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -16177,6 +18327,10 @@
    "pinyin": "huananligongdaxue",
    "abbr": "hnlgdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -16189,6 +18343,9 @@
    "pinyin": "huanannongyedaxue",
    "abbr": "hnnydx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -16205,6 +18362,10 @@
    "province": "广东省",
    "city": "广州市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -16221,6 +18382,10 @@
    "province": "广东省",
    "city": "广州市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -16241,6 +18406,9 @@
    "pinyin": "huananshifandaxue",
    "abbr": "hnsfdx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -16349,6 +18517,9 @@
    "province": "广东省",
    "city": "广州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16409,6 +18580,9 @@
    "province": "广东省",
    "city": "中山市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16469,6 +18643,9 @@
    "province": "广东省",
    "city": "广州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16485,6 +18662,9 @@
    "province": "广东省",
    "city": "佛山市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16493,6 +18673,9 @@
    "province": "广东省",
    "city": "广州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16501,6 +18684,9 @@
    "province": "广东省",
    "city": "广州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16509,6 +18695,9 @@
    "province": "广东省",
    "city": "广州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16517,6 +18706,9 @@
    "province": "广东省",
    "city": "广州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16525,6 +18717,9 @@
    "province": "广东省",
    "city": "广州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16533,6 +18728,9 @@
    "province": "广东省",
    "city": "湛江市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16541,6 +18739,9 @@
    "province": "广东省",
    "city": "广州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16549,6 +18750,9 @@
    "province": "广东省",
    "city": "广州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16557,6 +18761,9 @@
    "province": "广东省",
    "city": "珠海市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16565,6 +18772,9 @@
    "province": "广东省",
    "city": "广州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16573,6 +18783,9 @@
    "province": "广东省",
    "city": "广州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16581,6 +18794,9 @@
    "province": "广东省",
    "city": "广州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16589,6 +18805,9 @@
    "province": "广东省",
    "city": "珠海市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16597,6 +18816,9 @@
    "province": "广东省",
    "city": "珠海市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16605,6 +18827,9 @@
    "province": "广东省",
    "city": "广州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16613,6 +18838,9 @@
    "province": "广东省",
    "city": "广州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16621,6 +18849,9 @@
    "province": "广东省",
    "city": "东莞市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16629,6 +18860,9 @@
    "province": "广东省",
    "city": "肇庆市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16637,6 +18871,9 @@
    "province": "广东省",
    "city": "肇庆市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16645,6 +18882,9 @@
    "province": "广东省",
    "city": "东莞市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16653,6 +18893,9 @@
    "province": "广东省",
    "city": "广州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16673,6 +18916,9 @@
    "pinyin": "nanfangkejidaxue",
    "abbr": "nfkjdx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -16689,6 +18935,9 @@
    "province": "广东省",
    "city": "珠海市",
    "level": "本科",
+   "tags": [
+    "中外合作办学"
+   ],
    "status": "pending"
   },
   {
@@ -16697,6 +18946,9 @@
    "province": "广东省",
    "city": "广州市",
    "level": "本科",
+   "tags": [
+    "中外合作办学"
+   ],
    "status": "pending"
   },
   {
@@ -16705,6 +18957,9 @@
    "province": "广东省",
    "city": "深圳市",
    "level": "本科",
+   "tags": [
+    "中外合作办学"
+   ],
    "status": "pending"
   },
   {
@@ -16713,6 +18968,9 @@
    "province": "广东省",
    "city": "深圳市",
    "level": "本科",
+   "tags": [
+    "中外合作办学"
+   ],
    "status": "pending"
   },
   {
@@ -16721,6 +18979,9 @@
    "province": "广东省",
    "city": "汕头市",
    "level": "本科",
+   "tags": [
+    "中外合作办学"
+   ],
    "status": "pending"
   },
   {
@@ -16729,6 +18990,9 @@
    "province": "广东省",
    "city": "东莞市",
    "level": "本科",
+   "tags": [
+    "中外合作办学"
+   ],
    "status": "pending"
   },
   {
@@ -16817,6 +19081,9 @@
    "province": "广东省",
    "city": "揭阳市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16833,6 +19100,9 @@
    "province": "广东省",
    "city": "广州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16865,6 +19135,9 @@
    "province": "广东省",
    "city": "深圳市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16897,6 +19170,9 @@
    "province": "广东省",
    "city": "广州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16905,6 +19181,9 @@
    "province": "广东省",
    "city": "珠海市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -16961,6 +19240,9 @@
    "province": "广东省",
    "city": "广州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17049,6 +19331,9 @@
    "province": "广东省",
    "city": "肇庆市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17121,6 +19406,9 @@
    "province": "广东省",
    "city": "广州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17129,6 +19417,9 @@
    "province": "广东省",
    "city": "广州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17137,6 +19428,9 @@
    "province": "广东省",
    "city": "惠州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17145,6 +19439,9 @@
    "province": "广东省",
    "city": "广州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17161,6 +19458,9 @@
    "province": "广东省",
    "city": "广州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17169,6 +19469,9 @@
    "province": "广东省",
    "city": "广州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17225,6 +19528,9 @@
    "province": "广东省",
    "city": "广州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17233,6 +19539,9 @@
    "province": "广东省",
    "city": "广州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17241,6 +19550,9 @@
    "province": "广东省",
    "city": "湛江市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17249,6 +19561,9 @@
    "province": "广东省",
    "city": "广州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17265,6 +19580,9 @@
    "province": "广东省",
    "city": "江门市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17273,6 +19591,9 @@
    "province": "广东省",
    "city": "广州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17281,6 +19602,9 @@
    "province": "广东省",
    "city": "广州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17305,6 +19629,9 @@
    "province": "广东省",
    "city": "广州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17313,6 +19640,9 @@
    "province": "广东省",
    "city": "东莞市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17337,6 +19667,9 @@
    "province": "广东省",
    "city": "肇庆市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17361,6 +19694,9 @@
    "province": "广东省",
    "city": "清远市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17377,6 +19713,9 @@
    "province": "广东省",
    "city": "东莞市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17481,6 +19820,9 @@
    "province": "广东省",
    "city": "肇庆市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17497,6 +19839,9 @@
    "province": "广东省",
    "city": "珠海市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17517,6 +19862,9 @@
    "pinyin": "guangxidaxue",
    "abbr": "gxdx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -17677,6 +20025,9 @@
    "province": "广西壮族自治区",
    "city": "南宁市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17725,6 +20076,9 @@
    "province": "广西壮族自治区",
    "city": "北海市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17741,6 +20095,9 @@
    "province": "广西壮族自治区",
    "city": "柳州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17749,6 +20106,9 @@
    "province": "广西壮族自治区",
    "city": "南宁市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17757,6 +20117,9 @@
    "province": "广西壮族自治区",
    "city": "桂林市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17765,6 +20128,9 @@
    "province": "广西壮族自治区",
    "city": "南宁市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17773,6 +20139,9 @@
    "province": "广西壮族自治区",
    "city": "南宁市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17781,6 +20150,9 @@
    "province": "广西壮族自治区",
    "city": "桂林市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17789,6 +20161,9 @@
    "province": "广西壮族自治区",
    "city": "桂林市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17797,6 +20172,9 @@
    "province": "广西壮族自治区",
    "city": "南宁市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17805,6 +20183,9 @@
    "province": "广西壮族自治区",
    "city": "北海市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17813,6 +20194,9 @@
    "province": "广西壮族自治区",
    "city": "崇左市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17853,6 +20237,9 @@
    "province": "广西壮族自治区",
    "city": "桂林市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17957,6 +20344,9 @@
    "province": "广西壮族自治区",
    "city": "桂林市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17981,6 +20371,9 @@
    "province": "广西壮族自治区",
    "city": "南宁市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -17997,6 +20390,9 @@
    "province": "广西壮族自治区",
    "city": "钦州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18021,6 +20417,9 @@
    "province": "广西壮族自治区",
    "city": "百色市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18029,6 +20428,9 @@
    "province": "广西壮族自治区",
    "city": "崇左市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18045,6 +20447,9 @@
    "province": "广西壮族自治区",
    "city": "南宁市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18061,6 +20466,9 @@
    "province": "广西壮族自治区",
    "city": "崇左市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18077,6 +20485,9 @@
    "province": "广西壮族自治区",
    "city": "百色市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18093,6 +20504,9 @@
    "province": "广西壮族自治区",
    "city": "崇左市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18101,6 +20515,9 @@
    "province": "广西壮族自治区",
    "city": "玉林市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18109,6 +20526,9 @@
    "province": "广西壮族自治区",
    "city": "来宾市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18141,6 +20561,9 @@
    "province": "广西壮族自治区",
    "city": "梧州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18189,6 +20612,9 @@
    "province": "广西壮族自治区",
    "city": "北海市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18213,6 +20639,9 @@
    "province": "广西壮族自治区",
    "city": "桂林市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18241,6 +20670,9 @@
    "pinyin": "hainandaxue",
    "abbr": "hndx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -18277,6 +20709,9 @@
    "province": "海南省",
    "city": "海口市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18293,6 +20728,9 @@
    "province": "海南省",
    "city": "三亚市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18301,6 +20739,9 @@
    "province": "海南省",
    "city": "海口市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18341,6 +20782,9 @@
    "province": "海南省",
    "city": "三亚市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18381,6 +20825,9 @@
    "province": "海南省",
    "city": "海口市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18389,6 +20836,9 @@
    "province": "海南省",
    "city": "三亚市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18397,6 +20847,9 @@
    "province": "海南省",
    "city": "三亚市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18413,6 +20866,9 @@
    "province": "海南省",
    "city": "三亚市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18421,6 +20877,9 @@
    "province": "海南省",
    "city": "澄迈县",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18437,6 +20896,9 @@
    "province": "海南省",
    "city": "东方市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18461,6 +20923,9 @@
    "province": "海南省",
    "city": "三亚市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18472,6 +20937,10 @@
    "pinyin": "chongqingdaxue",
    "abbr": "cqdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -18504,6 +20973,10 @@
    "pinyin": "xinandidaxue",
    "abbr": "xndx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -18585,6 +21058,9 @@
    "name": "重庆机电职业技术大学",
    "province": "重庆市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18592,6 +21068,9 @@
    "name": "重庆工程学院",
    "province": "重庆市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18599,6 +21078,9 @@
    "name": "重庆城市科技学院",
    "province": "重庆市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18613,6 +21095,9 @@
    "name": "重庆人文科技学院",
    "province": "重庆市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18620,6 +21105,9 @@
    "name": "重庆外语外事学院",
    "province": "重庆市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18627,6 +21115,9 @@
    "name": "重庆对外经贸学院",
    "province": "重庆市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18634,6 +21125,9 @@
    "name": "重庆财经学院",
    "province": "重庆市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18641,6 +21135,9 @@
    "name": "重庆工商大学派斯学院",
    "province": "重庆市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18648,6 +21145,9 @@
    "name": "重庆移通学院",
    "province": "重庆市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18711,6 +21211,9 @@
    "name": "重庆海联职业技术学院",
    "province": "重庆市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18718,6 +21221,9 @@
    "name": "重庆信息技术职业学院",
    "province": "重庆市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18725,6 +21231,9 @@
    "name": "重庆传媒职业学院",
    "province": "重庆市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18746,6 +21255,9 @@
    "name": "重庆建筑科技职业学院",
    "province": "重庆市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18774,6 +21286,9 @@
    "name": "重庆应用技术职业学院",
    "province": "重庆市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18809,6 +21324,9 @@
    "name": "重庆科创职业学院",
    "province": "重庆市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18823,6 +21341,9 @@
    "name": "重庆电讯职业学院",
    "province": "重庆市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18830,6 +21351,9 @@
    "name": "重庆能源职业学院",
    "province": "重庆市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18844,6 +21368,9 @@
    "name": "重庆交通职业学院",
    "province": "重庆市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18872,6 +21399,9 @@
    "name": "重庆公共运输职业学院",
    "province": "重庆市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18879,6 +21409,9 @@
    "name": "重庆艺术工程职业学院",
    "province": "重庆市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18886,6 +21419,9 @@
    "name": "重庆轻工职业学院",
    "province": "重庆市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18893,6 +21429,9 @@
    "name": "重庆电信职业学院",
    "province": "重庆市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18900,6 +21439,9 @@
    "name": "重庆经贸职业学院",
    "province": "重庆市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18921,6 +21463,9 @@
    "name": "重庆科技职业学院",
    "province": "重庆市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18928,6 +21473,9 @@
    "name": "重庆资源与环境保护职业学院",
    "province": "重庆市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18935,6 +21483,9 @@
    "name": "重庆护理职业学院",
    "province": "重庆市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18942,6 +21493,9 @@
    "name": "重庆理工职业学院",
    "province": "重庆市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18949,6 +21503,9 @@
    "name": "重庆智能工程职业学院",
    "province": "重庆市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18956,6 +21513,9 @@
    "name": "重庆健康职业学院",
    "province": "重庆市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18977,6 +21537,9 @@
    "name": "重庆数字产业职业技术学院",
    "province": "重庆市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18984,6 +21547,9 @@
    "name": "重庆现代制造职业学院",
    "province": "重庆市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -18998,6 +21564,9 @@
    "name": "重庆安防职业学院",
    "province": "重庆市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19010,6 +21579,10 @@
    "pinyin": "sichuandaxue",
    "abbr": "scdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -19022,6 +21595,10 @@
    "pinyin": "xinanjiaotongdaxue",
    "abbr": "xnjtdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -19034,6 +21611,10 @@
    "pinyin": "dianzikejidaxue",
    "abbr": "dzkjdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "active",
    "file": "uestc.json",
    "units": [
@@ -19070,6 +21651,9 @@
    "pinyin": "xinanshiyoudaxue",
    "abbr": "xnsydx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -19082,6 +21666,9 @@
    "pinyin": "chengduligongdaxue",
    "abbr": "cdlgdx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -19134,6 +21721,9 @@
    "pinyin": "sichuannongyedaxue",
    "abbr": "scnydx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -19158,6 +21748,10 @@
    "province": "四川省",
    "city": "成都市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -19242,6 +21836,10 @@
    "pinyin": "xinandacaijingdaxue",
    "abbr": "xndcjdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -19322,6 +21920,9 @@
    "province": "四川省",
    "city": "成都市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19330,6 +21931,9 @@
    "province": "四川省",
    "city": "成都市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19338,6 +21942,9 @@
    "province": "四川省",
    "city": "成都市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19346,6 +21953,9 @@
    "province": "四川省",
    "city": "乐山市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19354,6 +21964,9 @@
    "province": "四川省",
    "city": "成都市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19362,6 +21975,9 @@
    "province": "四川省",
    "city": "成都市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19370,6 +21986,9 @@
    "province": "四川省",
    "city": "成都市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19378,6 +21997,9 @@
    "province": "四川省",
    "city": "成都市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19386,6 +22008,9 @@
    "province": "四川省",
    "city": "成都市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19402,6 +22027,9 @@
    "province": "四川省",
    "city": "德阳市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19410,6 +22038,9 @@
    "province": "四川省",
    "city": "成都市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19418,6 +22049,9 @@
    "province": "四川省",
    "city": "绵阳市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19426,6 +22060,9 @@
    "province": "四川省",
    "city": "眉山市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19434,6 +22071,9 @@
    "province": "四川省",
    "city": "绵阳市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19442,6 +22082,9 @@
    "province": "四川省",
    "city": "绵阳市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19450,6 +22093,9 @@
    "province": "四川省",
    "city": "南充市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19466,6 +22112,9 @@
    "province": "四川省",
    "city": "成都市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19474,6 +22123,9 @@
    "province": "四川省",
    "city": "成都市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19506,6 +22158,9 @@
    "province": "四川省",
    "city": "成都市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19626,6 +22281,9 @@
    "province": "四川省",
    "city": "成都市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19634,6 +22292,9 @@
    "province": "四川省",
    "city": "成都市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19730,6 +22391,9 @@
    "province": "四川省",
    "city": "成都市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19738,6 +22402,9 @@
    "province": "四川省",
    "city": "成都市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19770,6 +22437,9 @@
    "province": "四川省",
    "city": "成都市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19794,6 +22464,9 @@
    "province": "四川省",
    "city": "成都市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19802,6 +22475,9 @@
    "province": "四川省",
    "city": "成都市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19818,6 +22494,9 @@
    "province": "四川省",
    "city": "成都市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19826,6 +22505,9 @@
    "province": "四川省",
    "city": "泸州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19850,6 +22532,9 @@
    "province": "四川省",
    "city": "绵阳市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19858,6 +22543,9 @@
    "province": "四川省",
    "city": "巴中市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19866,6 +22554,9 @@
    "province": "四川省",
    "city": "资阳市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19874,6 +22565,9 @@
    "province": "四川省",
    "city": "绵阳市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19882,6 +22576,9 @@
    "province": "四川省",
    "city": "成都市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19914,6 +22611,9 @@
    "province": "四川省",
    "city": "成都市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19930,6 +22630,9 @@
    "province": "四川省",
    "city": "凉山彝族自治州",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19946,6 +22649,9 @@
    "province": "四川省",
    "city": "眉山市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19954,6 +22660,9 @@
    "province": "四川省",
    "city": "眉山市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19962,6 +22671,9 @@
    "province": "四川省",
    "city": "德阳市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19970,6 +22682,9 @@
    "province": "四川省",
    "city": "德阳市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19978,6 +22693,9 @@
    "province": "四川省",
    "city": "泸州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19986,6 +22704,9 @@
    "province": "四川省",
    "city": "眉山市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -19994,6 +22715,9 @@
    "province": "四川省",
    "city": "眉山市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -20026,6 +22750,9 @@
    "province": "四川省",
    "city": "南充市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -20034,6 +22761,9 @@
    "province": "四川省",
    "city": "攀枝花市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -20042,6 +22772,9 @@
    "province": "四川省",
    "city": "资阳市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -20050,6 +22783,9 @@
    "province": "四川省",
    "city": "资阳市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -20066,6 +22802,9 @@
    "province": "四川省",
    "city": "南充市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -20074,6 +22813,9 @@
    "province": "四川省",
    "city": "绵阳市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -20082,6 +22824,9 @@
    "province": "四川省",
    "city": "德阳市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -20090,6 +22835,9 @@
    "province": "四川省",
    "city": "泸州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -20106,6 +22854,9 @@
    "province": "四川省",
    "city": "自贡市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -20114,6 +22865,9 @@
    "province": "四川省",
    "city": "广元市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -20130,6 +22884,9 @@
    "province": "四川省",
    "city": "遂宁市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -20138,6 +22895,9 @@
    "province": "四川省",
    "city": "遂宁市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -20146,6 +22906,9 @@
    "province": "四川省",
    "city": "遂宁市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -20162,6 +22925,9 @@
    "province": "四川省",
    "city": "成都市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -20190,6 +22956,9 @@
    "pinyin": "guizhoudaxue",
    "abbr": "gzdx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -20338,6 +23107,9 @@
    "province": "贵州省",
    "city": "贵阳市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -20346,6 +23118,9 @@
    "province": "贵州省",
    "city": "黔南布依族苗族自治州",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -20354,6 +23129,9 @@
    "province": "贵州省",
    "city": "黔南布依族苗族自治州",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -20362,6 +23140,9 @@
    "province": "贵州省",
    "city": "贵阳市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -20370,6 +23151,9 @@
    "province": "贵州省",
    "city": "贵阳市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -20386,6 +23170,9 @@
    "province": "贵州省",
    "city": "遵义市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -20394,6 +23181,9 @@
    "province": "贵州省",
    "city": "贵阳市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -20418,6 +23208,9 @@
    "province": "贵州省",
    "city": "遵义市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -20506,6 +23299,9 @@
    "province": "贵州省",
    "city": "贵阳市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -20578,6 +23374,9 @@
    "province": "贵州省",
    "city": "黔南布依族苗族自治州",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -20586,6 +23385,9 @@
    "province": "贵州省",
    "city": "贵阳市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -20650,6 +23452,9 @@
    "province": "贵州省",
    "city": "铜仁市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -20658,6 +23463,9 @@
    "province": "贵州省",
    "city": "毕节市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -20682,6 +23490,9 @@
    "province": "贵州省",
    "city": "黔南布依族苗族自治州",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -20770,6 +23581,9 @@
    "province": "贵州省",
    "city": "安顺市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -20802,6 +23616,9 @@
    "province": "贵州省",
    "city": "铜仁市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -20838,6 +23655,9 @@
    "pinyin": "yunnandaxue",
    "abbr": "yndx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -21014,6 +23834,9 @@
    "province": "云南省",
    "city": "昆明市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -21022,6 +23845,9 @@
    "province": "云南省",
    "city": "昆明市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -21030,6 +23856,9 @@
    "province": "云南省",
    "city": "丽江市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -21038,6 +23867,9 @@
    "province": "云南省",
    "city": "昆明市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -21046,6 +23878,9 @@
    "province": "云南省",
    "city": "昆明市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -21054,6 +23889,9 @@
    "province": "云南省",
    "city": "昆明市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -21062,6 +23900,9 @@
    "province": "云南省",
    "city": "昆明市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -21070,6 +23911,9 @@
    "province": "云南省",
    "city": "昆明市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -21078,6 +23922,9 @@
    "province": "云南省",
    "city": "昆明市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -21190,6 +24037,9 @@
    "province": "云南省",
    "city": "昆明市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -21206,6 +24056,9 @@
    "province": "云南省",
    "city": "昆明市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -21254,6 +24107,9 @@
    "province": "云南省",
    "city": "昆明市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -21262,6 +24118,9 @@
    "province": "云南省",
    "city": "昆明市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -21286,6 +24145,9 @@
    "province": "云南省",
    "city": "昆明市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -21302,6 +24164,9 @@
    "province": "云南省",
    "city": "昆明市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -21310,6 +24175,9 @@
    "province": "云南省",
    "city": "文山壮族苗族自治州",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -21326,6 +24194,9 @@
    "province": "云南省",
    "city": "昆明市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -21334,6 +24205,9 @@
    "province": "云南省",
    "city": "昆明市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -21366,6 +24240,9 @@
    "province": "云南省",
    "city": "昆明市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -21470,6 +24347,9 @@
    "province": "云南省",
    "city": "昆明市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -21478,6 +24358,9 @@
    "province": "云南省",
    "city": "昆明市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -21574,6 +24457,9 @@
    "province": "云南省",
    "city": "昆明市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -21594,6 +24480,9 @@
    "pinyin": "xizangdaxue",
    "abbr": "xzdx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -21654,6 +24543,9 @@
    "pinyin": "xibeidaxue",
    "abbr": "xbdx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -21666,6 +24558,10 @@
    "pinyin": "xianjiaotongdaxue",
    "abbr": "xajtdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -21678,6 +24574,9 @@
    "pinyin": "xibeigongyedaxue",
    "abbr": "xbgydx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -21702,6 +24601,10 @@
    "pinyin": "xidiandianzikejidaxue",
    "abbr": "xddzkjdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -21766,6 +24669,10 @@
    "pinyin": "changanndaxue",
    "abbr": "cadx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -21774,6 +24681,11 @@
    "province": "陕西省",
    "city": "咸阳市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -21794,6 +24706,10 @@
    "pinyin": "shanxishifandaxue",
    "abbr": "sxsfdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -21914,6 +24830,9 @@
    "province": "陕西省",
    "city": "西安市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -21958,6 +24877,9 @@
    "province": "陕西省",
    "city": "西安市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -21966,6 +24888,9 @@
    "province": "陕西省",
    "city": "西安市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -21974,6 +24899,9 @@
    "province": "陕西省",
    "city": "西安市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -21982,6 +24910,9 @@
    "province": "陕西省",
    "city": "西安市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -21990,6 +24921,9 @@
    "province": "陕西省",
    "city": "西安市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -21998,6 +24932,9 @@
    "province": "陕西省",
    "city": "咸阳市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22006,6 +24943,9 @@
    "province": "陕西省",
    "city": "咸阳市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22014,6 +24954,9 @@
    "province": "陕西省",
    "city": "西安市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22022,6 +24965,9 @@
    "province": "陕西省",
    "city": "西安市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22030,6 +24976,9 @@
    "province": "陕西省",
    "city": "西安市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22038,6 +24987,9 @@
    "province": "陕西省",
    "city": "西安市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22046,6 +24998,9 @@
    "province": "陕西省",
    "city": "西安市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22054,6 +25009,9 @@
    "province": "陕西省",
    "city": "咸阳市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22062,6 +25020,9 @@
    "province": "陕西省",
    "city": "西安市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22070,6 +25031,9 @@
    "province": "陕西省",
    "city": "西安市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22078,6 +25042,9 @@
    "province": "陕西省",
    "city": "西安市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22086,6 +25053,9 @@
    "province": "陕西省",
    "city": "西安市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22094,6 +25064,9 @@
    "province": "陕西省",
    "city": "西安市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22102,6 +25075,9 @@
    "province": "陕西省",
    "city": "西安市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22110,6 +25086,9 @@
    "province": "陕西省",
    "city": "西安市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22118,6 +25097,9 @@
    "province": "陕西省",
    "city": "西安市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22126,6 +25108,9 @@
    "province": "陕西省",
    "city": "西安市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22230,6 +25215,9 @@
    "province": "陕西省",
    "city": "西安市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22238,6 +25226,9 @@
    "province": "陕西省",
    "city": "西安市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22270,6 +25261,9 @@
    "province": "陕西省",
    "city": "西安市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22286,6 +25280,9 @@
    "province": "陕西省",
    "city": "西安市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22294,6 +25291,9 @@
    "province": "陕西省",
    "city": "西安市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22398,6 +25398,9 @@
    "province": "陕西省",
    "city": "西安市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22406,6 +25409,9 @@
    "province": "陕西省",
    "city": "西安市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22438,6 +25444,9 @@
    "province": "陕西省",
    "city": "宝鸡市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22446,6 +25455,9 @@
    "province": "陕西省",
    "city": "榆林市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22454,6 +25466,9 @@
    "province": "陕西省",
    "city": "宝鸡市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22474,6 +25489,10 @@
    "pinyin": "lanzhoudaxue",
    "abbr": "lzdx",
    "featured": true,
+   "tags": [
+    "双一流",
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -22626,6 +25645,9 @@
    "province": "甘肃省",
    "city": "兰州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22642,6 +25664,9 @@
    "province": "甘肃省",
    "city": "兰州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22650,6 +25675,9 @@
    "province": "甘肃省",
    "city": "兰州市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22722,6 +25750,9 @@
    "province": "甘肃省",
    "city": "兰州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22794,6 +25825,9 @@
    "province": "甘肃省",
    "city": "兰州市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22850,6 +25884,9 @@
    "province": "甘肃省",
    "city": "白银市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22878,6 +25915,9 @@
    "pinyin": "qinghaidaxue",
    "abbr": "qhdx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -22906,6 +25946,9 @@
    "province": "青海省",
    "city": "西宁市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -22990,6 +26033,9 @@
    "pinyin": "ningxiadaxue",
    "abbr": "nxdx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -23026,6 +26072,9 @@
    "province": "宁夏回族自治区",
    "city": "石嘴山市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -23034,6 +26083,9 @@
    "province": "宁夏回族自治区",
    "city": "银川市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -23042,6 +26094,9 @@
    "province": "宁夏回族自治区",
    "city": "银川市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -23050,6 +26105,9 @@
    "province": "宁夏回族自治区",
    "city": "银川市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -23174,6 +26232,9 @@
    "pinyin": "xinjiangdaxue",
    "abbr": "xjdx",
    "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -23198,6 +26259,10 @@
    "province": "新疆维吾尔自治区",
    "city": "石河子市",
    "level": "本科",
+   "featured": true,
+   "tags": [
+    "双一流"
+   ],
    "status": "pending"
   },
   {
@@ -23286,6 +26351,9 @@
    "province": "新疆维吾尔自治区",
    "city": "乌鲁木齐市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -23318,6 +26386,9 @@
    "province": "新疆维吾尔自治区",
    "city": "乌鲁木齐市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -23366,6 +26437,9 @@
    "province": "新疆维吾尔自治区",
    "city": "阿拉尔市",
    "level": "本科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -23406,6 +26480,9 @@
    "province": "新疆维吾尔自治区",
    "city": "乌鲁木齐市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -23454,6 +26531,9 @@
    "province": "新疆维吾尔自治区",
    "city": "乌鲁木齐市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -23526,6 +26606,9 @@
    "province": "新疆维吾尔自治区",
    "city": "五家渠市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -23582,6 +26665,9 @@
    "province": "新疆维吾尔自治区",
    "city": "乌鲁木齐市",
    "level": "专科",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -23800,6 +26886,9 @@
    "name": "国家开放大学",
    "province": "北京市",
    "level": "成人",
+   "tags": [
+    "教育部直属"
+   ],
    "status": "pending"
   },
   {
@@ -24451,6 +27540,9 @@
    "name": "上海医药职工大学",
    "province": "上海市",
    "level": "成人",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {
@@ -25060,6 +28152,9 @@
    "name": "广东新华教育学院",
    "province": "广东省",
    "level": "成人",
+   "tags": [
+    "民办"
+   ],
    "status": "pending"
   },
   {

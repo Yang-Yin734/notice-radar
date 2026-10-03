@@ -10,7 +10,7 @@
 [![android-apk](https://github.com/Yang-Yin734/notice-radar/actions/workflows/android.yml/badge.svg)](https://github.com/Yang-Yin734/notice-radar/actions/workflows/android.yml)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![node](https://img.shields.io/badge/node-%3E%3D22.18-339933.svg)](package.json)
-[![version](https://img.shields.io/badge/version-v0.10.12-4d6bfe.svg)](CHANGELOG.md)
+[![version](https://img.shields.io/badge/version-v0.10.13-4d6bfe.svg)](CHANGELOG.md)
 
 ### 📲 [**下载 Android 安装包（APK）**](https://github.com/Yang-Yin734/notice-radar/releases/download/android-latest/notice-radar.apk)
 
@@ -572,8 +572,9 @@ config/
 3. 点 **确认切换**（有二次确认，因为这会立刻换掉整个列表）→ 列表与「刷新」从此只针对这所学校
 
 关键词为空时给的是「已接入 + 重点高校」，不是把 3167 所全倒出来 —— 名单是用来搜的，不是用来翻的。
-偏好只存本机（网页版 `localStorage`，应用 `SharedPreferences`），不上传。网页版还能用深链
-`https://yang-yin734.github.io/notice-radar/#school` 直接打开选择器。
+**重点** = 教育部的官方「双一流」名单（144 所，2022 年第二轮）∪ 人工挑选的知名高校，共 196 所；
+列表里会给双一流 / 民办打上标签。偏好只存本机（网页版 `localStorage`，应用 `SharedPreferences`），不上传。
+网页版还能用深链 `https://yang-yin734.github.io/notice-radar/#school` 直接打开选择器。
 
 几条刻意的设计（都是为了避免"看起来能用、其实在骗人"）：
 
@@ -597,6 +598,7 @@ config/
 | `docs/data/schools/<学校id>.json` | **已接入**学校的通知（按学院 / 栏目分组，条目带 `unit` 字段） |
 | `config/schools/directory.tsv` | 官方名单原始数据（多带主管部门与备注），刷新用 |
 | `config/schools/curated.json` | 人工维护：重点高校的短 id 与拼音、简称 |
+| `config/schools/tags.json` | 机器生成：教育部「双一流」标签（147 所名单里 144 所能对上官方名单） |
 
 ## 在应用里控制推送与更新
 

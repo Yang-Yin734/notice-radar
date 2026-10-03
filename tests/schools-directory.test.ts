@@ -13,6 +13,7 @@ import test from 'node:test';
 
 const DIRECTORY = 'config/schools/directory.tsv';
 const CURATED = 'config/schools/curated.json';
+const TAGS = 'config/schools/tags.json';
 const INDEX = 'docs/data/schools/index.json';
 
 interface DirectoryRow {
@@ -46,6 +47,19 @@ interface IndexEntry {
   units?: { id: string; name: string; count: number }[];
   total?: number;
   featured?: boolean;
+  tags?: string[];
+}
+
+interface TagsFile {
+  expected: number;
+  matched: number;
+  _unmatched: string[];
+  _renamed: string[];
+  双一流: string[];
+}
+
+function readTags(): TagsFile {
+  return JSON.parse(fs.readFileSync(TAGS, 'utf8')) as TagsFile;
 }
 
 function readDirectory(): { header: string[]; rows: DirectoryRow[] } {
@@ -136,23 +150,55 @@ test('人工维护的重点高校：都必须在官方名单里，且 id 唯一'
   assert.equal(new Set(ids).size, ids.length, '重点高校的 id 有重复');
 });
 
+test('双一流标签：147 所名单里 144 所能对上教育部名单，3 所军校明确排除', () => {
+  const { rows } = readDirectory();
+  const codes = new Set(rows.map((r) => r.code));
+  const tags = readTags();
+  const list = tags['双一流'];
+
+  assert.equal(tags.expected, 147, '教育部 2022 年公布的是 147 所');
+  assert.equal(tags.matched, list.length, 'matched 字段要与实际条数一致');
+  assert.equal(list.length, 144, '144 所能在《全国高等学校名单》里对上');
+  assert.equal(new Set(list).size, list.length, '不能有重复的学校标识码');
+  for (const code of list) assert.ok(codes.has(code), `${code} 不在官方名单里`);
+
+  // 对不上的必须正好是那 3 所军校：将来多出新名字（改名了？）时这里会红，逼人去查
+  assert.deepEqual(
+    [...tags._unmatched].sort(),
+    ['国防科技大学', '海军军医大学', '空军军医大学'].sort(),
+    '对不上的只应该是军校 —— 教育部那份名单不收军校',
+  );
+  assert.ok(
+    tags._renamed.some((r) => r.includes('上海体育学院')),
+    '改过名的学校要留痕（上海体育学院 → 上海体育大学）',
+  );
+  assert.equal(list.length + tags._unmatched.length, tags.expected, '144 + 3 应该等于 147');
+});
+
 test('选校目录：包含全部学校，已接入的必须带数据文件与学院列表', () => {
   const { rows } = readDirectory();
   const curated = readCurated();
+  const tags = readTags();
   const index = readIndex();
 
   assert.equal(index.schools.length, rows.length, 'index.json 的学校数与官方名单不一致');
   assert.equal(index.counts.total, rows.length);
-  assert.equal(index.counts.featured, Object.keys(curated).length, '重点高校数量与 curated.json 对不上');
   assert.equal(index.counts.bachelor, 1365);
   assert.equal(index.counts.vocational, 1554);
   assert.equal(index.counts.adult, 248);
+  assert.equal(index.counts.doubleFirst, tags['双一流'].length, '双一流计数与 tags.json 不一致');
 
+  // 「值得优先看」= 官方双一流 ∪ 人工挑选的重点高校
+  const featuredCodes = new Set([...tags['双一流'], ...Object.values(curated).map((c) => c.code)]);
+  assert.equal(index.counts.featured, featuredCodes.size, '重点计数应该是两个来源的并集');
+
+  const knownTags = new Set(['双一流', '教育部直属', '民办', '中外合作办学']);
   const ids = new Set<string>();
   for (const s of index.schools) {
     assert.ok(s.id && s.name && s.province && s.level, `目录条目缺字段：${JSON.stringify(s).slice(0, 120)}`);
     assert.ok(!ids.has(s.id), `目录里 id 重复：${s.id}`);
     ids.add(s.id);
+    for (const t of s.tags ?? []) assert.ok(knownTags.has(t), `未知标签 ${t}（${s.name}）`);
     if (s.status !== 'active') {
       assert.equal(s.file, undefined, `${s.name} 不是已接入，却带了数据文件`);
       continue;
@@ -160,6 +206,14 @@ test('选校目录：包含全部学校，已接入的必须带数据文件与�
     assert.ok(s.file && s.file.endsWith('.json'), `${s.name} 缺数据文件名`);
     assert.ok(Array.isArray(s.units) && s.units.length > 0, `${s.name} 应有学院/栏目列表`);
     assert.ok((s.total ?? 0) > 0, `${s.name} 的条目数应为正`);
+  }
+
+  // 双一流的学校必须真的被标上（漏标 = 用户看不到这个官方标签）
+  for (const code of tags['双一流']) {
+    const hit = index.schools.find((s) => (s.code ?? s.id) === code);
+    assert.ok(hit, `双一流学校 ${code} 不在目录里`);
+    assert.ok((hit.tags ?? []).includes('双一流'), `${hit.name} 少了双一流标签`);
+    assert.ok(hit.featured, `${hit.name} 是双一流，应该在默认浏览列表里`);
   }
 
   const active = index.schools.filter((s) => s.status === 'active');

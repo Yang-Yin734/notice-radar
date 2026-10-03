@@ -919,6 +919,18 @@ private fun SchoolOptionRow(school: SchoolInfo, selected: Boolean, onClick: () -
                 fontWeight = FontWeight.SemiBold,
                 color = if (school.active) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
             )
+            // 官方标签（双一流 / 民办）—— 比"层次"更值得第一眼看到
+            school.tag?.let { t ->
+                Spacer(Modifier.width(6.dp))
+                Text(
+                    t,
+                    fontSize = 10.5.sp,
+                    color = if (t == "双一流") Color(0xFF2F6FED) else MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier
+                        .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(20.dp))
+                        .padding(horizontal = 6.dp, vertical = 1.dp),
+                )
+            }
             // 本科是默认预期，只有专科/成人这种"和你以为的不一样"才标出来
             if (school.level.isNotEmpty() && school.level != "本科") {
                 Spacer(Modifier.width(6.dp))

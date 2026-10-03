@@ -64,8 +64,13 @@ test('网页版：省份、城市、拼音、简称、学校标识码都能搜',
 
 test('网页版：不输关键词时只列「已接入 + 重点高校」，本科排在专科前面', () => {
   const browse = all.filter((s) => s.status === 'active' || s.featured).sort(schoolSort);
-  assert.equal(browse.length, index.counts.featured, '浏览器默认列表应该是 152 所重点高校（含已接入那所）');
+  assert.equal(browse.length, index.counts.featured, '默认浏览列表 = 已接入 + 重点（双一流 ∪ 人工挑选）');
   assert.equal(browse[0].id, 'uestc', '已接入的排第一');
+  assert.ok(browse.every((s) => s.status === 'active' || s.featured));
+  // 双一流的学校必须在默认列表里，否则用户会觉得"这么有名的学校怎么找不到"
+  const doubleFirst = all.filter((s) => (s.tags ?? []).includes('双一流'));
+  assert.ok(doubleFirst.length >= 140, `双一流只有 ${doubleFirst.length} 所，标签像是丢了`);
+  assert.ok(doubleFirst.every((s) => s.featured), '双一流学校都该在默认浏览列表里');
 
   const zhejiang = search('浙江');
   const levels = zhejiang.map((s) => s.level);
