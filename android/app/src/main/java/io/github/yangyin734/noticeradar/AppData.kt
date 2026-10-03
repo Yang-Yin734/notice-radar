@@ -41,6 +41,89 @@ val VERSION_URLS = DATA_URLS.map { it.substringBefore("dashboard-data.json") + "
 
 const val REPO_SLUG = "Yang-Yin734/notice-radar"
 
+// ---------------------------------------------------------------- 学校目录（选校功能）
+
+/** 一所学校下的学院/栏目（对应 index.json 里 units[]；count 是当前条数，可能是 0） */
+data class SchoolUnit(val name: String, val count: Int)
+
+/** 学校目录条目（对应 docs/data/schools/index.json 的 schools[]） */
+data class SchoolInfo(
+    val id: String,
+    val name: String,
+    val city: String,
+    val pinyin: String,
+    val abbr: String,
+    val status: String,
+    val file: String?,
+    val units: List<SchoolUnit>,
+    val total: Int,
+) {
+    /** 只有 active 才真的能抓到通知；pending 只是目录条目，不能假装能用 */
+    val active: Boolean get() = status == "active" && !file.isNullOrEmpty()
+}
+
+/**
+ * 解析学校目录。做成纯函数（只吃字符串）以便 JVM 单测 ——
+ * 与 parseNotifyLog 同理：解析错了会让用户以为"能选"，实则永远收不到通知。
+ */
+fun parseSchoolIndex(json: String): List<SchoolInfo> {
+    return try {
+        val arr = JSONObject(json).optJSONArray("schools") ?: JSONArray()
+        (0 until arr.length()).mapNotNull { i ->
+            val o = arr.optJSONObject(i) ?: return@mapNotNull null
+            val id = o.optString("id")
+            if (id.isEmpty()) return@mapNotNull null
+            val unitsArr = o.optJSONArray("units") ?: JSONArray()
+            val units = (0 until unitsArr.length()).mapNotNull { j ->
+                val u = unitsArr.optJSONObject(j) ?: return@mapNotNull null
+                val name = u.optString("name")
+                if (name.isEmpty()) null else SchoolUnit(name = name, count = u.optInt("count", 0))
+            }
+            SchoolInfo(
+                id = id,
+                name = o.optString("name"),
+                city = o.optString("city"),
+                pinyin = o.optString("pinyin"),
+                abbr = o.optString("abbr"),
+                status = o.optString("status"),
+                file = o.optString("file").ifEmpty { null },
+                units = units,
+                total = o.optInt("total", 0),
+            )
+        }
+    } catch (e: Exception) {
+        emptyList()
+    }
+}
+
+/**
+ * 按关键词筛选学校：命中校名 / 城市 / 拼音 / 简称；已接入的永远排在前面。
+ * 关键词为空时**只给已接入的**（否则一打开就是 150 多所的长列表，很难用）。
+ */
+fun searchSchools(list: List<SchoolInfo>, query: String, limit: Int = 40): List<SchoolInfo> {
+    val q = query.trim().lowercase()
+    val hit = list.filter { s ->
+        if (q.isEmpty()) return@filter s.active
+        listOf(s.name, s.city, s.pinyin, s.abbr).any { it.lowercase().contains(q) }
+    }
+    return hit.sortedWith(compareBy({ if (it.active) 0 else 1 }, { it.name })).take(limit)
+}
+
+/** 解析某校的数据文件，返回 (条目数, 学院名列表) —— 切换后用来确认真拿到了数据 */
+fun parseSchoolPayload(json: String): Pair<Int, List<String>>? {
+    return try {
+        val root = JSONObject(json)
+        val items = root.optJSONArray("items") ?: return null
+        val unitsArr = root.optJSONArray("units") ?: JSONArray()
+        val units = (0 until unitsArr.length()).mapNotNull { i ->
+            unitsArr.optJSONObject(i)?.optString("name")?.ifEmpty { null }
+        }
+        items.length() to units
+    } catch (e: Exception) {
+        null
+    }
+}
+
 /** Server酱：微信扫码授权 + 关注服务号的入口（SendKey 在那里拿） */
 const val SERVERCHAN_URL = "https://sct.ftqq.com"
 
@@ -194,6 +277,44 @@ class Store(private val ctx: Context) {
         }
         return null
     }
+
+    // ------------------------------------------------ 选校：偏好 + 数据拉取
+
+    /** 已选学校 id（空 = 没主动选过 → 继续显示默认数据，老用户不受影响） */
+    var schoolId: String
+        get() = prefs.getString("schoolId", "") ?: ""
+        set(value) = prefs.edit().putString("schoolId", value).apply()
+
+    /** 已勾选的学院/栏目（空集合 = 全不选，这是产品要求的默认值） */
+    fun schoolUnits(): Set<String> = HashSet(prefs.getStringSet("schoolUnits", emptySet()) ?: emptySet())
+
+    fun saveSchoolUnits(units: Set<String>) =
+        prefs.edit().putStringSet("schoolUnits", HashSet(units)).apply()
+
+    /** 学校目录：按 DATA_URLS 的镜像顺序试，全失败返回空表（界面据此提示"取不到"） */
+    fun fetchSchoolIndex(): List<SchoolInfo> {
+        for (url in schoolUrls("index.json")) {
+            val raw = Net.get(url) ?: continue
+            val list = parseSchoolIndex(raw)
+            if (list.isNotEmpty()) return list
+        }
+        return emptyList()
+    }
+
+    /** 拉某校的数据文件，返回（快照, 来源标签）或 null（与 refresh() 同一套镜像逻辑） */
+    fun refreshSchool(file: String): Pair<Snapshot, String>? {
+        if (file.isEmpty()) return null
+        for (url in schoolUrls(file)) {
+            val raw = Net.get(url) ?: continue
+            val snap = Json.parseSnapshot(raw) ?: continue
+            return snap to labelOf(url)
+        }
+        return null
+    }
+
+    /** 把 dashboard-data.json 的地址换成 data/schools/<file>（与网页端同一套推导，四个镜像都能用） */
+    private fun schoolUrls(file: String): List<String> =
+        DATA_URLS.map { it.substringBefore("dashboard-data.json") + "data/schools/" + file }
 
     fun remoteVersion(): String? {
         for (url in VERSION_URLS) {
