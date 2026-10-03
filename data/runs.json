@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-03T08:21:38.430Z",
+  "updatedAt": "2026-10-03T08:36:28.508Z",
   "sources": {
     "jwc-important": [
       "ok",
@@ -69,7 +69,6 @@
       "fail"
     ],
     "news-academic": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -88,7 +87,8 @@
       "ok",
       "fail",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "gr-notice": [
       "ok",
