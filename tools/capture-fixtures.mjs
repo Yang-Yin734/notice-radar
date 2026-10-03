@@ -21,6 +21,8 @@ const targets = {
   xidian: [['jwc-tzgg.html', 'https://jwc.xidian.edu.cn/tzgg.htm']],
   hust: [['ugs-tzgg.html', 'https://ugs.hust.edu.cn/tzgg.htm']],
   sysu: [['jwb-tzgg.html', 'https://jwb.sysu.edu.cn/taxonomy/term/105']],
+  tju: [['oaa-tzgg.html', 'https://oaa.tju.edu.cn/bszy/tzgg.htm']],
+  buaa: [['jiaowu-xszq.html', 'https://jiaowu.buaa.edu.cn/tzgg/xszq.htm']],
 };
 
 if (!targets[school]) {

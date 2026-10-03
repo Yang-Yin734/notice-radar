@@ -221,6 +221,34 @@ test('通用 html-list：中山大学（日期在 time@datetime 属性里）', (
   );
 });
 
+test('通用 html-list：天津大学（标题在 h2 里）', () => {
+  // 这条同时钉住工具侧的一个坑：选择器探测器一开始只试了 h3、漏了 h2，
+  // 于是这页被误判成"导航列表"（拿到的标题是"教学技能提升""教学组织机构"）。补上 h2 才识别对。
+  checkListFixture(
+    'tju',
+    'oaa-tzgg.html',
+    {
+      id: 'oaa-tzgg',
+      baseUrl: 'https://oaa.tju.edu.cn/bszy/tzgg.htm',
+      selectors: { item: 'ul li', title: 'h2', link: 'a@href', date: 'span' },
+    },
+    { min: 8, urlOk: /^https:\/\/(mp\.weixin\.qq\.com|oaa\.tju\.edu\.cn)\// },
+  );
+});
+
+test('通用 html-list：北京航空航天大学（标题取 h5，别把日期并进标题）', () => {
+  checkListFixture(
+    'buaa',
+    'jiaowu-xszq.html',
+    {
+      id: 'jiaowu-xszq',
+      baseUrl: 'https://jiaowu.buaa.edu.cn/tzgg/xszq.htm',
+      selectors: { item: 'div.n_bt ul li', title: 'h5', link: 'a@href', date: 'i' },
+    },
+    { min: 5, urlOk: /^https:\/\/jiaowu\.buaa\.edu\.cn\// },
+  );
+});
+
 test('研究生院适配器：只认详情页链接，避免把导航项当成通知', () => {
   const html = fixture('gr-notice.html');
   const items = grAdapter.parse({ source: source({ id: 'gr-notice', adapter: 'uestc/gr' }), school: 'uestc', html });

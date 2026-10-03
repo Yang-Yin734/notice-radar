@@ -21,6 +21,7 @@ keystore.txt
 *.apk
 *.aab
 
-# 接入新学校时的探测产物（tools/dump-page.mjs、tools/moe-refresh.mjs 的工作目录）
+# 接入新学校时的探测产物（tools/dump-page.mjs、tools/probe-batch.mjs、tools/moe-refresh.mjs 的工作目录）
 .probe-pages/
+.probe-out/
 .moe-work/

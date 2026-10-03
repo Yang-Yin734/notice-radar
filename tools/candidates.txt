@@ -1,0 +1,12 @@
+# 候选学校教务处/本科生院首页（id 与 directory.tsv / curated.json 一致）
+# 用法：node tools/probe-batch.mjs tools/candidates.txt
+tju     https://oaa.tju.edu.cn/
+dlut    https://teach.dlut.edu.cn/
+hnu     https://jwc.hnu.edu.cn/
+jlu     https://jwc.jlu.edu.cn/
+scut    https://jwc.scut.edu.cn/
+seu     https://jwc.seu.edu.cn/
+tongji  https://jwc.tongji.edu.cn/
+xmu     https://jwc.xmu.edu.cn/
+whu     https://uc.whu.edu.cn/
+buaa    https://jiaowu.buaa.edu.cn/

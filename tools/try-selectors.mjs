@@ -10,7 +10,8 @@
 import { probeListPage, suggestYaml } from './lib/selectors-probe.mjs';
 
 const url = process.argv[2];
-if (!url) throw new Error('用法：node tools/try-selectors.mjs <列表页URL>');
+if (!url) throw new Error('用法：node tools/try-selectors.mjs <列表页URL> [--debug]');
+const debug = process.argv.includes('--debug');
 
 const probe = await probeListPage(url);
 if (!probe.status) {
@@ -18,6 +19,19 @@ if (!probe.status) {
   process.exit(0);
 }
 console.log(`${probe.status} ${(probe.bytes / 1024).toFixed(0)} KB | ${url}`);
+
+if (debug && probe.all?.length) {
+  const scored = probe.all.filter((a) => typeof a.score === 'number').sort((a, b) => b.score - a.score);
+  const rejected = probe.all.filter((a) => a.reason);
+  console.log('\n--- 调试：得分最高的候选 ---');
+  for (const a of scored.slice(0, 8)) {
+    console.log(
+      `   ${String(a.item).padEnd(34)} 分 ${String(a.score).padStart(4)} | ${a.count} 条 日期 ${a.dateHits} 截断 ${a.truncated} 像通知 ${(a.noticeLike * 100).toFixed(0)}% 中位长 ${a.medLen}`,
+    );
+  }
+  console.log(`--- 被拒的 ${rejected.length} 个候选（前 6）---`);
+  for (const a of rejected.slice(0, 6)) console.log(`   ${String(a.item).padEnd(34)} ${a.reason}`);
+}
 
 if (!probe.best) {
   console.log(`✗ ${probe.note}`);
