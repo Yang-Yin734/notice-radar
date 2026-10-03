@@ -67,8 +67,22 @@ sources:
     exclude: [招标, 采购, 中标]
 ```
 
-### 学校 id 怎么定（全国名单已经在了）
+### 想先只采集、暂不通知？加一行 `collectOnly: true`
 
+```yaml
+  - id: jwc-tzgg
+    name: 教务处·通知公告
+    url: https://jwc.myschool.edu.cn/tzgg.htm
+    adapter: html-list
+    collectOnly: true        # 只采集：进归档/仪表盘/按校数据，但不推微信、不进日报、失败也不告警
+    selectors: { item: ul.news-list li, title: a@title, link: a@href, date: span.date }
+```
+
+适合**新接入、还没让用户订阅**的学校（全国名单里陆续接入的学校默认都是这个档）：
+条目照常进归档与仪表盘，用户以后订阅时历史都在；只是不会打扰任何人。
+确认几天都抓得稳，把那行删掉就开始正常推送。
+
+### 学校 id 怎么定（全国名单已经在了）
 `school:` 必须是 `config/schools/directory.tsv`（教育部《全国高等学校名单》，3167 所）里某所学校的 **id**：
 
 - 名单里**没给短 id** 的学校（绝大多数），id 就是**学校标识码**（10 位数字，例如四川大学 `4151010610`）→

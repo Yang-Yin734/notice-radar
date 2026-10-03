@@ -67,3 +67,26 @@ export function explainTier(notice: Notice, push: PushConfig, now: Date = new Da
   if (isUrgentDeadline(deadline)) return `临近截止（${deadline?.date}）`;
   return '常规通知';
 }
+
+// ---------------------------------------------------------------- 只采集不通知
+
+/** 配置里标了 `collectOnly: true` 的源 —— 抓，但不打扰（不进推送、不进日报、不报故障）。 */
+export function collectOnlyIds(sources: { id: string; collectOnly?: boolean }[]): Set<string> {
+  const ids = new Set<string>();
+  for (const s of sources) if (s.collectOnly) ids.add(s.id);
+  return ids;
+}
+
+/**
+ * 从通知链路里剔除"只采集不通知"的源。
+ *
+ * **只用在推送/日报/告警这一侧**：写归档、写仪表盘、写按校数据文件时要用全量，
+ * 否则那些学校的通知就白抓了（用户以后订阅时翻不到历史）。
+ */
+export function notifiable<T extends { sourceId: string }>(
+  items: T[],
+  sources: { id: string; collectOnly?: boolean }[],
+): T[] {
+  const silent = collectOnlyIds(sources);
+  return silent.size === 0 ? items : items.filter((i) => !silent.has(i.sourceId));
+}

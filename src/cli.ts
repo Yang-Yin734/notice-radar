@@ -2,7 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { loadConfig, pageUrls, selectSources } from './core/config.ts';
+import { loadAllSchoolSources, loadConfig, mergeSources, pageUrls, selectSources } from './core/config.ts';
 import type { RadarConfig, SourceConfig } from './core/config.ts';
 import { fetchHtml } from './core/fetch.ts';
 import { renderHtml } from './core/browser.ts';
@@ -13,7 +13,7 @@ import { appendHistory, countBySource, loadHistory, renderStats, saveHistory, su
 import { loadRuns, recordRun, saveRuns, summarizeRuns } from './core/runs.ts';
 import { renderDashboard } from './dashboard.ts';
 import { renderDoctor, renderJson, renderMarkdown } from './core/report.ts';
-import { explainTier, immediateItems, splitByTier } from './core/tiers.ts';
+import { collectOnlyIds, explainTier, immediateItems, notifiable, splitByTier } from './core/tiers.ts';
 import {
   DEFAULT_ALERT_FILE,
   confirmByStreak,
@@ -391,7 +391,12 @@ async function cmdDigest(flags: Flags): Promise<number> {
     /* 配置坏了也要能看日报 */
   }
 
-  const digest = buildDigest(history, {
+  // 只采集不通知的源不进日报（它们的条目仍在归档与仪表盘里）。
+  // 注意要用**所有学校预设**的源：collectOnly 写在各校自己的配置里，
+  // 只看默认配置会把别的学校（用户还没订阅）的通知一起发出去。
+  const allSources = mergeSources(cfg?.sources ?? [], loadAllSchoolSources());
+  const digestInput = { ...history, items: notifiable(history.items, allSources) };
+  const digest = buildDigest(digestInput, {
     ...range,
     // --all：把所有归档都列出来（测试推送链路用），不按时间窗也不截断
     maxItems: flags.all ? history.items.length : (flags.maxExplicit ?? cfg?.push.digestMaxItems ?? 40),
@@ -399,8 +404,10 @@ async function cmdDigest(flags: Flags): Promise<number> {
     appUrl,
   });
 
-  // 长期静默的源：放进日报顶部（不当急事推，但一定要让你看见）
-  const silence = cfg ? detectSilence(history, cfg.sources, defaultAlertOptions(cfg.alerts)) : [];
+  // 长期静默的源：放进日报顶部（不当急事推，但一定要让你看见）。
+  // 只采集不通知的源不算"静默" —— 用户还没订阅它们，没动静是正常的。
+  const silenceSources = allSources.filter((s) => !s.collectOnly);
+  const silence = cfg ? detectSilence(history, silenceSources, defaultAlertOptions(cfg.alerts)) : [];
   const notice = renderSilenceNotice(silence);
   const markdown = renderDigestMarkdown(digest, { name, appUrl, notice });
   const title = flags.all ? `${name} · 全部 ${digest.total} 条通知`.slice(0, 32) : digestTitle(digest, name);
@@ -504,7 +511,13 @@ async function cmdHealth(flags: Flags): Promise<number> {
   const cfg = loadCfg(flags);
   const historyFile = path.join(path.dirname(flags.state), 'history.json');
   const history = loadHistory(historyFile);
-  const silence = detectSilence(history, cfg.sources, defaultAlertOptions(cfg.alerts));
+  // 同样要用所有学校预设：只采集不通知的源不算"长期静默"
+  const healthSources = mergeSources(loadAllSchoolSources(), cfg.sources);
+  const silence = detectSilence(
+    history,
+    healthSources.filter((s) => !s.collectOnly),
+    defaultAlertOptions(cfg.alerts),
+  );
 
   if (flags.json) {
     fs.mkdirSync(path.dirname(flags.json), { recursive: true });
@@ -606,8 +619,12 @@ async function cmdRun(flags: Flags): Promise<number> {
     console.log(`  ${mark} ${r.sourceName}：解析 ${r.items.length} → 过滤后 ${kept} → 新增 ${isNew}${r.ok ? '' : ` (${r.error})`}`);
   }
 
-  const split = splitByTier(fresh, cfg.push);
-  const immediate = immediateItems(fresh, cfg.push);
+  // 「只采集不通知」的源：条目照常进归档/仪表盘/按校数据，但不进推送与日报
+  const notifyFresh = notifiable(fresh, cfg.sources);
+  const heldBack = fresh.length - notifyFresh.length;
+
+  const split = splitByTier(notifyFresh, cfg.push);
+  const immediate = immediateItems(notifyFresh, cfg.push);
   const deferred = cfg.push.digestRest ? split.digest : [];
   const muted = split.mute;
 
@@ -616,7 +633,9 @@ async function cmdRun(flags: Flags): Promise<number> {
     markdown += `\n> 另有 ${deferred.length} 条常规通知（未命中急事关键词），会在每天早上 8:00 的日报里汇总。\n`;
   }
 
-  if (immediate.length === 0 && fresh.length > 0) {
+  if (notifyFresh.length === 0 && heldBack > 0) {
+    console.log(`\n▸ 本轮 ${heldBack} 条都来自「只采集不通知」的源：已进归档，不推送也不进日报。`);
+  } else if (immediate.length === 0 && fresh.length > 0) {
     console.log(`\n▸ 本轮 ${fresh.length} 条都是常规通知：不即时推送，等日报汇总。`);
     for (const n of deferred) console.log(`    · ${n.sourceName}：${n.title.slice(0, 46)}`);
   } else {
@@ -628,6 +647,9 @@ async function cmdRun(flags: Flags): Promise<number> {
         (cfg.push.digestRest ? '' : '（分级已关闭：全部即时推）'),
     );
     for (const n of immediate) console.log(`    ⚡ ${explainTier(n, cfg.push)}：${n.title.slice(0, 42)}`);
+  }
+  if (heldBack > 0) {
+    console.log(`▸ 其中 ${heldBack} 条来自「只采集不通知」的源（collectOnly）：已进归档，不推送`);
   }
 
   // 只在真有新通知时才写文件。
@@ -652,6 +674,8 @@ async function cmdRun(flags: Flags): Promise<number> {
     if (!flags.dry) console.log(`  · 推送结果已记录到 ${writeNotifyLog(flags.state, title, immediate.length, outcomes)}`);
   } else if (fresh.length === 0) {
     console.log('\n▸ 没有新通知，跳过推送。');
+  } else if (notifyFresh.length === 0) {
+    console.log('\n▸ 新通知都来自「只采集不通知」的源，不推送。');
   } else if (immediate.length === 0) {
     console.log('\n▸ 常规通知不即时推送（已进归档，日报会汇总）。');
   }
@@ -665,6 +689,12 @@ async function cmdRun(flags: Flags): Promise<number> {
   const streakOf = (sourceId: string) => failureStreak(runsRecord.state.sources[sourceId]);
 
   const problems = detectProblems(results);
+  // 「只采集不通知」的源连故障告警也不发：这些学校用户还没订阅，报警只会变成噪音
+  const silent = collectOnlyIds(cfg.sources);
+  const alertProblems = silent.size ? problems.filter((p) => !silent.has(p.sourceId)) : problems;
+  if (alertProblems.length < problems.length) {
+    console.log(`▸ ${problems.length - alertProblems.length} 个源是「只采集不通知」，不参与故障告警`);
+  }
   // 整轮网络不通（所有源都是 fetch failed 这类网络层错误）= 网络天气：
   // 用户处理不了，而且状态没被改动、下一轮成功会照常补发，所以要用高得多的阈值才提醒。
   const weather = isNetworkWeather(problems, { totalSources: results.filter((r) => !r.skipped).length });
@@ -694,13 +724,14 @@ async function cmdRun(flags: Flags): Promise<number> {
     const streak = streakOf(p.sourceId);
     const need = thresholdOf(p.sourceId);
     const note = streak >= need ? `连续第 ${streak} 次（阈值 ${need}）` : `本轮失败（第 ${streak} 次，阈值 ${need}）`;
-    console.log(`    ⚠ ${p.sourceName}：${p.detail} —— ${note}`);
+    const muted = silent.has(p.sourceId) ? '（只采集不通知，不告警）' : '';
+    console.log(`    ⚠ ${p.sourceName}：${p.detail} —— ${note}${muted}`);
   }
 
   // 显式关掉告警的源（alertOnFailure: false）不参与告警；日志与日报里仍能看到它
-  const alertable = problems.filter((p) => sourceById.get(p.sourceId)?.alertOnFailure !== false);
-  if (alertable.length < problems.length) {
-    console.log(`▸ ${problems.length - alertable.length} 个源配置了 alertOnFailure: false，不参与告警`);
+  const alertable = alertProblems.filter((p) => sourceById.get(p.sourceId)?.alertOnFailure !== false);
+  if (alertable.length < alertProblems.length) {
+    console.log(`▸ ${alertProblems.length - alertable.length} 个源配置了 alertOnFailure: false，不参与告警`);
   }
 
   const { confirmed, pending } = confirmByStreak(
