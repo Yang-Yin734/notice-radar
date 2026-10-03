@@ -291,6 +291,29 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
   </section>
 
   <section class="view" id="view-settings" hidden>
+    <div class="card" id="school-card">
+      <h3>学校 / 学院</h3>
+      <div class="row">
+        <div class="row-main">
+          <b id="school-state">未选择（正在显示默认学校）</b>
+          <span id="school-hint">点右侧按钮搜索并切换学校，再勾选你关心的学院</span>
+        </div>
+        <button class="iconbtn" id="school-pick">选择</button>
+      </div>
+      <div id="school-picker" hidden>
+        <input id="school-search" placeholder="搜索学校：校名 / 城市 / 拼音 / 简称（如 dianzi、成都）" autocomplete="off">
+        <div id="school-list"></div>
+        <div id="unit-box" hidden>
+          <div class="row">
+            <div class="row-main"><b id="unit-title">学院 / 栏目</b><span>默认全不选，勾选你关心的（可多选）</span></div>
+            <button class="iconbtn" id="unit-all">全选</button>
+            <button class="iconbtn" id="unit-none">全不选</button>
+          </div>
+          <div id="unit-list"></div>
+        </div>
+        <p id="school-note" class="hint"></p>
+      </div>
+    </div>
     <div class="card">
       <h3>微信推送</h3>
       <div class="row">
@@ -365,9 +388,15 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
 (function () {
   var BOOT = JSON.parse(document.getElementById('bootstrap').textContent);
   var KEY_READ = 'notice-radar:read', KEY_FAV = 'notice-radar:fav', KEY_THEME = 'notice-radar:theme';
+  // 选校功能：记住"选了哪所学校、勾了哪些学院"（都只在本机）
+  var KEY_SCHOOL = 'notice-radar:school', KEY_UNITS = 'notice-radar:units';
   var state = {
     items: BOOT.items.slice(), view: 'list', filter: 'all', source: 'all', query: '',
-    read: new Set(lsRead(KEY_READ)), fav: new Set(lsRead(KEY_FAV))
+    read: new Set(lsRead(KEY_READ)), fav: new Set(lsRead(KEY_FAV)),
+    // school=null 表示"没主动选过"→ 继续显示内置/默认学校的数据（老用户不受影响）
+    school: lsRead(KEY_SCHOOL)[0] || null,
+    units: lsRead(KEY_UNITS),
+    pendingSchool: null
   };
 
   function lsRead(key) { try { return JSON.parse(localStorage.getItem(key) || '[]'); } catch (e) { return []; } }
@@ -395,11 +424,19 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     setTimeout(function () { el.classList.remove('show'); }, 2200);
   }
 
+  /** 条目属于哪个学院/栏目：数据里带 unit 就用它，否则按源名「教务处·重要公告」取前缀 */
+  function unitOf(it) {
+    return it.unit || String(it.sourceName || '').split('·')[0] || '其它';
+  }
+
   function visible() {
     var q = state.query.trim().toLowerCase();
+    // 只在"用户主动选过学校"之后才按学院过滤：否则（首次打开）保持原来的全部显示
+    var unitFilter = state.school && state.units.length > 0 ? state.units : null;
     return state.items.filter(function (it) {
       if (state.filter === 'fav' && !state.fav.has(it.id)) return false;
       if (state.source !== 'all' && it.sourceId !== state.source) return false;
+      if (unitFilter && unitFilter.indexOf(unitOf(it)) < 0) return false;
       if (!q) return true;
       return (it.title + ' ' + (it.tag || '') + ' ' + it.sourceName).toLowerCase().indexOf(q) >= 0;
     });
@@ -420,8 +457,11 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     var items = visible();
     var box = document.getElementById('list');
     if (!items.length) {
-      box.innerHTML = '<div class="empty">' + (state.filter === 'fav'
-        ? '还没有收藏。点通知卡片右下角的 ☆ 收藏。' : '没有匹配的通知。') + '</div>';
+      var needUnits = state.school && state.units.length === 0;
+      box.innerHTML = '<div class="empty">' + (needUnits
+        ? '请选择你关心的学院：设置 → 学校 / 学院 → 勾选后这里就会显示该学院的通知。'
+        : (state.filter === 'fav'
+          ? '还没有收藏。点通知卡片右下角的 ☆ 收藏。' : '没有匹配的通知。')) + '</div>';
       return;
     }
     var groups = new Map();
@@ -585,6 +625,194 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     html.classList.add(isDark ? 'light' : 'dark');
     lsWrite(KEY_THEME, [isDark ? 'light' : 'dark']);
   });
+
+  // ---------- 学校 / 学院选择（读的是同源的 data/schools/*，不参与抓取） ----------
+  var schoolIndex = null;
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  /** 把 dashboard-data.json 的地址换成同目录 data/schools/<file>，四个镜像都能用 */
+  function schoolUrls(file) {
+    return [BOOT.dataPath].concat(BOOT.dataUrls || []).map(function (u) {
+      return String(u).replace(/[^/]*$/, 'data/schools/' + file);
+    });
+  }
+  /** 依次尝试各镜像；全失败返回 null（不抛错，交给界面提示） */
+  function fetchJson(urls) {
+    return urls.reduce(function (p, u) {
+      return p.then(function (got) {
+        if (got) return got;
+        return fetch(u, { cache: 'no-store' })
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .catch(function () { return null; });
+      });
+    }, Promise.resolve(null));
+  }
+  function schoolById(id) {
+    var list = (schoolIndex && schoolIndex.schools) || [];
+    for (var i = 0; i < list.length; i++) if (list[i].id === id) return list[i];
+    return null;
+  }
+  function renderSchoolState() {
+    var s = schoolById(state.school);
+    var el = document.getElementById('school-state');
+    if (!el) return;
+    el.textContent = s
+      ? '当前：' + s.name + (state.units.length ? '（已选 ' + state.units.length + ' 个学院）' : '（还没勾选学院）')
+      : '未选择（正在显示默认学校）';
+  }
+  function chipStyle(on) {
+    return 'margin:4px 6px 0 0;padding:6px 10px;border-radius:999px;font-size:12px;cursor:pointer;' +
+      'border:1px solid ' + (on ? 'var(--accent,#2f6fed)' : 'var(--line,#8884)') + ';' +
+      'background:' + (on ? 'var(--accent,#2f6fed)' : 'transparent') + ';' +
+      'color:' + (on ? '#fff' : 'inherit') + ';';
+  }
+  function renderUnitChips(school) {
+    var box = document.getElementById('unit-box');
+    if (!box) return;
+    if (!school || !school.units || !school.units.length) { box.hidden = true; return; }
+    box.hidden = false;
+    document.getElementById('unit-title').textContent = school.name + ' · 学院 / 栏目';
+    var list = document.getElementById('unit-list');
+    list.innerHTML = school.units.map(function (u) {
+      var on = state.units.indexOf(u.name) >= 0;
+      return '<button data-unit="' + esc(u.name) + '" style="' + chipStyle(on) + '">' +
+        esc(u.name) + ' <span style="opacity:.7">' + u.count + '</span></button>';
+    }).join('');
+    Array.prototype.forEach.call(list.querySelectorAll('[data-unit]'), function (b) {
+      b.addEventListener('click', function () {
+        var n = b.getAttribute('data-unit');
+        var i = state.units.indexOf(n);
+        if (i >= 0) state.units.splice(i, 1); else state.units.push(n);
+        lsWrite(KEY_UNITS, state.units);
+        renderUnitChips(school); renderSchoolState(); renderList();
+      });
+    });
+  }
+  function renderSchoolList(q) {
+    var list = document.getElementById('school-list');
+    if (!list) return;
+    var all = (schoolIndex && schoolIndex.schools) || [];
+    var qq = String(q || '').trim().toLowerCase();
+    var hit = all.filter(function (s) {
+      if (!qq) return s.status === 'active'; // 没输关键词时只给"已接入"的，避免长篇目录
+      return [s.name, s.city, s.pinyin, s.abbr].some(function (v) {
+        return String(v || '').toLowerCase().indexOf(qq) >= 0;
+      });
+    }).sort(function (a, b) { return (a.status === 'active' ? 0 : 1) - (b.status === 'active' ? 0 : 1); }).slice(0, 40);
+
+    if (!hit.length) {
+      list.innerHTML = '<p class="hint">没找到匹配的学校。可试试校名、城市或拼音（例如 dianzi、成都）。</p>';
+      return;
+    }
+    list.innerHTML = hit.map(function (s) {
+      var active = s.status === 'active';
+      return '<button data-school="' + esc(s.id) + '" style="display:block;width:100%;text-align:left;' +
+        'margin:5px 0;padding:8px 10px;border-radius:10px;border:1px solid var(--line,#8884);' +
+        'background:transparent;opacity:' + (active ? '1' : '.55') + ';cursor:pointer;color:inherit">' +
+        '<b>' + esc(s.name) + '</b> <span style="opacity:.7">' + esc(s.city || '') + '</span> ' +
+        (active
+          ? '<span style="color:#2f9e44">已接入' + (s.total ? ' · ' + s.total + ' 条' : '') + '</span>'
+          : '<span style="opacity:.7">待接入</span>') +
+        '</button>';
+    }).join('');
+    Array.prototype.forEach.call(list.querySelectorAll('[data-school]'), function (b) {
+      b.addEventListener('click', function () { chooseSchool(b.getAttribute('data-school')); });
+    });
+  }
+  function note(text) {
+    var el = document.getElementById('school-note');
+    if (el) el.textContent = text || '';
+  }
+  function chooseSchool(id) {
+    var s = schoolById(id);
+    if (!s) return;
+    if (s.status !== 'active') {
+      note('「' + s.name + '」还没有接入：需要有该校栏目的选择器配置才能抓取。' +
+        '接入方法见 docs/add-your-school.md（欢迎按流程提 PR，登记到 registry.json 即可）。');
+      return;
+    }
+    state.pendingSchool = id;
+    renderUnitChips(s);
+    note('已选「' + s.name + '」。勾选你关心的学院，然后点下面的「确认切换」。');
+    var btn = document.getElementById('school-confirm');
+    if (btn) { btn.hidden = false; }
+  }
+  function applySchool(id) {
+    var s = schoolById(id);
+    if (!s || !s.file) return Promise.resolve(false);
+    return fetchJson(schoolUrls(s.file)).then(function (data) {
+      if (!data || !data.items || !data.items.length) {
+        toast('这所学校的数据暂时取不到（镜像/网络问题），仍显示原来的通知');
+        return false;
+      }
+      state.items = data.items;
+      state.source = 'all';
+      state.school = id;
+      state.pendingSchool = null;
+      lsWrite(KEY_SCHOOL, [id]);
+      // 渠道 chips 要跟着新数据重建（不同学校的源完全不同）
+      var seen = {};
+      BOOT.bySource = [];
+      state.items.forEach(function (it) {
+        if (!seen[it.sourceId]) { seen[it.sourceId] = 1; BOOT.bySource.push({ sourceId: it.sourceId, sourceName: it.sourceName }); }
+      });
+      renderChips(); renderList(); renderSchoolState();
+      toast('已切换到 ' + s.name + (state.units.length ? '（已选 ' + state.units.length + ' 个学院）' : ''));
+      return true;
+    });
+  }
+  function ensureIndex() {
+    if (schoolIndex) { renderSchoolList(document.getElementById('school-search').value); renderSchoolState(); return Promise.resolve(schoolIndex); }
+    return fetchJson(schoolUrls('index.json')).then(function (idx) {
+      if (!idx || !idx.schools) { note('学校目录取不到（镜像/网络问题），稍后再试。'); return null; }
+      schoolIndex = idx;
+      renderSchoolList(document.getElementById('school-search').value);
+      renderSchoolState();
+      return idx;
+    });
+  }
+  (function initSchoolPicker() {
+    var pick = document.getElementById('school-pick');
+    var picker = document.getElementById('school-picker');
+    var search = document.getElementById('school-search');
+    if (!pick || !picker || !search) return;
+    var confirmBtn = document.createElement('button');
+    confirmBtn.id = 'school-confirm';
+    confirmBtn.className = 'iconbtn';
+    confirmBtn.textContent = '确认切换';
+    confirmBtn.hidden = true;
+    picker.appendChild(confirmBtn);
+    pick.addEventListener('click', function () {
+      picker.hidden = !picker.hidden;
+      if (!picker.hidden) ensureIndex();
+    });
+    search.addEventListener('input', function () { renderSchoolList(search.value); });
+    confirmBtn.addEventListener('click', function () {
+      var s = schoolById(state.pendingSchool);
+      if (!s) { note('先在上面选一所学校。'); return; }
+      var unitText = state.units.length ? '（' + state.units.join('、') + '）' : '（尚未勾选学院，列表会提示你先勾选）';
+      if (!confirm('切换到「' + s.name + '」？\\n\\n将立即刷新为该学校的通知' + unitText)) return;
+      applySchool(s.id).then(function (ok) { if (ok) picker.hidden = true; });
+    });
+    document.getElementById('unit-all').addEventListener('click', function () {
+      var s = schoolById(state.pendingSchool);
+      if (!s) return;
+      state.units = (s.units || []).map(function (u) { return u.name; });
+      lsWrite(KEY_UNITS, state.units);
+      renderUnitChips(s); renderSchoolState(); renderList();
+    });
+    document.getElementById('unit-none').addEventListener('click', function () {
+      var s = schoolById(state.pendingSchool);
+      state.units = [];
+      lsWrite(KEY_UNITS, state.units);
+      renderUnitChips(s); renderSchoolState(); renderList();
+    });
+    // 回过头的用户：直接恢复上次选的学校
+    if (state.school) ensureIndex().then(function () { return applySchool(state.school); });
+  })();
   // ---------- 数据刷新：内置/缓存永远可用，网络按镜像顺序尝试 ----------
   var KEY_DATA_CACHE = 'notice-radar:data-cache';
   function labelOf(url) {
