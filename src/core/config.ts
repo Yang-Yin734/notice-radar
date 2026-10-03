@@ -1,4 +1,6 @@
 import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { parse as parseYaml } from 'yaml';
 import { z } from 'zod';
 
@@ -68,6 +70,15 @@ const sourceSchema = z.object({
    * 适合已确认"站点只对国内 IP 友好、云端抓不稳"的源；日报里的静默提示仍会兜底。
    */
   alertOnFailure: z.boolean().default(true),
+  /**
+   * **只采集不通知**（默认 false）。
+   *
+   * 给"刚接入、还没让用户订阅"的学校用：条目照常进归档、仪表盘与按校数据文件，
+   * 但**不进即时推送、不进每日日报、也不发抓取故障告警** —— 免得用户被一堆自己没订阅的学校吵到。
+   *
+   * 这就是「先只抓不推」档：全国名单里陆续接入的学校先都这么放着，确认抓稳了再摘掉这个开关。
+   */
+  collectOnly: z.boolean().default(false),
 });
 
 const notifySchema = z.object({
@@ -250,4 +261,56 @@ export function loadConfig(file: string): RadarConfig {
     }
   }
   return cfg;
+}
+
+/**
+ * 读 `config/schools` 下**所有**学校预设的源。
+ *
+ * 为什么需要：日报与健康检查只加载一个默认配置，而「只采集不通知」（`collectOnly`）
+ * 是写在**各校自己的预设**里的。全国名单陆续接入多所学校后，如果只看默认配置，
+ * 日报就会把用户根本没订阅的学校的通知一起发出去 —— 那正是这个功能要避免的事。
+ *
+ * 坏掉的预设不阻塞日报（跳过并继续），因为它可能正在被人编辑。
+ */
+/**
+ * 把多份配置里的源合并成一份：按 id 去重，`collectOnly` 取**或**。
+ *
+ * 为什么需要：同一所学校可能有多个预设（`uestc.yaml` / `uestc-math.yaml`），
+ * 而"要不要通知"必须按源判定一次 —— 重复的源会让"静默提示"数两遍、
+ * 甚至让"只采集"的标记被另一份预设覆盖掉。
+ */
+export function mergeSources(...groups: SourceConfig[][]): SourceConfig[] {
+  const byId = new Map<string, SourceConfig>();
+  for (const group of groups) {
+    for (const s of group) {
+      const prev = byId.get(s.id);
+      byId.set(s.id, prev ? { ...prev, collectOnly: prev.collectOnly || s.collectOnly } : s);
+    }
+  }
+  return [...byId.values()];
+}
+
+export function loadAllSchoolSources(dir = path.join('config', 'schools')): SourceConfig[] {
+  // 当前目录没有就退回包内置的预设（npm 包场景，`npx notice-radar` 是在用户自己目录里跑的）
+  const pkgRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
+  const dirs = [dir, path.join(pkgRoot, dir)].filter((d, i, all) => all.indexOf(d) === i);
+
+  const out: SourceConfig[] = [];
+  for (const d of dirs) {
+    let files: string[] = [];
+    try {
+      files = fs.readdirSync(d).filter((f) => f.endsWith('.yaml') || f.endsWith('.yml'));
+    } catch {
+      continue;
+    }
+    for (const f of files) {
+      try {
+        out.push(...loadConfig(path.join(d, f)).sources);
+      } catch {
+        /* 某个预设写坏了不该让日报整体失败（可能正被人编辑） */
+      }
+    }
+    if (out.length) break;
+  }
+  return out;
 }

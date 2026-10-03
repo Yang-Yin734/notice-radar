@@ -82,6 +82,23 @@ jobs:
       - name: 故障判定（连续 3 次全失败才报红）
         run: node tools/health.ts --outcome=${{ steps.fetch.outputs.outcome }}
 
+      - name: 抓取其它学校（只采集不通知）
+        # 全国名单里陆续接入的学校：各自的预设里都标了 collectOnly ——
+        # 条目照常进归档、仪表盘与按校数据文件（docs/data/schools/<id>.json），
+        # 但不推微信、不进日报、失败也不影响主链路（所以这里非零退出只记 warning）。
+        # 主抓取失败时跳过：网络都不通，没必要再打别的学校站点。
+        if: steps.fetch.outputs.outcome == 'ok'
+        run: |
+          shopt -s nullglob
+          for cfg in config/schools/*.yaml; do
+            case "$cfg" in
+              *uestc.yaml|*uestc-math.yaml) continue ;;   # 主链路已经抓过
+            esac
+            echo "▸ 其它学校：$cfg"
+            node src/cli.ts run --config="$cfg" --delay=1500 || \
+              echo "::warning::$cfg 抓取失败（collectOnly，不影响主链路）"
+          done
+
       - name: 失败时打印体检表（便于定位）
         if: failure()
         run: node src/cli.ts doctor --delay=1500 || true

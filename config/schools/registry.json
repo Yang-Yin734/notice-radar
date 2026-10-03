@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-01",
+  "updatedAt": "2026-10-03",
   "readme": "适配器市场：登记每个学校预设由谁维护、上次验证是什么时候。加自己的学校见 docs/add-your-school.md；这份文件被 CI 校验（预设文件必须存在、每个 config/schools/*.yaml 都要有登记）。",
   "statusLegend": {
     "verified": "维护者近期亲自跑通过",
@@ -18,6 +18,17 @@
       "status": "verified",
       "lastVerified": "2026-10-01",
       "notes": "教务处/新闻网/研究生院走普通 HTTP（每 20 分钟）；数学科学学院是瑞数 WAF，需要 --allow-browser，云端用 Xvfb 每天一次"
+    },
+    {
+      "id": "swufe",
+      "name": "西南财经大学",
+      "city": "成都",
+      "presets": ["config/schools/swufe.yaml"],
+      "sources": 1,
+      "maintainers": ["Yang-Yin734"],
+      "status": "verified",
+      "lastVerified": "2026-10-03",
+      "notes": "全国名单扩到 3167 所后接入的第二所学校。教务处通知公告是普通列表页（标题完整、日期可解）；当前 collectOnly=true（只采集不通知），确认抓稳后再摘掉"
     }
   ]
 }

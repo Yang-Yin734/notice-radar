@@ -14,6 +14,7 @@ import type { SourceConfig } from '../src/core/config.ts';
  */
 
 const fixture = (name: string) => fs.readFileSync(path.join('tests', 'fixtures', 'uestc', name), 'utf8');
+const swufeFixture = (name: string) => fs.readFileSync(path.join('tests', 'fixtures', 'swufe', name), 'utf8');
 
 const source = (over: Partial<SourceConfig>): SourceConfig =>
   ({ id: 'test', name: '测试源', url: 'https://example.edu.cn/list.htm', adapter: 'html-list', enabled: true, include: [], exclude: [], ...over }) as SourceConfig;
@@ -90,6 +91,32 @@ test('通用 html-list 适配器：选择器语法 `a@attr` 与纯文本都支�
   assert.equal(items[0].title, '属性标题');
   assert.equal(items[0].url, 'https://x.edu.cn/a.htm');
   assert.equal(items[0].date, '2026-09-02');
+});
+
+test('通用 html-list：西南财经大学教务处列表页（全国名单里新接入的学校）', () => {
+  const html = swufeFixture('jwc-tzgg.html');
+  const items = htmlListAdapter.parse({
+    school: 'swufe',
+    html,
+    source: source({
+      id: 'jwc-tzgg',
+      name: '教务处·通知公告',
+      baseUrl: 'https://jwc.swufe.edu.cn/tzgg/60.htm',
+      selectors: { item: 'ul li', title: 'a@title', link: 'a@href', date: 'span' },
+    }),
+  });
+
+  assert.ok(items.length >= 5, `条目太少：${items.length}`);
+  assert.ok(
+    items.every((n) => n.url.startsWith('https://jwc.swufe.edu.cn/')),
+    `相对链接必须被 baseUrl 补全：${items.slice(0, 2).map((n) => n.url).join(', ')}`,
+  );
+  assert.ok(items.every((n) => n.date === null || /^\d{4}-\d{2}-\d{2}$/.test(n.date)), '日期要归一成 ISO');
+  assert.ok(items.some((n) => n.date !== null), '至少有一条解析出日期（原始形如 [2026年06月05日]）');
+  assert.ok(items.every((n) => n.title.length >= 6), '标题不该是导航项那种短文本');
+  // 列表页把标题写成「...」截断的站点不能直接接：关键词分级与标题展示都会失真
+  assert.ok(items.every((n) => !/(\.\.\.|…)\s*$/.test(n.title)), '标题不该以 ... 结尾');
+  assert.equal(new Set(items.map((n) => n.id)).size, items.length, 'ID 必须唯一');
 });
 
 test('研究生院适配器：只认详情页链接，避免把导航项当成通知', () => {

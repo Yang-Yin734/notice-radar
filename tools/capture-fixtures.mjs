@@ -16,6 +16,8 @@ const targets = {
     ['news-notice.html', 'https://news.uestc.edu.cn/?n=UestcNews.Front.CategoryV2.Page&CatId=68'],
     ['gr-notice.html', 'https://gr.uestc.edu.cn/tongzhi/'],
   ],
+  // 全国名单扩到 3167 所之后陆续接入的学校：都是 collectOnly（只采集不通知）
+  swufe: [['jwc-tzgg.html', 'https://jwc.swufe.edu.cn/tzgg/60.htm']],
 };
 
 if (!targets[school]) {

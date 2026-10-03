@@ -1,0 +1,61 @@
+# 西南财经大学（swufe）—— 全国名单里第二所接入的学校。
+#
+# 状态：**只采集不通知**（每个源都写了 collectOnly: true）。
+#   条目会照常进归档、仪表盘与按校数据文件（docs/data/schools/swufe.json），
+#   但**不推微信、不进日报、抓失败也不告警**。
+#   等确认抓稳了（比如连续几天都能拿到条目），把 collectOnly 删掉就会开始正常推送。
+#
+# 用法：
+#   node src/cli.ts doctor --config=config/schools/swufe.yaml     # 自检
+#   node src/cli.ts run --config=config/schools/swufe.yaml --no-notify --dry
+
+school: swufe
+name: 西南财经大学
+
+notify:
+  - type: serverchan
+    keyEnv: SERVERCHAN_KEY
+
+sources:
+  - id: jwc-tzgg
+    name: 教务处·通知公告
+    url: https://jwc.swufe.edu.cn/tzgg/60.htm
+    adapter: html-list
+    baseUrl: https://jwc.swufe.edu.cn/tzgg/60.htm
+    # 先只采集：不推送、不进日报、不告警
+    collectOnly: true
+    # 站点的列表页不发提醒也没关系，这个源是给别人订阅用的
+    note: 选课/考试/学籍/毕业/创新项目一类都在这里；列表页标题完整（没被 ... 截断）
+    selectors:
+      item: ul li
+      title: a@title
+      link: a@href
+      date: span
+    include:
+      - 选课
+      - 退课
+      - 补选
+      - 重修
+      - 缓考
+      - 补考
+      - 考试
+      - 四六级
+      - 成绩
+      - 学籍
+      - 毕业
+      - 学位
+      - 保研
+      - 推免
+      - 奖学金
+      - 助学金
+      - 报名
+      - 公示
+      - 名单
+    exclude:
+      - 招聘
+      - 招标
+      - 采购
+      - 中标
+      - 成交
+      - 校友
+      - 捐赠
