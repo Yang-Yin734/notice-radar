@@ -1,11 +1,11 @@
 {
- "generatedAt": "2026-10-03T16:50:43.927Z",
+ "generatedAt": "2026-10-03T17:08:02.042Z",
  "source": "教育部《全国高等学校名单》（config/schools/directory.tsv，见 config/schools/README.md）",
  "note": "status=active 表示真抓过、能出通知；pending 只是目录条目，选中会提示尚未接入。接入方法见 docs/add-your-school.md",
  "counts": {
   "total": 3167,
-  "active": 5,
-  "pending": 3162,
+  "active": 6,
+  "pending": 3161,
   "featured": 196,
   "doubleFirst": 144,
   "bachelor": 1365,
@@ -940,7 +940,16 @@
     "双一流",
     "教育部直属"
    ],
-   "status": "pending"
+   "status": "active",
+   "file": "tju.json",
+   "units": [
+    {
+     "id": "本科生院",
+     "name": "本科生院",
+     "count": 4
+    }
+   ],
+   "total": 4
   },
   {
    "id": "4112010057",
