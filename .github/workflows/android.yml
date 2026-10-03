@@ -12,6 +12,7 @@ on:
     paths:
       - 'android/**'
       - 'src/dashboard.ts'
+      - 'package.json' # APK 的 versionName 来自它：只改版本号也必须重出包，否则应用会一直提示"有新版本"
       - 'tools/prepare-android-assets.mjs'
       - 'tools/build-schools.mjs'
       - 'tools/android-version.mjs'

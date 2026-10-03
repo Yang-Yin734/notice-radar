@@ -10,7 +10,7 @@
 [![android-apk](https://github.com/Yang-Yin734/notice-radar/actions/workflows/android.yml/badge.svg)](https://github.com/Yang-Yin734/notice-radar/actions/workflows/android.yml)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![node](https://img.shields.io/badge/node-%3E%3D22.18-339933.svg)](package.json)
-[![version](https://img.shields.io/badge/version-v0.4.0-4d6bfe.svg)](CHANGELOG.md)
+[![version](https://img.shields.io/badge/version-v0.10.11-4d6bfe.svg)](CHANGELOG.md)
 
 ### 📲 [**下载 Android 安装包（APK）**](https://github.com/Yang-Yin734/notice-radar/releases/download/android-latest/notice-radar.apk)
 
@@ -28,7 +28,7 @@
 | **直接用网页** | 打开 <https://yang-yin734.github.io/notice-radar/>，可"添加到主屏幕" | 不想装东西，或者用 iPhone |
 
 > **APK 是纯原生应用**（Kotlin + Jetpack Compose 写的界面，不是网页壳）：
-> - 界面与数据都打包在 APK 内（`android/app/src/main/assets/data`，约 18 KB），**打开零网络、断网可用**
+> - 界面与数据都打包在 APK 内（`android/app/src/main/assets/data`，约 75 KB：通知 + 学校目录 + 已接入学校的数据），**打开零网络、断网可用**
 > - 没有 WebView、没有地址栏、不跳浏览器；外部链接才交给系统浏览器
 > - 打开时先读内置数据，联网时按镜像顺序刷新：**jsDelivr → Statically → githack → GitHub Pages**（垫底），
 >   因为 `github.io` 在国内经常打不开；抓到的新数据存在本机
@@ -536,6 +536,7 @@ config/
 - [x] **M2.5** 升级为**手机/电脑都能用的 PWA 应用**：底部标签栏、收藏与已读、深色模式、可添加到主屏幕、离线可用（[Release v0.3.0](../../releases)）
 - [x] **M3** 发布到 npm（`npx notice-radar`）+ 通知频次统计（`radr stats`）+ 适配器市场（[registry.json](config/schools/registry.json)，CI 校验"不许有野生预设"）
 - [ ] **M4** 多校聚合（一个订阅里混多所学校）+ 主题订阅（按关键词而不是按学校）+ iOS Web Push
+      —— 其中「在应用里选学校 / 选学院」已先行落地（见上面「选学校 / 选学院」）
 
 ## 应用：手机、电脑都能用
 
@@ -561,6 +562,34 @@ config/
 - 原始数据也放了一份：`docs/dashboard-data.json`，自己做图表、接别的工具随便用
 
 本地重建：`npm run dashboard`（产物是 `docs/index.html` + `docs/dashboard-data.json` + `docs/version.json`）。
+
+## 选学校 / 选学院
+
+网页版和 Android 应用的「设置」最上面都有一张 **学校 / 学院** 卡片：
+
+1. **搜索学校**：校名、城市、拼音、简称都能搜（`dianzi`、`成都`、`dzkjdx` 都行）
+2. **选一所**，再**勾选你关心的学院 / 栏目**（可多选，默认**全不选**）
+3. 点 **确认切换**（有二次确认，因为这会立刻换掉整个列表）→ 列表与「刷新」从此只针对这所学校
+
+偏好只存本机（网页版 `localStorage`，应用 `SharedPreferences`），不上传。网页版还能用深链
+`https://yang-yin734.github.io/notice-radar/#school` 直接打开选择器。
+
+几条刻意的设计（都是为了避免"看起来能用、其实在骗人"）：
+
+| 设计 | 为什么 |
+|---|---|
+| **目录不撒谎**：153 所里只有电子科技大学是 `active`（真抓过、能出通知），其余标 `pending` | 点 `pending` 的学校会明确说"还没接入"并给出 [接入方法](docs/add-your-school.md)，而不是假装能选、选完给你一片空白 |
+| **勾了学院才显示**：选过学校却一个学院都没勾 → 列表提示你去勾 | 这是产品要求，不擅自"贴心"地显示全部；**没主动选过学校的老用户完全不受影响** |
+| **学院列表以配置为准**，不从"已有条目"里推 | 某个栏目当前 0 条（研究生院近期没发通知）也照样选得到，不会从选择列表里消失 |
+| **应用断网也能选**：`assets/data/schools/**` 随 APK 打包 | 冷启动先恢复"上次那所学校"的缓存/内置数据，不会因为重启悄悄变回默认学校 |
+
+数据是网页版与应用**共用的同一份**，由 `node tools/build-schools.mjs` 从已发布的 `docs/dashboard-data.json`
+重新组织一遍（**不碰抓取与推送链路**）：
+
+| 文件 | 内容 |
+|---|---|
+| `docs/data/schools/index.json` | 学校目录：校名 / 城市 / 拼音 / 简称 / 学院列表 / 状态 / 条数 |
+| `docs/data/schools/<学校id>.json` | 该校通知（按学院 / 栏目分组，条目带 `unit` 字段） |
 
 ## 在应用里控制推送与更新
 
