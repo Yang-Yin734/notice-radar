@@ -1,0 +1,79 @@
+{
+ "school": "tju",
+ "name": "天津大学",
+ "province": "天津市",
+ "city": "",
+ "generatedAt": "2026-10-03T17:08:02.042Z",
+ "total": 4,
+ "bySource": [
+  {
+   "sourceId": "oaa-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "count": 4
+  }
+ ],
+ "units": [
+  {
+   "id": "本科生院",
+   "name": "本科生院",
+   "sources": [
+    "本科生院·通知公告"
+   ],
+   "count": 4
+  }
+ ],
+ "items": [
+  {
+   "id": "4ce01a9eb6b3a92c",
+   "sourceId": "oaa-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "school": "tju",
+   "title": "2026年下半年全国大学英语四、六级考试报名通知",
+   "url": "https://mp.weixin.qq.com/s/CSniYqr1LfSYobIeCZA6nw",
+   "date": "2026-09-14",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T17:07:59.243Z",
+   "unit": "本科生院"
+  },
+  {
+   "id": "9a408c6a297dcad5",
+   "sourceId": "oaa-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "school": "tju",
+   "title": "以代码重写生命的语法！“AI+合成生物”创新大赛（2026）报名通道开启",
+   "url": "https://mp.weixin.qq.com/s/G1WO_Pd68kpuBbS7MTMgvg",
+   "date": "2026-04-20",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T17:07:59.243Z",
+   "unit": "本科生院"
+  },
+  {
+   "id": "fb3ad4654705eaa8",
+   "sourceId": "oaa-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "school": "tju",
+   "title": "《国际化拔尖创新人才培养计划》课程选课通知",
+   "url": "https://oaa.tju.edu.cn/info/1059/9000.htm",
+   "date": "2026-03-19",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T17:07:59.243Z",
+   "unit": "本科生院"
+  },
+  {
+   "id": "c2aafd7e96c11507",
+   "sourceId": "oaa-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "school": "tju",
+   "title": "校选课新课程揭晓 | 快来pick你喜欢的吧！",
+   "url": "https://mp.weixin.qq.com/s/cYQEtF0DWBSR7upB6DhvwQ",
+   "date": "2026-03-13",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-03T17:07:59.243Z",
+   "unit": "本科生院"
+  }
+ ]
+}
