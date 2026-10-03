@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-03T05:20:58.638Z",
+ "generatedAt": "2026-10-03T05:30:09.616Z",
  "note": "status=active 表示真抓过、能出通知；pending 只是目录条目，选中会提示尚未接入。接入方法见 docs/add-your-school.md",
  "counts": {
   "total": 153,
@@ -38,7 +38,7 @@
     }
    ],
    "total": 44,
-   "updatedAt": "2026-10-03T05:20:58.638Z"
+   "updatedAt": "2026-10-03T05:30:09.616Z"
   },
   {
    "id": "tsinghua",
