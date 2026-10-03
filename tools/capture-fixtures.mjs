@@ -18,6 +18,9 @@ const targets = {
   ],
   // 全国名单扩到 3167 所之后陆续接入的学校：都是 collectOnly（只采集不通知）
   swufe: [['jwc-tzgg.html', 'https://jwc.swufe.edu.cn/tzgg/60.htm']],
+  xidian: [['jwc-tzgg.html', 'https://jwc.xidian.edu.cn/tzgg.htm']],
+  hust: [['ugs-tzgg.html', 'https://ugs.hust.edu.cn/tzgg.htm']],
+  sysu: [['jwb-tzgg.html', 'https://jwb.sysu.edu.cn/taxonomy/term/105']],
 };
 
 if (!targets[school]) {

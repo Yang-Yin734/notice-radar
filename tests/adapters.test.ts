@@ -14,7 +14,48 @@ import type { SourceConfig } from '../src/core/config.ts';
  */
 
 const fixture = (name: string) => fs.readFileSync(path.join('tests', 'fixtures', 'uestc', name), 'utf8');
-const swufeFixture = (name: string) => fs.readFileSync(path.join('tests', 'fixtures', 'swufe', name), 'utf8');
+
+/**
+ * 全国名单扩到 3167 所之后陆续接入的学校的公共断言。
+ *
+ * 这些站点的列表页模板各不相同（有的把正文摘要塞进 `a`、有的标题被 `...` 截断、
+ * 有的日期只在 `time@datetime` 里），所以每条都钉住四件事：
+ * 标题完整（不被截断、不是导航项）、链接能补全、日期是 ISO、ID 唯一。
+ */
+function checkListFixture(
+  school: string,
+  file: string,
+  over: Partial<SourceConfig>,
+  opts: { min: number; urlOk: RegExp; maxTruncated?: number },
+): void {
+  const html = fs.readFileSync(path.join('tests', 'fixtures', school, file), 'utf8');
+  const items = htmlListAdapter.parse({
+    school,
+    html,
+    source: source({ id: `${school}-src`, name: '测试源', ...over }),
+  });
+
+  assert.ok(items.length >= opts.min, `${school} 条目太少：${items.length}`);
+  assert.ok(
+    items.every((n) => opts.urlOk.test(n.url)),
+    `${school} 链接不对：${items.slice(0, 2).map((n) => n.url).join(', ')}`,
+  );
+  assert.ok(items.some((n) => n.date !== null), `${school} 一条日期都没解析出来`);
+  assert.ok(
+    items.every((n) => n.date === null || /^\d{4}-\d{2}-\d{2}$/.test(n.date)),
+    `${school} 日期没归一成 ISO`,
+  );
+  assert.ok(items.every((n) => n.title.length >= 6), `${school} 有标题像导航项（太短）`);
+  // 少数站点自己对超长标题截断（HUST 实测 20 条里 1 条），这种照原样收、不猜全文；
+  // 但如果大面积截断（模板换了），这里必须红 —— 截断标题会让关键词分级失效。
+  const truncated = items.filter((n) => /(\.\.\.|…)\s*$/.test(n.title));
+  const allowed = Math.floor(items.length * (opts.maxTruncated ?? 0));
+  assert.ok(
+    truncated.length <= allowed,
+    `${school} 被截断的标题太多（${truncated.length}/${items.length}）：${truncated[0]?.title.slice(0, 60)}`,
+  );
+  assert.equal(new Set(items.map((n) => n.id)).size, items.length, `${school} 的 ID 必须唯一`);
+}
 
 const source = (over: Partial<SourceConfig>): SourceConfig =>
   ({ id: 'test', name: '测试源', url: 'https://example.edu.cn/list.htm', adapter: 'html-list', enabled: true, include: [], exclude: [], ...over }) as SourceConfig;
@@ -94,7 +135,7 @@ test('通用 html-list 适配器：选择器语法 `a@attr` 与纯文本都支�
 });
 
 test('通用 html-list：西南财经大学教务处列表页（全国名单里新接入的学校）', () => {
-  const html = swufeFixture('jwc-tzgg.html');
+  const html = fs.readFileSync(path.join('tests', 'fixtures', 'swufe', 'jwc-tzgg.html'), 'utf8');
   const items = htmlListAdapter.parse({
     school: 'swufe',
     html,
@@ -117,6 +158,67 @@ test('通用 html-list：西南财经大学教务处列表页（全国名单里�
   // 列表页把标题写成「...」截断的站点不能直接接：关键词分级与标题展示都会失真
   assert.ok(items.every((n) => !/(\.\.\.|…)\s*$/.test(n.title)), '标题不该以 ... 结尾');
   assert.equal(new Set(items.map((n) => n.id)).size, items.length, 'ID 必须唯一');
+});
+
+test('通用 html-list：西安电子科技大学（别把左侧导航当通知）', () => {
+  // 这页有两条列表：主列表 13 条（完整标题 + 日期），左侧导航/热点 20+ 条（没日期）。
+  // 用裸 `ul li` 会把导航项一起抓进来（实测过），所以配置里写 `.list li` 并且标题取 a@title。
+  checkListFixture(
+    'xidian',
+    'jwc-tzgg.html',
+    {
+      id: 'jwc-tzgg',
+      baseUrl: 'https://jwc.xidian.edu.cn/tzgg.htm',
+      selectors: { item: '.list li', title: 'a@title', link: 'a@href', date: 'span' },
+    },
+    { min: 8, urlOk: /^https:\/\/jwc\.xidian\.edu\.cn\// },
+  );
+});
+
+test('通用 html-list：华中科技大学（标题取 h2，不能取 a 的文本）', () => {
+  // 这页的 <a> 里除了 <h2> 标题还塞了一个隐藏的正文摘要 div.zhai；
+  // 取 a 的文本会把摘要一起当标题（实测标题长到 100+ 字），所以标题必须取 h2。
+  const items = (() => {
+    const html = fs.readFileSync(path.join('tests', 'fixtures', 'hust', 'ugs-tzgg.html'), 'utf8');
+    return htmlListAdapter.parse({
+      school: 'hust',
+      html,
+      source: source({
+        id: 'ugs-tzgg',
+        baseUrl: 'https://ugs.hust.edu.cn/tzgg.htm',
+        selectors: { item: '.list li', title: 'h2', link: 'a@href', date: 'span.fr' },
+      }),
+    });
+  })();
+  checkListFixture(
+    'hust',
+    'ugs-tzgg.html',
+    {
+      id: 'ugs-tzgg',
+      baseUrl: 'https://ugs.hust.edu.cn/tzgg.htm',
+      selectors: { item: '.list li', title: 'h2', link: 'a@href', date: 'span.fr' },
+    },
+    // HUST 的列表页自己会对超长标题截断（实测 20 条里 1 条），给它 15% 的容忍度
+    { min: 8, urlOk: /^https:\/\/ugs\.hust\.edu\.cn\//, maxTruncated: 0.15 },
+  );
+  assert.ok(
+    items.every((n) => n.title.length <= 60),
+    `标题不该带正文摘要：${items[0]?.title.slice(0, 80)}`,
+  );
+});
+
+test('通用 html-list：中山大学（日期在 time@datetime 属性里）', () => {
+  checkListFixture(
+    'sysu',
+    'jwb-tzgg.html',
+    {
+      id: 'jwb-tzgg',
+      baseUrl: 'https://jwb.sysu.edu.cn/taxonomy/term/105',
+      selectors: { item: 'div.newslists', title: '.title a', link: 'a@href', date: 'time@datetime', tag: 'div.tags' },
+    },
+    // 通知多以公众号文章发布（mp.weixin.qq.com），也有站内详情页 —— 两种都接受
+    { min: 8, urlOk: /^https:\/\/(mp\.weixin\.qq\.com|jwb\.sysu\.edu\.cn)\// },
+  );
 });
 
 test('研究生院适配器：只认详情页链接，避免把导航项当成通知', () => {

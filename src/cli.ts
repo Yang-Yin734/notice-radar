@@ -115,6 +115,8 @@ interface Flags {
   all: boolean;
   /** test-notify：只测某个通道（issue：微信通道多了，要能单独验） */
   channel: string | null;
+  /** doctor：每个源顺带打印前 N 条解析结果（接入新学校时确认"没抓错东西"） */
+  show: number;
 }
 
 function parseFlags(argv: string[]): Flags {
@@ -147,6 +149,7 @@ function parseFlags(argv: string[]): Flags {
     only: get('only'),
     all: argv.includes('--all'),
     channel: get('channel'),
+    show: get('show') ? Number(get('show')) : 0,
   };
 }
 
@@ -856,6 +859,21 @@ async function cmdDoctor(flags: Flags): Promise<number> {
   console.log(renderDoctor(results, rates));
   const skipped = results.filter((r) => r.skipped).length;
   const broken = results.filter((r) => (!r.ok && !r.skipped) || (r.ok && r.items.length === 0)).length;
+
+  // --show=N：把每条源的前 N 条解析结果打出来。
+  // 为什么需要：接入新学校时，只看"解析出 20 条"不够 —— 得看清是不是把导航项、
+  // 隐藏的正文摘要、或者别的栏目的东西当成通知了（西电/HUST 都踩过）。
+  if (flags.show > 0) {
+    for (const r of results) {
+      if (!r.ok || r.items.length === 0) continue;
+      console.log(`\n▸ ${r.sourceName}：前 ${Math.min(flags.show, r.items.length)} 条`);
+      for (const n of r.items.slice(0, flags.show)) {
+        console.log(`   ${n.date ?? '（无日期）'}  ${n.title.slice(0, 56)}`);
+        console.log(`      ${n.url.slice(0, 96)}`);
+      }
+    }
+  }
+
   console.log('\n提示：状态 202 或体积 <4KB 通常是 WAF 挑战页；抓到了但条目为 0 说明选择器过时了。');
   if (skipped > 0) console.log(`本次跳过了 ${skipped} 个需要浏览器渲染的源（加 --allow-browser 可启用）。`);
   return broken === 0 ? 0 : 1;

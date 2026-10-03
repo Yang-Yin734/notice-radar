@@ -1,0 +1,57 @@
+# 西安电子科技大学（xidian）—— 全国名单里第三所接入的学校。
+#
+# 状态：**只采集不通知**（collectOnly: true）—— 条目进归档/仪表盘/按校数据，不推送、不进日报、失败也不告警。
+# 确认抓稳后把 collectOnly 删掉即可开始推送。
+#
+# 站点结构（用 tools/probe-school.mjs 探出来的）：
+#   主列表 = div.list > ul > li > a[title]，日期在 span 里
+#   注意别用裸 `ul li`：那会把左侧导航（"教务管理系统""国际双创实践周"）一起当成通知
+school: xidian
+name: 西安电子科技大学
+
+notify:
+  - type: serverchan
+    keyEnv: SERVERCHAN_KEY
+
+sources:
+  - id: jwc-tzgg
+    name: 教务处·通知公告
+    url: https://jwc.xidian.edu.cn/tzgg.htm
+    adapter: html-list
+    baseUrl: https://jwc.xidian.edu.cn/tzgg.htm
+    collectOnly: true
+    note: 选课/考试/毕业设计/实践能力测试一类都在这里；列表页标题完整（title 属性里有全称）
+    selectors:
+      item: .list li
+      title: a@title
+      link: a@href
+      date: span
+    include:
+      - 选课
+      - 退课
+      - 补选
+      - 重修
+      - 缓考
+      - 补考
+      - 考试
+      - 四六级
+      - 成绩
+      - 学籍
+      - 毕业
+      - 学位
+      - 推免
+      - 保研
+      - 奖学金
+      - 助学金
+      - 报名
+      - 公示
+      - 名单
+      - 转专业
+    exclude:
+      - 招聘
+      - 招标
+      - 采购
+      - 中标
+      - 成交
+      - 校友
+      - 捐赠

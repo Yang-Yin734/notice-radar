@@ -1,0 +1,60 @@
+# 中山大学（sysu）—— 全国名单里第五所接入的学校。
+#
+# 状态：**只采集不通知**（collectOnly: true）。
+#
+# 站点结构（教务部是 Drupal 站）：每条是
+#   <div class="newslists"><div class="time"><time datetime="2026-09-29T15:17:23+08:00">…</time></div>
+#     <div class="newsinfo"><div class="title"><a href="https://mp.weixin.qq.com/s/…">标题</a></div>
+#     <div class="tags">通知通告</div></div></div>
+# 关键点：日期取 time 的 **datetime 属性**（页面显示的"29 / 2026-09"拆成两块，不好解析）；
+# 链接多数指向微信公众号文章（公开可读）。标签取 div.tags（"通知通告"这类）。
+school: sysu
+name: 中山大学
+
+notify:
+  - type: serverchan
+    keyEnv: SERVERCHAN_KEY
+
+sources:
+  - id: jwb-tzgg
+    name: 教务部·通知通告
+    url: https://jwb.sysu.edu.cn/taxonomy/term/105
+    adapter: html-list
+    baseUrl: https://jwb.sysu.edu.cn/taxonomy/term/105
+    collectOnly: true
+    note: 通知多数以公众号文章发布，链接指向 mp.weixin.qq.com；日期用 time@datetime
+    selectors:
+      item: div.newslists
+      title: .title a
+      link: a@href
+      date: time@datetime
+      tag: div.tags
+    include:
+      - 选课
+      - 退课
+      - 补选
+      - 重修
+      - 缓考
+      - 补考
+      - 考试
+      - 四六级
+      - 成绩
+      - 学籍
+      - 毕业
+      - 学位
+      - 推免
+      - 保研
+      - 奖学金
+      - 助学金
+      - 报名
+      - 公示
+      - 名单
+      - 转专业
+    exclude:
+      - 招聘
+      - 招标
+      - 采购
+      - 中标
+      - 成交
+      - 校友
+      - 捐赠

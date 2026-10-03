@@ -29,6 +29,39 @@
       "status": "verified",
       "lastVerified": "2026-10-03",
       "notes": "全国名单扩到 3167 所后接入的第二所学校。教务处通知公告是普通列表页（标题完整、日期可解）；当前 collectOnly=true（只采集不通知），确认抓稳后再摘掉"
+    },
+    {
+      "id": "xidian",
+      "name": "西安电子科技大学",
+      "city": "西安",
+      "presets": ["config/schools/xidian.yaml"],
+      "sources": 1,
+      "maintainers": ["Yang-Yin734"],
+      "status": "verified",
+      "lastVerified": "2026-10-03",
+      "notes": "教务处通知公告。**必须用 `.list li` 而不是裸 `ul li`** —— 后者会把左侧导航（教务管理系统等 11 条无日期菜单）当通知；标题取 a@title。collectOnly=true"
+    },
+    {
+      "id": "hust",
+      "name": "华中科技大学",
+      "city": "武汉",
+      "presets": ["config/schools/hust.yaml"],
+      "sources": 1,
+      "maintainers": ["Yang-Yin734"],
+      "status": "verified",
+      "lastVerified": "2026-10-03",
+      "notes": "本科生院通知公告。标题必须取 **h2**（<a> 里还塞了隐藏的正文摘要 div.zhai，取 a 文本会得到 100+ 字的标题）；日期在 span.fr。站点自己对超长标题会截断（实测 20 条里 1 条）。collectOnly=true"
+    },
+    {
+      "id": "sysu",
+      "name": "中山大学",
+      "city": "广州",
+      "presets": ["config/schools/sysu.yaml"],
+      "sources": 1,
+      "maintainers": ["Yang-Yin734"],
+      "status": "verified",
+      "lastVerified": "2026-10-03",
+      "notes": "教务部通知通告（Drupal 站）。日期取 time 的 datetime 属性；通知多以公众号文章发布，链接指向 mp.weixin.qq.com。collectOnly=true"
     }
   ]
 }

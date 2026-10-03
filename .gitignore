@@ -20,3 +20,7 @@ android/app/src/main/assets/
 keystore.txt
 *.apk
 *.aab
+
+# 接入新学校时的探测产物（tools/dump-page.mjs、tools/moe-refresh.mjs 的工作目录）
+.probe-pages/
+.moe-work/
