@@ -22,6 +22,8 @@ const targets = {
   hust: [['ugs-tzgg.html', 'https://ugs.hust.edu.cn/tzgg.htm']],
   sysu: [['jwb-tzgg.html', 'https://jwb.sysu.edu.cn/taxonomy/term/105']],
   tju: [['oaa-tzgg.html', 'https://oaa.tju.edu.cn/bszy/tzgg.htm']],
+  jiangnan: [['jwc-tzgg.html', 'https://jwc.jiangnan.edu.cn/jwgl/tzgg.htm']],
+  xjtu: [['jwc-jxtz.html', 'https://jwc.xjtu.edu.cn/jxxx/jxtz2.htm']],
 };
 
 if (!targets[school]) {

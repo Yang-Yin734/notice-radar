@@ -10,6 +10,7 @@
 // 输出建议片段到 .probe-out/<id>.yaml（不进仓库，见 .gitignore），汇总表打在屏幕上。
 import fs from 'node:fs';
 import path from 'node:path';
+import { fetchHtml } from '../src/core/fetch.ts';
 import { findListCandidates, probeListPage, suggestYaml } from './lib/selectors-probe.mjs';
 
 const listFile = process.argv[2];
@@ -36,15 +37,10 @@ for (const { id, url } of entries) {
   let html;
   let status = 0;
   try {
-    const res = await fetch(url, {
-      headers: { 'user-agent': 'Mozilla/5.0 (notice-radar probe)', accept: 'text/html' },
-      redirect: 'follow',
-      signal: AbortSignal.timeout(15000),
-    });
+    // 首页也用生产抓取层（IPv4 优先 + 重试），否则会误判成"抓不到"
+    const res = await fetchHtml(url, { timeoutMs: 30000, retries: 1 });
     status = res.status;
-    const buf = Buffer.from(await res.arrayBuffer());
-    html = buf.toString('utf8');
-    if (/charset=["']?(gb2312|gbk)/i.test(html.slice(0, 2000))) html = new TextDecoder('gbk').decode(buf);
+    html = res.html;
   } catch (e) {
     line(`✗ 首页抓不到：${e.message}`);
     results.push({ id, url, ok: false, reason: `首页抓不到：${e.message}` });
@@ -77,14 +73,22 @@ for (const { id, url } of entries) {
     results.push({ id, url, ok: false, reason: '候选页都试不出可用选择器' });
     continue;
   }
-  const usable = best.truncated === 0 && best.dateHits > 0 && best.count >= 5;
+  // 可接的条件：标题像通知（探测器已经卡过 0.55）、条目够多、没有截断。
+  // **没有日期也算可接** —— 日期在详情页是常见情况，配置里不写 date 即可（项目本来就支持）。
+  const usable = best.truncated === 0 && best.count >= 5;
   const yaml = suggestYaml({ id: 'jwc-tzgg', name: '教务处·通知公告', url: best.url, best });
   fs.writeFileSync(path.join(outDir, `${id}.yaml`), yaml + '\n', 'utf8');
   line(
-    `${usable ? '✓' : '⚠'} ${best.url} | item=${best.item} title=${best.title} date=${best.date} | ` +
+    `${usable ? '✓' : '⚠'} ${best.url} | item=${best.item} title=${best.title} date=${best.dateHits ? best.date : '(无)'} | ` +
       `${best.count} 条，日期 ${best.dateHits}，截断 ${best.truncated}`,
   );
-  results.push({ id, url: best.url, ok: usable, reason: best.truncated ? '有标题被截断' : best.dateHits === 0 ? '日期都没解析出来' : '', best });
+  results.push({
+    id,
+    url: best.url,
+    ok: usable,
+    reason: best.truncated ? '有标题被截断' : best.dateHits === 0 ? '列表页无日期（可 date 留空接入）' : '',
+    best,
+  });
 }
 
 console.log('\n=== 汇总 ===');

@@ -27,7 +27,7 @@ function checkListFixture(
   file: string,
   over: Partial<SourceConfig>,
   opts: { min: number; urlOk: RegExp; maxTruncated?: number },
-): void {
+) {
   const html = fs.readFileSync(path.join('tests', 'fixtures', school, file), 'utf8');
   const items = htmlListAdapter.parse({
     school,
@@ -55,6 +55,7 @@ function checkListFixture(
     `${school} 被截断的标题太多（${truncated.length}/${items.length}）：${truncated[0]?.title.slice(0, 60)}`,
   );
   assert.equal(new Set(items.map((n) => n.id)).size, items.length, `${school} 的 ID 必须唯一`);
+  return items;
 }
 
 const source = (over: Partial<SourceConfig>): SourceConfig =>
@@ -233,6 +234,37 @@ test('通用 html-list：天津大学（标题在 h2 里）', () => {
       selectors: { item: 'ul li', title: 'h2', link: 'a@href', date: 'span' },
     },
     { min: 8, urlOk: /^https:\/\/(mp\.weixin\.qq\.com|oaa\.tju\.edu\.cn)\// },
+  );
+});
+
+test('通用 html-list：江南大学（标题取 a@title）', () => {
+  checkListFixture(
+    'jiangnan',
+    'jwc-tzgg.html',
+    {
+      id: 'jwc-tzgg',
+      baseUrl: 'https://jwc.jiangnan.edu.cn/jwgl/tzgg.htm',
+      selectors: { item: '.main-list li', title: 'a@title', link: 'a@href', date: 'span' },
+    },
+    { min: 8, urlOk: /^https:\/\/jwc\.jiangnan\.edu\.cn\// },
+  );
+});
+
+test('通用 html-list：西安交通大学（栏目页 jxtz2）', () => {
+  const items = checkListFixture(
+    'xjtu',
+    'jwc-jxtz.html',
+    {
+      id: 'jwc-jxtz',
+      baseUrl: 'https://jwc.xjtu.edu.cn/jxxx/jxtz2.htm',
+      selectors: { item: '.list li', title: 'a', link: 'a@href', date: 'span' },
+    },
+    { min: 5, urlOk: /^https:\/\/jwc\.xjtu\.edu\.cn\// },
+  );
+  // 这页的标题带 [培养方案]/[考试安排] 这类前缀，是站点自己的分类，保留原样
+  assert.ok(
+    items.some((n) => /^\[[^\]]+\]/.test(n.title)),
+    `标题里的栏目前缀应保留：${items[0]?.title.slice(0, 40)}`,
   );
 });
 

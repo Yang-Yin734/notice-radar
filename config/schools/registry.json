@@ -73,6 +73,28 @@
       "status": "verified",
       "lastVerified": "2026-10-03",
       "notes": "本科生院通知公告。标题取 **h2**（取 a 文本会带上正文摘要）；通知多以公众号文章发布。collectOnly=true"
+    },
+    {
+      "id": "jiangnan",
+      "name": "江南大学",
+      "city": "无锡",
+      "presets": ["config/schools/jiangnan.yaml"],
+      "sources": 1,
+      "maintainers": ["Yang-Yin734"],
+      "status": "verified",
+      "lastVerified": "2026-10-03",
+      "notes": "教务处通知公告。标题取 a@title（完整标题），日期取 span。collectOnly=true"
+    },
+    {
+      "id": "xjtu",
+      "name": "西安交通大学",
+      "city": "西安",
+      "presets": ["config/schools/xjtu.yaml"],
+      "sources": 1,
+      "maintainers": ["Yang-Yin734"],
+      "status": "verified",
+      "lastVerified": "2026-10-03",
+      "notes": "教务处教学通知（jxxx/jxtz2.htm）。标题自带 [培养方案]/[考试安排] 分类前缀，保留原样；日期取 span。collectOnly=true"
     }
   ]
 }

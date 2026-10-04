@@ -1,0 +1,56 @@
+# 西安交通大学（xjtu）—— 全国名单里第八所接入的学校。
+#
+# 状态：**只采集不通知**（collectOnly: true）。
+#
+# 站点结构：教务处「教学信息 → 教学通知」列表页，条目在 .list 里，日期在 span。
+# 说明：这里接的是 `jxtz2.htm`（教学通知第二页对应的栏目页）；`jxxx/jxtz.htm` 是同一栏目的另一页，
+# 需要的话再加一条源即可（本项目一个学校可以配多个源）。
+school: xjtu
+name: 西安交通大学
+
+notify:
+  - type: serverchan
+    keyEnv: SERVERCHAN_KEY
+
+sources:
+  - id: jwc-jxtz
+    name: 教务处·教学通知
+    url: https://jwc.xjtu.edu.cn/jxxx/jxtz2.htm
+    adapter: html-list
+    baseUrl: https://jwc.xjtu.edu.cn/jxxx/jxtz2.htm
+    collectOnly: true
+    note: 选课、考试、学籍、毕业设计一类通知；标题取 a，日期取 span
+    selectors:
+      item: .list li
+      title: a
+      link: a@href
+      date: span
+    include:
+      - 选课
+      - 退课
+      - 补选
+      - 重修
+      - 缓考
+      - 补考
+      - 考试
+      - 四六级
+      - 成绩
+      - 学籍
+      - 毕业
+      - 学位
+      - 推免
+      - 保研
+      - 奖学金
+      - 助学金
+      - 报名
+      - 公示
+      - 名单
+      - 转专业
+    exclude:
+      - 招聘
+      - 招标
+      - 采购
+      - 中标
+      - 成交
+      - 校友
+      - 捐赠

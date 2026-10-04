@@ -1,0 +1,31 @@
+# 第二批候选（2026-10-03 第 4 轮）：优先挑教务处/本科生院站点结构规整的双一流。
+# 用法：node tools/probe-batch.mjs tools/candidates-2.txt
+#
+# 本轮结果（20 所）：
+#   ✓ jiangnan 江南大学   → jwc.jiangnan.edu.cn/jwgl/tzgg.htm（已接入，collectOnly）
+#   ✓ xjtu     西安交通大学 → jwc.xjtu.edu.cn/jxxx/jxtz2.htm（已接入，collectOnly）
+#   ✗ ustc/csu/sdu/nwpu  → **域名猜错了（ENOTFOUND）**，不是站点在挡 —— 下轮先查证域名
+#   ✗ whut     武汉理工   → 域名在，但探测时连不上
+#   ✗ lzu 兰州大学 412 / njust 南京理工 202 / bjtu 北京交通 503 → 站点/WAF 在挡，不绕过
+#   ✗ nankai/cau/ustb/uibe/ouc/nju/nuaa/hhu/hfut → 候选页试不出可用选择器（结构特殊或多在 JS 里）
+#   ✗ hit 哈工大 → 首页里没找到通知列表入口
+nankai   https://jwc.nankai.edu.cn/
+cau      https://jwc.cau.edu.cn/
+ustb     https://jwc.ustb.edu.cn/
+bjtu     https://jwc.bjtu.edu.cn/
+uibe     https://jwc.uibe.edu.cn/
+sdu      https://www.bksy.sdu.edu.cn/
+ouc      https://jwc.ouc.edu.cn/
+nju      https://jw.nju.edu.cn/
+nuaa     https://aao.nuaa.edu.cn/
+njust    https://jwc.njust.edu.cn/
+hhu      https://jwc.hhu.edu.cn/
+jiangnan https://jwc.jiangnan.edu.cn/
+ustc     https://jwc.ustc.edu.cn/
+hfut     https://jwc.hfut.edu.cn/
+csu      https://jwc.csu.edu.cn/
+whut     https://jwc.whut.edu.cn/
+xjtu     https://jwc.xjtu.edu.cn/
+nwpu     https://jwc.nwpu.edu.cn/
+lzu      https://jwc.lzu.edu.cn/
+hit      https://jwc.hit.edu.cn/
