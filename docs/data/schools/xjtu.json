@@ -1,0 +1,79 @@
+{
+ "school": "xjtu",
+ "name": "西安交通大学",
+ "province": "陕西省",
+ "city": "西安市",
+ "generatedAt": "2026-10-04T06:04:28.666Z",
+ "total": 4,
+ "bySource": [
+  {
+   "sourceId": "jwc-jxtz",
+   "sourceName": "教务处·教学通知",
+   "count": 4
+  }
+ ],
+ "units": [
+  {
+   "id": "教务处",
+   "name": "教务处",
+   "sources": [
+    "教务处·教学通知"
+   ],
+   "count": 4
+  }
+ ],
+ "items": [
+  {
+   "id": "bad0f8988a77b2b4",
+   "sourceId": "jwc-jxtz",
+   "sourceName": "教务处·教学通知",
+   "school": "xjtu",
+   "title": "[竞赛安排]关于第42届全国部分地区大学生物理竞赛西安交通大学报名的通知",
+   "url": "https://jwc.xjtu.edu.cn/info/1172/10496.htm",
+   "date": "2026-09-30",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:04:28.338Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "5663e52be4b5a612",
+   "sourceId": "jwc-jxtz",
+   "sourceName": "教务处·教学通知",
+   "school": "xjtu",
+   "title": "[竞赛安排]关于第 3 届学研杯大学物理强基邀请赛II卷西安交通大学报名的通知",
+   "url": "https://jwc.xjtu.edu.cn/info/1172/10495.htm",
+   "date": "2026-09-30",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:04:28.338Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "975c2294e2698071",
+   "sourceId": "jwc-jxtz",
+   "sourceName": "教务处·教学通知",
+   "school": "xjtu",
+   "title": "[学籍管理]关于开展2026年学籍处理与毕业年级确认工作的通知",
+   "url": "https://jwc.xjtu.edu.cn/info/1095/10494.htm",
+   "date": "2026-09-30",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:04:28.338Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "980da35b457d4aeb",
+   "sourceId": "jwc-jxtz",
+   "sourceName": "教务处·教学通知",
+   "school": "xjtu",
+   "title": "[考试安排]关于2026年下半年全国大学英语四、六级考试报名的通知",
+   "url": "https://jwc.xjtu.edu.cn/info/1171/10445.htm",
+   "date": "2026-09-09",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:04:28.338Z",
+   "unit": "教务处"
+  }
+ ]
+}

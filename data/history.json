@@ -1,7 +1,43 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-03T17:07:59.243Z",
+  "updatedAt": "2026-10-04T06:04:28.338Z",
   "items": [
+    {
+      "id": "bad0f8988a77b2b4",
+      "sourceId": "jwc-jxtz",
+      "sourceName": "教务处·教学通知",
+      "school": "xjtu",
+      "title": "[竞赛安排]关于第42届全国部分地区大学生物理竞赛西安交通大学报名的通知",
+      "url": "https://jwc.xjtu.edu.cn/info/1172/10496.htm",
+      "date": "2026-09-30",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-04T06:04:28.338Z"
+    },
+    {
+      "id": "5663e52be4b5a612",
+      "sourceId": "jwc-jxtz",
+      "sourceName": "教务处·教学通知",
+      "school": "xjtu",
+      "title": "[竞赛安排]关于第 3 届学研杯大学物理强基邀请赛II卷西安交通大学报名的通知",
+      "url": "https://jwc.xjtu.edu.cn/info/1172/10495.htm",
+      "date": "2026-09-30",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-04T06:04:28.338Z"
+    },
+    {
+      "id": "975c2294e2698071",
+      "sourceId": "jwc-jxtz",
+      "sourceName": "教务处·教学通知",
+      "school": "xjtu",
+      "title": "[学籍管理]关于开展2026年学籍处理与毕业年级确认工作的通知",
+      "url": "https://jwc.xjtu.edu.cn/info/1095/10494.htm",
+      "date": "2026-09-30",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-04T06:04:28.338Z"
+    },
     {
       "id": "ae4325e4334a8a88",
       "sourceId": "ugs-tzgg",
@@ -313,6 +349,18 @@
       "tag": "通知通告",
       "alsoIn": [],
       "firstSeenAt": "2026-10-03T16:50:39.366Z"
+    },
+    {
+      "id": "980da35b457d4aeb",
+      "sourceId": "jwc-jxtz",
+      "sourceName": "教务处·教学通知",
+      "school": "xjtu",
+      "title": "[考试安排]关于2026年下半年全国大学英语四、六级考试报名的通知",
+      "url": "https://jwc.xjtu.edu.cn/info/1171/10445.htm",
+      "date": "2026-09-09",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-04T06:04:28.338Z"
     },
     {
       "id": "fb43cd44a866ab8e",
