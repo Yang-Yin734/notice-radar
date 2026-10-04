@@ -1,0 +1,79 @@
+{
+ "school": "shufe",
+ "name": "上海财经大学",
+ "province": "上海市",
+ "city": "",
+ "generatedAt": "2026-10-04T07:10:33.156Z",
+ "total": 4,
+ "bySource": [
+  {
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "count": 4
+  }
+ ],
+ "units": [
+  {
+   "id": "教务处",
+   "name": "教务处",
+   "sources": [
+    "教务处·通知公告"
+   ],
+   "count": 4
+  }
+ ],
+ "items": [
+  {
+   "id": "e61a75a701859b02",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "shufe",
+   "title": "关于2026年高等教育（本科）国家教学成果奖拟推荐成果名单的公示",
+   "url": "https://jwc.sufe.edu.cn/13/91/c5128a267153/page.htm",
+   "date": "2026-07-02",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T07:10:19.293Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "6efd90f45b66ec2d",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "shufe",
+   "title": "关于第二届全国教材建设奖全国优秀教材(高等教育类)拟推荐申报名单的补充公示",
+   "url": "https://jwc.sufe.edu.cn/b9/50/c5128a244048/page.htm",
+   "date": "2025-07-07",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T07:10:19.293Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "0e230100d6708fe9",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "shufe",
+   "title": "关于第二届全国教材建设奖全国优秀教材(高等教育类)和全国优秀教材(职业教育类)拟推荐申报名单的公示",
+   "url": "https://jwc.sufe.edu.cn/b9/25/c5128a244005/page.htm",
+   "date": "2025-07-03",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T07:10:19.293Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "bcbeea670d9e67a0",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "shufe",
+   "title": "关于拟推荐申报第二批“十四五”职业教育国家规划教材名单的公示",
+   "url": "https://jwc.sufe.edu.cn/9c/c2/c5128a236738/page.htm",
+   "date": "2025-03-07",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T07:10:19.293Z",
+   "unit": "教务处"
+  }
+ ]
+}

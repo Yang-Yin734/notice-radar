@@ -1,11 +1,11 @@
 {
- "generatedAt": "2026-10-04T07:00:04.445Z",
+ "generatedAt": "2026-10-04T07:10:33.156Z",
  "source": "教育部《全国高等学校名单》（config/schools/directory.tsv，见 config/schools/README.md）",
  "note": "status=active 表示真抓过、能出通知；pending 只是目录条目，选中会提示尚未接入。接入方法见 docs/add-your-school.md",
  "counts": {
   "total": 3167,
-  "active": 15,
-  "pending": 3152,
+  "active": 19,
+  "pending": 3148,
   "featured": 196,
   "doubleFirst": 144,
   "bachelor": 1365,
@@ -6357,7 +6357,16 @@
     "双一流",
     "教育部直属"
    ],
-   "status": "pending"
+   "status": "active",
+   "file": "shufe.json",
+   "units": [
+    {
+     "id": "教务处",
+     "name": "教务处",
+     "count": 4
+    }
+   ],
+   "total": 4
   },
   {
    "id": "4131010273",
@@ -7065,7 +7074,16 @@
     "双一流",
     "教育部直属"
    ],
-   "status": "pending"
+   "status": "active",
+   "file": "njau.json",
+   "units": [
+    {
+     "id": "教务处",
+     "name": "教务处",
+     "count": 12
+    }
+   ],
+   "total": 12
   },
   {
    "id": "4132010312",
@@ -10674,7 +10692,16 @@
     "双一流",
     "教育部直属"
    ],
-   "status": "pending"
+   "status": "active",
+   "file": "xmu.json",
+   "units": [
+    {
+     "id": "教务处",
+     "name": "教务处",
+     "count": 9
+    }
+   ],
+   "total": 9
   },
   {
    "id": "4135010385",
@@ -17056,7 +17083,16 @@
     "双一流",
     "教育部直属"
    ],
-   "status": "pending"
+   "status": "active",
+   "file": "hnu.json",
+   "units": [
+    {
+     "id": "教务处",
+     "name": "教务处",
+     "count": 3
+    }
+   ],
+   "total": 3
   },
   {
    "id": "csu",

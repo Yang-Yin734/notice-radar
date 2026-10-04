@@ -1,7 +1,43 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-04T07:00:04.166Z",
+  "updatedAt": "2026-10-04T07:10:30.627Z",
   "items": [
+    {
+      "id": "44be26716726a35e",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "xmu",
+      "title": "关于2026—2027学年第一学期转专业工作安排的通知",
+      "url": "https://jwc.xmu.edu.cn/info/1911/69852.htm",
+      "date": "2026-09-30",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-04T07:10:30.627Z"
+    },
+    {
+      "id": "c44493fb4495a4c8",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "xmu",
+      "title": "关于公布2026年第二批大学生创新训练计划项目名单的通知",
+      "url": "https://jwc.xmu.edu.cn/info/1951/69842.htm",
+      "date": "2026-09-30",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-04T07:10:30.627Z"
+    },
+    {
+      "id": "4af6239363e23e8a",
+      "sourceId": "aao-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "njau",
+      "title": "关于第一届“美丽中国”涉林草高校教师教学创新竞赛拟推荐教师公示",
+      "url": "https://aao.njau.edu.cn/info/1101/6994.htm",
+      "date": "2026-09-30",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-04T07:10:11.716Z"
+    },
     {
       "id": "604000a399b76133",
       "sourceId": "jwc-tzgg",
@@ -205,6 +241,30 @@
       "tag": null,
       "alsoIn": [],
       "firstSeenAt": "2026-10-03T16:50:34.573Z"
+    },
+    {
+      "id": "16715b830ae9ccd2",
+      "sourceId": "aao-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "njau",
+      "title": "关于南京农业大学本科生辅修学士学位报名的通知",
+      "url": "https://aao.njau.edu.cn/info/1143/6986.htm",
+      "date": "2026-09-28",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-04T07:10:11.716Z"
+    },
+    {
+      "id": "2782d18da7de7776",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "hnu",
+      "title": "关于本科生课程考试网上电子阅卷的工作通知",
+      "url": "https://jwc.hnu.edu.cn/info/1083/14822.htm",
+      "date": "2026-09-28",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-04T07:10:02.472Z"
     },
     {
       "id": "1dfa567a5e3e5fb6",
@@ -435,6 +495,18 @@
       "firstSeenAt": "2026-10-03T16:50:34.573Z"
     },
     {
+      "id": "fbc5bb4b503f090e",
+      "sourceId": "aao-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "njau",
+      "title": "关于公布“外研社·国才杯” 全国大学生外语能力大赛演讲赛项校园选拔赛复赛名单的通知",
+      "url": "https://aao.njau.edu.cn/info/1101/6981.htm",
+      "date": "2026-09-22",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-04T07:10:11.716Z"
+    },
+    {
       "id": "509a428e20d5af1d",
       "sourceId": "jwb-tzgg",
       "sourceName": "教务部·通知公告",
@@ -639,6 +711,78 @@
       "firstSeenAt": "2026-10-03T16:50:34.573Z"
     },
     {
+      "id": "fbe6fbefcd8648db",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "xmu",
+      "title": "关于2026-2027学年第一学期中期退课的通知",
+      "url": "https://jwc.xmu.edu.cn/info/1921/69772.htm",
+      "date": "2026-09-17",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-04T07:10:30.627Z"
+    },
+    {
+      "id": "00cf14b9ff506c07",
+      "sourceId": "aao-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "njau",
+      "title": "关于拟录取甘睿涵等82名同学进入金善宝书院（植物科学实验班）学习的公示",
+      "url": "https://aao.njau.edu.cn/info/1143/6977.htm",
+      "date": "2026-09-17",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-04T07:10:11.716Z"
+    },
+    {
+      "id": "6683e0b181186d25",
+      "sourceId": "aao-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "njau",
+      "title": "关于拟录取陈菲等27名同学进入2026级金善宝书院动物科学实验班学习的公示",
+      "url": "https://aao.njau.edu.cn/info/1143/6976.htm",
+      "date": "2026-09-17",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-04T07:10:11.716Z"
+    },
+    {
+      "id": "9418353b41bcc260",
+      "sourceId": "aao-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "njau",
+      "title": "关于拟录取刘祉乐等13名同学进入2026级金善宝书院 （农业资源与环境实验班）学习的公示",
+      "url": "https://aao.njau.edu.cn/info/1143/6975.htm",
+      "date": "2026-09-17",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-04T07:10:11.716Z"
+    },
+    {
+      "id": "e893e68958a64973",
+      "sourceId": "aao-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "njau",
+      "title": "关于拟录取王子宸等18名同学进入2026级金善宝书院工程科学实验班（食品工程方向）学习的公示",
+      "url": "https://aao.njau.edu.cn/info/1143/6974.htm",
+      "date": "2026-09-17",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-04T07:10:11.716Z"
+    },
+    {
+      "id": "f39d27d334828f5b",
+      "sourceId": "aao-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "njau",
+      "title": "关于拟录取万博文等20名同学进入2026级生物科学拔尖学生培养基地学习的公示",
+      "url": "https://aao.njau.edu.cn/info/1143/6973.htm",
+      "date": "2026-09-17",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-04T07:10:11.716Z"
+    },
+    {
       "id": "aa0927d66f678841",
       "sourceId": "jw-ggtz",
       "sourceName": "本科生院·公告通知",
@@ -661,6 +805,54 @@
       "tag": null,
       "alsoIn": [],
       "firstSeenAt": "2026-09-28T12:00:56.521Z"
+    },
+    {
+      "id": "dbf1488d475baf71",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "xmu",
+      "title": "关于2026年第二批大学生创新训练计划项目拟立项名单的公示",
+      "url": "https://jwc.xmu.edu.cn/info/1951/69762.htm",
+      "date": "2026-09-16",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-04T07:10:30.627Z"
+    },
+    {
+      "id": "f76076fdcce32748",
+      "sourceId": "aao-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "njau",
+      "title": "关于拟录取支冠雄等5名同学进入2026级金善宝书院工程科学实验班（农业工程方向）学习的公示",
+      "url": "https://aao.njau.edu.cn/info/1143/6972.htm",
+      "date": "2026-09-16",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-04T07:10:11.716Z"
+    },
+    {
+      "id": "cae34f3c36ae39a2",
+      "sourceId": "aao-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "njau",
+      "title": "关于做好2026级新生运动减脂课程的报名和筛选通知",
+      "url": "https://aao.njau.edu.cn/info/1101/6970.htm",
+      "date": "2026-09-16",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-04T07:10:11.716Z"
+    },
+    {
+      "id": "2026a0e903cc203c",
+      "sourceId": "aao-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "njau",
+      "title": "关于做好2026-2027学年第一学期2026级本科生网上选课的通知",
+      "url": "https://aao.njau.edu.cn/info/1101/6969.htm",
+      "date": "2026-09-16",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-04T07:10:11.716Z"
     },
     {
       "id": "d5d226fcba298098",
@@ -759,6 +951,18 @@
       "firstSeenAt": "2026-10-03T16:50:34.573Z"
     },
     {
+      "id": "f1fec3351c1746e4",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "hnu",
+      "title": "关于2026年中秋、国庆假期本科教学安排的通知",
+      "url": "https://jwc.hnu.edu.cn/info/1021/14803.htm",
+      "date": "2026-09-15",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-04T07:10:02.472Z"
+    },
+    {
       "id": "f07fb63506475185",
       "sourceId": "jwc-tzgg",
       "sourceName": "教务部·通知公告",
@@ -829,6 +1033,18 @@
       "tag": null,
       "alsoIn": [],
       "firstSeenAt": "2026-10-03T16:50:34.573Z"
+    },
+    {
+      "id": "fbc3378e0a0e86e0",
+      "sourceId": "aao-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "njau",
+      "title": "关于拟录取程雨硕等30名同学进入2026级金善宝书院（社会科学实验班）学习的公示",
+      "url": "https://aao.njau.edu.cn/info/1143/6966.htm",
+      "date": "2026-09-14",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-04T07:10:11.716Z"
     },
     {
       "id": "708a224ed4163ad4",
@@ -1083,6 +1299,18 @@
       "firstSeenAt": "2026-10-03T16:50:43.598Z"
     },
     {
+      "id": "e85b7d724dc3e8d0",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "hnu",
+      "title": "关于2026-2027学年秋季学期中南大学、湖南师范大学优质课程面向我校本科生开放选课的通知",
+      "url": "https://jwc.hnu.edu.cn/info/1021/14795.htm",
+      "date": "2026-09-08",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-04T07:10:02.472Z"
+    },
+    {
       "id": "82bc1d4526139b74",
       "sourceId": "jw-ggtz",
       "sourceName": "本科生院·公告通知",
@@ -1167,6 +1395,18 @@
       "firstSeenAt": "2026-09-28T12:00:56.521Z"
     },
     {
+      "id": "5b337341f2fe0091",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "xmu",
+      "title": "关于2026年下半年全国大学英语四、六级考试报名工作的通知",
+      "url": "https://jwc.xmu.edu.cn/info/1911/69672.htm",
+      "date": "2026-09-02",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-04T07:10:30.627Z"
+    },
+    {
       "id": "46e2a04970a512bc",
       "sourceId": "jwc-student",
       "sourceName": "教务处·学生事务公告",
@@ -1189,6 +1429,30 @@
       "tag": null,
       "alsoIn": [],
       "firstSeenAt": "2026-10-03T16:50:43.598Z"
+    },
+    {
+      "id": "2be6fa05ef61c8c0",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "xmu",
+      "title": "关于组织2026级本科新生选课的通知",
+      "url": "https://jwc.xmu.edu.cn/info/1921/69632.htm",
+      "date": "2026-08-27",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-04T07:10:30.627Z"
+    },
+    {
+      "id": "601670b9c1d7af7e",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "xmu",
+      "title": "关于2026年下半年全国大学英语四、六级考试照片采集的预通知",
+      "url": "https://jwc.xmu.edu.cn/info/1911/69662.htm",
+      "date": "2026-08-27",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-04T07:10:30.627Z"
     },
     {
       "id": "0c5f024343c65473",
@@ -1225,6 +1489,30 @@
       "tag": null,
       "alsoIn": [],
       "firstSeenAt": "2026-09-28T12:00:56.521Z"
+    },
+    {
+      "id": "3896cf0b7fafc4c2",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "xmu",
+      "title": "关于2026级新生参加大学英语分类考试补考的通知",
+      "url": "https://jwc.xmu.edu.cn/info/1921/69652.htm",
+      "date": "2026-08-24",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-04T07:10:30.627Z"
+    },
+    {
+      "id": "a3c087aecc629554",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "xmu",
+      "title": "关于2026级新生参加大学英语分类考试的通知",
+      "url": "https://jwc.xmu.edu.cn/info/1921/69602.htm",
+      "date": "2026-08-08",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-04T07:10:30.627Z"
     },
     {
       "id": "7f4da6f128af9724",
@@ -1273,6 +1561,18 @@
       "tag": null,
       "alsoIn": [],
       "firstSeenAt": "2026-09-28T12:00:56.521Z"
+    },
+    {
+      "id": "e61a75a701859b02",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "shufe",
+      "title": "关于2026年高等教育（本科）国家教学成果奖拟推荐成果名单的公示",
+      "url": "https://jwc.sufe.edu.cn/13/91/c5128a267153/page.htm",
+      "date": "2026-07-02",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-04T07:10:19.293Z"
     },
     {
       "id": "4d8debc7f3863350",
@@ -1731,6 +2031,42 @@
       "tag": null,
       "alsoIn": [],
       "firstSeenAt": "2026-09-28T12:00:56.521Z"
+    },
+    {
+      "id": "6efd90f45b66ec2d",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "shufe",
+      "title": "关于第二届全国教材建设奖全国优秀教材(高等教育类)拟推荐申报名单的补充公示",
+      "url": "https://jwc.sufe.edu.cn/b9/50/c5128a244048/page.htm",
+      "date": "2025-07-07",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-04T07:10:19.293Z"
+    },
+    {
+      "id": "0e230100d6708fe9",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "shufe",
+      "title": "关于第二届全国教材建设奖全国优秀教材(高等教育类)和全国优秀教材(职业教育类)拟推荐申报名单的公示",
+      "url": "https://jwc.sufe.edu.cn/b9/25/c5128a244005/page.htm",
+      "date": "2025-07-03",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-04T07:10:19.293Z"
+    },
+    {
+      "id": "bcbeea670d9e67a0",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "shufe",
+      "title": "关于拟推荐申报第二批“十四五”职业教育国家规划教材名单的公示",
+      "url": "https://jwc.sufe.edu.cn/9c/c2/c5128a236738/page.htm",
+      "date": "2025-03-07",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-04T07:10:19.293Z"
     },
     {
       "id": "5fc43373c222abbd",

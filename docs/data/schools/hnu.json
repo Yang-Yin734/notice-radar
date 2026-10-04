@@ -1,0 +1,66 @@
+{
+ "school": "hnu",
+ "name": "湖南大学",
+ "province": "湖南省",
+ "city": "长沙市",
+ "generatedAt": "2026-10-04T07:10:33.156Z",
+ "total": 3,
+ "bySource": [
+  {
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "count": 3
+  }
+ ],
+ "units": [
+  {
+   "id": "教务处",
+   "name": "教务处",
+   "sources": [
+    "教务处·通知公告"
+   ],
+   "count": 3
+  }
+ ],
+ "items": [
+  {
+   "id": "2782d18da7de7776",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "hnu",
+   "title": "关于本科生课程考试网上电子阅卷的工作通知",
+   "url": "https://jwc.hnu.edu.cn/info/1083/14822.htm",
+   "date": "2026-09-28",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T07:10:02.472Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "f1fec3351c1746e4",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "hnu",
+   "title": "关于2026年中秋、国庆假期本科教学安排的通知",
+   "url": "https://jwc.hnu.edu.cn/info/1021/14803.htm",
+   "date": "2026-09-15",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T07:10:02.472Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "e85b7d724dc3e8d0",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "hnu",
+   "title": "关于2026-2027学年秋季学期中南大学、湖南师范大学优质课程面向我校本科生开放选课的通知",
+   "url": "https://jwc.hnu.edu.cn/info/1021/14795.htm",
+   "date": "2026-09-08",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T07:10:02.472Z",
+   "unit": "教务处"
+  }
+ ]
+}

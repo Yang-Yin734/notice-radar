@@ -1,0 +1,183 @@
+{
+ "school": "njau",
+ "name": "南京农业大学",
+ "province": "江苏省",
+ "city": "南京市",
+ "generatedAt": "2026-10-04T07:10:33.156Z",
+ "total": 12,
+ "bySource": [
+  {
+   "sourceId": "aao-tzgg",
+   "sourceName": "教务处·通知公告",
+   "count": 12
+  }
+ ],
+ "units": [
+  {
+   "id": "教务处",
+   "name": "教务处",
+   "sources": [
+    "教务处·通知公告"
+   ],
+   "count": 12
+  }
+ ],
+ "items": [
+  {
+   "id": "4af6239363e23e8a",
+   "sourceId": "aao-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "njau",
+   "title": "关于第一届“美丽中国”涉林草高校教师教学创新竞赛拟推荐教师公示",
+   "url": "https://aao.njau.edu.cn/info/1101/6994.htm",
+   "date": "2026-09-30",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T07:10:11.716Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "16715b830ae9ccd2",
+   "sourceId": "aao-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "njau",
+   "title": "关于南京农业大学本科生辅修学士学位报名的通知",
+   "url": "https://aao.njau.edu.cn/info/1143/6986.htm",
+   "date": "2026-09-28",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T07:10:11.716Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "fbc5bb4b503f090e",
+   "sourceId": "aao-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "njau",
+   "title": "关于公布“外研社·国才杯” 全国大学生外语能力大赛演讲赛项校园选拔赛复赛名单的通知",
+   "url": "https://aao.njau.edu.cn/info/1101/6981.htm",
+   "date": "2026-09-22",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T07:10:11.716Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "00cf14b9ff506c07",
+   "sourceId": "aao-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "njau",
+   "title": "关于拟录取甘睿涵等82名同学进入金善宝书院（植物科学实验班）学习的公示",
+   "url": "https://aao.njau.edu.cn/info/1143/6977.htm",
+   "date": "2026-09-17",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T07:10:11.716Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "6683e0b181186d25",
+   "sourceId": "aao-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "njau",
+   "title": "关于拟录取陈菲等27名同学进入2026级金善宝书院动物科学实验班学习的公示",
+   "url": "https://aao.njau.edu.cn/info/1143/6976.htm",
+   "date": "2026-09-17",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T07:10:11.716Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "9418353b41bcc260",
+   "sourceId": "aao-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "njau",
+   "title": "关于拟录取刘祉乐等13名同学进入2026级金善宝书院 （农业资源与环境实验班）学习的公示",
+   "url": "https://aao.njau.edu.cn/info/1143/6975.htm",
+   "date": "2026-09-17",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T07:10:11.716Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "e893e68958a64973",
+   "sourceId": "aao-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "njau",
+   "title": "关于拟录取王子宸等18名同学进入2026级金善宝书院工程科学实验班（食品工程方向）学习的公示",
+   "url": "https://aao.njau.edu.cn/info/1143/6974.htm",
+   "date": "2026-09-17",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T07:10:11.716Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "f39d27d334828f5b",
+   "sourceId": "aao-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "njau",
+   "title": "关于拟录取万博文等20名同学进入2026级生物科学拔尖学生培养基地学习的公示",
+   "url": "https://aao.njau.edu.cn/info/1143/6973.htm",
+   "date": "2026-09-17",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T07:10:11.716Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "f76076fdcce32748",
+   "sourceId": "aao-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "njau",
+   "title": "关于拟录取支冠雄等5名同学进入2026级金善宝书院工程科学实验班（农业工程方向）学习的公示",
+   "url": "https://aao.njau.edu.cn/info/1143/6972.htm",
+   "date": "2026-09-16",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T07:10:11.716Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "cae34f3c36ae39a2",
+   "sourceId": "aao-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "njau",
+   "title": "关于做好2026级新生运动减脂课程的报名和筛选通知",
+   "url": "https://aao.njau.edu.cn/info/1101/6970.htm",
+   "date": "2026-09-16",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T07:10:11.716Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "2026a0e903cc203c",
+   "sourceId": "aao-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "njau",
+   "title": "关于做好2026-2027学年第一学期2026级本科生网上选课的通知",
+   "url": "https://aao.njau.edu.cn/info/1101/6969.htm",
+   "date": "2026-09-16",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T07:10:11.716Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "fbc3378e0a0e86e0",
+   "sourceId": "aao-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "njau",
+   "title": "关于拟录取程雨硕等30名同学进入2026级金善宝书院（社会科学实验班）学习的公示",
+   "url": "https://aao.njau.edu.cn/info/1143/6966.htm",
+   "date": "2026-09-14",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T07:10:11.716Z",
+   "unit": "教务处"
+  }
+ ]
+}
