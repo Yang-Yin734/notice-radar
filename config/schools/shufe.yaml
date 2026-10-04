@@ -1,0 +1,60 @@
+# 上海财经大学（shufe）—— 全国名单里第十九所接入的学校。
+#
+# 状态：**只采集不通知**（collectOnly: true）。
+#
+# 站点结构（博达 CMS，和"中国海洋大学"同一套模板）：
+#   <li class="list_item">
+#     <div class="fields pr_fields"><span class="Article_Index">1</span>
+#       <span class="Article_Title"><a href="/13/91/c5128a267153/page.htm" title="完整标题">…</a></span></div>
+#     <div class="fields ex_fields"><span class="Article_PublishDate">2026-07-02</span></div></li>
+# 关键点：日期类名是博达专有的 **Article_PublishDate**（不是 span.date）。
+school: shufe
+name: 上海财经大学
+
+notify:
+  - type: serverchan
+    keyEnv: SERVERCHAN_KEY
+
+sources:
+  - id: jwc-tzgg
+    name: 教务处·通知公告
+    url: https://jwc.sufe.edu.cn/5128/list.htm
+    adapter: html-list
+    baseUrl: https://jwc.sufe.edu.cn/5128/list.htm
+    collectOnly: true
+    note: 教学成果奖公示、假期对外服务通告一类；标题取 .Article_Title a@title，日期取 .Article_PublishDate
+    selectors:
+      item: li.list_item
+      title: .Article_Title a@title
+      link: a@href
+      date: .Article_PublishDate
+    include:
+      - 选课
+      - 退课
+      - 补选
+      - 重修
+      - 缓考
+      - 补考
+      - 考试
+      - 四六级
+      - 成绩
+      - 学籍
+      - 毕业
+      - 学位
+      - 推免
+      - 保研
+      - 奖学金
+      - 助学金
+      - 报名
+      - 公示
+      - 名单
+      - 转专业
+      - 教学成果
+    exclude:
+      - 招聘
+      - 招标
+      - 采购
+      - 中标
+      - 成交
+      - 校友
+      - 捐赠

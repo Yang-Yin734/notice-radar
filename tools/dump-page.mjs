@@ -42,7 +42,15 @@ let bestCount = 0;
 for (const [key] of hist) {
   if (!/li|tr|item|list|news|title|con/i.test(key)) continue;
   const [tag, cls] = key.split('.');
-  const nodes = $(`${tag}.${cls}`);
+  // 有的站点把模板占位符写进了 class（实测南京农业大学有 class="{级别样式}"），
+  // 直接当选择器用会让 cheerio 抛 "Unmatched selector" —— 跳过这类怪名字。
+  if (!/^[A-Za-z][\w-]*$/.test(cls)) continue;
+  let nodes;
+  try {
+    nodes = $(`${tag}.${cls}`);
+  } catch {
+    continue;
+  }
   const n = nodes.toArray().filter((el) => /[\u4e00-\u9fa5]{6,}/.test($(el).text())).length;
   if (n > bestCount) {
     bestCount = n;

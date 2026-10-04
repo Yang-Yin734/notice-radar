@@ -1,6 +1,6 @@
 {
   "name": "notice-radar",
-  "version": "0.10.20",
+  "version": "0.10.21",
   "description": "把高校官网通知变成可订阅、可关键词过滤、能推到手机的信息流 —— 配置驱动，任何学校都能接",
   "type": "module",
   "license": "MIT",

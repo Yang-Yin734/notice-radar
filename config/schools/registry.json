@@ -183,6 +183,39 @@
       "status": "verified",
       "lastVerified": "2026-10-04",
       "notes": "教务部通知公告。日期取 **.text-muted** —— 页面里 span 太多，笼统取 span 会把标题本身当日期（自动探测当时只认出 5/20 条）。collectOnly=true"
+    },
+    {
+      "id": "hnu",
+      "name": "湖南大学",
+      "city": "长沙",
+      "presets": ["config/schools/hnu.yaml"],
+      "sources": 1,
+      "maintainers": ["Yang-Yin734"],
+      "status": "verified",
+      "lastVerified": "2026-10-04",
+      "notes": "教务处通知公告。容器必须用 **.list1_part li**（裸 ul li 在这页会命中 75 个导航/页脚项），标题取 a@title（取 a 文本会把日期并进标题）、日期取 .list1_d。collectOnly=true"
+    },
+    {
+      "id": "njau",
+      "name": "南京农业大学",
+      "city": "南京",
+      "presets": ["config/schools/njau.yaml"],
+      "sources": 1,
+      "maintainers": ["Yang-Yin734"],
+      "status": "verified",
+      "lastVerified": "2026-10-04",
+      "notes": "教务处通知公告（博达模板）。日期在 **.news_meta**（与南京大学同一模板家族）——笼统取 span 会把标题当日期。collectOnly=true"
+    },
+    {
+      "id": "shufe",
+      "name": "上海财经大学",
+      "city": "上海",
+      "presets": ["config/schools/shufe.yaml"],
+      "sources": 1,
+      "maintainers": ["Yang-Yin734"],
+      "status": "verified",
+      "lastVerified": "2026-10-04",
+      "notes": "教务处通知公告（博达 CMS，与中国海洋大学同一套模板）。日期类名是专有的 `Article_PublishDate`。collectOnly=true"
     }
   ]
 }

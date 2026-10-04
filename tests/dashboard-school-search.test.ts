@@ -65,7 +65,13 @@ test('网页版：省份、城市、拼音、简称、学校标识码都能搜',
 test('网页版：不输关键词时只列「已接入 + 重点高校」，本科排在专科前面', () => {
   const browse = all.filter((s) => s.status === 'active' || s.featured).sort(schoolSort);
   assert.equal(browse.length, index.counts.featured, '默认浏览列表 = 已接入 + 重点（双一流 ∪ 人工挑选）');
-  assert.equal(browse[0].id, 'uestc', '已接入的排第一');
+  // 已接入的必须整体排在最前面（写死"第一名是 uestc"会随接入学校变多而过时 —— 事实上一度就是这么红的）
+  const activeInBrowse = browse.filter((s) => s.status === 'active');
+  assert.equal(activeInBrowse.length, index.counts.active, '已接入的学校都要出现在默认列表里');
+  assert.ok(
+    browse.slice(0, activeInBrowse.length).every((s) => s.status === 'active'),
+    `已接入的 ${activeInBrowse.length} 所必须整体排在前面，实际前几名：${browse.slice(0, 3).map((s) => s.id).join(', ')}`,
+  );
   assert.ok(browse.every((s) => s.status === 'active' || s.featured));
   // 双一流的学校必须在默认列表里，否则用户会觉得"这么有名的学校怎么找不到"
   const doubleFirst = all.filter((s) => (s.tags ?? []).includes('双一流'));

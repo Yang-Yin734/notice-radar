@@ -1,0 +1,29 @@
+# 第六批候选（第 8 轮）：域名先查证过；湖南大学是"上轮无日期、本轮工具改进后可用"的回头客。
+# 用法：node tools/probe-batch.mjs tools/candidates-6.txt
+#
+# 域名依据：
+#   hnu   湖南大学教务处       jwc.hnu.edu.cn（首页能列出"通知公告"入口）
+#   swu   西南大学本科生院     ugs.swu.edu.cn（搜索结果里的通知详情页同域）
+#   zuel  中南财经政法大学     jwc.zuel.edu.cn
+#   neu   东北大学教务处       aao.neu.edu.cn
+#   njau  南京农业大学教务处   aao.njau.edu.cn（通知公告 tzgg.htm）
+#   其余是"教务处"常见域名，先试一手（猜错会报 ENOTFOUND，不会误判成站点在挡）
+#
+# 本轮结果：
+#   ✓ hnu   湖南大学       → jwc.hnu.edu.cn/tzggzhlist.jsp?...wbtreeid=1020（已接入；容器 .list1_part li）
+#   ✓ njau  南京农业大学   → aao.njau.edu.cn/tzgg.htm（已接入；日期 .news_meta）
+#   ✓ sufe  上海财经大学   → jwc.sufe.edu.cn/5128/list.htm（已接入；博达 Article_PublishDate）
+#   ✗ cufe  中央财经大学   → tzgg.htm 自动探测给的 20 条其实是导航项，真列表在 JS 里
+#   ✗ swu/zuel/neu/bjfu/cupl → 试不出可用选择器
+#   ✗ cumt/hzau → 域名不存在（ENOTFOUND，猜错了）
+hnu     https://jwc.hnu.edu.cn/
+swu     https://ugs.swu.edu.cn/
+zuel    https://jwc.zuel.edu.cn/
+neu     https://aao.neu.edu.cn/
+njau    https://aao.njau.edu.cn/
+cumt    https://jwc.cumt.edu.cn/
+bjfu    https://jwc.bjfu.edu.cn/
+hzau    https://jwc.hzau.edu.cn/
+sufe    https://jwc.sufe.edu.cn/
+cufe    https://jwc.cufe.edu.cn/
+cupl    https://jwc.cupl.edu.cn/

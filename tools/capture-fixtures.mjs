@@ -32,6 +32,9 @@ const targets = {
   zzu: [['jwc-tzgg.html', 'https://www5.zzu.edu.cn/jwc/index/tzgg.htm']],
   ecnu: [['bksy-tzgg.html', 'https://bksy.ecnu.edu.cn/tzggwwxsgg/list.htm']],
   bnu: [['jwb-tzgg.html', 'https://jwb.bnu.edu.cn/tzgg/index.htm']],
+  hnu: [['jwc-tzgg.html', 'https://jwc.hnu.edu.cn/tzggzhlist.jsp?urltype=tree.TreeTempUrl&wbtreeid=1020']],
+  njau: [['aao-tzgg.html', 'https://aao.njau.edu.cn/tzgg.htm']],
+  shufe: [['jwc-tzgg.html', 'https://jwc.sufe.edu.cn/5128/list.htm']],
 };
 
 if (!targets[school]) {

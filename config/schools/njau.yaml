@@ -1,0 +1,60 @@
+# 南京农业大学（njau）—— 全国名单里第十八所接入的学校。
+#
+# 状态：**只采集不通知**（collectOnly: true）。
+#
+# 站点结构（博达模板）：
+#   <ul class="news_list"><li class="news …">
+#     <span class="news_title"><a href="info/1101/6994.htm" title="完整标题">完整标题</a></span>
+#     <span class="news_meta">2026-09-30</span></li>
+# 关键点：日期在 **.news_meta**（和南京大学同一个模板家族）—— 笼统取 `span` 会把标题当成日期
+# （自动探测第一次只认出 2/20 条日期）。
+school: njau
+name: 南京农业大学
+
+notify:
+  - type: serverchan
+    keyEnv: SERVERCHAN_KEY
+
+sources:
+  - id: aao-tzgg
+    name: 教务处·通知公告
+    url: https://aao.njau.edu.cn/tzgg.htm
+    adapter: html-list
+    baseUrl: https://aao.njau.edu.cn/tzgg.htm
+    collectOnly: true
+    note: 教学竞赛推荐公示、教材编写一类通知；标题取 .news_title a@title，日期取 .news_meta
+    selectors:
+      item: li.news
+      title: .news_title a@title
+      link: a@href
+      date: .news_meta
+    include:
+      - 选课
+      - 退课
+      - 补选
+      - 重修
+      - 缓考
+      - 补考
+      - 考试
+      - 四六级
+      - 成绩
+      - 学籍
+      - 毕业
+      - 学位
+      - 推免
+      - 保研
+      - 奖学金
+      - 助学金
+      - 报名
+      - 公示
+      - 名单
+      - 转专业
+      - 竞赛
+    exclude:
+      - 招聘
+      - 招标
+      - 采购
+      - 中标
+      - 成交
+      - 校友
+      - 捐赠

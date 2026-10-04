@@ -413,6 +413,52 @@ test('通用 html-list：北京师范大学（日期取 .text-muted）', () => {
   );
 });
 
+test('通用 html-list：湖南大学（容器要精确到 .list1_part，否则 75 个导航项）', () => {
+  const items = checkListFixture(
+    'hnu',
+    'jwc-tzgg.html',
+    {
+      id: 'jwc-tzgg',
+      baseUrl: 'https://jwc.hnu.edu.cn/tzggzhlist.jsp?urltype=tree.TreeTempUrl&wbtreeid=1020',
+      selectors: { item: '.list1_part li', title: 'a@title', link: 'a@href', date: '.list1_d' },
+    },
+    { min: 8, urlOk: /^https:\/\/jwc\.hnu\.edu\.cn\// },
+  );
+  // 裸 `ul li` 在这页会命中 75 个元素（顶部导航、页脚一堆），容器必须收窄
+  assert.ok(items.length < 40, `条目数 ${items.length} 不像是一页通知（是不是又命中导航了）`);
+  assert.ok(
+    items.every((n) => !/\d{4}-\d{2}-\d{2}\s*$/.test(n.title)),
+    `标题末尾不该带日期（取 a 文本就会这样）：${items[0]?.title}`,
+  );
+});
+
+test('通用 html-list：南京农业大学（日期在 .news_meta）', () => {
+  checkListFixture(
+    'njau',
+    'aao-tzgg.html',
+    {
+      id: 'aao-tzgg',
+      baseUrl: 'https://aao.njau.edu.cn/tzgg.htm',
+      selectors: { item: 'li.news', title: '.news_title a@title', link: 'a@href', date: '.news_meta' },
+    },
+    // 有的条目指向校内其它栏目（info/1145 等），同一域名下都接受
+    { min: 8, urlOk: /^https:\/\/aao\.njau\.edu\.cn\// },
+  );
+});
+
+test('通用 html-list：上海财经大学（博达 CMS 的 Article_PublishDate）', () => {
+  checkListFixture(
+    'shufe',
+    'jwc-tzgg.html',
+    {
+      id: 'jwc-tzgg',
+      baseUrl: 'https://jwc.sufe.edu.cn/5128/list.htm',
+      selectors: { item: 'li.list_item', title: '.Article_Title a@title', link: 'a@href', date: '.Article_PublishDate' },
+    },
+    { min: 8, urlOk: /^https:\/\/jwc\.sufe\.edu\.cn\// },
+  );
+});
+
 test('研究生院适配器：只认详情页链接，避免把导航项当成通知', () => {
   const html = fixture('gr-notice.html');
   const items = grAdapter.parse({ source: source({ id: 'gr-notice', adapter: 'uestc/gr' }), school: 'uestc', html });

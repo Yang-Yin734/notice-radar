@@ -1,0 +1,61 @@
+# 湖南大学（hnu）—— 全国名单里第十七所接入的学校。
+#
+# 状态：**只采集不通知**（collectOnly: true）。
+#
+# 站点结构：教务处「通知公告」列表页，条目是
+#   <li><a href="info/1021/14803.htm" title="关于…的通知">
+#     <img src="images/dot.png">关于…的通知<span class="list1_d">2026-09-15</span></a></li>
+# 关键点：两处都不能偷懒 ——
+#   · 容器用 **`.list1_part li`**：裸 `ul li` 会命中 75 个（顶部导航/页脚那一堆），
+#   · 标题用 **a@title**：`<a>` 里除了标题还塞了日期的 `<span class="list1_d">`，
+#     取 a 的文本会把日期并进标题。
+school: hnu
+name: 湖南大学
+
+notify:
+  - type: serverchan
+    keyEnv: SERVERCHAN_KEY
+
+sources:
+  - id: jwc-tzgg
+    name: 教务处·通知公告
+    url: https://jwc.hnu.edu.cn/tzggzhlist.jsp?urltype=tree.TreeTempUrl&wbtreeid=1020
+    adapter: html-list
+    baseUrl: https://jwc.hnu.edu.cn/tzggzhlist.jsp?urltype=tree.TreeTempUrl&wbtreeid=1020
+    collectOnly: true
+    note: 假期教学安排、开学检查、选课一类通知；容器取 .list1_part li，标题取 a@title（完整），日期取 .list1_d
+    selectors:
+      item: .list1_part li
+      title: a@title
+      link: a@href
+      date: .list1_d
+    include:
+      - 选课
+      - 退课
+      - 补选
+      - 重修
+      - 缓考
+      - 补考
+      - 考试
+      - 四六级
+      - 成绩
+      - 学籍
+      - 毕业
+      - 学位
+      - 推免
+      - 保研
+      - 奖学金
+      - 助学金
+      - 报名
+      - 公示
+      - 名单
+      - 转专业
+      - 教学安排
+    exclude:
+      - 招聘
+      - 招标
+      - 采购
+      - 中标
+      - 成交
+      - 校友
+      - 捐赠
