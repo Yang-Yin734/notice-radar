@@ -1,0 +1,79 @@
+{
+ "school": "ouc",
+ "name": "中国海洋大学",
+ "province": "山东省",
+ "city": "青岛市",
+ "generatedAt": "2026-10-04T07:00:04.445Z",
+ "total": 4,
+ "bySource": [
+  {
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "count": 4
+  }
+ ],
+ "units": [
+  {
+   "id": "教务处",
+   "name": "教务处",
+   "sources": [
+    "教务处·通知公告"
+   ],
+   "count": 4
+  }
+ ],
+ "items": [
+  {
+   "id": "604000a399b76133",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "ouc",
+   "title": "公示",
+   "url": "https://jwc.ouc.edu.cn/2026/0930/c6517a538405/page.htm",
+   "date": "2026-09-30",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:59:49.589Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "705955dede38ab5a",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "ouc",
+   "title": "关于组织中国海洋大学2026年秋季学期学生普通话水平测试报名的通知",
+   "url": "https://jwc.ouc.edu.cn/2026/0920/c6517a537768/page.htm",
+   "date": "2026-09-20",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:59:49.589Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "33877a69bf3a418d",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "ouc",
+   "title": "中国海洋大学2026级蓝梦拔尖人才实验班拟录取名单公示",
+   "url": "https://jwc.ouc.edu.cn/2026/0912/c6517a537028/page.htm",
+   "date": "2026-09-12",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:59:49.589Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "bccfceb9994797e0",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "ouc",
+   "title": "关于2026年下半年全国大学英语四六级考试报名工作的通知",
+   "url": "https://jwc.ouc.edu.cn/2026/0909/c6517a536805/page.htm",
+   "date": "2026-09-09",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:59:49.589Z",
+   "unit": "教务处"
+  }
+ ]
+}

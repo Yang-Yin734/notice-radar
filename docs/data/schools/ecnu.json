@@ -1,0 +1,131 @@
+{
+ "school": "ecnu",
+ "name": "华东师范大学",
+ "province": "上海市",
+ "city": "",
+ "generatedAt": "2026-10-04T07:00:04.445Z",
+ "total": 8,
+ "bySource": [
+  {
+   "sourceId": "bksy-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "count": 8
+  }
+ ],
+ "units": [
+  {
+   "id": "本科生院",
+   "name": "本科生院",
+   "sources": [
+    "本科生院·通知公告"
+   ],
+   "count": 8
+  }
+ ],
+ "items": [
+  {
+   "id": "5034b2f4b5345b3c",
+   "sourceId": "bksy-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "school": "ecnu",
+   "title": "关于启动2027年春季学期国际交流项目（第二批）的选派通知",
+   "url": "http://www.jiaoliu.ecnu.edu.cn/ef/aa/c11184a782250/page.htm",
+   "date": "2026-09-29",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:59:36.935Z",
+   "unit": "本科生院"
+  },
+  {
+   "id": "130ffeed97370623",
+   "sourceId": "bksy-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "school": "ecnu",
+   "title": "关于2027年寒假“卓越教师培养计划”海外研修项目的选派通知",
+   "url": "http://www.jiaoliu.ecnu.edu.cn/ee/a2/c11184a781986/page.htm",
+   "date": "2026-09-28",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:59:36.935Z",
+   "unit": "本科生院"
+  },
+  {
+   "id": "3e5c394d4acf7e3b",
+   "sourceId": "bksy-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "school": "ecnu",
+   "title": "关于组织报名第十八届全国大学生数学竞赛暨“高教社杯”第十八届上海市大学生数学竞赛的通知",
+   "url": "http://www.cxcy.ecnu.edu.cn/ec/5e/c18354a781406/page.htm",
+   "date": "2026-09-24",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:59:36.935Z",
+   "unit": "本科生院"
+  },
+  {
+   "id": "391a54ea5e6076ad",
+   "sourceId": "bksy-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "school": "ecnu",
+   "title": "关于启动2027年寒假境外交流项目（第一批）的报名通知",
+   "url": "http://www.jiaoliu.ecnu.edu.cn/ea/f2/c11184a781042/page.htm",
+   "date": "2026-09-23",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:59:36.935Z",
+   "unit": "本科生院"
+  },
+  {
+   "id": "45f93da16fe69007",
+   "sourceId": "bksy-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "school": "ecnu",
+   "title": "关于启动2026年秋季学期 “国际化拔尖创新人才培养计划”课程第二轮选课的通知",
+   "url": "https://bksy.ecnu.edu.cn/ae/30/c40503a765488/page.htm",
+   "date": "2026-09-21",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:59:36.935Z",
+   "unit": "本科生院"
+  },
+  {
+   "id": "d5d226fcba298098",
+   "sourceId": "bksy-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "school": "ecnu",
+   "title": "2026年上海市高等学校信息技术水平考试报名通知",
+   "url": "https://bksy.ecnu.edu.cn/de/62/c40503a777826/page.htm",
+   "date": "2026-09-16",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:59:36.935Z",
+   "unit": "本科生院"
+  },
+  {
+   "id": "86d098c31aac5044",
+   "sourceId": "bksy-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "school": "ecnu",
+   "title": "华东师范大学2027届优秀本科毕业生免试攻读研究生拟推荐名单公示",
+   "url": "https://bksy.ecnu.edu.cn/d6/3c/c45450a775740/page.psp",
+   "date": "2026-09-09",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:59:36.935Z",
+   "unit": "本科生院"
+  },
+  {
+   "id": "1170d90397aac04b",
+   "sourceId": "bksy-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "school": "ecnu",
+   "title": "2026年下半年全国大学英语四、六级考试报名通知",
+   "url": "https://bksy.ecnu.edu.cn/d4/c1/c40503a775361/page.htm",
+   "date": "2026-09-07",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:59:36.935Z",
+   "unit": "本科生院"
+  }
+ ]
+}

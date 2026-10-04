@@ -1,0 +1,248 @@
+{
+ "school": "bnu",
+ "name": "北京师范大学",
+ "province": "北京市",
+ "city": "",
+ "generatedAt": "2026-10-04T07:00:04.445Z",
+ "total": 17,
+ "bySource": [
+  {
+   "sourceId": "jwb-tzgg",
+   "sourceName": "教务部·通知公告",
+   "count": 17
+  }
+ ],
+ "units": [
+  {
+   "id": "教务部",
+   "name": "教务部",
+   "sources": [
+    "教务部·通知公告"
+   ],
+   "count": 17
+  }
+ ],
+ "items": [
+  {
+   "id": "e36ca68e4c4c1d5a",
+   "sourceId": "jwb-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "bnu",
+   "title": "【实践教学】 关于组织开展“时代新人强国行”首都大学生主题实践“四个100”交流展示活动校内遴选工作的通知",
+   "url": "https://jwb.bnu.edu.cn/pygc/sjjx/sxsj/21a0abdfe2f7470e839dd6e55b125e6a.htm",
+   "date": "2026-09-30",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:59:32.824Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "a71b7db3c8d4b130",
+   "sourceId": "jwb-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "bnu",
+   "title": "【国际交流】 关于推荐“国家留学基金委2027年澳新加部分高校合作奖学金项目”申请人的公示",
+   "url": "https://jwb.bnu.edu.cn/pygc/gjjl/gjgpxmxsl/35177902f61b49d5b2f4a4d0dae38932.htm",
+   "date": "2026-09-30",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:59:32.824Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "a4756df68dae8aca",
+   "sourceId": "jwb-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "bnu",
+   "title": "【实践教学】 关于组织参加2026年全国大学生互联网英语听说能力大赛北京市市赛的通知",
+   "url": "https://ggwy.bnu.edu.cn/dxyy/72f8338e4c3a4e3d970aaab15a144540.html",
+   "date": "2026-09-29",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:59:32.824Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "0c31ddf92ae1a068",
+   "sourceId": "jwb-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "bnu",
+   "title": "【实践教学】 关于举办第十七届全国大学生市场调查与分析大赛校赛的通知",
+   "url": "https://stat.bnu.edu.cn/tzgg4/d9d895150b6942d388a05420459f18c5.htm",
+   "date": "2026-09-24",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:59:32.824Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "509a428e20d5af1d",
+   "sourceId": "jwb-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "bnu",
+   "title": "【学科专业】 北京师范大学2020-2025年学位授予点周期性合格评估结果",
+   "url": "https://jwb.bnu.edu.cn/docs/2026-09/ca179eab1bd54ba2bc7163de8738a35e.pdf",
+   "date": "2026-09-22",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:59:32.824Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "2af0e5e40537a2ba",
+   "sourceId": "jwb-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "bnu",
+   "title": "【办事指南】 2025-2026年自主审核新增学位点论证材料",
+   "url": "https://jwb.bnu.edu.cn/bszn/xxgk/3d8b7ca3ea6a49c09ad77f462bfc06be.htm",
+   "date": "2026-09-22",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:59:32.824Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "c79bc5b2de889d0b",
+   "sourceId": "jwb-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "bnu",
+   "title": "【学科专业】 学术学位授权点一览表（2026）",
+   "url": "https://jwb.bnu.edu.cn/docs/2026-09/33c5096b1ba2460da66ec383f008c9f4.pdf",
+   "date": "2026-09-22",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:59:32.824Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "cf816ee4647ce018",
+   "sourceId": "jwb-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "bnu",
+   "title": "【学科专业】 专业学位类别一览表（2026）",
+   "url": "https://jwb.bnu.edu.cn/docs/2026-09/607d2f143d6e4f78b6c4a648421e7a85.pdf",
+   "date": "2026-09-22",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:59:32.824Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "b59ab1d367e39645",
+   "sourceId": "jwb-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "bnu",
+   "title": "【实践教学】 关于2027届本科生毕业论文（设计）工作安排的通知",
+   "url": "https://jwb.bnu.edu.cn/pygc/sjjx/bksbylw/ea468d00512f4cd4ac2eb7b8dca5fbe3.htm",
+   "date": "2026-09-22",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:59:32.824Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "2f64c110550cf30c",
+   "sourceId": "jwb-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "bnu",
+   "title": "【学位授予】 关于做好2025-2026学年度研究生学位论文电子版交存工作的通知",
+   "url": "https://jwb.bnu.edu.cn/xwxk/xwsy/tzggxwsy/970bc05a021149e0a7eafe5b5db2dce4.htm",
+   "date": "2026-09-16",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:59:32.824Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "827919eed7894de7",
+   "sourceId": "jwb-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "bnu",
+   "title": "【实践教学】 关于组织开展 2026-2027学年本科专业实习与社会调查工作的通知",
+   "url": "https://jwb.bnu.edu.cn/pygc/sjjx/zysxysj/03521807f53443b7bd91e7436f53e5a9.htm",
+   "date": "2026-09-16",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:59:32.824Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "1ca9ddd3f6633d8b",
+   "sourceId": "jwb-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "bnu",
+   "title": "【实践教学】 关于组织参加2026年华北五省（市、自治区）大学生机器人、计算机应用、人文知识竞赛的通知",
+   "url": "https://jwb.bnu.edu.cn/pygc/sjjx/xkjs/c9713833507945c59adb75a753778ea9.htm",
+   "date": "2026-09-15",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:59:32.824Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "347835077b528857",
+   "sourceId": "jwb-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "bnu",
+   "title": "【实践教学】 关于组织参加上庄镇首届创新创业大赛的通知",
+   "url": "https://jwb.bnu.edu.cn/pygc/sjjx/xkjs/4e0ef5c64dd64daf9e1259cd6176e049.htm",
+   "date": "2026-09-14",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:59:32.824Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "edc3078689d81ab2",
+   "sourceId": "jwb-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "bnu",
+   "title": "【学业管理】 关于公布获准修读2026级微专业学生名单的公告",
+   "url": "https://jwb.bnu.edu.cn/pygc/xygl/fxfxxsxw/208e900d654947788276222026dcd0db.htm",
+   "date": "2026-09-12",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:59:32.824Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "a38b6e56ddcf64f9",
+   "sourceId": "jwb-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "bnu",
+   "title": "【学业管理】 关于公布获准修读2026级辅修（辅修学士学位）专业学生名单的公告",
+   "url": "https://jwb.bnu.edu.cn/pygc/xygl/fxfxxsxw/0517c31046c74e6aa42678550eef65b0.htm",
+   "date": "2026-09-12",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:59:32.824Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "076cccca400a8eb5",
+   "sourceId": "jwb-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "bnu",
+   "title": "【学业管理】 关于公示2026年北京校区推荐免试研究生资格名单的通知",
+   "url": "https://one.bnu.edu.cn/tp_nup/index.html#act=sems-tp-nup_28585749&typeid=7c174654857471bb2b914667ff32313&rid=7c174654857471bb2b914667ff32313&contentid=&ownerid=&website=0&pim_id=44742652374740992",
+   "date": "2026-09-11",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:59:32.824Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "df50749121ae7075",
+   "sourceId": "jwb-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "bnu",
+   "title": "【实践教学】 关于组织参加第十八届全国大学生数学竞赛北京赛区初赛的通知",
+   "url": "https://math.bnu.edu.cn/xygg/84355074d60b4dab9f02fe373004e664.htm",
+   "date": "2026-09-11",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:59:32.824Z",
+   "unit": "教务部"
+  }
+ ]
+}

@@ -1,0 +1,118 @@
+{
+ "school": "zzu",
+ "name": "郑州大学",
+ "province": "河南省",
+ "city": "郑州市",
+ "generatedAt": "2026-10-04T07:00:04.445Z",
+ "total": 7,
+ "bySource": [
+  {
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务部·通知公告",
+   "count": 7
+  }
+ ],
+ "units": [
+  {
+   "id": "教务部",
+   "name": "教务部",
+   "sources": [
+    "教务部·通知公告"
+   ],
+   "count": 7
+  }
+ ],
+ "items": [
+  {
+   "id": "1dfa567a5e3e5fb6",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "zzu",
+   "title": "关于遴选大学生“国创计划”项目参加第十九届全国大学生创新年会的通知",
+   "url": "https://www5.zzu.edu.cn/jwc/info/1125/5403.htm",
+   "date": "2026-09-28",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T07:00:04.166Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "3bc49afa018743aa",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "zzu",
+   "title": "关于做好2026级普通本科新生学信网学籍自查的通知",
+   "url": "https://www5.zzu.edu.cn/jwc/info/1125/5402.htm",
+   "date": "2026-09-28",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T07:00:04.166Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "d47057aa6c5daa7b",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "zzu",
+   "title": "关于举办郑州大学教学创新大赛暨首届AI教学创新竞赛的通知",
+   "url": "https://www5.zzu.edu.cn/jwc/info/1125/5400.htm",
+   "date": "2026-09-24",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T07:00:04.166Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "a8e29ba93328aee9",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "zzu",
+   "title": "新任教师上课资格培训合格名单：2026-2027学年第一学期第3周",
+   "url": "https://www5.zzu.edu.cn/jwc/info/1125/5397.htm",
+   "date": "2026-09-24",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T07:00:04.166Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "f07fb63506475185",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "zzu",
+   "title": "关于2026年下半年全国大学英语四、六级考试报名的通知",
+   "url": "https://www5.zzu.edu.cn/jwc/info/1125/5380.htm",
+   "date": "2026-09-15",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T07:00:04.166Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "708a224ed4163ad4",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "zzu",
+   "title": "新任教师上课资格培训合格名单：2026-2027学年第一学期第2周",
+   "url": "https://www5.zzu.edu.cn/jwc/info/1125/5378.htm",
+   "date": "2026-09-14",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T07:00:04.166Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "a61efde8c3e38e09",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "zzu",
+   "title": "新任教师上课资格培训合格名单：2026-2027学年第一学期第1周",
+   "url": "https://www5.zzu.edu.cn/jwc/info/1125/5376.htm",
+   "date": "2026-09-10",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T07:00:04.166Z",
+   "unit": "教务部"
+  }
+ ]
+}
