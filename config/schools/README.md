@@ -8,7 +8,7 @@
 | `curated.json` | **人工维护** | 给重点高校一个短 id 与拼音、简称（其余学校的 id 就是学校标识码） |
 | `uestc.yaml`、`uestc-math.yaml` | 人工维护 | 真正干活的东西：某校各栏目的抓取预设（选择器、节奏、推送分级） |
 | `swufe.yaml` | 人工维护 | 西南财经大学（全国名单接入的第二所）。**新接入的学校一律先写 `collectOnly: true`（只抓不推）**，确认抓稳再摘 |
-| `xidian.yaml`、`hust.yaml`、`sysu.yaml`、`tju.yaml`、`jiangnan.yaml`、`xjtu.yaml` | 人工维护 | 西安电子科技 / 华中科技 / 中山 / 天津 / 江南 / 西安交通大学（陆续接入中，都是 collectOnly）。每所的选择器都写明了踩过的坑，见文件头注释 |
+| `xidian.yaml`、`hust.yaml`、`sysu.yaml`、`tju.yaml`、`jiangnan.yaml`、`xjtu.yaml`、`nwpu.yaml`、`nju.yaml` | 人工维护 | 西安电子科技 / 华中科技 / 中山 / 天津 / 江南 / 西安交通 / 西北工业 / 南京大学（陆续接入中，都是 collectOnly）。每所的选择器都写明了踩过的坑，见文件头注释 |
 | `registry.json` | 人工维护 | 适配器市场登记：谁维护哪个学校的预设、状态与最后验证日期 |
 
 选校功能读的是 `directory.tsv` + `curated.json` 生成出来的 `docs/data/schools/index.json`；

@@ -26,7 +26,7 @@ function checkListFixture(
   school: string,
   file: string,
   over: Partial<SourceConfig>,
-  opts: { min: number; urlOk: RegExp; maxTruncated?: number },
+  opts: { min: number; urlOk: RegExp; maxTruncated?: number; allowNoDates?: boolean },
 ) {
   const html = fs.readFileSync(path.join('tests', 'fixtures', school, file), 'utf8');
   const items = htmlListAdapter.parse({
@@ -40,7 +40,8 @@ function checkListFixture(
     items.every((n) => opts.urlOk.test(n.url)),
     `${school} 链接不对：${items.slice(0, 2).map((n) => n.url).join(', ')}`,
   );
-  assert.ok(items.some((n) => n.date !== null), `${school} 一条日期都没解析出来`);
+  // 列表页没有日期是正常情况（日期在详情页），配置里就不写 date —— 这类用 allowNoDates 说明
+  if (!opts.allowNoDates) assert.ok(items.some((n) => n.date !== null), `${school} 一条日期都没解析出来`);
   assert.ok(
     items.every((n) => n.date === null || /^\d{4}-\d{2}-\d{2}$/.test(n.date)),
     `${school} 日期没归一成 ISO`,
@@ -266,6 +267,40 @@ test('通用 html-list：西安交通大学（栏目页 jxtz2）', () => {
     items.some((n) => /^\[[^\]]+\]/.test(n.title)),
     `标题里的栏目前缀应保留：${items[0]?.title.slice(0, 40)}`,
   );
+});
+
+test('通用 html-list：西北工业大学（教务部通知公告）', () => {
+  checkListFixture(
+    'nwpu',
+    'jiaowu-tzgg.html',
+    {
+      id: 'jiaowu-tzgg',
+      baseUrl: 'https://jiaowu.nwpu.edu.cn/jxxx1/tzgg.htm',
+      selectors: { item: '.list li', title: 'a', link: 'a@href', date: 'span' },
+    },
+    { min: 8, urlOk: /^https:\/\/jiaowu\.nwpu\.edu\.cn\// },
+  );
+});
+
+test('通用 html-list：南京大学（容器必须够精确，否则侧栏快捷入口会被当通知）', () => {
+  const items = checkListFixture(
+    'nju',
+    'jw-ggtz.html',
+    {
+      id: 'jw-ggtz',
+      baseUrl: 'https://jw.nju.edu.cn/ggtz/list.htm',
+      selectors: { item: '.news_list li', title: '.news_title a@title', link: 'a@href', date: '.news_meta' },
+    },
+    { min: 8, urlOk: /^https?:\/\/jw\.nju\.edu\.cn\// },
+  );
+  // 用宽松的 `.list li` 会捞到侧栏"快捷入口"（拔尖计划/创新网站/创业教育）——
+  // 这些不是通知，而且会让"这页有没有日期"判断出错（日期其实在 span.news_meta 里）。
+  assert.ok(
+    items.every((n) => !/^(拔尖计划|创新网站|创业教育)$/.test(n.title)),
+    `不该出现侧栏快捷入口：${items.map((n) => n.title).filter((t) => t.length <= 5).join(', ')}`,
+  );
+  // 标题以【补采】【学生】【2026级新生】这类方括号前缀开头是站点自己的分类，保留原样
+  assert.ok(items.some((n) => /^【[^】]+】/.test(n.title)), '标题里的方括号前缀应保留');
 });
 
 test('研究生院适配器：只认详情页链接，避免把导航项当成通知', () => {

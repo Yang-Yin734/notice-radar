@@ -1,0 +1,60 @@
+# 南京大学（nju）—— 全国名单里第九所接入的学校。
+#
+# 状态：**只采集不通知**（collectOnly: true）。
+#
+# 站点结构：本科生院「公告通知」，真实列表是
+#   <ul class="news_list list2"><li class="news">
+#     <span class="news_title"><a href='/e5/60/c26263a845152/page.htm' title='标题'>标题</a></span>
+#     <span class="news_meta">2026-09-29</span>
+# 关键点：**容器必须用 `.news_list li`**。用宽松的 `.list li` 会把侧栏"快捷入口"
+# （拔尖计划 / 创新网站 / 创业教育）一起当通知，而且会误判成"这页没有日期" —— 日期就在 span.news_meta 里。
+school: nju
+name: 南京大学
+
+notify:
+  - type: serverchan
+    keyEnv: SERVERCHAN_KEY
+
+sources:
+  - id: jw-ggtz
+    name: 本科生院·公告通知
+    url: https://jw.nju.edu.cn/ggtz/list.htm
+    adapter: html-list
+    baseUrl: https://jw.nju.edu.cn/ggtz/list.htm
+    collectOnly: true
+    note: 图像采集、重修缴费、公开课一类通知；标题取 .news_title a@title，日期取 span.news_meta
+    selectors:
+      item: .news_list li
+      title: .news_title a@title
+      link: a@href
+      date: .news_meta
+    include:
+      - 选课
+      - 退课
+      - 补选
+      - 重修
+      - 缓考
+      - 补考
+      - 考试
+      - 四六级
+      - 成绩
+      - 学籍
+      - 毕业
+      - 学位
+      - 推免
+      - 保研
+      - 奖学金
+      - 助学金
+      - 报名
+      - 公示
+      - 名单
+      - 转专业
+      - 图像采集
+    exclude:
+      - 招聘
+      - 招标
+      - 采购
+      - 中标
+      - 成交
+      - 校友
+      - 捐赠

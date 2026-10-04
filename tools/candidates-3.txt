@@ -1,0 +1,29 @@
+# 第三批候选（第 5 轮）：**域名先查证过**（上一轮的教训：4 所其实是 ENOTFOUND，域名猜错）。
+# 来源：web_search 或学校官网入口。
+# 用法：node tools/probe-batch.mjs tools/candidates-3.txt
+#
+# 域名依据：
+#   csu    中南大学本科生院   bksy.csu.edu.cn        （搜索结果里的"通知通告"页）
+#   sdu    山东大学本科生院   www.bkjx.sdu.edu.cn    （搜索结果里的"工作通知"栏目）
+#   nwpu   西北工业大学教务部 jiaowu.nwpu.edu.cn     （搜索结果里的详情页同域名）
+#   ustc   中国科学技术大学教务处 www.teach.ustc.edu.cn
+#   wut    武汉理工大学教务处 jwc.whut.edu.cn        （DNS 能解析，连不上）
+#   nju    南京大学本科生院   jw.nju.edu.cn          （DNS 能解析）
+#   tongji 同济大学本科生院   jwc.tongji.edu.cn
+#   xmu    厦门大学教务处     jwc.xmu.edu.cn
+#
+# 本轮结果（入口候选改成"按可信度排序"之后）：
+#   ✓ nwpu  西北工业大学 → jiaowu.nwpu.edu.cn/jxxx1/tzgg.htm（已接入）
+#   ✓ nju   南京大学     → jw.nju.edu.cn/ggtz/list.htm（已接入）
+#   ✗ ustc  中国科学技术大学 → category/notice 是 JS 渲染；退而求其次的详情页混着导航项，暂不接
+#   ✗ sdu   山东大学     → 抓到的 index/tzgg.htm 其实是"部门简介"（工作职责/师资队伍），真栏目试不出选择器
+#   ✗ csu/tongji/xmu → 入口页试不出可用选择器
+#   ✗ wut   武汉理工大学 → 连接超时（UND_ERR_CONNECT_TIMEOUT）
+csu     https://bksy.csu.edu.cn/
+sdu     https://www.bkjx.sdu.edu.cn/
+nwpu    https://jiaowu.nwpu.edu.cn/
+ustc    https://www.teach.ustc.edu.cn/
+wut     https://jwc.whut.edu.cn/
+nju     https://jw.nju.edu.cn/
+tongji  https://jwc.tongji.edu.cn/
+xmu     https://jwc.xmu.edu.cn/

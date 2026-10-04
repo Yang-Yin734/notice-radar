@@ -126,33 +126,54 @@ export async function probeListPage(url, { timeoutMs = 30000 } = {}) {
   return { url, status: res.status, bytes: res.bytes, best, note, html, all };
 }
 
-/** 从首页里挑出可能是"通知公告列表页"的入口。 */
+/**
+ * 从首页里挑出可能是"通知公告列表页"的入口，**按可信度排序**。
+ *
+ * 为什么必须排序：一开始是"文档顺序取前 6 个"，结果 8 所候选里 7 所选错了入口
+ * （中南选了"图片新闻"、南大选了"机构简介"、同济选了无关栏目）——
+ * 首页里"更多/MORE"这种链接满地都是，先撞上哪个全看排版。
+ *
+ * 评分依据：链接文字是强信号（"通知公告/通知通告/工作通知"比"更多"可信得多），
+ * 其次是 href 里的栏目名（tzgg/notice/gonggao），最后排掉详情页。
+ */
 export function findListCandidates(html, baseUrl, baseOrigin, limit = 6) {
   const $ = load(html);
-  const out = [];
+  const scored = [];
   const seen = new Set();
   $('a').each((_, el) => {
     const href = ($(el).attr('href') ?? '').trim();
     const text = $(el).text().replace(/\s+/g, ' ').trim();
     if (!href || href.startsWith('#') || href.startsWith('javascript')) return;
-    const looksText = /通知|公告|公示|更多|more|list/i.test(text) || text.length <= 12;
-    const looksHref = /(tzgg|notice|gonggao|announce|news|list|index\/tzgg|ggtz|tzgg1)/i.test(href);
-    if (!(/通知|公告|公示|更多/.test(text) || looksHref) || !looksText) return;
     let abs;
     try {
       abs = new URL(href, baseUrl).href;
     } catch {
       return;
     }
-    // 只留在同一站点、且像是列表页的（排除详情页 /info/123.htm 这种纯数字页）
     if (!abs.startsWith(baseOrigin)) return;
-    if (/\/info\/\d|\/\d{4}\/\d{2}\//.test(abs)) return;
+    // 详情页/附件直接排掉
+    if (/\/info\/\d|content\.jsp|detail-v2\.jsp|\/\d{4}\/\d{2}\/|\.pdf$|\.docx?$/i.test(abs)) return;
     if (seen.has(abs)) return;
+
+    const strongText = /通知公告|通知通告|公告通知|公示公告|工作通知|通知|公告|公示/.test(text);
+    const hrefLike = /(tzgg|notice|gonggao|ggtz|announce|tzgg1)/i.test(href);
+    const genericMore = /^(更多|more|more\+|查看更多|全部|list)$/i.test(text.replace(/\s/g, ''));
+    const listHref = /(list|index|column|category)/i.test(href);
+    if (!strongText && !hrefLike && !(genericMore && listHref)) return;
+
+    let score = 0;
+    if (strongText) score += 10;
+    if (hrefLike) score += 6;
+    if (genericMore) score -= 2;
+    if (listHref) score += 2;
+    // 文字越短越像栏目名（"通知公告"），越长越可能是一句话导语
+    if (text.length <= 8) score += 2;
+    if (/通知公告|通知通告/.test(href + text)) score += 3;
+
     seen.add(abs);
-    out.push({ text: text.slice(0, 20), url: abs });
-    return out.length >= limit;
+    scored.push({ text: text.slice(0, 20), url: abs, score });
   });
-  return out;
+  return scored.sort((a, b) => b.score - a.score).slice(0, limit).map(({ text, url }) => ({ text, url }));
 }
 
 /** 生成可以直接粘进 config/schools/*.yaml 的源配置片段。 */

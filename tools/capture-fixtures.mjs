@@ -24,6 +24,8 @@ const targets = {
   tju: [['oaa-tzgg.html', 'https://oaa.tju.edu.cn/bszy/tzgg.htm']],
   jiangnan: [['jwc-tzgg.html', 'https://jwc.jiangnan.edu.cn/jwgl/tzgg.htm']],
   xjtu: [['jwc-jxtz.html', 'https://jwc.xjtu.edu.cn/jxxx/jxtz2.htm']],
+  nwpu: [['jiaowu-tzgg.html', 'https://jiaowu.nwpu.edu.cn/jxxx1/tzgg.htm']],
+  nju: [['jw-ggtz.html', 'https://jw.nju.edu.cn/ggtz/list.htm']],
 };
 
 if (!targets[school]) {

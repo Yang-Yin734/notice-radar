@@ -10,7 +10,7 @@
 [![android-apk](https://github.com/Yang-Yin734/notice-radar/actions/workflows/android.yml/badge.svg)](https://github.com/Yang-Yin734/notice-radar/actions/workflows/android.yml)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![node](https://img.shields.io/badge/node-%3E%3D22.18-339933.svg)](package.json)
-[![version](https://img.shields.io/badge/version-v0.10.17-4d6bfe.svg)](CHANGELOG.md)
+[![version](https://img.shields.io/badge/version-v0.10.18-4d6bfe.svg)](CHANGELOG.md)
 
 ### 📲 [**下载 Android 安装包（APK）**](https://github.com/Yang-Yin734/notice-radar/releases/download/android-latest/notice-radar.apk)
 
@@ -229,8 +229,8 @@ node tools/alert-scenario-check.mjs   # 自检两条告警路径（网络天气 
 > （网页版/应用的选校里能看到这所学校及其通知），但不推微信、不进日报、抓失败也不告警；
 > 确认抓稳了把那一行删掉就开始推送。全国名单里陆续接入的学校都从这一档开始 ——
 > 目前已有 **西南财经大学**（成都）、**西安电子科技大学**、**华中科技大学**、**中山大学**、
-> **天津大学**、**江南大学**、**西安交通大学** 七所，全部是只采集状态
-> （接入新学校可以用 `node tools/probe-batch.mjs tools/candidates-2.txt` 批量探选择器）。
+> **天津大学**、**江南大学**、**西安交通大学**、**西北工业大学**、**南京大学** 九所，全部是只采集状态
+> （接入新学校可以用 `node tools/probe-batch.mjs tools/candidates-3.txt` 批量探选择器）。
 
 ### 🖥 学院级站点：为什么要"真实浏览器"
 

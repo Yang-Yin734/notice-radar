@@ -42,8 +42,11 @@ for (const { id, url } of entries) {
     status = res.status;
     html = res.html;
   } catch (e) {
-    line(`✗ 首页抓不到：${e.message}`);
-    results.push({ id, url, ok: false, reason: `首页抓不到：${e.message}` });
+    // 把底层原因带上：ENOTFOUND = 域名猜错了；ECONNRESET/超时 = 站点或跨境网络的问题。
+    // 这两类处理方式完全不同（上一轮就是被 "fetch failed" 这个笼统消息坑了）。
+    const why = `${e.message}${e.cause?.code ? ` (${e.cause.code})` : ''}`;
+    line(`✗ 首页抓不到：${why}`);
+    results.push({ id, url, ok: false, reason: `首页抓不到：${why}` });
     continue;
   }
   if (status === 412 || status === 403 || status === 202) {

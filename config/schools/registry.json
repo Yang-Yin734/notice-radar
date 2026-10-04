@@ -95,6 +95,28 @@
       "status": "verified",
       "lastVerified": "2026-10-03",
       "notes": "教务处教学通知（jxxx/jxtz2.htm）。标题自带 [培养方案]/[考试安排] 分类前缀，保留原样；日期取 span。collectOnly=true"
+    },
+    {
+      "id": "nwpu",
+      "name": "西北工业大学",
+      "city": "西安",
+      "presets": ["config/schools/nwpu.yaml"],
+      "sources": 1,
+      "maintainers": ["Yang-Yin734"],
+      "status": "verified",
+      "lastVerified": "2026-10-04",
+      "notes": "教务部通知公告（jxxx1/tzgg.htm）。竞赛选拔/报名/公示为主；标题取 a，日期取 span。collectOnly=true"
+    },
+    {
+      "id": "nju",
+      "name": "南京大学",
+      "city": "南京",
+      "presets": ["config/schools/nju.yaml"],
+      "sources": 1,
+      "maintainers": ["Yang-Yin734"],
+      "status": "verified",
+      "lastVerified": "2026-10-04",
+      "notes": "本科生院公告通知。**容器必须用 `.news_list li`**（宽松的 `.list li` 会把侧栏快捷入口当通知，还会误判成「没有日期」——日期在 span.news_meta）。collectOnly=true"
     }
   ]
 }
