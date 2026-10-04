@@ -1,11 +1,11 @@
 {
- "generatedAt": "2026-10-04T06:16:06.470Z",
+ "generatedAt": "2026-10-04T06:44:01.013Z",
  "source": "教育部《全国高等学校名单》（config/schools/directory.tsv，见 config/schools/README.md）",
  "note": "status=active 表示真抓过、能出通知；pending 只是目录条目，选中会提示尚未接入。接入方法见 docs/add-your-school.md",
  "counts": {
   "total": 3167,
-  "active": 10,
-  "pending": 3157,
+  "active": 11,
+  "pending": 3156,
   "featured": 196,
   "doubleFirst": 144,
   "bachelor": 1365,
@@ -925,7 +925,16 @@
     "双一流",
     "教育部直属"
    ],
-   "status": "pending"
+   "status": "active",
+   "file": "nankai.json",
+   "units": [
+    {
+     "id": "教务处",
+     "name": "教务处",
+     "count": 5
+    }
+   ],
+   "total": 5
   },
   {
    "id": "tju",

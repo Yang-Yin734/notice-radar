@@ -1,0 +1,92 @@
+{
+ "school": "nankai",
+ "name": "南开大学",
+ "province": "天津市",
+ "city": "",
+ "generatedAt": "2026-10-04T06:44:01.013Z",
+ "total": 5,
+ "bySource": [
+  {
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "count": 5
+  }
+ ],
+ "units": [
+  {
+   "id": "教务处",
+   "name": "教务处",
+   "sources": [
+    "教务处·通知公告"
+   ],
+   "count": 5
+  }
+ ],
+ "items": [
+  {
+   "id": "20a7592192216bfb",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "nankai",
+   "title": "关于公布2026年南开大学智慧书院录取学生名单的通知",
+   "url": "https://jwc.nankai.edu.cn/2026/0930/c35436a603675/page.htm",
+   "date": "2026-09-30",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:43:29.510Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "01505744a860cf90",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "nankai",
+   "title": "关于第二届京津冀蒙本科高校课程思政教学比赛拟推荐名单的公示",
+   "url": "https://jwc.nankai.edu.cn/2026/0921/c35436a603160/page.htm",
+   "date": "2026-09-21",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:43:29.510Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "59ee941fe3da48f2",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "nankai",
+   "title": "关于2026年下半年全国大学英语四、六级考试报名工作的通知",
+   "url": "https://jwc.nankai.edu.cn/2026/0916/c35436a602752/page.htm",
+   "date": "2026-09-16",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:43:29.510Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "13562e2a4fdd7fac",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "nankai",
+   "title": "关于开展 2026 年智慧书院招生工作的通知",
+   "url": "https://jwc.nankai.edu.cn/2026/0915/c35436a602650/page.htm",
+   "date": "2026-09-15",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:43:29.510Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "ffcbbbb8778448f5",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "nankai",
+   "title": "关于2026级本科生选课正选阶段放课时间调整的通知",
+   "url": "https://jwc.nankai.edu.cn/2026/0911/c35436a602344/page.htm",
+   "date": "2026-09-11",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:43:29.510Z",
+   "unit": "教务处"
+  }
+ ]
+}
