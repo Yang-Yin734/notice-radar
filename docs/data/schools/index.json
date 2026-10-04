@@ -1,11 +1,11 @@
 {
- "generatedAt": "2026-10-04T06:04:28.666Z",
+ "generatedAt": "2026-10-04T06:16:06.470Z",
  "source": "教育部《全国高等学校名单》（config/schools/directory.tsv，见 config/schools/README.md）",
  "note": "status=active 表示真抓过、能出通知；pending 只是目录条目，选中会提示尚未接入。接入方法见 docs/add-your-school.md",
  "counts": {
   "total": 3167,
-  "active": 7,
-  "pending": 3160,
+  "active": 10,
+  "pending": 3157,
   "featured": 196,
   "doubleFirst": 144,
   "bachelor": 1365,
@@ -6800,7 +6800,16 @@
     "双一流",
     "教育部直属"
    ],
-   "status": "pending"
+   "status": "active",
+   "file": "nju.json",
+   "units": [
+    {
+     "id": "本科生院",
+     "name": "本科生院",
+     "count": 6
+    }
+   ],
+   "total": 6
   },
   {
    "id": "suda",
@@ -6949,7 +6958,16 @@
     "双一流",
     "教育部直属"
    ],
-   "status": "pending"
+   "status": "active",
+   "file": "jiangnan.json",
+   "units": [
+    {
+     "id": "教务处",
+     "name": "教务处",
+     "count": 8
+    }
+   ],
+   "total": 8
   },
   {
    "id": "4132010298",
@@ -24622,7 +24640,16 @@
    "tags": [
     "双一流"
    ],
-   "status": "pending"
+   "status": "active",
+   "file": "nwpu.json",
+   "units": [
+    {
+     "id": "教务部",
+     "name": "教务部",
+     "count": 13
+    }
+   ],
+   "total": 13
   },
   {
    "id": "xaut",

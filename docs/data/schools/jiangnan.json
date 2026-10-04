@@ -1,0 +1,131 @@
+{
+ "school": "jiangnan",
+ "name": "江南大学",
+ "province": "江苏省",
+ "city": "无锡市",
+ "generatedAt": "2026-10-04T06:16:06.470Z",
+ "total": 8,
+ "bySource": [
+  {
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "count": 8
+  }
+ ],
+ "units": [
+  {
+   "id": "教务处",
+   "name": "教务处",
+   "sources": [
+    "教务处·通知公告"
+   ],
+   "count": 8
+  }
+ ],
+ "items": [
+  {
+   "id": "6ae6007342fbf1da",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "jiangnan",
+   "title": "关于2026—2027—1学期部分通识教育选修课停开的通知",
+   "url": "https://jwc.jiangnan.edu.cn/content.jsp?urltype=news.NewsContentUrl&wbtreeid=1003&wbnewsid=7993",
+   "date": "2026-09-21",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:15:51.343Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "7ef386a7c5620b27",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "jiangnan",
+   "title": "关于2026—2027学年第一学期通识教育选修课网上选课工作的通知",
+   "url": "https://jwc.jiangnan.edu.cn/info/1003/7984.htm",
+   "date": "2026-09-09",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:15:51.343Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "ddf6abc67f28dae5",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "jiangnan",
+   "title": "2026—2027学年第一学期修读辅修专业和微专业学生退报及缴费通知",
+   "url": "https://jwc.jiangnan.edu.cn/content.jsp?urltype=news.NewsContentUrl&wbtreeid=1003&wbnewsid=7979",
+   "date": "2026-09-07",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:15:51.343Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "7f4da6f128af9724",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "jiangnan",
+   "title": "关于2026—2027学年第一学期体育补考工作的通知",
+   "url": "https://jwc.jiangnan.edu.cn/info/1003/7955.htm",
+   "date": "2026-07-16",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:15:51.343Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "4d8debc7f3863350",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "jiangnan",
+   "title": "关于核对2026—2027学年第一学期选课情况和补修选课的通知",
+   "url": "https://jwc.jiangnan.edu.cn/info/1003/7935.htm",
+   "date": "2026-07-02",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:15:51.343Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "67a8857073346304",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "jiangnan",
+   "title": "关于2026届毕业班学生体质测试补测的通知",
+   "url": "https://jwc.jiangnan.edu.cn/content.jsp?urltype=news.NewsContentUrl&wbtreeid=1003&wbnewsid=7911",
+   "date": "2026-06-17",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:15:51.343Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "a723cd0b828944f0",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "jiangnan",
+   "title": "关于开展2026年微专业报名工作的通知",
+   "url": "https://jwc.jiangnan.edu.cn/content.jsp?urltype=news.NewsContentUrl&wbtreeid=1003&wbnewsid=7892",
+   "date": "2026-05-11",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:15:51.343Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "99544e8fcfa3a8a6",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "jiangnan",
+   "title": "关于2026届毕业班学生《国家学生体质健康标准》补测的通知",
+   "url": "https://jwc.jiangnan.edu.cn/content.jsp?urltype=news.NewsContentUrl&wbtreeid=1003&wbnewsid=7886",
+   "date": "2026-05-07",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:15:51.343Z",
+   "unit": "教务处"
+  }
+ ]
+}

@@ -1,0 +1,105 @@
+{
+ "school": "nju",
+ "name": "南京大学",
+ "province": "江苏省",
+ "city": "南京市",
+ "generatedAt": "2026-10-04T06:16:06.470Z",
+ "total": 6,
+ "bySource": [
+  {
+   "sourceId": "jw-ggtz",
+   "sourceName": "本科生院·公告通知",
+   "count": 6
+  }
+ ],
+ "units": [
+  {
+   "id": "本科生院",
+   "name": "本科生院",
+   "sources": [
+    "本科生院·公告通知"
+   ],
+   "count": 6
+  }
+ ],
+ "items": [
+  {
+   "id": "05909e1271b0b419",
+   "sourceId": "jw-ggtz",
+   "sourceName": "本科生院·公告通知",
+   "school": "nju",
+   "title": "【补采】2027届普通全日制本科毕业生图像采集秋期补采通知",
+   "url": "https://jw.nju.edu.cn/e5/60/c26263a845152/page.htm",
+   "date": "2026-09-29",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:15:53.536Z",
+   "unit": "本科生院"
+  },
+  {
+   "id": "5ac57d2da71cf5de",
+   "sourceId": "jw-ggtz",
+   "sourceName": "本科生院·公告通知",
+   "school": "nju",
+   "title": "【学生】20261学期重修课程的缴费通知",
+   "url": "https://jw.nju.edu.cn/e5/0a/c26263a845066/page.htm",
+   "date": "2026-09-28",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:15:53.536Z",
+   "unit": "本科生院"
+  },
+  {
+   "id": "aa0927d66f678841",
+   "sourceId": "jw-ggtz",
+   "sourceName": "本科生院·公告通知",
+   "school": "nju",
+   "title": "2026年10月14日、10月16日普通话水平测试网络报名通知及本学期测试计划安排",
+   "url": "https://jw.nju.edu.cn/e1/84/c26263a844164/page.htm",
+   "date": "2026-09-17",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:15:53.536Z",
+   "unit": "本科生院"
+  },
+  {
+   "id": "fdec515ed99c22d5",
+   "sourceId": "jw-ggtz",
+   "sourceName": "本科生院·公告通知",
+   "school": "nju",
+   "title": "【老生】2026年12月四、六级考试报名通知",
+   "url": "https://jw.nju.edu.cn/e1/0a/c26263a844042/page.htm",
+   "date": "2026-09-16",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:15:53.536Z",
+   "unit": "本科生院"
+  },
+  {
+   "id": "82bc1d4526139b74",
+   "sourceId": "jw-ggtz",
+   "sourceName": "本科生院·公告通知",
+   "school": "nju",
+   "title": "【老生】2026年下半年四六级考试相关通知汇总",
+   "url": "https://jw.nju.edu.cn/dd/d0/c26263a843216/page.htm",
+   "date": "2026-09-08",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:15:53.536Z",
+   "unit": "本科生院"
+  },
+  {
+   "id": "c42324a2aaeb362b",
+   "sourceId": "jw-ggtz",
+   "sourceName": "本科生院·公告通知",
+   "school": "nju",
+   "title": "【2026级新生】“悦读经典计划”选课通知",
+   "url": "https://jw.nju.edu.cn/dd/80/c26263a843136/page.htm",
+   "date": "2026-09-07",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:15:53.536Z",
+   "unit": "本科生院"
+  }
+ ]
+}

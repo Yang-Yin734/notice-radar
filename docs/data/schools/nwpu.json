@@ -1,0 +1,196 @@
+{
+ "school": "nwpu",
+ "name": "西北工业大学",
+ "province": "陕西省",
+ "city": "西安市",
+ "generatedAt": "2026-10-04T06:16:06.470Z",
+ "total": 13,
+ "bySource": [
+  {
+   "sourceId": "jiaowu-tzgg",
+   "sourceName": "教务部·通知公告",
+   "count": 13
+  }
+ ],
+ "units": [
+  {
+   "id": "教务部",
+   "name": "教务部",
+   "sources": [
+    "教务部·通知公告"
+   ],
+   "count": 13
+  }
+ ],
+ "items": [
+  {
+   "id": "32431b10ef832388",
+   "sourceId": "jiaowu-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "nwpu",
+   "title": "2027年全国高校商业精英挑战赛品牌策划竞赛校内选拔赛通知",
+   "url": "https://jiaowu.nwpu.edu.cn/info/1164/30038.htm",
+   "date": "2026-09-30",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:15:55.247Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "d26d4d718490aed7",
+   "sourceId": "jiaowu-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "nwpu",
+   "title": "关于西北工业大学第二十一届微纳米小精灵创新设计竞赛暨第二十届中国大学生iCAN创新创业大赛选拔赛获奖结果的公示",
+   "url": "https://jiaowu.nwpu.edu.cn/info/1164/30018.htm",
+   "date": "2026-09-30",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:15:55.247Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "928fbe09dd0e8552",
+   "sourceId": "jiaowu-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "nwpu",
+   "title": "关于2027年国际大学生数学建模竞赛选拔报名的通知",
+   "url": "https://jiaowu.nwpu.edu.cn/info/1164/29998.htm",
+   "date": "2026-09-28",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:15:55.247Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "a4cf3e472507c1ba",
+   "sourceId": "jiaowu-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "nwpu",
+   "title": "2026年西北工业大学大学生程序设计创新实践基地秋季选拔赛获奖结果的公示",
+   "url": "https://jiaowu.nwpu.edu.cn/info/1164/29978.htm",
+   "date": "2026-09-28",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:15:55.247Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "7f369d97a1961e17",
+   "sourceId": "jiaowu-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "nwpu",
+   "title": "关于本科结业生报名参加秋季学期课程考试的通知",
+   "url": "https://jiaowu.nwpu.edu.cn/info/1164/29958.htm",
+   "date": "2026-09-24",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:15:55.247Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "74b51a885dda1cf8",
+   "sourceId": "jiaowu-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "nwpu",
+   "title": "关于开展2026级本科生学信网学籍信息自查的通知",
+   "url": "https://jiaowu.nwpu.edu.cn/info/1164/29938.htm",
+   "date": "2026-09-23",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:15:55.247Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "44cc2a97f937f2f3",
+   "sourceId": "jiaowu-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "nwpu",
+   "title": "关于2026年全国高校商业精英挑战赛国际贸易竞赛校内选拔赛获奖名单的公示",
+   "url": "https://jiaowu.nwpu.edu.cn/info/1164/29918.htm",
+   "date": "2026-09-22",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:15:55.247Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "84f3c21783bac9a7",
+   "sourceId": "jiaowu-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "nwpu",
+   "title": "关于举办第八届西北工业大学结构设计竞赛的通知",
+   "url": "https://jiaowu.nwpu.edu.cn/info/1164/29898.htm",
+   "date": "2026-09-22",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:15:55.247Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "08e4d7e96acb1a99",
+   "sourceId": "jiaowu-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "nwpu",
+   "title": "关于举办2026年陕西省第十一届“福思特杯”大学生数字财税技能竞赛校内选拔赛的通知",
+   "url": "https://jiaowu.nwpu.edu.cn/info/1164/29888.htm",
+   "date": "2026-09-18",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:15:55.247Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "54eb5ac4eb7fd64e",
+   "sourceId": "jiaowu-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "nwpu",
+   "title": "关于大学生微/纳米“小精灵”创新实践基地新成员报名选拔的通知",
+   "url": "https://jiaowu.nwpu.edu.cn/info/1164/29838.htm",
+   "date": "2026-09-16",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:15:55.247Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "ff1d06caa0cdce5e",
+   "sourceId": "jiaowu-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "nwpu",
+   "title": "关于西北工业大学2026年“外研社国才杯”“理解当代中国”全国大学生外语能力大赛英语组短视频赛校赛获奖名单的公示",
+   "url": "https://jiaowu.nwpu.edu.cn/info/1164/29818.htm",
+   "date": "2026-09-14",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:15:55.247Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "33029fea691d0fee",
+   "sourceId": "jiaowu-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "nwpu",
+   "title": "关于第十八届全国大学生数学竞赛和第七届西北工业大学数学竞赛报名的通知",
+   "url": "https://jiaowu.nwpu.edu.cn/info/1164/29798.htm",
+   "date": "2026-09-10",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:15:55.247Z",
+   "unit": "教务部"
+  },
+  {
+   "id": "088cde2b1182b978",
+   "sourceId": "jiaowu-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "nwpu",
+   "title": "关于做好2026年下半年全国大学英语四、六级考试报名工作的通知",
+   "url": "https://jiaowu.nwpu.edu.cn/info/1164/29778.htm",
+   "date": "2026-09-09",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-04T06:15:55.247Z",
+   "unit": "教务部"
+  }
+ ]
+}
