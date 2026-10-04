@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-04T22:55:36.955Z",
+  "updatedAt": "2026-10-04T23:08:17.472Z",
   "sources": {
     "jwc-important": [
       "ok",
@@ -195,7 +195,8 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "jwc-jxtz": [
       "ok"
@@ -219,7 +220,8 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "aao-tzgg": [
       "ok"
