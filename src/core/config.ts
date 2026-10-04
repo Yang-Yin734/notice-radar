@@ -18,6 +18,15 @@ const selectorsSchema = z.object({
   link: z.string().optional(),
   /** 日期：`div.date-box-sm`；留空则 date=null */
   date: z.string().optional(),
+  /**
+   * 从**链接**里取日期的正则（三个捕获组：年、月、日），例如 `/2026/0930/` 这种地址：
+   * `dateFromLink: '/(\\d{4})/(\\d{2})(\\d{2})/'`
+   *
+   * 为什么需要：博达（Boda）CMS 的站点把日期拆成"日 / 年月"两块显示（南开就是这样），
+   * 页面上根本没有一个能直接解析的日期字符串，但链接里带着 `/2026/0930/`。
+   * 只在 `date` 选择器没解析出东西时才用它 —— 页面上的日期优先。
+   */
+  dateFromLink: z.string().optional(),
   /** 分类标签 */
   tag: z.string().optional(),
 });

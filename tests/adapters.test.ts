@@ -26,7 +26,7 @@ function checkListFixture(
   school: string,
   file: string,
   over: Partial<SourceConfig>,
-  opts: { min: number; urlOk: RegExp; maxTruncated?: number; allowNoDates?: boolean },
+  opts: { min: number; urlOk: RegExp; maxTruncated?: number; allowNoDates?: boolean; allowShortTitles?: boolean },
 ) {
   const html = fs.readFileSync(path.join('tests', 'fixtures', school, file), 'utf8');
   const items = htmlListAdapter.parse({
@@ -46,7 +46,8 @@ function checkListFixture(
     items.every((n) => n.date === null || /^\d{4}-\d{2}-\d{2}$/.test(n.date)),
     `${school} 日期没归一成 ISO`,
   );
-  assert.ok(items.every((n) => n.title.length >= 6), `${school} 有标题像导航项（太短）`);
+  // 短标题通常是导航项，但站点真有可能发一条两三个字的通知（中国海洋大学就有一条叫"公　示"）
+  if (!opts.allowShortTitles) assert.ok(items.every((n) => n.title.length >= 6), `${school} 有标题像导航项（太短）`);
   // 少数站点自己对超长标题截断（HUST 实测 20 条里 1 条），这种照原样收、不猜全文；
   // 但如果大面积截断（模板换了），这里必须红 —— 截断标题会让关键词分级失效。
   const truncated = items.filter((n) => /(\.\.\.|…)\s*$/.test(n.title));
@@ -301,6 +302,69 @@ test('通用 html-list：南京大学（容器必须够精确，否则侧栏快�
   );
   // 标题以【补采】【学生】【2026级新生】这类方括号前缀开头是站点自己的分类，保留原样
   assert.ok(items.some((n) => /^【[^】]+】/.test(n.title)), '标题里的方括号前缀应保留');
+});
+
+test('通用 html-list：中国海洋大学（博达 CMS 的 Article_* 类名）', () => {
+  checkListFixture(
+    'ouc',
+    'jwc-tzgg.html',
+    {
+      id: 'jwc-tzgg',
+      baseUrl: 'https://jwc.ouc.edu.cn/6517/list.htm',
+      selectors: { item: 'li.list_item', title: '.Article_Title a@title', link: 'a@href', date: '.Article_PublishDate' },
+    },
+    // 有的条目链接到外国语学院 / web1 等同校其它站点，是站点自己做的聚合，都接受（同一 oucedu.cn 域下）
+    { min: 8, urlOk: /^https:\/\/[\w-]+\.ouc\.edu\.cn\//, allowShortTitles: true },
+  );
+});
+
+test('通用 html-list：厦门大学（教务处首页没有导航入口，直接给列表页）', () => {
+  checkListFixture(
+    'xmu',
+    'jwc-tzgg.html',
+    {
+      id: 'jwc-tzgg',
+      baseUrl: 'https://jwc.xmu.edu.cn/tzgg.htm',
+      selectors: { item: '.list li', title: 'a@title', link: 'a@href', date: 'span.date' },
+    },
+    { min: 8, urlOk: /^https:\/\/jwc\.xmu\.edu\.cn\// },
+  );
+});
+
+test('通用 html-list：南开大学（日期取不到时用 dateFromLink 从链接里抠）', () => {
+  const html = fs.readFileSync(path.join('tests', 'fixtures', 'nankai', 'jwc-tzgg.html'), 'utf8');
+  const base = {
+    id: 'jwc-tzgg',
+    baseUrl: 'https://jwc.nankai.edu.cn/tzgg/list.htm',
+  };
+
+  // 只写页面选择器：这页日期被拆成"日 / 年月"两块，解析不出来 → date 全是 null
+  const withoutLink = htmlListAdapter.parse({
+    school: 'nankai',
+    html,
+    source: source({ ...base, selectors: { item: 'div.item', title: '.t a', link: 'a@href' } }),
+  });
+  assert.ok(withoutLink.length >= 5, `条目太少：${withoutLink.length}`);
+  assert.ok(withoutLink.every((n) => n.date === null), '这页的日期本来就不该解析出来');
+
+  // 加上 dateFromLink：从 /2026/0930/ 里取到日期
+  const withLink = htmlListAdapter.parse({
+    school: 'nankai',
+    html,
+    source: source({
+      ...base,
+      selectors: { item: 'div.item', title: '.t a', link: 'a@href', dateFromLink: '/(\\d{4})/(\\d{2})(\\d{2})/' },
+    }),
+  });
+  assert.equal(withLink.length, withoutLink.length, '取日期不该改变条目数');
+  assert.ok(
+    withLink.every((n) => /^\d{4}-\d{2}-\d{2}$/.test(n.date ?? '')),
+    `dateFromLink 应给出 ISO 日期：${withLink.map((n) => n.date).slice(0, 3).join(', ')}`,
+  );
+  // 链接里的 /2026/0930/ 就是 2026-09-30
+  assert.equal(withLink[0].date, '2026-09-30', `第一条日期应来自链接：${withLink[0].url}`);
+  // 页面上的日期优先：两个都写时以页面为准（这里页面解析不出来，所以还是链接里的）
+  assert.equal(new Set(withLink.map((n) => n.id)).size, withLink.length, 'ID 必须唯一');
 });
 
 test('研究生院适配器：只认详情页链接，避免把导航项当成通知', () => {

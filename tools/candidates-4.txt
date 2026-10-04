@@ -1,0 +1,24 @@
+# 第四批候选（第 6 轮）：专攻上几轮"结构特殊"没接成的，外加新一批。
+# 说明：可以给首页，也可以**直接给列表页**（探测工具会直接试这个地址本身）。
+# 用法：node tools/probe-batch.mjs tools/candidates-4.txt
+#
+# 已知的列表页地址（上一轮用 dump-page 的手动链接清单找出来的）：
+#   xmu  厦门大学教务处      jwc.xmu.edu.cn/tzgg.htm          ← 首页没有"通知公告"导航，但这就是列表页
+#   tongji 同济大学教务处    jwc.tongji.edu.cn/30358|30359/list.htm  ← 首页两个"更多+"指向这里
+#
+# 本轮结果：
+#   ✓ xmu     厦门大学       → jwc.xmu.edu.cn/tzgg.htm（已接入）
+#   ✗ tongji  同济大学       → 30359 抓到的是导航项且标题截断；30358 试不出选择器
+#   ✗ csu     中南大学       → bksy.csu.edu.cn/tztg.htm 试不出可用选择器
+#   ✗ hit     哈尔滨工业大学 → jwc.hit.edu.cn/tzgg.htm 试不出可用选择器
+#   ✗ sdu     山东大学       → index/tzgg.htm 其实是"部门简介"（工作职责/师资队伍）
+#   ✗ whut    武汉理工大学   → 连接超时
+#   ⚠ ustc    中国科学技术大学 → category/notice 是 JS 渲染；详情页混着导航项，暂不接
+xmu     https://jwc.xmu.edu.cn/tzgg.htm
+tongji  https://jwc.tongji.edu.cn/30359/list.htm
+tongji2 https://jwc.tongji.edu.cn/30358/list.htm
+ustc    https://www.teach.ustc.edu.cn/category/notice
+csu     https://bksy.csu.edu.cn/tztg.htm
+sdu     https://www.bkjx.sdu.edu.cn/index/tzgg.htm
+hit     https://jwc.hit.edu.cn/tzgg.htm
+whut    https://jwc.whut.edu.cn/tzgg.htm

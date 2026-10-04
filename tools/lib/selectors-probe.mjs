@@ -8,6 +8,9 @@ import { load } from 'cheerio';
 import { fetchHtml } from '../../src/core/fetch.ts';
 
 const CONTAINERS = [
+  // 博达（Boda）CMS 是高校用得最多的一套：标准列表容器是 `.news_list li` / `.news_list li`（**下划线**）。
+  // 一开始只写了连字符的 `.news-list`，于是博达站（南京大学、同济…）全都"试不出选择器"。
+  'ul.news_list li', '.news_list li', '.news_list_box li', '.newslist li', 'ul.newslist li',
   'ul.news-list li', '.news-list li', '.list li', '.tz-list li', '.list-item', '.news_item',
   'div.list ul li', '.list ul li', 'ul.list li', '.list_box ul li', '.listbox ul li',
   'ul li', '.article-list li', 'table tr', '.wp_article_list li', '.list_main li', '.item', 'div.item',
@@ -43,6 +46,21 @@ function textOf($el, sel) {
   if (sel.endsWith('@title')) return ($el.find(sel.slice(0, -6)).attr('title') ?? '').trim();
   return $el.find(sel).first().text().replace(/\s+/g, ' ').trim();
 }
+
+/** 条目里第一个链接的绝对地址（用来判断"日期是不是藏在链接里"） */
+function resolveHref($el, base) {
+  const href = ($el.find('a[href]').first().attr('href') ?? '').trim();
+  if (!href) return '';
+  try {
+    return new URL(href, base).href;
+  } catch {
+    return href;
+  }
+}
+
+/** 链接里带日期的比例（博达等 CMS 的地址形如 /2026/0930/xxx/page.htm） */
+const URL_DATE_RE = /\/(\d{4})\/(\d{2})(\d{2})(?:\/|$)/;
+const urlDateRatio = (hrefs) => (hrefs.length ? hrefs.filter((h) => URL_DATE_RE.test(h)).length / hrefs.length : 0);
 
 /** 抓一个列表页并推断最优选择器；网络/结构问题都不抛错，返回 note 说明原因。 */
 export async function probeListPage(url, { timeoutMs = 30000 } = {}) {
@@ -87,28 +105,35 @@ export async function probeListPage(url, { timeoutMs = 30000 } = {}) {
         // 标题与日期**成对**收集：只用"标题通过筛选"的节点，避免预览时日期错位
         // （曾出现"日期命中 20 条"但预览里日期全空 —— 就是拿未过滤数组硬对齐造成的）
         const cleaned = rows
-          .map((r, i) => ({ title: r.title, dateText: textOf($(nodes.toArray()[i]), d) }))
+          .map((r, i) => ({
+            title: r.title,
+            dateText: textOf($(nodes.toArray()[i]), d),
+            href: resolveHref($(nodes.toArray()[i]), url),
+          }))
           .filter((r) => /[\u4e00-\u9fa5]{6,}/.test(r.title));
         const dateHits = cleaned.filter((r) => /\d{1,4}[-/.月]\d{1,2}/.test(r.dateText)).length;
         const titles = cleaned.map((r) => r.title);
         const dateTexts = cleaned.map((r) => r.dateText);
+        const hrefs = cleaned.map((r) => r.href);
+        const urlDates = urlDateRatio(hrefs);
         // 打分要点（踩过的坑）：
         //   · **日期覆盖率**最重要 —— 导航菜单/侧栏热点没有日期，覆盖率高的才是真列表
         //   · 光看条目数会把"主列表 + 导航"一起选中（西电就是这样：裸 ul li 30 条，其中 11 条是菜单）
         //   · 标题像不像通知（上面那层）；带类名的具体容器加分；标题被 ... 截断的重罚
+        //   · 链接里带 /2026/0930/ 时给点分：说明日期能拿到（只是得从链接里抠）
         const ratio = titles.length ? dateHits / titles.length : 0;
         const score =
           Math.round(ratio * 40) + Math.round(like * 30) + Math.min(dateHits, 20) + Math.min(titles.length, 15) +
-          (specific(c) ? 5 : 0) - truncated * 6;
+          (specific(c) ? 5 : 0) - truncated * 6 + (dateHits === 0 && urlDates > 0.6 ? 8 : 0);
         const cand = {
           item: `${c} / ${t} / ${d}`, count: titles.length, truncated, dateHits,
-          noticeLike: like, medLen, ratio, score, titles, dates: dateTexts,
+          noticeLike: like, medLen, ratio, score, titles, dates: dateTexts, urlDates,
         };
         all.push(cand); // 调试用：接受的组合也记下来
         if (!best || score > best.score) {
           best = {
             item: c, title: t, date: d, count: titles.length, truncated, dateHits,
-            noticeLike: like, titles, dates: dateTexts, score, ratio,
+            noticeLike: like, titles, dates: dateTexts, score, ratio, urlDates,
           };
         }
       }
@@ -118,7 +143,9 @@ export async function probeListPage(url, { timeoutMs = 30000 } = {}) {
   let note = '';
   if (!best) note = '没找到可用的选择器组合（可能整页 JS 渲染，或这页根本不是通知列表）';
   else if (best.truncated > 0) note = '标题带 ...（截断）：直接接会让关键词分级失效，先别接';
-  else if (best.dateHits === 0) note = '日期一条都没命中：日期可能在详情页，配置里就别写 date';
+  else if (best.dateHits === 0 && best.urlDates > 0.6) {
+    note = '列表页没有日期，但链接里带着日期（/2026/0930/）—— 配置里写 dateFromLink 就能取到';
+  } else if (best.dateHits === 0) note = '日期一条都没命中：日期可能在详情页，配置里就别写 date';
   else if (best.noticeLike < 0.6) {
     note = `只有 ${Math.round(best.noticeLike * 100)}% 的标题像通知 —— 可能选错了栏目，接入前先看内容`;
   }
@@ -151,8 +178,8 @@ export function findListCandidates(html, baseUrl, baseOrigin, limit = 6) {
       return;
     }
     if (!abs.startsWith(baseOrigin)) return;
-    // 详情页/附件直接排掉
-    if (/\/info\/\d|content\.jsp|detail-v2\.jsp|\/\d{4}\/\d{2}\/|\.pdf$|\.docx?$/i.test(abs)) return;
+    // 详情页/附件直接排掉（含博达的 c<列>a<文>/page.htm 详情页写法）
+    if (/\/info\/\d|content\.jsp|detail-v2\.jsp|\/c\d+a\d+\/page\.htm|\/\d{4}\/\d{2}\/|\.pdf$|\.docx?$/i.test(abs)) return;
     if (seen.has(abs)) return;
 
     const strongText = /通知公告|通知通告|公告通知|公示公告|工作通知|通知|公告|公示/.test(text);
@@ -193,6 +220,9 @@ export function suggestYaml({ id, name, url, best }) {
   // 列表页没有日期是常见情况（日期只在详情页）—— 项目本来就支持不写 date 这一行，
   // 这时**别硬套一个选择器**：套错会把标题或正文当成日期。
   if (best.dateHits > 0) lines.push(`      date: ${best.date}`);
-  else lines.push('      # date: 列表页没有日期（日期在详情页），按项目约定不写这一行');
+  else if (best.urlDates > 0.6) {
+    // 博达等 CMS：日期拆成两块显示，但链接里带着 /2026/0930/ —— 从链接取（v0.10.19 起支持）
+    lines.push(`      dateFromLink: '/(\\d{4})/(\\d{2})(\\d{2})/'`);
+  } else lines.push('      # date: 列表页没有日期（日期在详情页），按项目约定不写这一行');
   return lines.join('\n');
 }

@@ -55,11 +55,12 @@ for (const { id, url } of entries) {
     continue;
   }
 
-  const candidates = findListCandidates(html, url, new URL(url).origin, 6);
+  // 给的是"首页"就找列表页入口；找不到入口（或给的本来就是列表页）就直接试这个地址本身 ——
+  // 厦大教务处首页里没有"通知公告"导航链接，但 tzgg.htm 就是列表页，直接试最快。
+  let candidates = findListCandidates(html, url, new URL(url).origin, 6);
   if (!candidates.length) {
-    line('✗ 首页里没找到"通知公告列表页"入口');
-    results.push({ id, url, ok: false, reason: '没找到列表页入口' });
-    continue;
+    line('（首页里没找到入口，直接试这个地址本身）');
+    candidates = [{ text: '(本页)', url }];
   }
 
   let best = null;

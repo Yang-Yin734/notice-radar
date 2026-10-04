@@ -117,6 +117,39 @@
       "status": "verified",
       "lastVerified": "2026-10-04",
       "notes": "本科生院公告通知。**容器必须用 `.news_list li`**（宽松的 `.list li` 会把侧栏快捷入口当通知，还会误判成「没有日期」——日期在 span.news_meta）。collectOnly=true"
+    },
+    {
+      "id": "ouc",
+      "name": "中国海洋大学",
+      "city": "青岛",
+      "presets": ["config/schools/ouc.yaml"],
+      "sources": 1,
+      "maintainers": ["Yang-Yin734"],
+      "status": "verified",
+      "lastVerified": "2026-10-04",
+      "notes": "教务处通知公告（博达 CMS）。日期类名是 `Article_PublishDate`（不是常见的 span.date），所以自动探测一开始报「这页没有日期」。collectOnly=true"
+    },
+    {
+      "id": "xmu",
+      "name": "厦门大学",
+      "city": "厦门",
+      "presets": ["config/schools/xmu.yaml"],
+      "sources": 1,
+      "maintainers": ["Yang-Yin734"],
+      "status": "verified",
+      "lastVerified": "2026-10-04",
+      "notes": "教务处通知公告（jwc.xmu.edu.cn/tzgg.htm）。教务处首页没有「通知公告」导航链接（导航是 JS 驱动的），直接给列表页地址最快。collectOnly=true"
+    },
+    {
+      "id": "nankai",
+      "name": "南开大学",
+      "city": "天津",
+      "presets": ["config/schools/nankai.yaml"],
+      "sources": 1,
+      "maintainers": ["Yang-Yin734"],
+      "status": "verified",
+      "lastVerified": "2026-10-04",
+      "notes": "教务处通知公告（博达 CMS）。日期被拆成「日 / 年月」两块，页面上没法解析 —— 用 dateFromLink 从链接 /2026/0930/ 里取。collectOnly=true"
     }
   ]
 }

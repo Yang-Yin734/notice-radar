@@ -34,7 +34,12 @@ export const htmlListAdapter: Adapter = {
       if (!title) return;
       const href = selectors.link ? pick($, el, selectors.link) : '';
       const url = resolveUrl(href, base, source.url);
-      const date = selectors.date ? parseDateLoose(pick($, el, selectors.date)) : null;
+      // 页面上的日期优先；解析不出来时再从链接里抠（博达 CMS 的链接形如 /2026/0930/xxx/page.htm）
+      let date = selectors.date ? parseDateLoose(pick($, el, selectors.date)) : null;
+      if (!date && selectors.dateFromLink) {
+        const m = new RegExp(selectors.dateFromLink).exec(url);
+        if (m && m[1] && m[2] && m[3]) date = `${m[1]}-${m[2]}-${m[3]}`;
+      }
       const tag = selectors.tag ? pick($, el, selectors.tag) || null : null;
       const id = makeId(source.id, title, date);
       if (seen.has(id)) return;

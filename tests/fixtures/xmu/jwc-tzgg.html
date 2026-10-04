@@ -1,0 +1,471 @@
+﻿<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <title>通知公告-厦门大学教务处</title><meta name="pageType" content="2">
+<meta name="pageTitle" content="通知公告">
+
+
+<META Name="keywords" Content="厦门大学教务处" />
+
+    <link href="css/layout-v4.css?4" rel="stylesheet">
+    <link href="css/news-list.css?2" rel="stylesheet">
+    <link href="css/calendar-v1.css" rel="stylesheet">
+    <link href="css/select2.min.css" rel="stylesheet">
+    <script src="js/jQuery.js"></script>
+    <script src="js/select2.min.js"></script>
+    <script src="js/dateChange.js"></script>
+<!--Announced by Visual SiteBuilder 9-->
+<script language="javascript" src="_sitegray/_sitegray.js"></script>
+<!-- CustomerNO:77656262657232307778465750545742000400024e5c -->
+<link rel="stylesheet" type="text/css" href="list-v2.vsb.css" />
+<script type="text/javascript" src="/system/resource/js/vsbscreen.min.js" id="_vsbscreen" devices="pc|pad"></script>
+<script type="text/javascript" src="/system/resource/js/counter.js"></script>
+<script type="text/javascript">_jsq_(1901,'/list-v2.jsp',-1,1850577293)</script>
+</head>
+
+<body>
+    <header>
+        <div class="wrapper">
+        <a href="javascript:;">
+                <img src="imgs/logo_562x99.png" class="logo">
+            </a>
+            <div class="search-area">
+                <!-- 3.1.3版本 -->
+
+
+
+<script language="javascript" src="/system/resource/js/base64.js"></script><script language="javascript" src="/system/resource/js/jquery/jquery-latest.min.js"></script><script language="javascript" src="/system/resource/vue/vue.js"></script><script language="javascript" src="/system/resource/vue/bluebird.min.js"></script><script language="javascript" src="/system/resource/vue/axios.js"></script><script language="javascript" src="/system/resource/vue/polyfill.js"></script><script language="javascript" src="/system/resource/vue/token.js"></script><LINK href="/system/resource/vue/static/element/index.css" type="text/css" rel="stylesheet"><script language="javascript" src="/system/resource/vue/static/element/index.js"></script><script language="javascript" src="/system/resource/vue/static/public.js"></script><script language="javascript" src="/system/resource/openapp/search/js/containsHtmlTags.js"></script><script language="javascript" src="/system/resource/openapp/search/layui/layui.js"></script><style>
+#appu0 .searcher{
+ position: relative;}
+    #appu0 .qwss{
+        height: 31px;
+        font-size: 12px;
+        width: 150px;
+        margin-top: -15px;
+        outline: none;
+        padding-left: 10px;
+        padding-right: 72px;
+        border-radius: 2px;
+        border: 1px solid #e4e7ed;}
+    #appu0 .tj{
+        padding-left: 6px;
+        letter-spacing: 5px;
+        color: white;
+        min-width: 53px;
+        max-width: 150px;
+        height: 32px;
+        border: 0;
+        border-radius: 2px;
+        background-color: #1890FF;
+        position: absolute;
+        top: 12.4px;
+        right: 2px;
+        width: 69px;
+        margin-top: -15px;}
+</style>
+<div id="divu0" class="mr-16"></div>
+<script type="text/html" id="htmlu0">
+    <div id="appu0">
+        <div class="searcher" v-if="!isError">
+            <input type="text" class="qwss" placeholder="全文搜索" autocomplete=off v-model=query.keyWord @keyup.enter="onSubmit">
+            <input class="tj" name="submit_button" type="button" value="搜索" v-on:click="onSubmit()"/>
+        </div>
+        <div v-if="isError" style="color: #b30216; font-size:18px;text-align: center;padding:20px;">
+            应用维护中！
+        </div>
+    </div>
+</script>
+<script>
+    $("#divu0").html($("#htmlu0").text());
+</script>
+<script>
+    var appOwner = "1850577293";
+    var token = 'tourist';
+    var urlPrefix = "/aop_component/";
+
+    jQuery.support.cors = true;
+    $.ajaxSetup({
+        beforeSend: function (request, settings) {
+            request.setRequestHeader("Authorization", token);
+            request.setRequestHeader("owner", appOwner);
+        }
+    });
+
+    new Vue({
+        el: "#appu0",
+        data: function () {
+            return {
+                query: {
+                    keyWord: "",//搜索关键词
+                    owner: appOwner,
+                    token: token,
+                    urlPrefix: urlPrefix,
+                    lang:"i18n_zh_CN"
+                },
+                isError: false
+            }
+        },
+        mounted: function () {
+            var _this = this;
+            // _this.init();
+        },
+        methods: {
+            init: function(){
+                $.ajax({
+                    url: "/aop_component//webber/search/test",
+                    type: "get",
+                    success: function (response) {
+                        if (response.code == "0000") {
+                        } else if (response.code == "220") {
+                            _this.isError = true;
+                            console.log(response);
+                        } else if (!response.code) {
+                            _this.isError = true;
+                            console.log(response);
+                        }
+                    },
+                    error: function (response) {
+                        _this.isError = true;
+                    }
+                });
+            },
+            onSubmit: function (e) {
+                var url = "/aop_views/search/modules/resultpc/soso.html";
+                if ("10" == "1" || "10" == "2") {
+                    url = "" + url;
+                }
+                var _this = this;
+                var query = _this.query;
+                if (url.indexOf("?") > -1) {
+                    url = url.split("?")[0];
+                }
+                if (query.keyWord) {
+                    var query = new Base64().encode(JSON.stringify(query));
+                    window.open(url + "?query=" + query);
+                } else {
+                    alert("请填写搜索内容")
+                }
+            },
+        }
+    })
+</script>
+
+<script>
+   var appElementu0 = document.querySelector("#appu0");
+   if (appElementu0 && appElementu0.__vue__) {
+
+   } else {
+      $("#divu0").html($("#htmlu0").text());
+      var appOwner = "1850577293";   
+      var urlPrefix = "/aop_component/";
+      var ifLogin="";
+      var token = ifLogin=='true'?gettoken(10, true).trim():'tourist';
+      if (containsHtmlTags(token) || !token) { 
+         token = 'tourist';
+      }
+      jQuery.support.cors = true;
+      $.ajaxSetup({
+        beforeSend: function (request, settings) {
+            request.setRequestHeader("Authorization", token);
+            request.setRequestHeader("owner", appOwner);
+        }
+      });
+      var queryInfou0 = {
+        query: {
+            keyWord: "",//搜索关键词
+            owner: appOwner,
+            token: token,
+            urlPrefix: urlPrefix,
+            lang:"i18n_zh_CN"
+        },
+        isError: false
+      };
+      function keyUpFunu0(e){
+        var theEvent = e || window.event;
+        var keyCode = theEvent.keyCode || theEvent.which || theEvent.charCode;
+        if(keyCode == 13){
+          onSubmitu0();
+        }
+      };
+
+      function onSubmitu0(e) {
+        queryInfou0.query.keyWord= $("#appu0  .qwss").val();
+        
+        var url = "/aop_views/search/modules/resultpc/soso.html";      
+        if ("10" == "1" || "10" == "2") {
+           url = "" + url;
+        }
+        var query = queryInfou0.query;
+        if (url.indexOf("?") > -1) {
+            url = url.split("?")[0];
+        }
+        if (query.keyWord) {
+            var query = new Base64().encode(JSON.stringify(query));
+            window.open(url + "?query=" + query);
+        } else {
+            alert("请填写搜索内容")
+        }
+      };
+   }
+</script>
+            </div>
+        </div>
+    </header>
+    <nav>
+        <div class="wrapper"><ul class="nav-list">      
+<li class="" tag="首页">
+    <a href="index.htm">首页</a>
+</li>     
+<li class="" tag="概况">
+    <a href="detail-v2.jsp?urltype=news.NewsContentUrl&wbtreeid=2571&wbnewsid=53881">概况</a>
+</li>     
+<li class="" tag="信息公开">
+    <a href="xxgk/zysz.htm">信息公开</a>
+</li>     
+<li class="" tag="学籍学务">
+    <a href="xjxw.htm">学籍学务</a>
+</li>     
+<li class="" tag="教学运行">
+    <a href="jxyx.htm">教学运行</a>
+</li>     
+<li class="" tag="实践教学">
+    <a href="sjjx.htm">实践教学</a>
+</li>     
+<li class="" tag="创新创业">
+    <a href="list-v2.jsp?urltype=tree.TreeTempUrl&wbtreeid=1761">创新创业</a>
+</li>     
+<li class="" tag="质量保障">
+    <a href="list-v2.jsp?urltype=tree.TreeTempUrl&wbtreeid=1971">质量保障</a>
+</li>     
+<li class="" tag="教学改革">
+    <a href="jxgg.htm">教学改革</a>
+</li>     
+<li class="" tag="党建家园">
+    <a href="list-v2.jsp?urltype=tree.TreeTempUrl&wbtreeid=2071">党建家园</a>
+</li>     
+</ul></div>
+    </nav>
+    <div class="main-section">
+        <div class="news-list-wrapper">
+            <div class="category">
+                <div class="menu-list"><ul>                 
+<li class="menu-title">
+    <a href="tzgg/xjxw.htm" title="学籍学务">
+        学籍学务
+    </a>
+</li> 
+<li class="menu-title">
+    <a href="tzgg/djtz.htm" title="党建通知">
+        党建通知
+    </a>
+</li> 
+<li class="menu-title">
+    <a href="tzgg/jxyx.htm" title="教学运行">
+        教学运行
+    </a>
+</li> 
+<li class="menu-title">
+    <a href="tzgg/sjjx.htm" title="实践教学">
+        实践教学
+    </a>
+</li> 
+<li class="menu-title">
+    <a href="tzgg/cxcy.htm" title="创新创业">
+        创新创业
+    </a>
+</li> 
+<li class="menu-title">
+    <a href="tzgg/zlbz.htm" title="质量保障">
+        质量保障
+    </a>
+</li> 
+<li class="menu-title">
+    <a href="tzgg/jxgg.htm" title="教学改革">
+        教学改革
+    </a>
+</li> 
+<li class="menu-title">
+    <a href="tzgg/djtz1.htm" title="党建通知">
+        党建通知
+    </a>
+</li> 
+</ul></div>  
+            </div>
+            <div class="details">
+                <div class="position">
+                    <div class="local-text">  
+<table cellspacing="0" cellpadding="0"><tr><td nowrap>当前位置：   
+<a href="index.htm"><span>首页</span></a><span class="splitflagstyle1060627">>></span><a href="tzgg.htm"><span>通知公告</span></a></td></tr></table></div>
+                </div>
+                <div class="title"><span>
+通知公告</span></div>
+                <div class="list">
+
+
+<script language="javascript" src="/system/resource/js/centerCutImg.js"></script><script language="javascript" src="/system/resource/js/dynclicks.js"></script><script language="javascript" src="/system/resource/js/ajax.js"></script><ul>
+                        
+<li class="news">
+                            <a href="info/1911/69852.htm" target="_blank" title="关于2026—2027学年第一学期转专业工作安排的通知">                                
+                                <span class="topic text-cut"><i>&gt;</i>关于2026—2027学年第一学期转专业工作安排的通知</span>
+                                <span class="date">2026-09-30</span>
+                            </a>
+                        </li>
+                        
+<li class="news">
+                            <a href="info/1951/69842.htm" target="_blank" title="关于公布2026年第二批大学生创新训练计划项目名单的通知">                                
+                                <span class="topic text-cut"><i>&gt;</i>关于公布2026年第二批大学生创新训练计划项目名单的通知</span>
+                                <span class="date">2026-09-30</span>
+                            </a>
+                        </li>
+                        
+<li class="news">
+                            <a href="info/1921/69832.htm" target="_blank" title="关于2026年10月16日海韵教学楼二楼封闭的通知">                                
+                                <span class="topic text-cut"><i>&gt;</i>关于2026年10月16日海韵教学楼二楼封闭的通知</span>
+                                <span class="date">2026-09-28</span>
+                            </a>
+                        </li>
+                        
+<li class="news">
+                            <a href="info/1951/69812.htm" target="_blank" title="关于组织参加第十九届全国大学生创新年会的通知">                                
+                                <span class="topic text-cut"><i>&gt;</i>关于组织参加第十九届全国大学生创新年会的通知</span>
+                                <span class="date">2026-09-28</span>
+                            </a>
+                        </li>
+                        
+<li class="news">
+                            <a href="info/1921/69802.htm" target="_blank" title="关于组织2026级本科新生开展“计算机基础”自主学习和能力测试的通知">                                
+                                <span class="topic text-cut"><i>&gt;</i>关于组织2026级本科新生开展“计算机基础”自主学习和能力测试的通知</span>
+                                <span class="date">2026-09-22</span>
+                            </a>
+                        </li>
+                        
+<li class="news">
+                            <a href="info/1921/69772.htm" target="_blank" title="关于2026-2027学年第一学期中期退课的通知">                                
+                                <span class="topic text-cut"><i>&gt;</i>关于2026-2027学年第一学期中期退课的通知</span>
+                                <span class="date">2026-09-17</span>
+                            </a>
+                        </li>
+                        
+<li class="news">
+                            <a href="info/1951/69762.htm" target="_blank" title="关于2026年第二批大学生创新训练计划项目拟立项名单的公示">                                
+                                <span class="topic text-cut"><i>&gt;</i>关于2026年第二批大学生创新训练计划项目拟立项名单的公示</span>
+                                <span class="date">2026-09-16</span>
+                            </a>
+                        </li>
+                        
+<li class="news">
+                            <a href="info/1921/69712.htm" target="_blank" title="关于2026年12月6日庄汉水楼（南强二）、海韵教学楼封闭的通知">                                
+                                <span class="topic text-cut"><i>&gt;</i>关于2026年12月6日庄汉水楼（南强二）、海韵教学楼封闭的通知</span>
+                                <span class="date">2026-09-07</span>
+                            </a>
+                        </li>
+                        
+<li class="news">
+                            <a href="info/1911/69672.htm" target="_blank" title="关于2026年下半年全国大学英语四、六级考试报名工作的通知">                                
+                                <span class="topic text-cut"><i>&gt;</i>关于2026年下半年全国大学英语四、六级考试报名工作的通知</span>
+                                <span class="date">2026-09-02</span>
+                            </a>
+                        </li>
+                        
+<li class="news">
+                            <a href="info/1921/69632.htm" target="_blank" title="关于组织2026级本科新生选课的通知">                                
+                                <span class="topic text-cut"><i>&gt;</i>关于组织2026级本科新生选课的通知</span>
+                                <span class="date">2026-08-27</span>
+                            </a>
+                        </li>
+                        
+<li class="news">
+                            <a href="info/1911/69662.htm" target="_blank" title="关于2026年下半年全国大学英语四、六级考试照片采集的预通知">                                
+                                <span class="topic text-cut"><i>&gt;</i>关于2026年下半年全国大学英语四、六级考试照片采集的预通知</span>
+                                <span class="date">2026-08-27</span>
+                            </a>
+                        </li>
+                        
+<li class="news">
+                            <a href="info/1921/69652.htm" target="_blank" title="关于2026级新生参加大学英语分类考试补考的通知">                                
+                                <span class="topic text-cut"><i>&gt;</i>关于2026级新生参加大学英语分类考试补考的通知</span>
+                                <span class="date">2026-08-24</span>
+                            </a>
+                        </li>
+                        
+<li class="news">
+                            <a href="info/1921/69602.htm" target="_blank" title="关于2026级新生参加大学英语分类考试的通知">                                
+                                <span class="topic text-cut"><i>&gt;</i>关于2026级新生参加大学英语分类考试的通知</span>
+                                <span class="date">2026-08-08</span>
+                            </a>
+                        </li>
+                        
+<li class="news">
+                            <a href="info/1911/69612.htm" target="_blank" title="关于2026-2027学年秋季学期微专业教育工作安排的通知">                                
+                                <span class="topic text-cut"><i>&gt;</i>关于2026-2027学年秋季学期微专业教育工作安排的通知</span>
+                                <span class="date">2026-08-06</span>
+                            </a>
+                        </li>
+                        
+<li class="news">
+                            <a href="info/2751/69592.htm" target="_blank" title="【转发】厦门大学化学学科拔尖学生培养计划2026级第一批次生源遴选通知">                                
+                                <span class="topic text-cut"><i>&gt;</i>【转发】厦门大学化学学科拔尖学生培养计划2026级第一批次生源遴选通知</span>
+                                <span class="date">2026-08-03</span>
+                            </a>
+                        </li>
+                        
+</ul>
+
+<link rel="stylesheet" Content-type="text/css" href="/system/resource/css/pagedown/sys.css"><div class="pb_sys_common pb_sys_normal pb_sys_style1" style="margin-top:10px;text-align:center;"><span class="p_pages"><span class="p_first_d p_fun_d">首页</span><span class="p_prev_d p_fun_d">上页</span><span class="p_no_d">1</span><span class="p_no"><a href="tzgg/50.htm">2</a></span><span class="p_no"><a href="tzgg/49.htm">3</a></span><span class="p_no"><a href="tzgg/48.htm">4</a></span><span class="p_no"><a href="tzgg/47.htm">5</a></span><span class="p_dot">...</span><span class="p_no"><a href="tzgg/1.htm">51</a></span><span class="p_next p_fun"><a href="tzgg/50.htm">下页</a></span><span class="p_last p_fun"><a href="tzgg/1.htm">尾页</a></span></span></div><script>_showDynClickBatch(['dynclicks_u5_69852','dynclicks_u5_69842','dynclicks_u5_69832','dynclicks_u5_69812','dynclicks_u5_69802','dynclicks_u5_69772','dynclicks_u5_69762','dynclicks_u5_69712','dynclicks_u5_69672','dynclicks_u5_69632','dynclicks_u5_69662','dynclicks_u5_69652','dynclicks_u5_69602','dynclicks_u5_69612','dynclicks_u5_69592'],[69852,69842,69832,69812,69802,69772,69762,69712,69672,69632,69662,69652,69602,69612,69592],"wbnews", 1850577293)</script></div>
+            </div>
+        </div>
+    </div>
+    <div class="copyright">
+        <div class="row">
+            <img class="icon" src="imgs/logo_562x99.png">
+            <div class="contact">
+                电话：0592-2186251
+                <br />
+                邮箱：jwc@xmu.edu.cn
+                <br />
+                邮编：361005
+                <br />
+                福建省厦门市思明区思明南路422号
+            </div>
+            <div class="qr">
+                <div class="mr10">
+                    <img src="imgs/qr1.jpg" class="mr10">
+                    <span>厦门大学本科生教育</span>
+                </div>
+                <div class="">
+                    <img src="imgs/qr2.jpg">
+                    <span>厦门大学本科生科创竞赛</span>
+                </div>
+            </div>
+        </div>
+        <div class="copyrightText">
+            &copy; 2021 厦门大学教务处
+        </div>
+    </div>
+    <script src="js/menu-ani.js"></script>
+    <script src="js/svg-loader.js"></script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

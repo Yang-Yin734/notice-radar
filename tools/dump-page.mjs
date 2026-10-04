@@ -53,3 +53,23 @@ console.log(`\n含中文标题最多的容器：${bestKey}（${bestCount} 个节
 if (bestKey) {
   console.log('第一条 HTML：\n' + ($(bestKey).first().html()?.replace(/\s+/g, ' ').slice(0, 600) ?? '(空)'));
 }
+
+// 顺带把所有"像通知栏目的链接"列出来：自动探测找不到入口时（首页是 JS 导航、栏目名特殊），
+// 这是最快的手动定位方式。
+const links = [];
+$('a').each((_, el) => {
+  const text = $(el).text().replace(/\s+/g, ' ').trim();
+  const href = ($(el).attr('href') ?? '').trim();
+  if (!href || href.startsWith('#') || href.startsWith('javascript')) return;
+  if (!/通知|公告|公示|更多|more/i.test(`${text} ${href}`)) return;
+  let abs = href;
+  try {
+    abs = new URL(href, url).href;
+  } catch {
+    /* 保留原样 */
+  }
+  if (links.some((l) => l.abs === abs)) return;
+  links.push({ text: text.slice(0, 22), abs });
+});
+console.log(`\n像"通知公告"的链接 ${links.length} 个：`);
+for (const l of links.slice(0, 25)) console.log(`   ${l.text.padEnd(22)} ${l.abs}`);
