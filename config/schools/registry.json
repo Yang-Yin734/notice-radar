@@ -150,6 +150,39 @@
       "status": "verified",
       "lastVerified": "2026-10-04",
       "notes": "教务处通知公告（博达 CMS）。日期被拆成「日 / 年月」两块，页面上没法解析 —— 用 dateFromLink 从链接 /2026/0930/ 里取。collectOnly=true"
+    },
+    {
+      "id": "zzu",
+      "name": "郑州大学",
+      "city": "郑州",
+      "presets": ["config/schools/zzu.yaml"],
+      "sources": 1,
+      "maintainers": ["Yang-Yin734"],
+      "status": "verified",
+      "lastVerified": "2026-10-04",
+      "notes": "教务部通知公告。标题必须取 **h3**（取 a 的文本会把日期并进标题）；日期取 span。collectOnly=true"
+    },
+    {
+      "id": "ecnu",
+      "name": "华东师范大学",
+      "city": "上海",
+      "presets": ["config/schools/ecnu.yaml"],
+      "sources": 1,
+      "maintainers": ["Yang-Yin734"],
+      "status": "verified",
+      "lastVerified": "2026-10-04",
+      "notes": "本科生院通知公告（博达模板）。标题取 `.news_title`、日期取 `.news_date`（不是常见的 span.date）；条目常指向校内其它站点。collectOnly=true"
+    },
+    {
+      "id": "bnu",
+      "name": "北京师范大学",
+      "city": "北京",
+      "presets": ["config/schools/bnu.yaml"],
+      "sources": 1,
+      "maintainers": ["Yang-Yin734"],
+      "status": "verified",
+      "lastVerified": "2026-10-04",
+      "notes": "教务部通知公告。日期取 **.text-muted** —— 页面里 span 太多，笼统取 span 会把标题本身当日期（自动探测当时只认出 5/20 条）。collectOnly=true"
     }
   ]
 }

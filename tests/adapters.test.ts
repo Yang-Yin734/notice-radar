@@ -367,6 +367,52 @@ test('通用 html-list：南开大学（日期取不到时用 dateFromLink 从�
   assert.equal(new Set(withLink.map((n) => n.id)).size, withLink.length, 'ID 必须唯一');
 });
 
+test('通用 html-list：郑州大学（标题取 h3，取 a 文本会带上日期）', () => {
+  const items = checkListFixture(
+    'zzu',
+    'jwc-tzgg.html',
+    {
+      id: 'jwc-tzgg',
+      baseUrl: 'https://www5.zzu.edu.cn/jwc/index/tzgg.htm',
+      selectors: { item: '.list li', title: 'h3', link: 'a@href', date: 'span' },
+    },
+    { min: 8, urlOk: /^https:\/\/www5\.zzu\.edu\.cn\// },
+  );
+  // 取 a 的文本会把同一行里的日期并进标题（"…的通知 2026-09-30"）
+  assert.ok(
+    items.every((n) => !/\d{4}-\d{2}-\d{2}\s*$/.test(n.title)),
+    `标题末尾不该带日期：${items[0]?.title}`,
+  );
+});
+
+test('通用 html-list：华东师范大学（博达模板的 .news_title / .news_date）', () => {
+  checkListFixture(
+    'ecnu',
+    'bksy-tzgg.html',
+    {
+      id: 'bksy-tzgg',
+      baseUrl: 'https://bksy.ecnu.edu.cn/tzggwwxsgg/list.htm',
+      selectors: { item: 'ul.news_list li', title: '.news_title', link: 'a@href', date: '.news_date' },
+    },
+    // 条目常指向校内其它站点（交流办 www.jiaoliu、创新办 www.cxcy），同一 ecnu.edu.cn 域下都接受
+    { min: 8, urlOk: /^https?:\/\/([\w-]+\.)+ecnu\.edu\.cn\// },
+  );
+});
+
+test('通用 html-list：北京师范大学（日期取 .text-muted）', () => {
+  checkListFixture(
+    'bnu',
+    'jwb-tzgg.html',
+    {
+      id: 'jwb-tzgg',
+      baseUrl: 'https://jwb.bnu.edu.cn/tzgg/index.htm',
+      selectors: { item: '.article-list li', title: 'a span', link: 'a@href', date: '.text-muted' },
+    },
+    // 校内其它站点（公共外语 ggwy.bnu.edu.cn）都接受；另有一条转的是北京市教委的公告（jw.beijing.gov.cn）
+    { min: 8, urlOk: /^https:\/\/(([\w-]+\.)+bnu\.edu\.cn|jw\.beijing\.gov\.cn)\// },
+  );
+});
+
 test('研究生院适配器：只认详情页链接，避免把导航项当成通知', () => {
   const html = fixture('gr-notice.html');
   const items = grAdapter.parse({ source: source({ id: 'gr-notice', adapter: 'uestc/gr' }), school: 'uestc', html });

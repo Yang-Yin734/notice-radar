@@ -1,0 +1,25 @@
+# 第五批候选（第 7 轮）：域名先查证过（web_search / 官网入口）。
+# 用法：node tools/probe-batch.mjs tools/candidates-5.txt
+#
+# 域名依据：
+#   bnu    北京师范大学教务部     jwb.bnu.edu.cn/tzgg/index3.htm（搜索结果里的通知公告页）
+#   ecnu   华东师范大学本科生院   bksy.ecnu.edu.cn
+#   shu    上海大学本科生院       bksy.shu.edu.cn
+#   zzu    郑州大学教务部         www5.zzu.edu.cn/jwc/（博达站）
+#   其余是前几轮 DNS 能解析、但当时"试不出选择器"的，用改进后的工具重试
+#
+# 本轮结果：
+#   ✓ zzu   郑州大学   → www5.zzu.edu.cn/jwc/index/tzgg.htm（已接入；标题取 h3）
+#   ✓ ecnu  华东师范大学 → bksy.ecnu.edu.cn/tzggwwxsgg/list.htm（已接入；.news_title/.news_date）
+#   ✓ bnu   北京师范大学 → jwb.bnu.edu.cn/tzgg/index.htm（已接入；日期取 .text-muted）
+#   ✗ shu/hhu/hfut/nuaa/uibe/cau/ustb → 首页或栏目页试不出可用选择器（多为 JS 渲染或结构特殊）
+bnu     https://jwb.bnu.edu.cn/tzgg/index3.htm
+ecnu    https://bksy.ecnu.edu.cn/
+shu     https://bksy.shu.edu.cn/
+zzu     https://www5.zzu.edu.cn/jwc/
+hhu     https://jwc.hhu.edu.cn/
+hfut    https://jwc.hfut.edu.cn/
+nuaa    https://aao.nuaa.edu.cn/
+uibe    https://jwc.uibe.edu.cn/
+cau     https://jwc.cau.edu.cn/
+ustb    https://jwc.ustb.edu.cn/

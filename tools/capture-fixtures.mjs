@@ -29,6 +29,9 @@ const targets = {
   ouc: [['jwc-tzgg.html', 'https://jwc.ouc.edu.cn/6517/list.htm']],
   xmu: [['jwc-tzgg.html', 'https://jwc.xmu.edu.cn/tzgg.htm']],
   nankai: [['jwc-tzgg.html', 'https://jwc.nankai.edu.cn/tzgg/list.htm']],
+  zzu: [['jwc-tzgg.html', 'https://www5.zzu.edu.cn/jwc/index/tzgg.htm']],
+  ecnu: [['bksy-tzgg.html', 'https://bksy.ecnu.edu.cn/tzggwwxsgg/list.htm']],
+  bnu: [['jwb-tzgg.html', 'https://jwb.bnu.edu.cn/tzgg/index.htm']],
 };
 
 if (!targets[school]) {
