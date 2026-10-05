@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-05T00:00:34.502Z",
+  "updatedAt": "2026-10-05T00:12:10.147Z",
   "sources": {
     "jwc-important": [
       "fail",
@@ -217,7 +217,8 @@
       "fail"
     ],
     "jiaowu-tzgg": [
-      "ok"
+      "ok",
+      "fail"
     ],
     "bksy-tzgg": [
       "ok",
