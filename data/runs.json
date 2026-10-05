@@ -1,9 +1,8 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-05T00:28:00.971Z",
+  "updatedAt": "2026-10-05T01:03:50.393Z",
   "sources": {
     "jwc-important": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -22,11 +21,11 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "jwc-student": [
       "fail",
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -44,10 +43,10 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "news-notice": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -66,11 +65,11 @@
       "ok",
       "fail",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "news-academic": [
       "fail",
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -88,10 +87,10 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "gr-notice": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -110,7 +109,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "math-jwgg": [
       "ok"
@@ -157,10 +157,10 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "jwb-tzgg": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -179,7 +179,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "jiaowu-xszq": [
       "fail"
@@ -201,7 +202,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "jwc-jxtz": [
       "ok"
@@ -217,7 +219,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "jiaowu-tzgg": [
       "ok",
@@ -233,7 +236,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "aao-tzgg": [
       "ok"
