@@ -1,9 +1,8 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-05T07:38:50.690Z",
+  "updatedAt": "2026-10-05T07:59:32.220Z",
   "sources": {
     "jwc-important": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -19,13 +18,13 @@
       "fail",
       "fail",
       "ok",
+      "fail",
       "fail",
       "fail",
       "fail",
       "fail"
     ],
     "jwc-student": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -41,13 +40,13 @@
       "fail",
       "fail",
       "ok",
+      "fail",
       "fail",
       "fail",
       "fail",
       "fail"
     ],
     "news-notice": [
-      "fail",
       "ok",
       "fail",
       "fail",
@@ -63,13 +62,13 @@
       "fail",
       "fail",
       "ok",
+      "fail",
       "fail",
       "fail",
       "fail",
       "fail"
     ],
     "news-academic": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -85,13 +84,13 @@
       "fail",
       "fail",
       "ok",
+      "fail",
       "fail",
       "fail",
       "fail",
       "fail"
     ],
     "gr-notice": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -107,6 +106,7 @@
       "fail",
       "fail",
       "ok",
+      "fail",
       "fail",
       "fail",
       "fail",
