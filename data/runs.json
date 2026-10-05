@@ -1,9 +1,8 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-05T12:11:49.523Z",
+  "updatedAt": "2026-10-05T12:37:39.903Z",
   "sources": {
     "jwc-important": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -22,10 +21,10 @@
       "ok",
       "fail",
       "ok",
+      "fail",
       "fail"
     ],
     "jwc-student": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -44,10 +43,10 @@
       "ok",
       "fail",
       "ok",
+      "fail",
       "fail"
     ],
     "news-notice": [
-      "fail",
       "ok",
       "fail",
       "fail",
@@ -66,10 +65,10 @@
       "ok",
       "fail",
       "ok",
+      "fail",
       "fail"
     ],
     "news-academic": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -88,10 +87,10 @@
       "ok",
       "fail",
       "ok",
+      "fail",
       "fail"
     ],
     "gr-notice": [
-      "fail",
       "ok",
       "fail",
       "fail",
@@ -110,6 +109,7 @@
       "ok",
       "fail",
       "ok",
+      "fail",
       "fail"
     ],
     "math-jwgg": [
@@ -188,7 +188,6 @@
       "fail"
     ],
     "oaa-tzgg": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -207,7 +206,8 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "jwc-jxtz": [
       "ok"
@@ -241,32 +241,34 @@
       "fail",
       "ok",
       "fail",
-      "ok"
-    ],
-    "bksy-tzgg": [
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
       "ok",
       "fail"
     ],
-    "aao-tzgg": [
+    "bksy-tzgg": [
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
       "ok"
+    ],
+    "aao-tzgg": [
+      "ok",
+      "fail"
     ]
   }
 }
