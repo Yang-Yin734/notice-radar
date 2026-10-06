@@ -1,10 +1,9 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-06T02:35:41.244Z",
+  "updatedAt": "2026-10-06T02:54:16.350Z",
   "sources": {
     "jwc-important": [
       "fail",
-      "fail",
       "ok",
       "fail",
       "fail",
@@ -22,10 +21,10 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "jwc-student": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -44,11 +43,11 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "news-notice": [
       "fail",
-      "fail",
       "ok",
       "fail",
       "fail",
@@ -66,11 +65,10 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "news-academic": [
-      "fail",
-      "fail",
       "ok",
       "fail",
       "fail",
@@ -79,6 +77,8 @@
       "fail",
       "fail",
       "fail",
+      "fail",
+      "ok",
       "fail",
       "ok",
       "fail",
@@ -92,7 +92,6 @@
     ],
     "gr-notice": [
       "fail",
-      "fail",
       "ok",
       "fail",
       "fail",
@@ -110,7 +109,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "math-jwgg": [
       "ok"
@@ -163,6 +163,31 @@
       "fail"
     ],
     "jwb-tzgg": [
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail"
+    ],
+    "jiaowu-xszq": [
+      "fail"
+    ],
+    "oaa-tzgg": [
       "fail",
       "ok",
       "fail",
@@ -183,31 +208,6 @@
       "ok",
       "fail",
       "ok"
-    ],
-    "jiaowu-xszq": [
-      "fail"
-    ],
-    "oaa-tzgg": [
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail"
     ],
     "jwc-jxtz": [
       "ok"
