@@ -1,12 +1,11 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-06T04:59:54.927Z",
+  "updatedAt": "2026-10-06T05:30:10.124Z",
   "sources": {
     "jwc-important": [
       "fail",
       "fail",
       "fail",
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -22,13 +21,13 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "jwc-student": [
       "fail",
       "fail",
       "fail",
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -44,13 +43,13 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "news-notice": [
       "fail",
       "fail",
       "fail",
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -66,12 +65,12 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "news-academic": [
       "fail",
       "fail",
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -88,13 +87,13 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "gr-notice": [
       "fail",
       "fail",
       "fail",
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -110,7 +109,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "math-jwgg": [
       "ok"
@@ -141,7 +141,6 @@
       "ok"
     ],
     "ugs-tzgg": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -160,10 +159,10 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "jwb-tzgg": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -182,13 +181,13 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "jiaowu-xszq": [
       "fail"
     ],
     "oaa-tzgg": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -207,13 +206,13 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "jwc-jxtz": [
       "ok"
     ],
     "jw-ggtz": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -232,7 +231,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "jiaowu-tzgg": [
       "ok",
@@ -256,7 +256,6 @@
       "ok"
     ],
     "bksy-tzgg": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -275,7 +274,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "aao-tzgg": [
       "ok",
