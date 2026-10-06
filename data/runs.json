@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-06T03:58:58.710Z",
+  "updatedAt": "2026-10-06T04:12:20.477Z",
   "sources": {
     "jwc-important": [
       "fail",
@@ -188,7 +188,6 @@
       "fail"
     ],
     "oaa-tzgg": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -207,7 +206,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "jwc-jxtz": [
       "ok"
@@ -250,29 +250,30 @@
       "ok",
       "fail",
       "ok",
-      "fail"
-    ],
-    "bksy-tzgg": [
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
       "fail",
       "ok"
+    ],
+    "bksy-tzgg": [
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail"
     ],
     "aao-tzgg": [
       "ok",
@@ -280,7 +281,8 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ]
   }
 }
