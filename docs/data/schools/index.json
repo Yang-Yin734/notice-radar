@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-04T07:10:33.156Z",
+ "generatedAt": "2026-10-07T02:53:04.121Z",
  "source": "教育部《全国高等学校名单》（config/schools/directory.tsv，见 config/schools/README.md）",
  "note": "status=active 表示真抓过、能出通知；pending 只是目录条目，选中会提示尚未接入。接入方法见 docs/add-your-school.md",
  "counts": {
@@ -15812,10 +15812,10 @@
     {
      "id": "本科生院",
      "name": "本科生院",
-     "count": 12
+     "count": 13
     }
    ],
-   "total": 12
+   "total": 13
   },
   {
    "id": "4142010488",

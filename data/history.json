@@ -1,7 +1,19 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-04T07:10:30.627Z",
+  "updatedAt": "2026-10-07T02:52:26.643Z",
   "items": [
+    {
+      "id": "c438724b630cd8c0",
+      "sourceId": "ugs-tzgg",
+      "sourceName": "本科生院·通知公告",
+      "school": "hust",
+      "title": "华中科技大学2026年教师教学能力培训项目（课程）立项名单公示",
+      "url": "https://ugs.hust.edu.cn/info/1142/7603.htm",
+      "date": "2026-09-30",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-07T02:52:26.643Z"
+    },
     {
       "id": "44be26716726a35e",
       "sourceId": "jwc-tzgg",
