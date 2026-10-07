@@ -1,10 +1,9 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-07T01:54:22.299Z",
+  "updatedAt": "2026-10-07T02:22:28.779Z",
   "sources": {
     "jwc-important": [
       "fail",
-      "fail",
       "ok",
       "fail",
       "fail",
@@ -22,11 +21,11 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "jwc-student": [
       "fail",
-      "fail",
       "ok",
       "fail",
       "fail",
@@ -44,11 +43,11 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "news-notice": [
       "fail",
-      "fail",
       "ok",
       "fail",
       "fail",
@@ -66,11 +65,11 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "news-academic": [
       "fail",
-      "fail",
       "ok",
       "fail",
       "fail",
@@ -88,11 +87,11 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "gr-notice": [
       "fail",
-      "fail",
       "ok",
       "fail",
       "fail",
@@ -110,7 +109,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "math-jwgg": [
       "ok"
@@ -141,7 +141,6 @@
       "ok"
     ],
     "ugs-tzgg": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -160,10 +159,10 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "jwb-tzgg": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -182,7 +181,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "jiaowu-xszq": [
       "fail"
@@ -213,7 +213,6 @@
       "ok"
     ],
     "jw-ggtz": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -232,10 +231,10 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "jiaowu-tzgg": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -254,7 +253,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "bksy-tzgg": [
       "fail",
