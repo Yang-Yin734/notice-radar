@@ -1,9 +1,8 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-07T11:21:53.484Z",
+  "updatedAt": "2026-10-07T11:38:54.581Z",
   "sources": {
     "jwc-important": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -22,10 +21,10 @@
       "fail",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "jwc-student": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -44,10 +43,10 @@
       "fail",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "news-notice": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -66,10 +65,10 @@
       "fail",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "news-academic": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -88,7 +87,8 @@
       "fail",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "gr-notice": [
       "fail",
@@ -141,7 +141,6 @@
       "ok"
     ],
     "ugs-tzgg": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -160,10 +159,10 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "jwb-tzgg": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -182,13 +181,13 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "jiaowu-xszq": [
       "fail"
     ],
     "oaa-tzgg": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -207,13 +206,13 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "jwc-jxtz": [
       "ok"
     ],
     "jw-ggtz": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -232,7 +231,8 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "jiaowu-tzgg": [
       "fail",
@@ -257,7 +257,6 @@
       "ok"
     ],
     "bksy-tzgg": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -276,7 +275,8 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "aao-tzgg": [
       "fail",
