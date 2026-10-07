@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-07T17:28:36.214Z",
+  "updatedAt": "2026-10-07T17:47:25.502Z",
   "sources": {
     "jwc-important": [
       "fail",
@@ -91,7 +91,6 @@
       "ok"
     ],
     "gr-notice": [
-      "fail",
       "ok",
       "fail",
       "fail",
@@ -110,7 +109,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "math-jwgg": [
       "ok"
