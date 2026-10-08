@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-10-08T02:38:58.019Z",
-  "total": 179,
+  "generatedAt": "2026-10-08T03:00:32.745Z",
+  "total": 182,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
       "sourceName": "教务部·通知公告",
-      "count": 55
+      "count": 58
     },
     {
       "sourceId": "jwb-tzgg",
@@ -1990,6 +1990,18 @@
       "firstSeenAt": "2026-10-03T07:29:14.156Z"
     },
     {
+      "id": "c57bdec5b199ad1d",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "swufe",
+      "title": "关于2025级专业分流报名的通知",
+      "url": "https://jwc.swufe.edu.cn/info/1025/38421.htm",
+      "date": "2026-04-01",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-08T03:00:15.232Z"
+    },
+    {
       "id": "e7dba21c5a50d4d9",
       "sourceId": "jwc-student",
       "sourceName": "教务处·学生事务公告",
@@ -2026,6 +2038,18 @@
       "firstSeenAt": "2026-10-03T17:07:59.243Z"
     },
     {
+      "id": "5c75a9fb7bb74892",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "swufe",
+      "title": "关于2025-2026-2学期重修选课及缴费的通知",
+      "url": "https://jwc.swufe.edu.cn/info/1025/38351.htm",
+      "date": "2026-03-13",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-08T03:00:15.232Z"
+    },
+    {
       "id": "c2aafd7e96c11507",
       "sourceId": "oaa-tzgg",
       "sourceName": "本科生院·通知公告",
@@ -2036,6 +2060,18 @@
       "tag": null,
       "alsoIn": [],
       "firstSeenAt": "2026-10-03T17:07:59.243Z"
+    },
+    {
+      "id": "4a361e80ed67c7b8",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "swufe",
+      "title": "关于2026年上半年全国大学外语等级考试信息校验及报名的通知",
+      "url": "https://jwc.swufe.edu.cn/info/1025/38321.htm",
+      "date": "2026-03-12",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-08T03:00:15.232Z"
     },
     {
       "id": "ae03a633e819626e",
