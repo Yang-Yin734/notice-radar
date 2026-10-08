@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-08T12:33:36.173Z",
+  "updatedAt": "2026-10-08T13:00:53.394Z",
   "sources": {
     "jwc-important": [
       "fail",
@@ -257,7 +257,6 @@
       "ok"
     ],
     "bksy-tzgg": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -276,7 +275,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "aao-tzgg": [
       "fail",

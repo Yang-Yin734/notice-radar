@@ -3,13 +3,13 @@
  "name": "厦门大学",
  "province": "福建省",
  "city": "厦门市",
- "generatedAt": "2026-10-08T12:33:36.672Z",
- "total": 9,
+ "generatedAt": "2026-10-08T13:01:06.044Z",
+ "total": 10,
  "bySource": [
   {
    "sourceId": "jwc-tzgg",
    "sourceName": "教务处·通知公告",
-   "count": 9
+   "count": 10
   }
  ],
  "units": [
@@ -19,10 +19,23 @@
    "sources": [
     "教务处·通知公告"
    ],
-   "count": 9
+   "count": 10
   }
  ],
  "items": [
+  {
+   "id": "301f2df9e815a714",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "xmu",
+   "title": "关于2026年12月19日-20日全国硕士研究生招生考试（初试）教学楼封闭的通知",
+   "url": "https://jwc.xmu.edu.cn/info/1921/69872.htm",
+   "date": "2026-10-08",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-08T13:00:56.914Z",
+   "unit": "教务处"
+  },
   {
    "id": "44be26716726a35e",
    "sourceId": "jwc-tzgg",

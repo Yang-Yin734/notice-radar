@@ -1,7 +1,19 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-08T07:58:57.290Z",
+  "updatedAt": "2026-10-08T13:00:56.914Z",
   "items": [
+    {
+      "id": "301f2df9e815a714",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "xmu",
+      "title": "关于2026年12月19日-20日全国硕士研究生招生考试（初试）教学楼封闭的通知",
+      "url": "https://jwc.xmu.edu.cn/info/1921/69872.htm",
+      "date": "2026-10-08",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-08T13:00:56.914Z"
+    },
     {
       "id": "249e27b162780fa4",
       "sourceId": "jiaowu-tzgg",
