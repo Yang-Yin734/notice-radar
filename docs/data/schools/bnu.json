@@ -3,13 +3,13 @@
  "name": "北京师范大学",
  "province": "北京市",
  "city": "",
- "generatedAt": "2026-10-08T07:16:38.915Z",
- "total": 17,
+ "generatedAt": "2026-10-08T07:38:48.960Z",
+ "total": 18,
  "bySource": [
   {
    "sourceId": "jwb-tzgg",
    "sourceName": "教务部·通知公告",
-   "count": 17
+   "count": 18
   }
  ],
  "units": [
@@ -19,10 +19,23 @@
    "sources": [
     "教务部·通知公告"
    ],
-   "count": 17
+   "count": 18
   }
  ],
  "items": [
+  {
+   "id": "145fac975e831b03",
+   "sourceId": "jwb-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "bnu",
+   "title": "【实践教学】 关于开展2026年度大学生创新训练计划项目中期检查的通知",
+   "url": "https://jwb.bnu.edu.cn/pygc/sjjx/dxskyycx/b595d07daf74492dbd1bcb0ed82bdd74.htm",
+   "date": "2026-10-08",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-08T07:37:37.341Z",
+   "unit": "教务部"
+  },
   {
    "id": "e36ca68e4c4c1d5a",
    "sourceId": "jwb-tzgg",

@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-08T07:16:38.915Z",
-  "total": 183,
+  "generatedAt": "2026-10-08T07:38:48.960Z",
+  "total": 185,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
@@ -10,7 +10,7 @@
     {
       "sourceId": "jwb-tzgg",
       "sourceName": "教务部·通知公告",
-      "count": 20
+      "count": 21
     },
     {
       "sourceId": "math-jwgg",
@@ -20,7 +20,7 @@
     {
       "sourceId": "aao-tzgg",
       "sourceName": "教务处·通知公告",
-      "count": 13
+      "count": 14
     },
     {
       "sourceId": "ugs-tzgg",
@@ -79,6 +79,30 @@
     }
   ],
   "items": [
+    {
+      "id": "ad79ccef5fc1a47e",
+      "sourceId": "aao-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "njau",
+      "title": "关于推荐首届省学校国家安全教育指导委员会委员人选的公示",
+      "url": "https://aao.njau.edu.cn/info/1101/6996.htm",
+      "date": "2026-10-08",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-08T07:38:03.521Z"
+    },
+    {
+      "id": "145fac975e831b03",
+      "sourceId": "jwb-tzgg",
+      "sourceName": "教务部·通知公告",
+      "school": "bnu",
+      "title": "【实践教学】 关于开展2026年度大学生创新训练计划项目中期检查的通知",
+      "url": "https://jwb.bnu.edu.cn/pygc/sjjx/dxskyycx/b595d07daf74492dbd1bcb0ed82bdd74.htm",
+      "date": "2026-10-08",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-08T07:37:37.341Z"
+    },
     {
       "id": "a93dd13f2659c93b",
       "sourceId": "aao-tzgg",

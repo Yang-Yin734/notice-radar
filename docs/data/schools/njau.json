@@ -3,13 +3,13 @@
  "name": "南京农业大学",
  "province": "江苏省",
  "city": "南京市",
- "generatedAt": "2026-10-08T07:16:38.915Z",
- "total": 13,
+ "generatedAt": "2026-10-08T07:38:48.960Z",
+ "total": 14,
  "bySource": [
   {
    "sourceId": "aao-tzgg",
    "sourceName": "教务处·通知公告",
-   "count": 13
+   "count": 14
   }
  ],
  "units": [
@@ -19,10 +19,23 @@
    "sources": [
     "教务处·通知公告"
    ],
-   "count": 13
+   "count": 14
   }
  ],
  "items": [
+  {
+   "id": "ad79ccef5fc1a47e",
+   "sourceId": "aao-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "njau",
+   "title": "关于推荐首届省学校国家安全教育指导委员会委员人选的公示",
+   "url": "https://aao.njau.edu.cn/info/1101/6996.htm",
+   "date": "2026-10-08",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-08T07:38:03.521Z",
+   "unit": "教务处"
+  },
   {
    "id": "a93dd13f2659c93b",
    "sourceId": "aao-tzgg",
