@@ -1,7 +1,19 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-08T07:38:03.521Z",
+  "updatedAt": "2026-10-08T07:58:57.290Z",
   "items": [
+    {
+      "id": "249e27b162780fa4",
+      "sourceId": "jiaowu-tzgg",
+      "sourceName": "教务部·通知公告",
+      "school": "nwpu",
+      "title": "关于启动2027届本科毕业设计（论文）暨开展2026年第二批“高峰领航计划”工作的通知",
+      "url": "https://jiaowu.nwpu.edu.cn/info/1164/30108.htm",
+      "date": "2026-10-08",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-08T07:58:57.290Z"
+    },
     {
       "id": "ad79ccef5fc1a47e",
       "sourceId": "aao-tzgg",
