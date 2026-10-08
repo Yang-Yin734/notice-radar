@@ -3,13 +3,13 @@
  "name": "郑州大学",
  "province": "河南省",
  "city": "郑州市",
- "generatedAt": "2026-10-08T02:21:21.584Z",
- "total": 7,
+ "generatedAt": "2026-10-08T02:38:58.019Z",
+ "total": 8,
  "bySource": [
   {
    "sourceId": "jwc-tzgg",
    "sourceName": "教务部·通知公告",
-   "count": 7
+   "count": 8
   }
  ],
  "units": [
@@ -19,10 +19,23 @@
    "sources": [
     "教务部·通知公告"
    ],
-   "count": 7
+   "count": 8
   }
  ],
  "items": [
+  {
+   "id": "fc0cbcd788d85de3",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "zzu",
+   "title": "新任教师上课资格培训合格名单：2026-2027学年第一学期第4周",
+   "url": "https://www5.zzu.edu.cn/jwc/info/1125/5406.htm",
+   "date": "2026-10-08",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-08T02:38:57.819Z",
+   "unit": "教务部"
+  },
   {
    "id": "1dfa567a5e3e5fb6",
    "sourceId": "jwc-tzgg",

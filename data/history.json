@@ -1,7 +1,19 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-08T01:23:45.910Z",
+  "updatedAt": "2026-10-08T02:38:57.819Z",
   "items": [
+    {
+      "id": "fc0cbcd788d85de3",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务部·通知公告",
+      "school": "zzu",
+      "title": "新任教师上课资格培训合格名单：2026-2027学年第一学期第4周",
+      "url": "https://www5.zzu.edu.cn/jwc/info/1125/5406.htm",
+      "date": "2026-10-08",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-08T02:38:57.819Z"
+    },
     {
       "id": "e7ea36bbdb018f70",
       "sourceId": "jwc-tzgg",
