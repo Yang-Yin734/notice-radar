@@ -3,13 +3,13 @@
  "name": "南京农业大学",
  "province": "江苏省",
  "city": "南京市",
- "generatedAt": "2026-10-08T03:00:32.745Z",
- "total": 12,
+ "generatedAt": "2026-10-08T03:31:16.495Z",
+ "total": 13,
  "bySource": [
   {
    "sourceId": "aao-tzgg",
    "sourceName": "教务处·通知公告",
-   "count": 12
+   "count": 13
   }
  ],
  "units": [
@@ -19,10 +19,23 @@
    "sources": [
     "教务处·通知公告"
    ],
-   "count": 12
+   "count": 13
   }
  ],
  "items": [
+  {
+   "id": "a93dd13f2659c93b",
+   "sourceId": "aao-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "njau",
+   "title": "关于做好2027届毕业生图像信息核对与补采工作的通知",
+   "url": "https://aao.njau.edu.cn/info/1101/6995.htm",
+   "date": "2026-10-08",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-08T03:30:35.841Z",
+   "unit": "教务处"
+  },
   {
    "id": "4af6239363e23e8a",
    "sourceId": "aao-tzgg",
