@@ -71,7 +71,16 @@ export async function probeListPage(url, { timeoutMs = 30000 } = {}) {
   } catch (e) {
     return { url, status: 0, bytes: 0, best: null, note: `抓取失败：${e.message}` };
   }
-  const html = res.html;
+  // 拿到 HTML 之后的推断逻辑与"HTML 怎么来的"无关 —— 抽成 analyzeListHtml，
+  // 好让需要真浏览器的站点（瑞数类 WAF，普通 fetch 只回 202）复用同一套打分与判据。
+  return { url, status: res.status, bytes: res.bytes, html: res.html, ...analyzeListHtml(res.html, url) };
+}
+
+/**
+ * 纯函数：给一段已经拿到的列表页 HTML + 它的地址，推断最优选择器组合。
+ * 返回 { best, note, all }——字段含义见 probeListPage 的文件头注释。
+ */
+export function analyzeListHtml(html, url) {
   const $ = load(html);
 
   let best = null;
@@ -150,7 +159,7 @@ export async function probeListPage(url, { timeoutMs = 30000 } = {}) {
     note = `只有 ${Math.round(best.noticeLike * 100)}% 的标题像通知 —— 可能选错了栏目，接入前先看内容`;
   }
 
-  return { url, status: res.status, bytes: res.bytes, best, note, html, all };
+  return { best, note, all };
 }
 
 /**

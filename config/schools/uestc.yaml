@@ -12,12 +12,12 @@
 school: uestc
 name: 电子科技大学
 
+# 推送通道：本项目不绑定任何第三方推送服务，默认只打印到终端。
+# 想收到手机/邮箱通知，自己加 webhook（飞书/钉钉/自建）或 email —— 见 README「推送通道」。
 notify:
-  - type: serverchan
-    keyEnv: SERVERCHAN_KEY
   - type: stdout
 
-# 推送分级（M4）：命中 urgent 的立刻推微信，其余进每天早 8:00 的日报。
+# 推送分级（M4）：命中 urgent 的立刻推送，其余进每天早 8:00 的日报。
 # 想恢复「所有新通知都即时推」的老行为：把 digestRest 改成 false。
 # 想彻底静音某类通知：加进 mute。
 push:
@@ -62,7 +62,7 @@ push:
 
 # 抓取健康告警（M4）：源抓挂了两周你却以为一直在收通知，是最危险的失败模式
 alerts:
-  failureNotify: true     # 抓取失败 / 解析出 0 条 → 推微信告警
+  failureNotify: true     # 抓取失败 / 解析出 0 条 → 发告警（走上面 notify 里启用的通道）
   failureStreak: 3        # **连续**失败 3 次才告警（每 20 分钟一轮 ≈ 1 小时都不通）
                           # 单次失败不算：runner 抓国内站点约每 3 次有 1 次整体不通，否则会误报
   weatherStreak: 12       # 若**所有源一起以网络层错误失败**（fetch failed = 网络天气），

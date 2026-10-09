@@ -2,6 +2,57 @@
 
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## v0.11.0 — 2026-10-09
+
+### 移除第三方推送服务（Server酱 / 微信），只留通用通道
+
+这是一个**破坏性变更**：项目不再内置任何要注册、要扫码、密钥还会过期的第三方推送服务。
+
+- **移除** `type: serverchan`（Server酱，转发到微信）。历史上 WxPusher / 企业微信已在 v0.10.4 移除，
+  至此 `notify` 只剩三条**通用**通道：`webhook`（飞书/钉钉/自建服务）、`email`（SMTP）、`stdout`（本地调试）。
+- 配置里再写已移除的通道类型**会直接报错**，而不是静默忽略：
+
+  ```
+  ✗ notify：serverchan（Server酱（转发到微信））已在 v0.11.0 从项目里移除
+    改法：删掉这一项，或换成 webhook / email / stdout
+  ```
+
+  静默忽略最坑人 —— 配置看着"配好了"，消息永远不来。
+- 20 个学校预设里的 `notify: - type: serverchan` 块全部删除；`config/schools/uestc.yaml` 只留 `stdout`，
+  其余学校不再写 `notify`（条目照常进归档与仪表盘，只是不主动打扰）。
+- 环境变量随之更换：`SERVERCHAN_KEY` → `NOTICE_RADAR_WEBHOOK`（webhook）/ `SMTP_URL`+`MAIL_TO`+`MAIL_FROM`（邮件）。
+  四个工作流（poll / poll-math / daily-digest / notify-test）里的 secret 引用一并换掉。
+
+### 移除「微信推送」开关与 `PUSH_ENABLED`
+
+- 应用设置页里整张「微信推送」卡片（开关 + GitHub 令牌 + 测试推送 + 最近结果）删除。
+  它唯一的作用就是改仓库变量 `PUSH_ENABLED`，代价是让你在手机上存一个 GitHub 令牌 —— 不划算。
+- 仓库变量 `PUSH_ENABLED` 废弃，两个抓取工作流上的 `if: vars.PUSH_ENABLED != 'false'` 也删了。
+  **想暂停推送**：改配置里的 `notify`（留空即不发），或禁用 poll / poll-math 工作流（那样连抓取都不做）。
+- 随之删除 Android 侧的 `githubToken` / `ghRequest` / `fetchPushEnabled` / `setPushEnabled` /
+  `triggerNotifyTest` / `lastNotifyLog` / `parseNotifyLog` 与 `NotifyLogTest`。
+  `REPO_SLUG` 保留（仍然用于「请求接入选校」的 issue 链接）。
+
+### `test-notify` 在没配远端通道时不再算失败
+
+本仓库默认只配 `stdout`，而 `stdout` 永远"成功"。以前 `test-notify` 会因为"没有真正的通道"返回退出码 1，
+让 notify-test 工作流**永久变红**。现在它会打印：
+
+```
+▸ 配置里没有远端推送通道（只有 stdout 或干脆没写 notify）—— 没有东西可测，跳过。
+```
+
+并以退出码 0 结束（`--channel=<没有的通道>` 仍然报错）。
+
+### 文档与工具同步
+
+- README：「新用户开启微信推送：5 步」重写为**「新用户开启通知：4 步」**（webhook / email + secrets + 验证），
+  推送通道表改成三条通用通道并写清 `notify: []` 的语义，删掉 32 字标题上限、方糖关注、配额这类已无意义的卡点。
+- `.env.example`、`config/sources.example.yaml`、`docs/add-your-school.md` 的模板统一成 `notify: []`；
+  `docs/ios.md`、`README.en.md`、`docs/good-first-issues.md` 里过时的微信描述一并改掉。
+- `tools/install-local-task.ps1` 的本机任务凭据检查改为扫 `NOTICE_RADAR_WEBHOOK` / `SMTP_URL` / `SMTP_HOST` / `MAIL_TO`，
+  没有凭据时**只警告不中断**（本机仍然可以只抓取不推送）。
+
 ## v0.10.21 — 2026-10-04
 
 ### 再接入三所：湖南大学、南京农业大学、上海财经大学（都只采集不通知）

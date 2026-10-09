@@ -8,10 +8,6 @@
 school: xjtu
 name: 西安交通大学
 
-notify:
-  - type: serverchan
-    keyEnv: SERVERCHAN_KEY
-
 sources:
   - id: jwc-jxtz
     name: 教务处·教学通知

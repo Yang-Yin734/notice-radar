@@ -12,9 +12,12 @@
 school: example
 name: 某某大学
 
-notify:
-  - type: serverchan
-    keyEnv: SERVERCHAN_KEY
+# 推送通道（可选，默认一个都不开）。项目不绑定任何第三方推送服务：
+#   - type: webhook     通用 JSON POST（飞书/钉钉/自建服务），配 url 或 urlEnv
+#   - type: email       SMTP 邮件，配 SMTP_URL（或 SMTP_HOST + SMTP_USER + SMTP_PASS）
+#   - type: stdout      只打印到终端（本地跑时够用）
+# 不写 notify 段 = 什么都不推，只进归档与仪表盘。
+notify: []
 
 sources:
   - id: jwc-notice

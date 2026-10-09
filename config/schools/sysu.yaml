@@ -11,10 +11,6 @@
 school: sysu
 name: 中山大学
 
-notify:
-  - type: serverchan
-    keyEnv: SERVERCHAN_KEY
-
 sources:
   - id: jwb-tzgg
     name: 教务部·通知通告

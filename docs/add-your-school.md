@@ -52,9 +52,9 @@ selectors:
 school: myschool
 name: 某某大学
 
-notify:
-  - type: serverchan
-    keyEnv: SERVERCHAN_KEY
+# 推送通道可选，默认什么都不推（只有归档与仪表盘）。
+# 想收到通知就按 README「推送通道」写一条 webhook 或 email。
+notify: []
 
 sources:
   - id: jwc-notice
@@ -74,7 +74,7 @@ sources:
     name: 教务处·通知公告
     url: https://jwc.myschool.edu.cn/tzgg.htm
     adapter: html-list
-    collectOnly: true        # 只采集：进归档/仪表盘/按校数据，但不推微信、不进日报、失败也不告警
+    collectOnly: true        # 只采集：进归档/仪表盘/按校数据，但不推送、不进日报、失败也不告警
     selectors: { item: ul.news-list li, title: a@title, link: a@href, date: span.date }
 ```
 

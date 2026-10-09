@@ -83,22 +83,22 @@ test('应用：没有数据也能渲染出界面（不是空白页）', () => {
   assert.match(html, /添加到主屏幕/);
 });
 
-test('应用：设置页能开关微信推送（读写仓库变量 PUSH_ENABLED）', () => {
+test('应用：设置页里已没有任何第三方推送（微信）相关的开关与令牌', () => {
   const history = emptyHistory();
   appendHistory(history, [notice({ id: 'a' })]);
-  const html = renderDashboard(history, { repo: 'me/my-radar' });
+  const html = renderDashboard(history);
   const boot = bootstrapOf(html);
 
-  assert.equal(boot.repo, 'me/my-radar', '仓库信息进 bootstrap（推送开关要用）');
+  // v0.11.0 起项目不内置第三方推送服务：整张「微信推送」卡片、PUSH_ENABLED 开关、
+  // GitHub 令牌输入框（它唯一的用途就是改那个仓库变量）都删掉了，别再溜回来。
   assert.match(html, /id="view-settings"/, '有设置页');
   assert.match(html, /data-view="settings"/, '标签栏有"设置"');
-  assert.match(html, /id="push-toggle"/, '推送开关');
-  assert.match(html, /role="switch"/, '开关有无障碍语义');
-  assert.match(html, /actions\/variables\/PUSH_ENABLED/, '读仓库变量');
-  assert.match(html, /PUSH_ENABLED', value:/, '写仓库变量');
-  assert.match(html, /id="gh-token" type="password"/, '令牌只存本机');
-  assert.match(html, /Fine-grained tokens/, '告诉用户该建哪种令牌');
-  assert.match(html, /settings\/variables\/actions/, '也给"不想给令牌"的手动路径');
+  assert.match(html, /安装到手机/, '设置页仍在（只是少了推送卡片）');
+  assert.ok(!html.includes('微信推送'), '不该再出现"微信推送"字样');
+  assert.ok(!html.includes('PUSH_ENABLED'), '不该再读写仓库变量 PUSH_ENABLED');
+  assert.ok(!html.includes('id="push-toggle"'), '推送开关已删');
+  assert.ok(!html.includes('id="gh-token"'), '令牌输入框已删');
+  assert.ok(!('repo' in boot), 'bootstrap 里不再带 repo（唯一消费者是那段已删的 JS）');
 });
 
 test('应用：版本信息只做说明（网页版不提示更新）', () => {

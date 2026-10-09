@@ -113,7 +113,7 @@ interface Flags {
   only: string | null;
   /** digest：推送**全部归档**（不分时间窗、不截断）—— 用来验证推送链路 */
   all: boolean;
-  /** test-notify：只测某个通道（issue：微信通道多了，要能单独验） */
+  /** test-notify：只测某个通道，不必真跑一轮抓取 */
   channel: string | null;
   /** doctor：每个源顺带打印前 N 条解析结果（接入新学校时确认"没抓错东西"） */
   show: number;
@@ -281,11 +281,10 @@ function filterItems(results: SourceResult[], cfg: RadarConfig): Notice[] {  con
  * 把推送结果写进 data/last-notify.json。
  * 为什么值得单独落盘：Actions 的日志接口需要 token，而"云端到底推出去没有"是部署时最容易卡住的问题。
  * 写进仓库后，任何人都能从提交记录里直接查证（`data/last-notify.json`）。
- * 必须脱敏：Server酱 返回里带 readkey（能用来读/删那条消息），不能进公开仓库。
+ * 必须脱敏：通道返回里可能带回能读/删消息的凭据，不能进公开仓库。
  */
 function writeNotifyLog(statePath: string, title: string, count: number, outcomes: { channel: string; ok: boolean; detail: string }[]): string {
-  const sanitize = (detail: string) =>
-    detail.replace(/"readkey"\s*:\s*"[^"]*"/g, '"readkey":"***"').replace(/SCT[A-Za-z0-9]{10,}/g, 'SCT***').slice(0, 400);
+  const sanitize = (detail: string) => detail.replace(/"(readkey|token|key)"\s*:\s*"[^"]*"/gi, '"$1":"***"').slice(0, 400);
   const file = path.join(path.dirname(statePath), 'last-notify.json');
   fs.mkdirSync(path.dirname(file), { recursive: true });
   fs.writeFileSync(
@@ -296,8 +295,8 @@ function writeNotifyLog(statePath: string, title: string, count: number, outcome
   return file;
 }
 
-/** 只测推送通道，不抓任何站点 —— 用来确认 SERVERCHAN_KEY 之类配好了没有。
- *  支持 --channel=<type> 单独验某个通道（微信通道多了以后很有用）。 */
+/** 只测推送通道，不抓任何站点 —— 用来确认 webhook/邮件 之类配好了没有。
+ *  支持 --channel=<type> 单独验某个通道。 */
 async function cmdTestNotify(flags: Flags): Promise<number> {
   const cfg = loadCfg(flags);
   const wanted = cfg.notify.filter((n) => n.enabled && (!flags.channel || n.type === flags.channel));
@@ -314,7 +313,7 @@ async function cmdTestNotify(flags: Flags): Promise<number> {
   const markdown = [
     `# ${cfg.name} · 推送通道测试`,
     '',
-    '这条消息用来验证推送密钥（如 `SERVERCHAN_KEY`）是否配置正确 —— 收到就说明云端/本机都能推到你的手机。',
+    '这条消息用来验证推送配置（webhook 地址、SMTP 凭据）是否正确 —— 收到就说明云端/本机都能把消息发到你的设备。',
     '',
     `- 配置文件：\`${flags.config}\``,
     `- 发送时间：${now.toISOString()}`,
@@ -330,8 +329,9 @@ async function cmdTestNotify(flags: Flags): Promise<number> {
   // 判定必须忽略 stdout：它永远"成功"，否则这个自检会永远显示通过（真踩过这个坑）
   const remote = outcomes.filter((o) => o.channel !== 'stdout');
   if (remote.length === 0) {
-    console.log('\n▸ 配置里没有真正的推送通道（只有 stdout），这个测试说明不了问题。');
-    return 1;
+    console.log('\n▸ 配置里没有远端推送通道（只有 stdout 或干脆没写 notify）—— 没有东西可测，跳过。');
+    console.log('  想要手机/邮箱通知：在配置里加 webhook 或 email，见 README「推送通道」。');
+    return 0;
   }
   const anyRemoteOk = remote.some((o) => o.ok);
   console.log(
@@ -922,13 +922,13 @@ function cmdList(flags: Flags): number {
 }
 
 function usage(): void {
-  console.log(`notice-radar v${VERSION} —— 把高校官网通知变成能推到手机的信息流
+  console.log(`notice-radar v${VERSION} —— 把高校官网通知变成可订阅、可过滤的信息流
 
 用法：
   radr run      [--config=路径] [--dry] [--no-notify] [--json=路径] [--delay=毫秒] [--max=条数] [--only=源id] [--write-always] [--allow-browser]
   radr doctor   [--config=路径] [--only=源id] [--allow-browser]      体检：每个源能不能抓、解析出几条（含最近 N 次成功率）
   radr list     [--config=路径]                        列出配置里的源
-  radr test-notify [--config=路径] [--channel=通道]     只发一条测试消息，验证推送密钥配好没有（serverchan/email/webhook/stdout）
+  radr test-notify [--config=路径] [--channel=通道]     只发一条测试消息，验证推送通道配好没有（webhook/email/stdout）
   radr dashboard [--out=docs/index.html]               把历史归档渲染成静态仪表盘（GitHub Pages 用）
   radr stats     [--state=data/state.json] [--json=文件]  通知频次统计（来源/标签/周/星期分布）
   radr digest    [--date=YYYY-MM-DD | --hours=24 | --all] [--max=条数] [--out=文件] [--notify] [--force]
@@ -946,7 +946,7 @@ function usage(): void {
 
 默认配置：${DEFAULT_CONFIG}
 默认状态：${DEFAULT_STATE}（只记"见过哪些通知"，不含正文与个人信息）
-推送密钥：从环境变量或项目根目录的 .env 读（默认 SERVERCHAN_KEY），永不落盘。`);
+推送凭据：从环境变量或项目根目录的 .env 读（如 SMTP_URL、NOTICE_RADAR_WEBHOOK），永不落盘。`);
 }
 
 const [, , command = 'run', ...rest] = process.argv;

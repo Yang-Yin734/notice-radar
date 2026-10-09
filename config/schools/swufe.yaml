@@ -2,7 +2,7 @@
 #
 # 状态：**只采集不通知**（每个源都写了 collectOnly: true）。
 #   条目会照常进归档、仪表盘与按校数据文件（docs/data/schools/swufe.json），
-#   但**不推微信、不进日报、抓失败也不告警**。
+#   但**不推送、不进日报、抓失败也不告警**。
 #   等确认抓稳了（比如连续几天都能拿到条目），把 collectOnly 删掉就会开始正常推送。
 #
 # 用法：
@@ -11,10 +11,6 @@
 
 school: swufe
 name: 西南财经大学
-
-notify:
-  - type: serverchan
-    keyEnv: SERVERCHAN_KEY
 
 sources:
   - id: jwc-tzgg

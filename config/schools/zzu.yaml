@@ -9,10 +9,6 @@
 school: zzu
 name: 郑州大学
 
-notify:
-  - type: serverchan
-    keyEnv: SERVERCHAN_KEY
-
 sources:
   - id: jwc-tzgg
     name: 教务部·通知公告

@@ -28,15 +28,7 @@
 - 改 `src/core/report.ts`，加一个纯函数 + 单元测试
 - 验收：`npm test` 通过，且日报里出现剩余天数
 
-## 🟡 4. 支持邮件通道
-
-`notify/index.ts` 已经有 serverchan / webhook / stdout，缺一个 SMTP。
-
-- 用 `nodemailer`（`dsh-rss-monitor` 也用这个，依赖成熟）
-- 密钥同样走环境变量：`SMTP_HOST` / `SMTP_USER` / `SMTP_PASS`
-- 验收：配置里写 `type: email` 能收到一封 HTML 日报；补一个不联网的单元测试
-
-## 🟡 5. 配置校验给出"人话"报错
+## 🟡 4. 配置校验给出"人话"报错
 
 现在 zod 的错误是 `sources.0.selectors.item: Required`。改成：
 
@@ -48,14 +40,7 @@
 - 改 `src/core/config.ts` 的 `loadConfig`
 - 验收：故意删掉一行 selectors，报错信息里出现源名字和文档链接
 
-## 🟡 6. 加一个源的"最近 N 次成功率"记录
-
-`radr doctor` 只看当下。把每次抓取结果追加到 `data/health.json`，doctor 里显示"最近 20 次成功 18 次"。
-
-- 涉及 `src/cli.ts`、`src/core/report.ts`、新的 `src/core/health.ts`
-- 验收：连续跑几次 doctor / run 后，表格里出现成功率列
-
-## 🔴 7. 抓取第二页（翻页支持）
+## 🔴 5. 抓取第二页（翻页支持）
 
 现在只看列表第一页。教务处列表 URL 是 `?page=2` 这种形式。
 
@@ -63,7 +48,7 @@
 - 注意：别把间隔去掉，翻页之间也要 sleep
 - 验收：`pages: 2` 时条目数明显增加，且不重复
 
-## 🔴 8. 换一个学校（最欢迎的贡献）
+## 🔴 6. 换一个学校（最欢迎的贡献）
 
 参照 `config/sources.example.yaml` 接你自己学校的源。**必须带 fixture 测试**（见 CONTRIBUTING.md）。
 

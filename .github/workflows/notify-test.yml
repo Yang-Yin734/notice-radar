@@ -1,7 +1,8 @@
 name: notify-test
 
 # 推送通道测试：只发一条测试消息，不抓任何站点。
-# 用途：确认 SERVERCHAN_KEY 这类 secret 配好没有 —— 部署时最容易卡住的就是这一步。
+# 用途：确认 NOTICE_RADAR_WEBHOOK / SMTP_* 这类 secret 配好没有 —— 部署时最容易卡住的就是这一步。
+# 没配任何远端通道时本工作流会直接跳过（退出码 0），不会因为"没配推送"而变红。
 # 结果会写进 data/last-notify.json，所以能从提交记录里直接查证（不必翻 Actions 日志）。
 on:
   workflow_dispatch:
@@ -31,7 +32,10 @@ jobs:
 
       - name: 发送测试推送
         env:
-          SERVERCHAN_KEY: ${{ secrets.SERVERCHAN_KEY }}
+          NOTICE_RADAR_WEBHOOK: ${{ secrets.NOTICE_RADAR_WEBHOOK }}
+          SMTP_URL: ${{ secrets.SMTP_URL }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+          MAIL_FROM: ${{ secrets.MAIL_FROM }}
         run: node src/cli.ts test-notify
 
       - name: 提交推送结果（便于查证）
