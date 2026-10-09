@@ -114,16 +114,6 @@ const ISSUES = [
     body: '有些通知标题自带截止日（如"9月30日前提交"）。用 `parseDateLoose` 已有的能力抽出来，在日报里标 `⏰ 剩 3 天`。\n\n改 `src/core/report.ts`，加纯函数 + 单元测试。**验收**：`npm test` 通过且日报里出现剩余天数。',
   },
   {
-    title: '支持邮件推送通道（SMTP）',
-    labels: ['good first issue', 'help wanted'],
-    body: '`src/notify/index.ts` 现在有 serverchan / webhook / stdout，缺 SMTP。\n\n用 `nodemailer`，密钥走环境变量 `SMTP_HOST` / `SMTP_USER` / `SMTP_PASS`。\n\n**验收**：配置写 `type: email` 能收到 HTML 日报；补一个不联网的单元测试。',
-  },
-  {
-    title: '记录每个源最近 N 次成功率',
-    labels: ['good first issue'],
-    body: '`radr doctor` 只看当下。把每次抓取结果追加到 `data/health.json`，doctor 表格里显示"最近 20 次成功 18 次"。\n\n涉及 `src/cli.ts`、`src/core/report.ts`、新增 `src/core/health.ts`。',
-  },
-  {
     title: '支持抓取第二页（翻页）',
     labels: ['good first issue', 'help wanted'],
     body: '现在只看列表第一页。教务处列表是 `?page=2` 形式。\n\n在 source 配置里加 `pages: 2`，适配器负责翻页去重，**翻页之间也要保持间隔**。\n\n**验收**：`pages: 2` 时条目数明显增加且不重复。',
