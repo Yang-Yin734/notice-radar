@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-09T19:00:32.006Z",
+  "updatedAt": "2026-10-09T19:13:01.233Z",
   "sources": {
     "uestc:jwc-important": [
       "ok",
@@ -97,7 +97,8 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "ecnu:bksy-tzgg": [
       "fail",
