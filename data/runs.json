@@ -1,303 +1,74 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-09T12:52:13.140Z",
+  "updatedAt": "2026-10-09T13:08:03.656Z",
   "sources": {
-    "jwc-important": [
-      "fail",
-      "fail",
-      "fail",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "fail",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "fail",
+    "uestc:jwc-important": [
       "ok"
     ],
-    "jwc-student": [
-      "fail",
-      "fail",
-      "ok",
-      "fail",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "fail",
+    "uestc:jwc-student": [
       "ok"
     ],
-    "news-notice": [
-      "fail",
-      "fail",
-      "fail",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "fail",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "fail",
+    "uestc:news-notice": [
       "ok"
     ],
-    "news-academic": [
-      "fail",
-      "ok",
-      "fail",
-      "fail",
-      "fail",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "fail",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "fail",
+    "uestc:news-academic": [
       "ok"
     ],
-    "gr-notice": [
-      "fail",
-      "ok",
-      "fail",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "fail",
+    "uestc:gr-notice": [
       "ok"
     ],
-    "math-jwgg": [
+    "bnu:jwb-tzgg": [
       "ok"
     ],
-    "math-xsgz": [
-      "ok"
-    ],
-    "jwc-tzgg": [
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok"
-    ],
-    "ugs-tzgg": [
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok"
-    ],
-    "jwb-tzgg": [
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
+    "ecnu:bksy-tzgg": [
       "fail"
     ],
-    "jiaowu-xszq": [
+    "hnu:jwc-tzgg": [
       "fail"
     ],
-    "oaa-tzgg": [
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
+    "hust:ugs-tzgg": [
       "ok"
     ],
-    "jwc-jxtz": [
+    "jiangnan:jwc-tzgg": [
       "ok"
     ],
-    "jw-ggtz": [
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
+    "nankai:jwc-tzgg": [
       "ok"
     ],
-    "jiaowu-tzgg": [
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
+    "njau:aao-tzgg": [
       "ok"
     ],
-    "bksy-tzgg": [
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
+    "nju:jw-ggtz": [
       "ok"
     ],
-    "aao-tzgg": [
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
+    "nwpu:jiaowu-tzgg": [
+      "ok"
+    ],
+    "ouc:jwc-tzgg": [
+      "ok"
+    ],
+    "shufe:jwc-tzgg": [
+      "ok"
+    ],
+    "swufe:jwc-tzgg": [
+      "ok"
+    ],
+    "sysu:jwb-tzgg": [
+      "ok"
+    ],
+    "tju:oaa-tzgg": [
+      "ok"
+    ],
+    "xidian:jwc-tzgg": [
+      "ok"
+    ],
+    "xjtu:jwc-jxtz": [
+      "ok"
+    ],
+    "xmu:jwc-tzgg": [
+      "fail"
+    ],
+    "zzu:jwc-tzgg": [
       "ok"
     ]
   }
