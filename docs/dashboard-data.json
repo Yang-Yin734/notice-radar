@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-09T06:42:57.814Z",
-  "total": 191,
+  "generatedAt": "2026-10-09T07:01:12.665Z",
+  "total": 192,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
@@ -43,14 +43,14 @@
       "count": 8
     },
     {
-      "sourceId": "jwc-jxtz",
-      "sourceName": "教务处·教学通知",
+      "sourceId": "jw-ggtz",
+      "sourceName": "本科生院·公告通知",
       "count": 7
     },
     {
-      "sourceId": "jw-ggtz",
-      "sourceName": "本科生院·公告通知",
-      "count": 6
+      "sourceId": "jwc-jxtz",
+      "sourceName": "教务处·教学通知",
+      "count": 7
     },
     {
       "sourceId": "math-xsgz",
@@ -79,6 +79,18 @@
     }
   ],
   "items": [
+    {
+      "id": "51f39cdf3e8d3370",
+      "sourceId": "jw-ggtz",
+      "sourceName": "本科生院·公告通知",
+      "school": "nju",
+      "title": "成绩更正审核结果公示（2026-10-09）",
+      "url": "https://jw.nju.edu.cn/e7/4c/c26263a845644/page.htm",
+      "date": "2026-10-09",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-09T07:00:31.284Z"
+    },
     {
       "id": "85016446a2417a2d",
       "sourceId": "jwc-jxtz",

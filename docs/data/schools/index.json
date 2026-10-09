@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-09T02:54:38.030Z",
+ "generatedAt": "2026-10-09T07:01:12.665Z",
  "source": "教育部《全国高等学校名单》（config/schools/directory.tsv，见 config/schools/README.md）",
  "note": "status=active 表示真抓过、能出通知；pending 只是目录条目，选中会提示尚未接入。接入方法见 docs/add-your-school.md",
  "counts": {
@@ -6842,10 +6842,10 @@
     {
      "id": "本科生院",
      "name": "本科生院",
-     "count": 6
+     "count": 7
     }
    ],
-   "total": 6
+   "total": 7
   },
   {
    "id": "suda",

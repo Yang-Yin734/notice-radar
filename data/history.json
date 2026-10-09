@@ -1,7 +1,19 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-09T02:54:28.419Z",
+  "updatedAt": "2026-10-09T07:00:31.284Z",
   "items": [
+    {
+      "id": "51f39cdf3e8d3370",
+      "sourceId": "jw-ggtz",
+      "sourceName": "本科生院·公告通知",
+      "school": "nju",
+      "title": "成绩更正审核结果公示（2026-10-09）",
+      "url": "https://jw.nju.edu.cn/e7/4c/c26263a845644/page.htm",
+      "date": "2026-10-09",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-09T07:00:31.284Z"
+    },
     {
       "id": "85016446a2417a2d",
       "sourceId": "jwc-jxtz",
