@@ -10,10 +10,6 @@
 school: ouc
 name: 中国海洋大学
 
-notify:
-  - type: serverchan
-    keyEnv: SERVERCHAN_KEY
-
 sources:
   - id: jwc-tzgg
     name: 教务处·通知公告

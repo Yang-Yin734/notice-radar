@@ -31,7 +31,7 @@ cd notice-radar
 npm install
 npm run doctor         # health check every source
 npm run run -- --dry   # print the digest, no state write, no push
-SERVERCHAN_KEY=xxx npm run run
+NOTICE_RADAR_WEBHOOK=https://... npm run run   # actually send (webhook / email; see "Push channels")
 ```
 
 ## Commands
@@ -49,7 +49,7 @@ Most sites need only YAML (`adapter: html-list`) — see [docs/add-your-school.m
 
 ## Serverless by design
 
-`.github/workflows/poll.yml` runs every 20 minutes and commits the seen-ID state back to `data/state.json`, so no server or database is needed. Add `SERVERCHAN_KEY` as a repository secret to receive pushes.
+`.github/workflows/poll.yml` runs every 20 minutes and commits the seen-ID state back to `data/state.json`, so no server or database is needed. To receive pushes, enable a generic channel in your config (`webhook` or `email`) and add its credential as a repository secret (e.g. `NOTICE_RADAR_WEBHOOK`, `SMTP_URL`).
 
 Caveats: GitHub cron is UTC, has a 5-minute minimum, and runs late; scheduled workflows are disabled after 60 days of repository inactivity.
 

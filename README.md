@@ -61,7 +61,7 @@
 
 ## 日报长什么样
 
-`radr run` 的输出就是一条可以直接推到微信的 Markdown 消息（下面这张图由真实抓取结果渲染，生成脚本见 `tools/render-preview.mjs`）：
+`radr run` 的输出就是一条可以直接发给 webhook / 邮件的 Markdown 消息（下面这张图由真实抓取结果渲染，生成脚本见 `tools/render-preview.mjs`）：
 
 ![日报预览](docs/preview.png)
 
@@ -103,11 +103,11 @@ npm install
 npm run doctor          # 先体检：每个源能不能抓、解析出几条
 npm run run -- --dry    # 干跑：打印日报，不写状态、不推送
 
-# 真推送到微信（Server酱 SendKey 从 https://sct.ftqq.com 拿）
-SERVERCHAN_KEY=SCTxxxxxxxx npm run run
+# 真发通知：在配置里启用通道 + 提供凭据（webhook 或邮件，见「推送通道」）
+NOTICE_RADAR_WEBHOOK=https://open.feishu.cn/... npm run run
 ```
 
-Linux/macOS 用 `SERVERCHAN_KEY=... npm run run`，Windows PowerShell 用 `$env:SERVERCHAN_KEY="..."; npm run run`；也可以复制 `.env.example` 为 `.env` 填好 —— CLI 会自动加载它（用 Node 原生能力，不依赖 dotenv）。
+凭据写在环境变量里（Linux/macOS 用 `VAR=... command`，Windows PowerShell 用 `$env:VAR="..."; npm run run`）；也可以复制 `.env.example` 为 `.env` 填好 —— CLI 会自动加载它（用 Node 原生能力，不依赖 dotenv）。
 
 ## 命令
 
@@ -167,11 +167,11 @@ radr digest --date=2026-09-28     # 指定某一天
 radr digest --hours=24            # 滚动 24 小时
 radr digest --out=digest.md       # 同时落盘
 radr digest --notify              # 真发（走配置里的推送通道）
-node tools/digest-preview.mjs     # 生成"在微信里长什么样"的预览页（可截图看效果）
+node tools/digest-preview.mjs     # 生成"日报长什么样"的预览页（可截图看效果）
 ```
 
 > 一天的判定用**我们首次发现它的时间**（`firstSeenAt`），不是通知自身的日期 —— 那才代表"对你来说是新的"。
-> 日报窗口按**北京时间**（UTC+8）算自然日；标题裁到 Server酱 的 32 字上限内。
+> 日报窗口按**北京时间**（UTC+8）算自然日。
 
 ### 抓取健康告警
 
@@ -179,7 +179,7 @@ node tools/digest-preview.mjs     # 生成"在微信里长什么样"的预览页
 
 | 信号 | 反应 |
 |---|---|
-| 某个源**连续** `alerts.failureStreak` 次（默认 3 ≈ 1 小时）抓取失败，或抓到了却解析出 0 条 | **推一条微信告警**（同一个源 `alerts.throttleHours` 小时内只报一次） |
+| 某个源**连续** `alerts.failureStreak` 次（默认 3 ≈ 1 小时）抓取失败，或抓到了却解析出 0 条 | **发一条告警**（走配置里的推送通道；同一个源 `alerts.throttleHours` 小时内只报一次） |
 | 该源**历史成功率低于 70%**（例如学校 WAF 只放行国内 IP） | 阈值**自动放宽到至少 6**（≈2 小时），免得反复打扰你；也可在源上写 `failureStreak: 8` 自己定 |
 | 某个源写了 `alertOnFailure: false` | 完全不为它发故障告警（日报里的静默提示仍会兜底） |
 | **所有**源都以网络层错误一起失败（`fetch failed` / 超时 / DNS）= 网络天气 | **不按故障告警**，只在连续 `alerts.weatherStreak` 次（默认 12 ≈ **4 小时**）时才提醒一次 |
@@ -226,7 +226,7 @@ node tools/alert-scenario-check.mjs   # 自检两条告警路径（网络天气 
 想加自己学校？看 **[docs/add-your-school.md](docs/add-your-school.md)** —— 大多数站点只要写一段 YAML。
 
 > **新接入的学校默认「只抓不推」**：预设里写一行 `collectOnly: true`，条目就只进归档、仪表盘与按校数据
-> （网页版/应用的选校里能看到这所学校及其通知），但不推微信、不进日报、抓失败也不告警；
+> （网页版/应用的选校里能看到这所学校及其通知），但不推送、不进日报、抓失败也不告警；
 > 确认抓稳了把那一行删掉就开始推送。全国名单里陆续接入的学校都从这一档开始 ——
 > 目前已有 **西南财经大学**（成都）、**西安电子科技大学**、**华中科技大学**、**中山大学**、
 > **天津大学**、**江南大学**、**西安交通大学**、**西北工业大学**、**南京大学**、
@@ -283,7 +283,7 @@ git pull 同步云端状态 ──成功──► 跑全部 6 个源（本地状
 
 ## 完全不用 GitHub：在本机（或国内机器）跑
 
-**先说结论：推送本来就不经过 GitHub。** 整条链路是 `radr run` → Server酱 → 微信，
+**先说结论：推送本来就不经过 GitHub。** 整条链路是 `radr run` → 你配的推送通道（webhook / 邮件），
 GitHub Actions 只是"帮你定时执行 `radr run`"的免费 runner。所以把它换到任何一台机器上都行：
 
 | 跑在哪 | 成本 | 抓国内站点 | 要不要一直开机 |
@@ -302,7 +302,7 @@ GitHub Actions 只是"帮你定时执行 `radr run`"的免费 runner。所以把
 powershell -NoProfile -ExecutionPolicy Bypass -File tools\install-local-task.ps1
 ```
 
-它会：检查 Node 版本与 `.env` 里的 `SERVERCHAN_KEY` → 装依赖 →
+它会：检查 Node 版本与 `.env` 里的推送通道凭据（没有就提醒你只会抓取、不推送）→ 装依赖 →
 把**状态放在仓库外**（默认 `%USERPROFILE%\notice-radar-data`，**完全不碰 git**）→
 注册计划任务（默认每 30 分钟抓一次 + 每天 09:00 抓学院源）→ **立刻试跑一次并打印日志尾部**。
 
@@ -322,7 +322,7 @@ powershell -File tools\install-local-task.ps1 -Uninstall
 ```
 
 > ⚠️ **别和云端同时跑**：两边各记一份"已见"状态，同一条通知会推两次。
-> 本机接管后请把仓库 Variables 里的 `PUSH_ENABLED` 改成 `false`（或直接禁用 poll / poll-math 工作流）。
+> 本机接管后请直接禁用 poll / poll-math 工作流。
 >
 > 说明：网页版与应用目前从 GitHub Pages / jsDelivr 取数据（**接收推送不受影响**）。
 > 想让"读通知"也脱离 GitHub：把 `docs/` 放到自己的服务器或国内对象存储即可，
@@ -389,47 +389,47 @@ sources:
 ## 零服务器：挂在 GitHub Actions 上
 
 1. Fork 或用这个模板建仓库
-2. Settings → Secrets and variables → Actions 里加 `SERVERCHAN_KEY`
+2. （可选）Settings → Secrets and variables → Actions 里加推送凭据，如 `NOTICE_RADAR_WEBHOOK`
 3. 完事。`.github/workflows/poll.yml` 每 20 分钟跑一次
 
 它靠把"见过哪些通知 ID"提交回 `data/state.json` 实现增量推送——**不需要服务器、不需要数据库**。
 
-### 新用户开启微信推送：5 步
+### 新用户开启通知：4 步
 
-> 推送走 **Server酱 → 微信**。下面是完整清单，照做大约 5 分钟。
+> 项目**不内置任何第三方推送服务**：通知发给**你自己选的通道** —— 通用 webhook（飞书/钉钉/自建服务）
+> 或 SMTP 邮件。什么都不配也完全能用：条目照常进归档、仪表盘与按校数据，只是不会主动打扰你。
 
-**第 1 步 · 拿 SendKey（约 1 分钟）**
-
-1. 打开 <https://sct.ftqq.com> → 用**微信扫码登录**
-2. 按页面提示**关注「方糖」服务号** ← **这一步没做，密钥再对也收不到消息**
-3. 复制 **SendKey**（形如 `SCT` 开头的一串）
-
-> 免费版每天有条数上限（页面上能看到额度）；配额用尽时本项目会明确提示"像是配额用尽"，不会让你以为是代码坏了。
-
-**第 2 步 · 建自己的仓库（约 1 分钟）**
+**第 1 步 · 建自己的仓库（约 1 分钟）**
 
 - 点仓库右上角 **Fork**，或 **Use this template** 建一个新仓库
 - 建议**保持 Public**：私有仓库的 Actions 有分钟数限额，而且 60 天无提交会被停用定时任务
 
-**第 3 步 · 改成你学校的源（约 1 分钟）**
+**第 2 步 · 改成你学校的源（约 1 分钟）**
 
 - 编辑 `config/schools/uestc.yaml`（或照 [docs/add-your-school.md](docs/add-your-school.md) 加自己学校），把 `sources` 换成你关注的栏目
 
-**第 4 步 · 填密钥（约 1 分钟）**
+**第 3 步 · 在配置里启用通道（约 1 分钟）**
+
+```yaml
+notify:
+  - type: webhook            # 飞书/钉钉/自建服务：HTTP POST 一段 JSON
+    urlEnv: NOTICE_RADAR_WEBHOOK
+  # - type: email            # 邮件：凭据用 SMTP_URL / MAIL_TO / MAIL_FROM
+```
+
+**第 4 步 · 填凭据并验证（约 1 分钟）**
 
 - 仓库 **Settings → Secrets and variables → Actions → Secrets → New repository secret**
-- 名字必须是 `SERVERCHAN_KEY`，值粘贴第 1 步的 SendKey（**不要加引号或空格**）
-- 顺手看一眼同页 **Variables**：`PUSH_ENABLED` 不存在 = 默认开启；想暂停推送就建一个值填 `false`
-
-**第 5 步 · 验证（约 1 分钟）**
-
+  - webhook：名字 `NOTICE_RADAR_WEBHOOK`，值就是那个 POST 地址
+  - 邮件：`SMTP_URL`（形如 `smtps://user:pass@smtp.example.com:465`）、`MAIL_TO`、`MAIL_FROM`
 - **Actions → notify-test → Run workflow**（只发一条测试消息，不抓站点）
-- 微信收到「推送通道测试」就成功了；也可以直接看仓库里的 `data/last-notify.json`（推送结果会提交回仓库，便于查证）
+- 收到「推送通道测试」就成功了；也可以直接看仓库里的 `data/last-notify.json`（推送结果会提交回仓库，便于查证）
+- 没配任何远端通道时这一步会打印"没有东西可测"并**直接跳过**（退出码 0），不会因为"没配推送"就把 CI 弄红
 
-**本机想先试试？** 把 SendKey 写进项目根目录的 `.env`（已被 gitignore）：
+**本机想先试试？** 把凭据写进项目根目录的 `.env`（已被 gitignore）：
 
 ```bash
-cp .env.example .env   # 填入 SERVERCHAN_KEY=SCT...
+cp .env.example .env   # 填入 NOTICE_RADAR_WEBHOOK=...
 node src/cli.ts test-notify          # 只发一条测试消息
 node src/cli.ts run --dry            # 演练：抓取但不写状态、不推送
 ```
@@ -438,11 +438,11 @@ node src/cli.ts run --dry            # 演练：抓取但不写状态、不推�
 
 | 现象 | 原因 |
 |---|---|
-| 密钥填对了却收不到 | 没关注「方糖」服务号（第 1 步第 2 点），或微信里屏蔽了该服务号 |
-| 一直没推送 | 仓库 60 天没有提交 → GitHub 自动停用了定时任务（Actions 页面会有提示）；或 `PUSH_ENABLED` 被设成了 `false` |
-| 报"配额用尽" | Server酱免费版每天有上限；等次日重置，或换其他通道（邮件 / webhook） |
+| 通知没发出去 | 配置里没启用通道（`notify: []` 或只有 stdout），或凭据没填对环境变量名 |
+| 一直没推送 | 仓库 60 天没有提交 → GitHub 自动停用了定时任务（Actions 页面会有提示） |
 | 某个源一直没消息 | 站内有 JS 挑战的源默认跳过，需要 `--allow-browser`（见「合规与边界」） |
 | 收不到"新版本"提示 | 应用要 0.10.4 以上才会检查版本（早期版本用字符串比较，比不出 0.11 vs 0.9） |
+| 配置里写了 `serverchan` 之类 | 这些第三方通道已在 v0.11.0 移除，校验会直接报错并告诉你改用什么 |
 
 
 只在**真有新通知**时才写状态与产物，所以不会每 20 分钟空转出一个提交（否则一天 72 个，提交历史会被淹掉）。也正因如此：**本地要推之前先 `git pull --rebase`**，不然容易撞上机器人刚提交的状态。
@@ -489,7 +489,7 @@ src/
     html-list.ts          通用列表页适配器（选择器写在 YAML）
     uestc/jwc.ts          教务处专属适配器
     uestc/gr.ts           研究生院专属适配器
-  notify/index.ts         Server酱 / webhook / 邮件 / stdout
+  notify/index.ts         webhook / 邮件 / stdout（不内置任何第三方推送服务）
 docs/                     GitHub Pages 根目录
   index.html              应用（构建产物，由 npm run dashboard 生成）
   dashboard-data.json     应用的数据源（点"刷新"时拉它）
@@ -539,7 +539,7 @@ config/
 
 ## 路线图
 
-- [x] **M0** 骨架 + 教务处/新闻网/研究生院适配器 + fixture 测试 + Actions 定时 + Server酱推送
+- [x] **M0** 骨架 + 教务处/新闻网/研究生院适配器 + fixture 测试 + Actions 定时 + 推送通道（当时是 Server酱，v0.11.0 已移除）
 - [x] **M1** 跨源去重、日报预览图、Release v0.1.0、[good first issue 清单](docs/good-first-issues.md)
 - [x] **M2** 通知归档仪表盘（GitHub Pages，可搜索/按来源筛选）+ 邮件通道 + 归档原始数据 + [Release v0.2.0](../../releases)
 - [x] **M2.5** 升级为**手机/电脑都能用的 PWA 应用**：底部标签栏、收藏与已读、深色模式、可添加到主屏幕、离线可用（[Release v0.3.0](../../releases)）
@@ -609,17 +609,13 @@ config/
 | `config/schools/curated.json` | 人工维护：重点高校的短 id 与拼音、简称 |
 | `config/schools/tags.json` | 机器生成：教育部「双一流」标签（147 所名单里 144 所能对上官方名单） |
 
-## 在应用里控制推送与更新
+## 在应用里更新
 
 ![设置页](docs/app-settings.png)
 
-**微信推送开关**：设置 → 微信推送。开关写的是仓库变量 `PUSH_ENABLED`，两个抓取工作流都读它
-（`if: vars.PUSH_ENABLED != 'false'`）——**关掉后云端连抓取都跳过**，不会有任何推送。
-
-- 应用要改仓库变量，所以需要一次性令牌：GitHub → Settings → Developer settings → Personal access tokens →
-  **Fine-grained tokens** → 只授权本仓库、权限勾 `Variables: Read and write`，粘贴到设置页即可。
-  令牌**只写进你这台设备的 localStorage**，不上传、不进仓库；用完点「清除」。
-- 不想给令牌也行：到仓库 Settings → Secrets and variables → Actions → Variables 手动改 `PUSH_ENABLED`。
+**想暂停推送**：改配置里的 `notify`（留空数组即什么都不发），或直接禁用 poll / poll-math 工作流
+（那样连抓取都不做）。应用里**不再有**推送开关 —— 它以前靠改仓库变量 `PUSH_ENABLED`，需要你在手机上
+存一个 GitHub 令牌，代价太大；那个仓库变量连同第三方推送通道已在 v0.11.0 一并移除。
 
 **应用内更新提示**：`docs/version.json` 是版本清单（构建时写入，`sw.js` 对它走"网络优先"，所以永远是最新的）。
 应用每次打开、以及点「设置 → 检查更新」时会比对版本：
@@ -666,25 +662,32 @@ iOS **没有**"下载安装包直接装"这回事，Apple 只允许两条路，�
 
 ## 推送通道
 
-| 通道 | 配置 | 说明 |
-|---|---|---|
-| Server酱 | `type: serverchan` + `SERVERCHAN_KEY` | **本项目主用**：转发到微信，免费版每天有条数上限（配额用尽会明确提示） |
-| 邮件 | `type: email` + `SMTP_URL`（或 `SMTP_HOST`/`SMTP_USER`/`SMTP_PASS`）+ `MAIL_TO`/`MAIL_FROM` | 需要 `npm i nodemailer`；同时发纯文本与 HTML（链接可点） |
-| 通用 webhook | `type: webhook` + `url`/`urlEnv` | 飞书/钉钉/自建服务都行；POST `{title, markdown}` |
-| stdout | `type: stdout` | 只打印到终端（本地调试用；它永远"成功"，所以不算真正的通道） |
+项目**不内置任何第三方推送服务**（要注册、要扫码、密钥还容易过期）。留给你的是三条通用通道，
+默认一个都不开；想收通知就把凭据放在环境变量 / Actions secrets 里：
+
+| 通道 | 配置 | 凭据 | 说明 |
+|---|---|---|---|
+| 通用 webhook | `type: webhook` + `url` 或 `urlEnv` | `NOTICE_RADAR_WEBHOOK`（或 `urlEnv` 指定的名字） | 飞书/钉钉/自建服务都行；POST `{title, markdown}` |
+| 邮件 | `type: email` | `SMTP_URL`（或 `SMTP_HOST`/`SMTP_USER`/`SMTP_PASS`）+ `MAIL_TO`/`MAIL_FROM` | 需要 `npm i nodemailer`；同时发纯文本与 HTML（链接可点） |
+| stdout | `type: stdout` | 无 | 只打印到终端（本地调试用；它永远"成功"，所以不算真正的通道） |
+
+`notify: []` 或完全不写 `notify` = 什么都不推，只进归档与仪表盘。
 
 逐条验证：
 
 ```bash
-radr test-notify                      # 测所有启用的通道
-radr test-notify --channel=serverchan # 只测某一条
+radr test-notify                    # 测所有启用的通道
+radr test-notify --channel=email    # 只测某一条（webhook/email/stdout）
 ```
 
-结果同时写进 `data/last-notify.json`（密钥已脱敏），可以从提交记录里查证 —— 比翻 Actions 日志方便得多。
-推送失败时会尽量说人话：缺哪个环境变量、配额用尽、地址格式不对等；网络抖动会自动重试两次。
+没配任何远端通道时它会打印"没有东西可测"并跳过（退出码 0）——这样 CI 不会因为你"没配推送"而变红。
 
-> 说明：曾经尝试过 WxPusher / 企业微信 等"微信授权"类通道，因个人主体拿不到微信官方的模板消息能力、
-> 且这些通道都需要额外账号与绑定，已在 v0.10.4 移除，只保留上面这几条通用通道。
+结果同时写进 `data/last-notify.json`（凭据已脱敏），可以从提交记录里查证 —— 比翻 Actions 日志方便得多。
+推送失败时会尽量说人话：缺哪个环境变量、地址格式不对等；网络抖动会自动重试两次。
+
+> 说明：历史上内置过 Server酱（转发到微信）、WxPusher、企业微信等"微信授权"类通道。
+> WxPusher / 企业微信在 v0.10.4 移除；**Server酱在 v0.11.0 移除**——项目中不再有任何第三方推送服务。
+> 配置里再写这些类型会被校验**明确挡下**并提示改用什么（静默忽略会让人以为"配好了却收不到"）。
 
 ## 许可
 

@@ -8,10 +8,6 @@
 school: tju
 name: 天津大学
 
-notify:
-  - type: serverchan
-    keyEnv: SERVERCHAN_KEY
-
 sources:
   - id: oaa-tzgg
     name: 本科生院·通知公告

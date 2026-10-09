@@ -30,8 +30,6 @@ permissions:
 
 jobs:
   math:
-    # 应用里的「微信推送」开关 = 这个仓库变量；关掉就整个跳过（连浏览器都不启动）
-    if: vars.PUSH_ENABLED != 'false'
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -69,7 +67,10 @@ jobs:
 
       - name: 抓学院通知并推送（真实浏览器窗口跑在虚拟显示器里）
         env:
-          SERVERCHAN_KEY: ${{ secrets.SERVERCHAN_KEY }}
+          NOTICE_RADAR_WEBHOOK: ${{ secrets.NOTICE_RADAR_WEBHOOK }}
+          SMTP_URL: ${{ secrets.SMTP_URL }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+          MAIL_FROM: ${{ secrets.MAIL_FROM }}
         run: xvfb-run -a node src/cli.ts run --config=config/schools/uestc-math.yaml --allow-browser --json=data/latest-math.json
 
       - name: 失败时打印体检表（便于定位）

@@ -90,17 +90,22 @@ const sourceSchema = z.object({
   collectOnly: z.boolean().default(false),
 });
 
+/**
+ * 推送通道（**全部可选，默认一个都不开**）。项目不绑定任何第三方推送服务：
+ * 想收通知就在自己的配置里写 webhook / email；只想本地看就留 stdout。
+ *
+ * 历史上支持过的第三方通道（Server酱/微信、WxPusher、企业微信）都已移除 ——
+ * 写进来会被校验挡下，这是有意的：静默忽略会让人以为"配好了却收不到"。
+ */
 const notifySchema = z.object({
-  type: z.enum(['serverchan', 'webhook', 'stdout', 'email']),
+  type: z.enum(['webhook', 'stdout', 'email']),
   enabled: z.boolean().default(true),
-  /** 密钥从哪个环境变量读（默认 SERVERCHAN_KEY） */
-  keyEnv: z.string().optional(),
   url: z.string().optional(),
   urlEnv: z.string().optional(),
 });
 
 /**
- * 默认「抢时间」关键词：命中就立刻推微信。
+ * 默认「抢时间」关键词：命中就立刻推送。
  *
  * 为什么要有这一层：通知分两种——「退课/选课/缓补考/推免」这类错过就麻烦的，
  * 和「讲座/公示」这类晚一天看也没关系的。以前全都即时推，期中期末手机上很吵；
@@ -133,7 +138,7 @@ const pushSchema = z.object({
 });
 
 const alertsSchema = z.object({
-  /** 源抓取失败、或抓到了却解析不出条目时，推一条微信告警 */
+  /** 源抓取失败、或抓到了却解析不出条目时，发一条告警（走 notify 里启用的通道） */
   failureNotify: z.boolean().default(true),
   /**
    * 同一个源**连续**失败多少次才告警（默认 3）。
@@ -248,11 +253,41 @@ function explainIssue(issue: z.ZodIssue, raw: unknown): string {
   return `  ✗ ${path.join('.') || '(根)'}：${issue.message}`;
 }
 
+/**
+ * 历史上内置过、后来移除的第三方推送通道。
+ * 不能让它掉进 zod 的「枚举值不对」里 —— 用户会以为是自己写错了，其实是项目不再支持了。
+ */
+const REMOVED_NOTIFY_CHANNELS: Record<string, string> = {
+  serverchan: 'Server酱（转发到微信）',
+  wxpusher: 'WxPusher（转发到微信）',
+  'wecom-bot': '企业微信群机器人',
+  'wecom-app': '企业微信应用消息',
+};
+
+/** 命中已移除的通道时返回一段人话提示，否则返回 null。 */
+function removedNotifyChannelHint(raw: unknown): string | null {
+  if (!raw || typeof raw !== 'object') return null;
+  const list = (raw as { notify?: unknown }).notify;
+  if (!Array.isArray(list)) return null;
+  for (const entry of list) {
+    const type = entry && typeof entry === 'object' ? (entry as { type?: unknown }).type : undefined;
+    if (typeof type !== 'string' || !(type in REMOVED_NOTIFY_CHANNELS)) continue;
+    return (
+      `${type}（${REMOVED_NOTIFY_CHANNELS[type]}）已在 v0.11.0 从项目里移除。\n` +
+      '    为什么：不再内置任何第三方推送服务（要注册、要扫码、密钥还容易过期失效）。\n' +
+      '    改法：把 notify 里这一项删掉（默认就不推送），或换成通用通道 webhook / email / stdout，见 README 的「推送通道」。'
+    );
+  }
+  return null;
+}
+
 export function loadConfig(file: string): RadarConfig {
   if (!fs.existsSync(file)) {
     throw new Error(`配置文件不存在：${file}\n提示：可以从 config/schools/uestc.yaml 复制一份改。`);
   }
   const raw = parseYaml(fs.readFileSync(file, 'utf8'));
+  const removed = removedNotifyChannelHint(raw);
+  if (removed) throw new Error(`配置文件校验失败：${file}\n  ✗ notify：${removed}`);
   const parsed = configSchema.safeParse(raw);
   if (!parsed.success) {
     const lines = parsed.error.issues.map((i) => explainIssue(i, raw));

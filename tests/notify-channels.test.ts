@@ -113,7 +113,7 @@ test('config：html-list 缺整个 selectors 也有人话提示', () => {
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
-// ------------------------------------------------ 微信通道（issue #5 的 HTML 邮件等）
+// ------------------------------------------------ 通用通道（HTML 邮件、webhook 等）
 
 test('notify：Markdown 转 HTML，链接可点、标题成 h2/h3、列表成 ul', () => {
   const html = markdownToHtml('# 标题\n\n共 **2 条**\n\n## 教务处（1 条）\n\n- 2026-09-02 [退课通知](https://x.cn/a)\n- `教管` 另一条\n');
@@ -135,7 +135,6 @@ test('notify：HTML 里会转义尖括号，避免注入', () => {
 test('notify：缺密钥时给出"缺哪个变量"的提示，且不发网络请求', async () => {
   const outcomes = await notifyAll(
     [
-      { type: 'serverchan', enabled: true },
       { type: 'email', enabled: true },
       { type: 'webhook', enabled: true },
     ],
@@ -143,7 +142,6 @@ test('notify：缺密钥时给出"缺哪个变量"的提示，且不发网络请
     '正文',
   );
   const byChannel = new Map(outcomes.map((o) => [o.channel, o.detail]));
-  assert.match(byChannel.get('serverchan') ?? '', /SERVERCHAN_KEY/);
   assert.match(byChannel.get('email') ?? '', /SMTP_URL|SMTP_HOST/);
   assert.match(byChannel.get('webhook') ?? '', /url/);
   assert.ok(outcomes.every((o) => !o.ok), '没配密钥就必须明确失败，不能假装成功');
@@ -161,34 +159,40 @@ test('notify：禁用的通道完全不参与；stdout 永远算成功（所以�
   assert.deepEqual(outcomes.map((o) => o.channel), ['stdout']);
 });
 
-test('config：已移除的微信专属通道会被配置校验挡下（v0.10.4 移除）', () => {
+test('config：已移除的第三方推送通道会被配置校验挡下，并说清改用哪个', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'radar-removed-'));
-  const file = path.join(dir, 'config.yaml');
-  fs.writeFileSync(
-    file,
-    [
-      'school: demo',
-      'name: 演示',
-      'notify:',
-      '  - type: wxpusher',
-      'sources:',
-      '  - id: a',
-      '    name: 源',
-      '    url: https://e.cn/',
-      '    adapter: html-list',
-      '    selectors:',
-      '      item: div.i',
-      '      title: a',
-      '',
-    ].join('\n'),
-    'utf8',
-  );
-  let message = '';
-  try {
-    loadConfig(file);
-  } catch (e) {
-    message = (e as Error).message;
+  // wxpusher 是 v0.10.4 移除的，serverchan（Server酱/微信）是 v0.11.0 移除的。
+  // 两者都必须报"已移除 + 改用 webhook/email/stdout"，不能只说"枚举值不对"。
+  for (const type of ['wxpusher', 'serverchan']) {
+    const file = path.join(dir, `config-${type}.yaml`);
+    fs.writeFileSync(
+      file,
+      [
+        'school: demo',
+        'name: 演示',
+        'notify:',
+        `  - type: ${type}`,
+        'sources:',
+        '  - id: a',
+        '    name: 源',
+        '    url: https://e.cn/',
+        '    adapter: html-list',
+        '    selectors:',
+        '      item: div.i',
+        '      title: a',
+        '',
+      ].join('\n'),
+      'utf8',
+    );
+    let message = '';
+    try {
+      loadConfig(file);
+    } catch (e) {
+      message = (e as Error).message;
+    }
+    assert.match(message, /notify/, '校验要指出是 notify 段的问题');
+    assert.ok(message.includes(type), `报错要带上具体通道名（${type}）`);
+    assert.match(message, /webhook|email|stdout/, '要告诉用户改用什么');
   }
-  assert.match(message, /notify/, '校验要指出是 notify 段的问题');
   fs.rmSync(dir, { recursive: true, force: true });
 });

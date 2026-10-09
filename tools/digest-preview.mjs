@@ -1,4 +1,4 @@
-// 生成「日报在微信里长什么样」的预览页（用于决定留不留这个功能）。
+// 生成「日报长什么样」的预览页：手机通知栏样式 + 各来源分组（发送前先肉眼过一遍）。
 // 用法：node tools/digest-preview.mjs [--date=YYYY-MM-DD | --hours=24] [--out=预览.html]
 import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
@@ -100,7 +100,7 @@ const html = `<!DOCTYPE html>
   .meta { font-size:11.5px; color:var(--muted); margin-top:10px; line-height:1.6; }
 </style></head>
 <body><div class="phone">
-  <div class="wxbar">服务通知 <span>Server酱 · 微信</span></div>
+  <div class="wxbar">服务通知 <span>notice-radar 日报</span></div>
   <div class="wrap"><div class="bubble">
     <p class="msg-title">${esc(title)}</p>
     <div class="summary">${esc(digest.label)} · 共 ${digest.total} 条新通知，来自 ${digest.groups.length} 个来源</div>
@@ -119,4 +119,4 @@ fs.rmSync(tmpMd, { force: true });
 
 console.log(`✓ 预览页：${outFile}`);
 console.log(`  窗口 ${digest.label} · 共 ${digest.total} 条 · 列出 ${digest.shown} 条 · 标题「${title}」`);
-console.log(`  纯文本版（webhook/终端）长度：${markdown.length} 字符，微信 Markdown 版同上`);
+console.log(`  纯文本版（webhook/终端）长度：${markdown.length} 字符`);

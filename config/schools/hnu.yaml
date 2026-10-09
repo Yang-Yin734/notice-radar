@@ -12,10 +12,6 @@
 school: hnu
 name: 湖南大学
 
-notify:
-  - type: serverchan
-    keyEnv: SERVERCHAN_KEY
-
 sources:
   - id: jwc-tzgg
     name: 教务处·通知公告

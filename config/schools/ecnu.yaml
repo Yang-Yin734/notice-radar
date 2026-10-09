@@ -11,10 +11,6 @@
 school: ecnu
 name: 华东师范大学
 
-notify:
-  - type: serverchan
-    keyEnv: SERVERCHAN_KEY
-
 sources:
   - id: bksy-tzgg
     name: 本科生院·通知公告

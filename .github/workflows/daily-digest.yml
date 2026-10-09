@@ -1,6 +1,6 @@
 name: daily-digest
 
-# 每天早上 8 点（北京时间）把「昨天的新通知」合成一条微信推送。
+# 每天早上 8 点（北京时间）把「昨天的新通知」合成一条日报消息（走 notify 里启用的通道）。
 #
 # 为什么要有它：poll 每 20 分钟发现新通知就推一次，期中期末手机上很吵。
 # 现在分工是：命中急事关键词（选课/退课/缓考试/推免/奖学金…）的由 poll 立刻推，
@@ -29,8 +29,6 @@ jobs:
   digest:
     runs-on: ubuntu-latest
     timeout-minutes: 15
-    # 关掉推送时，定时任务静默；手动触发仍可看预览
-    if: github.event_name == 'workflow_dispatch' || vars.PUSH_ENABLED != 'false'
     steps:
       - uses: actions/checkout@v4
 
@@ -69,7 +67,10 @@ jobs:
       - name: 发送日报（定时任务，或手动 dry=false）
         if: github.event_name != 'workflow_dispatch' || github.event.inputs.dry == 'false'
         env:
-          SERVERCHAN_KEY: ${{ secrets.SERVERCHAN_KEY }}
+          NOTICE_RADAR_WEBHOOK: ${{ secrets.NOTICE_RADAR_WEBHOOK }}
+          SMTP_URL: ${{ secrets.SMTP_URL }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+          MAIL_FROM: ${{ secrets.MAIL_FROM }}
           GH_TOKEN: ${{ github.token }}
         run: |
           # pipefail 很关键：不然 `| tee` 会让发送失败的退出码被吃掉，步骤照样是绿的

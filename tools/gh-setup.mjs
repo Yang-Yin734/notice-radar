@@ -4,7 +4,7 @@
 //   $env:GH_TOKEN = 'github_pat_xxx'      # PowerShell
 //   node tools/gh-setup.mjs
 //   node tools/gh-setup.mjs --pages        # 顺带开启 GitHub Pages（从 /docs 提供）
-//   node tools/gh-setup.mjs --secret=SERVERCHAN_KEY=SCTxxx   # 设置 Actions secret（需要 libsodium-wrappers）
+//   node tools/gh-setup.mjs --secret=NOTICE_RADAR_WEBHOOK=https://...   # 设置 Actions secret（需要 libsodium-wrappers）
 //
 // 需要的 fine-grained PAT 权限：
 //   Contents: Read and write（建 Release）
@@ -22,7 +22,7 @@ const valueOf = (name) => args.find((a) => a.startsWith(`--${name}=`))?.slice(na
 const token = process.env.GH_TOKEN ?? process.env.GITHUB_TOKEN ?? '';
 const [owner, repo] = (valueOf('repo') ?? 'Yang-Yin734/notice-radar').split('/');
 const wantPages = has('--pages');
-const secretSpec = valueOf('secret'); // 形如 SERVERCHAN_KEY=SCTxxx
+const secretSpec = valueOf('secret'); // 形如 NOTICE_RADAR_WEBHOOK=https://...
 
 if (!token) {
   console.error('缺少 token。先设置环境变量 GH_TOKEN，再运行。\n  PowerShell:  $env:GH_TOKEN = "github_pat_xxx"');

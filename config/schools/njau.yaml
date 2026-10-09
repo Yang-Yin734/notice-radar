@@ -11,10 +11,6 @@
 school: njau
 name: 南京农业大学
 
-notify:
-  - type: serverchan
-    keyEnv: SERVERCHAN_KEY
-
 sources:
   - id: aao-tzgg
     name: 教务处·通知公告

@@ -24,8 +24,6 @@ export interface DashboardOptions {
   apkUrl?: string;
   /** 应用版本（构建时写入；用来判断线上有没有更新版本） */
   version?: string;
-  /** owner/repo（应用里的"微信推送"开关要调 GitHub API 改仓库变量） */
-  repo?: string;
   /** 版本清单路径（网络优先，实时反映线上版本） */
   versionFile?: string;
   /** 数据源候选（按顺序尝试）。APK 里内置数据永远可用，网络只是"锦上添花"：
@@ -49,7 +47,6 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     dataPath = 'dashboard-data.json',
     apkUrl = 'https://github.com/Yang-Yin734/notice-radar/releases/download/android-latest/notice-radar.apk',
     version = '0.0.0',
-    repo = 'Yang-Yin734/notice-radar',
     versionFile = 'version.json',
     dataUrls = [
       // 国内访问 github.io 经常不通，所以 CDN 镜像排在前面；全失败就用内置/缓存数据
@@ -67,7 +64,6 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     dataPath,
     apkUrl,
     version,
-    repo,
     versionFile,
     dataUrls,
     total: history.items.length,
@@ -315,27 +311,6 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
         <p id="school-note" class="hint"></p>
       </div>
     </div>
-    <div class="card">
-      <h3>微信推送</h3>
-      <div class="row">
-        <div class="row-main"><b id="push-state">读取中…</b><span id="push-hint">推送由云端定时抓取后发出，开关即仓库变量 PUSH_ENABLED</span></div>
-        <button class="switch" id="push-toggle" role="switch" aria-checked="false" disabled><i></i></button>
-      </div>
-      <details class="setup">
-        <summary>需要一次令牌设置（只保存在你这台设备）</summary>
-        <p>应用要改的是仓库变量，所以需要一个能改 Variables 的令牌：GitHub → Settings → Developer settings →
-          Personal access tokens → <b>Fine-grained tokens</b> → 只授权本仓库，权限勾 <span class="kbd">Variables: Read and write</span>。</p>
-        <div class="row">
-          <input id="gh-token" type="password" placeholder="粘贴令牌（只存本机 localStorage）" autocomplete="off">
-          <button class="btn" id="gh-token-save">保存</button>
-          <button class="btn ghost" id="gh-token-clear">清除</button>
-        </div>
-        <p class="hint">⚠️ 令牌只写进你这台设备的 localStorage，不会上传，也不会进仓库；公共电脑上别用，用完点「清除」。
-          不想给令牌也可以到 <a href="https://github.com/${escapeHtml(repo)}/settings/variables/actions">Settings → Variables</a>
-          手动把 <span class="kbd">PUSH_ENABLED</span> 改成 true / false。</p>
-      </details>
-    </div>
-
     <div class="card">
       <h3>版本</h3>
       <div class="row">
@@ -1102,87 +1077,6 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     })();
   }
   document.getElementById('check-update').addEventListener('click', function () { checkVersion(true); });
-
-  // ---------- 微信推送开关：读写仓库变量 PUSH_ENABLED ----------
-  var KEY_TOKEN = 'notice-radar:gh-token';
-  function ghFetch(path, opts) {
-    var token = lsRead(KEY_TOKEN)[0] || '';
-    if (!token) return Promise.reject(new Error('还没设置令牌'));
-    var init = {
-      method: (opts && opts.method) || 'GET',
-      headers: {
-        accept: 'application/vnd.github+json',
-        authorization: 'Bearer ' + token,
-        'content-type': 'application/json',
-      },
-      body: opts && opts.body,
-    };
-    return fetch('https://api.github.com/repos/' + BOOT.repo + path, init).then(function (r) {
-      return r.text().then(function (text) {
-        var json = null;
-        try { json = text ? JSON.parse(text) : null; } catch (e) {}
-        if (!r.ok) throw new Error('HTTP ' + r.status + (json && json.message ? '：' + json.message : ''));
-        return json;
-      });
-    });
-  }
-  function setPushUi(enabled, known) {
-    var sw = document.getElementById('push-toggle');
-    sw.setAttribute('aria-checked', enabled ? 'true' : 'false');
-    sw.classList.toggle('on', !!enabled);
-    sw.disabled = !known;
-  }
-  function loadPushState() {
-    setPushUi(false, false);
-    document.getElementById('push-state').textContent = '微信推送：读取中…';
-    ghFetch('/actions/variables/PUSH_ENABLED')
-      .then(function (v) {
-        var on = String(v && v.value) !== 'false';
-        setPushUi(on, true);
-        document.getElementById('push-state').textContent = on ? '微信推送：已开启' : '微信推送：已关闭';
-        document.getElementById('push-hint').textContent = '开关即仓库变量 PUSH_ENABLED，关掉后云端连抓取都跳过';
-      })
-      .catch(function (e) {
-        document.getElementById('push-state').textContent = '微信推送：状态未知';
-        document.getElementById('push-hint').textContent = lsRead(KEY_TOKEN)[0]
-          ? '读取失败：' + e.message
-          : '默认开启。设置令牌后可在这里开关；也可以直接改仓库变量 PUSH_ENABLED';
-        setPushUi(false, false);
-      });
-  }
-  document.getElementById('push-toggle').addEventListener('click', function () {
-    var sw = this;
-    var next = sw.getAttribute('aria-checked') !== 'true';
-    sw.disabled = true;
-    var payload = JSON.stringify({ name: 'PUSH_ENABLED', value: next ? 'true' : 'false' });
-    ghFetch('/actions/variables/PUSH_ENABLED', { method: 'PATCH', body: payload })
-      .catch(function (e) {
-        if (/HTTP 404/.test(e.message)) return ghFetch('/actions/variables', { method: 'POST', body: payload });
-        throw e;
-      })
-      .then(function () {
-        setPushUi(next, true);
-        document.getElementById('push-state').textContent = next ? '微信推送：已开启' : '微信推送：已关闭';
-        toast(next ? '已开启微信推送' : '已关闭微信推送（云端会跳过抓取）');
-      })
-      .catch(function (e) {
-        sw.disabled = false;
-        toast('设置失败：' + e.message);
-      });
-  });
-  document.getElementById('gh-token-save').addEventListener('click', function () {
-    var value = document.getElementById('gh-token').value.trim();
-    if (!value) { toast('请先粘贴令牌'); return; }
-    lsWrite(KEY_TOKEN, [value]);
-    document.getElementById('gh-token').value = '';
-    toast('令牌已保存在本机');
-    loadPushState();
-  });
-  document.getElementById('gh-token-clear').addEventListener('click', function () {
-    lsWrite(KEY_TOKEN, []);
-    toast('已清除本机令牌');
-    loadPushState();
-  });
 
   // ---------- 本机数据 ----------
   document.getElementById('clear-read').addEventListener('click', function () {

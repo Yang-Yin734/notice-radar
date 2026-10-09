@@ -9,10 +9,6 @@
 school: hust
 name: 华中科技大学
 
-notify:
-  - type: serverchan
-    keyEnv: SERVERCHAN_KEY
-
 sources:
   - id: ugs-tzgg
     name: 本科生院·通知公告

@@ -11,10 +11,6 @@
 school: uestc
 name: 数学科学学院
 
-notify:
-  - type: serverchan
-    keyEnv: SERVERCHAN_KEY
-
 sources:
   - id: math-jwgg
     name: 数学科学学院·教务公告

@@ -26,14 +26,12 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.darkColorScheme
@@ -847,21 +845,6 @@ private fun openUrl(context: android.content.Context, url: String) {
     runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url))) }
 }
 
-/** 设置里的一行"可点外链"：标题 + 说明 + 右箭头 */
-@Composable
-private fun LinkRow(title: String, hint: String, onOpen: () -> Unit) {
-    Row(
-        modifier = Modifier.fillMaxWidth().clickable { onOpen() }.padding(vertical = 7.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Column(Modifier.weight(1f)) {
-            Text(title, fontSize = 13.5.sp, color = MaterialTheme.colorScheme.primary)
-            Text(hint, fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        }
-        Text("›", fontSize = 18.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-    }
-}
-
 @Composable
 private fun SettingsCard(title: String, content: @Composable () -> Unit) {
     Card(
@@ -1201,34 +1184,9 @@ private fun SettingsScreen(
     val scope = rememberCoroutineScope()
     val context = LocalContext.current
 
-    var pushEnabled by remember { mutableStateOf<Boolean?>(null) }
-    var pushHint by remember { mutableStateOf("读取中…") }
-    var tokenInput by remember { mutableStateOf("") }
-    var hasToken by remember { mutableStateOf(store.githubToken.isNotEmpty()) }
-    // 微信推送：绑定引导 + 当场验证
-    var testHint by remember { mutableStateOf<String?>(null) }
-    var lastLog by remember { mutableStateOf<NotifyLog?>(null) }
     var remoteVersion by remember { mutableStateOf<String?>(null) }
     var versionHint by remember { mutableStateOf("点右侧按钮检查线上版本") }
     var busy by remember { mutableStateOf(false) }
-
-    fun loadPush() {
-        scope.launch {
-            val state = withContext(Dispatchers.IO) { store.fetchPushEnabled() }
-            pushEnabled = state
-            pushHint = when {
-                state == true -> "微信推送：已开启"
-                state == false -> "微信推送：已关闭"
-                hasToken -> "微信推送：读取失败（令牌权限或网络）"
-                else -> "微信推送：默认开启（设置令牌后可在这里开关）"
-            }
-        }
-    }
-
-    LaunchedEffect(hasToken) {
-        loadPush()
-        if (hasToken) lastLog = withContext(Dispatchers.IO) { store.lastNotifyLog() }
-    }
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
@@ -1247,182 +1205,6 @@ private fun SettingsScreen(
                 onUnitsChange = onUnitsChange,
                 onSwitchSchool = onSwitchSchool,
             )
-        }
-
-        // 微信推送
-        item {
-            SettingsCard(title = "微信推送") {
-                Column {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Column(Modifier.weight(1f)) {
-                            Text(pushHint, fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface)
-                            Spacer(Modifier.height(2.dp))
-                            Text("开关即仓库变量 PUSH_ENABLED；关掉后云端连抓取都跳过", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        }
-                        Switch(
-                            checked = pushEnabled == true,
-                            enabled = pushEnabled != null && !busy,
-                            onCheckedChange = { next ->
-                                scope.launch {
-                                    busy = true
-                                    val err = withContext(Dispatchers.IO) { store.setPushEnabled(next) }
-                                    busy = false
-                                    if (err == null) {
-                                        pushEnabled = next
-                                        pushHint = if (next) "微信推送：已开启" else "微信推送：已关闭"
-                                        onToast(if (next) "已开启微信推送" else "已关闭微信推送")
-                                    } else {
-                                        onToast("设置失败：$err")
-                                    }
-                                }
-                            },
-                        )
-                    }
-
-                    // ── 绑定步骤：微信扫码授权 → 关注服务号 → 填密钥 → 当场验证 ──
-                    Spacer(Modifier.height(12.dp))
-                    Text(
-                        "绑定步骤（只需做一次）",
-                        fontSize = 12.5.sp,
-                        fontWeight = FontWeight.SemiBold,
-                        color = MaterialTheme.colorScheme.onSurface,
-                    )
-                    LinkRow(
-                        title = "① 微信扫码授权 · 关注服务号",
-                        hint = "打开后扫码登录，并关注它的服务号（不关注就收不到消息），复制页面上的 SendKey",
-                        onOpen = { openUrl(context, SERVERCHAN_URL) },
-                    )
-                    LinkRow(
-                        title = "② 把 SendKey 存成仓库 Secret",
-                        hint = "Name 必须填 SERVERCHAN_KEY，Secret 粘贴上一步的 SendKey；存好即生效",
-                        onOpen = { openUrl(context, SECRET_SETUP_URL) },
-                    )
-                    Spacer(Modifier.height(8.dp))
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Button(
-                            enabled = !busy,
-                            onClick = {
-                                scope.launch {
-                                    busy = true
-                                    val before = lastLog?.at ?: ""
-                                    testHint = "已触发测试推送，等待结果…"
-                                    val err = withContext(Dispatchers.IO) { store.triggerNotifyTest() }
-                                    if (err != null) {
-                                        busy = false
-                                        testHint = "触发失败：$err"
-                                    } else {
-                                        // 工作流跑完会把 data/last-notify.json 提交回仓库，轮询读回来
-                                        var log: NotifyLog? = null
-                                        for (i in 1..9) {
-                                            kotlinx.coroutines.delay(10_000)
-                                            val fresh = withContext(Dispatchers.IO) { store.lastNotifyLog() }
-                                            if (fresh != null && fresh.at != before) {
-                                                log = fresh
-                                                break
-                                            }
-                                        }
-                                        busy = false
-                                        lastLog = log ?: lastLog
-                                        testHint = when {
-                                            log == null -> "还没读到新结果（工作流可能还在跑，稍后点「查看最近结果」）"
-                                            log.deliveredRemotely -> "✓ 推送成功：${log.summary}（${log.count} 条）"
-                                            else -> "✗ 推送失败：${log.summary} —— 看下面各通道详情"
-                                        }
-                                    }
-                                }
-                            },
-                        ) { Text("测试推送", fontSize = 13.sp) }
-                        Spacer(Modifier.width(8.dp))
-                        TextButton(
-                            enabled = !busy,
-                            onClick = {
-                                scope.launch {
-                                    busy = true
-                                    val log = withContext(Dispatchers.IO) { store.lastNotifyLog() }
-                                    lastLog = log
-                                    busy = false
-                                    testHint = if (log == null) {
-                                        "读不到推送记录（令牌需有 Contents: read 权限，或还没跑过测试）"
-                                    } else {
-                                        "已读取最近一次结果"
-                                    }
-                                }
-                            },
-                        ) { Text("查看最近结果", fontSize = 13.sp) }
-                    }
-                    testHint?.let { hint ->
-                        Spacer(Modifier.height(6.dp))
-                        Text(hint, fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurface)
-                    }
-                    lastLog?.let { log ->
-                        Spacer(Modifier.height(4.dp))
-                        Text(
-                            "最近一次：${log.summary} · ${log.title}（${log.count} 条）· ${log.at.replace("T", " ").take(16)} UTC",
-                            fontSize = 11.sp,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                        for (o in log.outcomes.filter { it.channel != "stdout" }) {
-                            Text(
-                                "· ${o.channel}：${if (o.ok) "成功" else "失败"} ${o.detail.take(70)}",
-                                fontSize = 11.sp,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            )
-                        }
-                    }
-                    Spacer(Modifier.height(10.dp))
-                    HorizontalDivider()
-                    Spacer(Modifier.height(10.dp))
-                    if (hasToken) {
-                        Text("令牌已保存在本机（只用于改这一个仓库变量）", fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        Spacer(Modifier.height(6.dp))
-                        Row {
-                            TextButton(onClick = {
-                                store.githubToken = ""
-                                hasToken = false
-                                pushEnabled = null
-                                onToast("已清除本机令牌")
-                            }) { Text("清除令牌", fontSize = 13.sp) }
-                            Spacer(Modifier.weight(1f))
-                            TextButton(onClick = { loadPush() }) { Text("重新读取", fontSize = 13.sp) }
-                        }
-                    } else {
-                        Text(
-                            "要在应用里开关推送、跑「测试推送」并读回结果，需要一个 fine-grained 令牌：" +
-                                "只授权本仓库，权限勾 Variables: Read and write、Actions: Read and write、Contents: Read。" +
-                                "令牌只存在这台设备，不上传。",
-                            fontSize = 11.5.sp,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        )
-                        Spacer(Modifier.height(8.dp))
-                        OutlinedTextField(
-                            value = tokenInput,
-                            onValueChange = { tokenInput = it },
-                            singleLine = true,
-                            placeholder = { Text("粘贴令牌", fontSize = 13.sp) },
-                            modifier = Modifier.fillMaxWidth(),
-                        )
-                        Spacer(Modifier.height(6.dp))
-                        Row {
-                            Button(onClick = {
-                                if (tokenInput.isBlank()) {
-                                    onToast("请先粘贴令牌")
-                                } else {
-                                    store.githubToken = tokenInput.trim()
-                                    tokenInput = ""
-                                    hasToken = true
-                                    onToast("令牌已保存在本机")
-                                }
-                            }) { Text("保存", fontSize = 13.sp) }
-                            Spacer(Modifier.weight(1f))
-                            TextButton(onClick = {
-                                runCatching {
-                                    context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/settings/personal-access-tokens/new")))
-                                }
-                            }) { Text("去创建令牌", fontSize = 13.sp) }
-                        }
-                    }
-                }
-            }
         }
 
         // 应用更新

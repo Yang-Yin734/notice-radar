@@ -8,10 +8,6 @@
 school: nwpu
 name: 西北工业大学
 
-notify:
-  - type: serverchan
-    keyEnv: SERVERCHAN_KEY
-
 sources:
   - id: jiaowu-tzgg
     name: 教务部·通知公告

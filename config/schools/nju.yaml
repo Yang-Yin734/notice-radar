@@ -11,10 +11,6 @@
 school: nju
 name: 南京大学
 
-notify:
-  - type: serverchan
-    keyEnv: SERVERCHAN_KEY
-
 sources:
   - id: jw-ggtz
     name: 本科生院·公告通知

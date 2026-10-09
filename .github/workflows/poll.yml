@@ -31,9 +31,6 @@ permissions:
 
 jobs:
   poll:
-    # 应用里的「微信推送」开关就是改这个仓库变量（Settings → Secrets and variables → Actions → Variables）。
-    # 关掉后整个 job 直接跳过，连抓取都不做 —— 不消耗额度，也不会有误推。
-    if: vars.PUSH_ENABLED != 'false'
     runs-on: ubuntu-latest
     # 防止某个源卡住导致 job 一直挂着（默认上限是 6 小时，太宽松）
     timeout-minutes: 15
@@ -58,8 +55,12 @@ jobs:
       - name: 抓取并推送
         id: fetch
         env:
-          # 在想用这个仓库的人自己的 Settings → Secrets 里配
-          SERVERCHAN_KEY: ${{ secrets.SERVERCHAN_KEY }}
+          # 推送凭据（可选）：在想用这个仓库的人自己的 Settings → Secrets 里配。
+          # 不配也没有远端通道，通知照常进归档/仪表盘，只是不会主动发出去。
+          NOTICE_RADAR_WEBHOOK: ${{ secrets.NOTICE_RADAR_WEBHOOK }}
+          SMTP_URL: ${{ secrets.SMTP_URL }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+          MAIL_FROM: ${{ secrets.MAIL_FROM }}
         run: |
           # 境内学校站点在境外 runner 上偶发整体不可达（跨境网络抖动，实测约每 3 次 1 次）。
           # 单源失败不影响退出码，只有全部源都失败才返回非零，所以重试放在这一层。
@@ -85,7 +86,7 @@ jobs:
       - name: 抓取其它学校（只采集不通知）
         # 全国名单里陆续接入的学校：各自的预设里都标了 collectOnly ——
         # 条目照常进归档、仪表盘与按校数据文件（docs/data/schools/<id>.json），
-        # 但不推微信、不进日报。
+        # 但不推送、不进日报。
         #
         # 为什么用 always()：主抓取失败**不代表**别的学校抓不到 —— 电子科技大学在教育网，
         # 另外几所在商用网，实测出现过"uestc 5 个源全挂、西南财经大学照常 10 条"的情况。

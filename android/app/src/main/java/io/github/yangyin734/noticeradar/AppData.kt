@@ -80,7 +80,7 @@ data class SchoolInfo(
 
 /**
  * 解析学校目录。做成纯函数（只吃字符串）以便 JVM 单测 ——
- * 与 parseNotifyLog 同理：解析错了会让用户以为"能选"，实则永远收不到通知。
+ * 解析错了会让用户以为"能选"，实则永远收不到通知。
  */
 fun parseSchoolIndex(json: String): List<SchoolInfo> {
     return try {
@@ -205,59 +205,6 @@ fun filterNotices(
             (sourceFilter == null || n.sourceId == sourceFilter) &&
             (schoolId.isEmpty() || (units.isNotEmpty() && unitOf(n) in units)) &&
             (q.isEmpty() || (n.title + " " + (n.tag ?: "") + " " + n.sourceName).lowercase().contains(q))
-    }
-}
-
-/** Server酱：微信扫码授权 + 关注服务号的入口（SendKey 在那里拿） */
-const val SERVERCHAN_URL = "https://sct.ftqq.com"
-
-/** 直达"新建仓库 Secret"页面，省得用户在设置里翻菜单 */
-const val SECRET_SETUP_URL = "https://github.com/$REPO_SLUG/settings/secrets/actions/new"
-
-/** 一条推送通道的结果（对应 data/last-notify.json 里的 outcomes[]） */
-data class NotifyOutcome(val channel: String, val ok: Boolean, val detail: String)
-
-/** 最近一次推送的记录（用来在应用里验证"到底推出去没有"） */
-data class NotifyLog(val at: String, val title: String, val count: Int, val outcomes: List<NotifyOutcome>) {
-    /** stdout 永远"成功"，判断是否真的推到远端时要忽略它 */
-    val deliveredRemotely: Boolean get() = outcomes.any { it.channel != "stdout" && it.ok }
-
-    val summary: String
-        get() {
-            val remote = outcomes.filter { it.channel != "stdout" }
-            if (remote.isEmpty()) return "只配了 stdout（不算真正的推送通道）"
-            return remote.joinToString(" · ") { "${if (it.ok) "✓" else "✗"} ${it.channel}" }
-        }
-}
-
-/**
- * 解析仓库里的 data/last-notify.json。
- *
- * 刻意做成**纯函数**（只吃字符串）—— 应用里"测试推送"给出的结论全靠它，
- * 所以必须能被 JVM 单元测试直接覆盖。
- */
-fun parseNotifyLog(json: String): NotifyLog? {
-    return try {
-        val root = JSONObject(json)
-        val arr = root.optJSONArray("outcomes") ?: JSONArray()
-        val outcomes = (0 until arr.length()).mapNotNull { i ->
-            val o = arr.optJSONObject(i) ?: return@mapNotNull null
-            val channel = o.optString("channel")
-            if (channel.isEmpty()) return@mapNotNull null // 坏记录（没有通道名）直接跳过
-            NotifyOutcome(channel = channel, ok = o.optBoolean("ok"), detail = o.optString("detail"))
-        }
-        if (outcomes.isEmpty()) {
-            null
-        } else {
-            NotifyLog(
-                at = root.optString("at"),
-                title = root.optString("title"),
-                count = root.optInt("count", 0),
-                outcomes = outcomes,
-            )
-        }
-    } catch (e: Exception) {
-        null
     }
 }
 
@@ -500,91 +447,4 @@ class Store(private val ctx: Context) {
             else prefs.edit().putBoolean("darkOverride", value).apply()
         }
 
-    // ---------- 微信推送开关（读写仓库变量） ----------
-    var githubToken: String
-        get() = prefs.getString("ghToken", "") ?: ""
-        set(value) = prefs.edit().putString("ghToken", value).apply()
-
-    private fun ghRequest(method: String, path: String, body: String?): Pair<Int, String> {
-        return try {
-            val conn = (URL("https://api.github.com/repos/$REPO_SLUG$path").openConnection() as HttpURLConnection)
-            conn.requestMethod = method
-            conn.connectTimeout = 12000
-            conn.readTimeout = 12000
-            conn.setRequestProperty("Accept", "application/vnd.github+json")
-            conn.setRequestProperty("Authorization", "Bearer ${githubToken}")
-            conn.setRequestProperty("User-Agent", "notice-radar-app")
-            if (body != null) {
-                conn.doOutput = true
-                conn.setRequestProperty("Content-Type", "application/json")
-                conn.outputStream.use { it.write(body.toByteArray()) }
-            }
-            val code = conn.responseCode
-            val stream = if (code in 200..299) conn.inputStream else conn.errorStream
-            val text = stream?.bufferedReader()?.use(BufferedReader::readText) ?: ""
-            conn.disconnect()
-            code to text
-        } catch (e: Exception) {
-            -1 to (e.message ?: "网络错误")
-        }
-    }
-
-    /** null = 未知（没令牌或连不上）；true/false = 当前是否开启 */
-    fun fetchPushEnabled(): Boolean? {        if (githubToken.isEmpty()) return null
-        val (code, text) = ghRequest("GET", "/actions/variables/PUSH_ENABLED", null)
-        if (code == 404) return true // 变量没设置 = 默认开启
-        if (code != 200) return null
-        return try {
-            JSONObject(text).optString("value") != "false"
-        } catch (e: Exception) {
-            null
-        }
-    }
-
-    /** null = 成功；否则是给用户看的错误说明 */
-    fun setPushEnabled(enabled: Boolean): String? {
-        val body = JSONObject().put("name", "PUSH_ENABLED").put("value", if (enabled) "true" else "false").toString()
-        var (code, text) = ghRequest("PATCH", "/actions/variables/PUSH_ENABLED", body)
-        if (code == 404) {
-            val post = ghRequest("POST", "/actions/variables", body)
-            code = post.first
-            text = post.second
-        }
-        if (code in 200..299) return null
-        return "HTTP $code" + if (text.isNotBlank()) "：" + text.take(140) else ""
-    }
-
-    // ---------- 微信推送：绑定与验证 ----------
-
-    /**
-     * 触发一次测试推送（跑仓库里的 notify-test 工作流，只发一条测试消息、不抓站点）。
-     * 需要令牌带 Actions: write 权限。null = 已触发，否则是错误说明。
-     */
-    fun triggerNotifyTest(): String? {
-        if (githubToken.isEmpty()) return "需要先保存一个 GitHub 令牌（下面那一步）"
-        val (code, text) = ghRequest(
-            "POST",
-            "/actions/workflows/notify-test.yml/dispatches",
-            JSONObject().put("ref", "main").toString(),
-        )
-        if (code in 200..299) return null
-        return "HTTP $code" + if (text.isNotBlank()) "：" + text.take(140) else ""
-    }
-
-    /**
-     * 读仓库里最近一次推送结果（data/last-notify.json，工作流会把它提交回仓库）。
-     * 这是"到底推出去没有"的唯一确凿证据 —— 比在手机上猜可靠。
-     */
-    fun lastNotifyLog(): NotifyLog? {
-        val (code, text) = ghRequest("GET", "/contents/data/last-notify.json", null)
-        if (code != 200) return null
-        return try {
-            val content = JSONObject(text).optString("content").replace("\n", "").replace("\r", "")
-            if (content.isEmpty()) return null
-            val decoded = String(android.util.Base64.decode(content, android.util.Base64.DEFAULT), Charsets.UTF_8)
-            parseNotifyLog(decoded)
-        } catch (e: Exception) {
-            null
-        }
-    }
 }
