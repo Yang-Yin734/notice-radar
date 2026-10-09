@@ -1,7 +1,31 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-09T02:00:14.380Z",
+  "updatedAt": "2026-10-09T02:35:12.069Z",
   "items": [
+    {
+      "id": "e13e0e315112ec41",
+      "sourceId": "jwc-jxtz",
+      "sourceName": "教务处·教学通知",
+      "school": "xjtu",
+      "title": "[学籍管理]关于本科生办理火车票优惠资质核验的通知",
+      "url": "https://jwc.xjtu.edu.cn/info/1095/10502.htm",
+      "date": "2026-10-09",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-09T02:35:12.069Z"
+    },
+    {
+      "id": "acc604b625081315",
+      "sourceId": "jwc-jxtz",
+      "sourceName": "教务处·教学通知",
+      "school": "xjtu",
+      "title": "[学籍管理]关于2026级新生自查学信网学籍信息的通知",
+      "url": "https://jwc.xjtu.edu.cn/info/1095/10501.htm",
+      "date": "2026-10-09",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-09T02:35:12.069Z"
+    },
     {
       "id": "5787f42ac7d64b11",
       "sourceId": "aao-tzgg",
