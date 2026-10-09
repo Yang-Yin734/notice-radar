@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-09T01:41:07.395Z",
-  "total": 187,
+  "generatedAt": "2026-10-09T02:00:53.575Z",
+  "total": 188,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
@@ -18,13 +18,13 @@
       "count": 16
     },
     {
-      "sourceId": "jiaowu-tzgg",
-      "sourceName": "教务部·通知公告",
-      "count": 14
-    },
-    {
       "sourceId": "aao-tzgg",
       "sourceName": "教务处·通知公告",
+      "count": 15
+    },
+    {
+      "sourceId": "jiaowu-tzgg",
+      "sourceName": "教务部·通知公告",
       "count": 14
     },
     {
@@ -79,6 +79,18 @@
     }
   ],
   "items": [
+    {
+      "id": "5787f42ac7d64b11",
+      "sourceId": "aao-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "njau",
+      "title": "2026-2027学年第一学期2026级学生必读课报名及考核工作通知",
+      "url": "https://aao.njau.edu.cn/info/1101/6997.htm",
+      "date": "2026-10-09",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-09T02:00:14.380Z"
+    },
     {
       "id": "301f2df9e815a714",
       "sourceId": "jwc-tzgg",
