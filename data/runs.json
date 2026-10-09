@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-09T23:44:20.039Z",
+  "updatedAt": "2026-10-09T23:58:49.666Z",
   "sources": {
     "uestc:jwc-important": [
       "fail",
@@ -201,7 +201,8 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "nankai:jwc-tzgg": [
       "ok",
