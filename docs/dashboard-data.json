@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-09T09:00:04.758Z",
-  "total": 192,
+  "generatedAt": "2026-10-09T09:14:18.251Z",
+  "total": 193,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
@@ -38,6 +38,11 @@
       "count": 13
     },
     {
+      "sourceId": "jwc-jxtz",
+      "sourceName": "教务处·教学通知",
+      "count": 8
+    },
+    {
       "sourceId": "bksy-tzgg",
       "sourceName": "本科生院·通知公告",
       "count": 8
@@ -45,11 +50,6 @@
     {
       "sourceId": "jw-ggtz",
       "sourceName": "本科生院·公告通知",
-      "count": 7
-    },
-    {
-      "sourceId": "jwc-jxtz",
-      "sourceName": "教务处·教学通知",
       "count": 7
     },
     {
@@ -79,6 +79,18 @@
     }
   ],
   "items": [
+    {
+      "id": "bde8ba093dcb7f26",
+      "sourceId": "jwc-jxtz",
+      "sourceName": "教务处·教学通知",
+      "school": "xjtu",
+      "title": "[竞赛安排]关于组织全国大学生计算机应用能力与数字素养大赛暨第九届传智杯全国大学生数智创新与AI应用大赛报名的...",
+      "url": "https://jwc.xjtu.edu.cn/info/1172/10505.htm",
+      "date": "2026-10-09",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-09T09:14:09.993Z"
+    },
     {
       "id": "51f39cdf3e8d3370",
       "sourceId": "jw-ggtz",
