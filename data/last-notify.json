@@ -1,13 +1,8 @@
 {
-  "at": "2026-10-01T14:57:23.704Z",
+  "at": "2026-10-09T12:50:24.888Z",
   "title": "电子科技大学 · 推送通道测试",
   "count": 0,
   "outcomes": [
-    {
-      "channel": "serverchan",
-      "ok": true,
-      "detail": "HTTP 200 已投递"
-    },
     {
       "channel": "stdout",
       "ok": true,
