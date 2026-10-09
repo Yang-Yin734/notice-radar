@@ -1,6 +1,17 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { emptyRuns, loadRuns, recordRun, renderRate, saveRuns, summarizeRuns } from '../src/core/runs.ts';
+import {
+  dropLegacyKeys,
+  emptyRuns,
+  loadRuns,
+  ratesForSchool,
+  recordRun,
+  renderRate,
+  saveRuns,
+  scopedKey,
+  splitKey,
+  summarizeRuns,
+} from '../src/core/runs.ts';
 import type { SourceResult } from '../src/types.ts';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -113,6 +124,42 @@ test('runs：doctor 那一列是「最近 N 次记录」的构成，只记状态
   assert.equal(rate?.ok, 3);
   assert.match(renderRate(rate) ?? '', /50%/);
   assert.match(renderRate(rate) ?? '', /⚠/, '抖动的源要能一眼看出来');
+});
+
+test('runs：同一 sourceId 出现在多所学校时各记各的（撞键就出过真事故）', () => {
+  // 实测：`jwc-tzgg` 这个 id 出现在 9 所学校的预设里。按裸 id 记账会把 9 所混进一个桶，
+  // 于是"A 校失败"会把 B 校的连续失败计数抬到告警阈值，或者反过来把真故障压住。
+  assert.equal(scopedKey('hnu', 'jwc-tzgg'), 'hnu:jwc-tzgg');
+  assert.deepEqual(splitKey('hnu:jwc-tzgg'), { school: 'hnu', sourceId: 'jwc-tzgg' });
+
+  const hnu = result({ sourceId: 'jwc-tzgg', sourceName: '湖南大学教务处' });
+  const zzu = result({ sourceId: 'jwc-tzgg', sourceName: '郑州大学教务处' });
+
+  let state = emptyRuns();
+  state = recordRun([hnu], state, { prefix: 'hnu:', at: at(0) }).state;
+  state = recordRun([{ ...zzu, ok: false, error: 'fetch failed', items: [] }], state, { prefix: 'zzu:', at: at(20) }).state;
+
+  assert.deepEqual(state.sources['hnu:jwc-tzgg'], ['ok']);
+  assert.deepEqual(state.sources['zzu:jwc-tzgg'], ['fail']);
+
+  const hnuRate = ratesForSchool(summarizeRuns(state), 'hnu').get('jwc-tzgg');
+  const zzuRate = ratesForSchool(summarizeRuns(state), 'zzu').get('jwc-tzgg');
+  assert.equal(hnuRate?.ok, 1, 'A 校的成绩不该被 B 校的失败污染');
+  assert.equal(hnuRate?.last, 'ok');
+  assert.equal(zzuRate?.last, 'fail');
+  assert.equal(ratesForSchool(summarizeRuns(state), 'nju').get('jwc-tzgg'), undefined, '没记录的学校不该凭空出现');
+});
+
+test('runs：旧版（只有裸 sourceId）的记录会被清掉，不混进新口径', () => {
+  const legacy = { version: 1, updatedAt: at(0), sources: { 'jwc-tzgg': ['fail', 'fail'], 'uestc:jwc': ['ok'] } };
+  const { state, dropped } = dropLegacyKeys({ version: 1, updatedAt: at(0), sources: { 'jwc-tzgg': ['fail', 'fail'], 'uestc:jwc': ['ok'] } });
+  assert.equal(dropped, 1);
+  assert.deepEqual(Object.keys(state.sources), ['uestc:jwc']);
+
+  // 没有旧键时不该改时间戳（否则每轮都会白写一次文件）
+  const clean = dropLegacyKeys({ version: 1, updatedAt: at(0), sources: { 'uestc:jwc': ['ok'] } });
+  assert.equal(clean.dropped, 0);
+  assert.equal(clean.state.updatedAt, at(0));
 });
 
 test('runs：没有记录的源返回空串，坏文件不影响程序', () => {

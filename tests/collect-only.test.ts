@@ -3,7 +3,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
-import { loadAllSchoolSources, loadConfig, mergeSources } from '../src/core/config.ts';
+import { loadAllSchoolSources, loadConfig, loadSchoolConfigs, mergeSources } from '../src/core/config.ts';
 import { collectOnlyIds, notifiable } from '../src/core/tiers.ts';
 
 /**
@@ -102,6 +102,32 @@ test('loadAllSchoolSources：日报靠它认出"只采集不通知"的源', () =
     ['A'],
     '别的学校（只采集）的通知不该进日报',
   );
+});
+
+test('loadSchoolConfigs：按学校分组，撞名的源不会被并到一起', () => {
+  const configs = loadSchoolConfigs();
+  assert.ok(configs.length >= 5, `只读到 ${configs.length} 所学校，像是没扫到 config/schools/*.yaml`);
+
+  const schools = configs.map((c) => c.school);
+  assert.equal(new Set(schools).size, schools.length, '每所学校只出现一次');
+
+  // 同一所学校的多个预设要合成一份（uestc.yaml 电子科大 + uestc-math.yaml 数学科学学院）
+  const uestc = configs.find((c) => c.school === 'uestc');
+  assert.ok(uestc, '应该有一所 uestc');
+  const ids = uestc.sources.map((s) => s.id);
+  assert.ok(ids.includes('jwc-student'), 'uestc.yaml 的源要并进来');
+  assert.ok(ids.includes('math-jwgg'), 'uestc-math.yaml 的源也要并进来');
+  assert.equal(
+    uestc.name,
+    '电子科技大学',
+    '显示名要取 uestc.yaml（学校级），不能被 uestc-math.yaml 的"数学科学学院"顶掉',
+  );
+
+  // 撞键的实况：`jwc-tzgg` 这个 id 在 9 所学校的预设里各出现一次。
+  // 正因为按学校分组，`radr rate` 才能分学校统计而不把它们混成一个源。
+  const owners = configs.filter((c) => c.sources.some((s) => s.id === 'jwc-tzgg'));
+  assert.ok(owners.length >= 5, `jwc-tzgg 只出现在 ${owners.length} 所学校里，撞键前提变了`);
+  assert.equal(new Set(owners.map((c) => c.school)).size, owners.length);
 });
 
 test('mergeSources：按 id 去重，collectOnly 取"或"', () => {

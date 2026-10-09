@@ -1,0 +1,61 @@
+name: rate
+
+# 抓取成功率体检：一次跑完全部学校预设，逐校统计"正常 / 无条目 / 失败 / 跳过"。
+#
+# 为什么需要云端这份：成功率跟**从哪里抓**关系极大。本机（国内网络）几乎 100%，
+# 而 GitHub runner 跨境抓国内高校站点会整轮不通（实测 20 轮里有 12 轮有 7~15 所学校全灭）。
+# 想知道真实可用率，就得在看得到线上表现的地方跑一遍。
+#
+# 只支持手动触发：这是个"体检"工具，不适合当 CI 门槛（跨境网络抖动会天天报红）。
+on:
+  workflow_dispatch:
+    inputs:
+      min:
+        description: '成功率门槛（0~1，例如 0.8）；低于它就报错退出'
+        required: false
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  rate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+
+      - run: npm ci
+
+      - name: 逐校统计抓取成功率
+        id: rate
+        run: |
+          set -o pipefail
+          ARGS="--json=data/rate.json --delay=700"
+          if [ -n "${{ inputs.min }}" ]; then ARGS="$ARGS --min=${{ inputs.min }}"; fi
+          node src/cli.ts rate $ARGS 2>&1 | tee rate.log
+
+      - name: 把报告写进运行摘要
+        if: always()
+        run: |
+          {
+            echo '## 抓取成功率体检'
+            echo ''
+            echo '```'
+            sed -n '/^学校/,$p' rate.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rate-report
+          path: |
+            rate.log
+            data/rate.json
+          if-no-files-found: warn

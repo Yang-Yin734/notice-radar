@@ -28,8 +28,51 @@ export const DEFAULT_PERIOD_MINUTES = 15;
 export interface RunsState {
   version: number;
   updatedAt: string;
-  /** sourceId → 最近的抓取结果（旧的在前面，新的在后面） */
+  /**
+   * 「学校:源id」→ 最近的抓取结果（旧的在前面，新的在后面）。
+   *
+   * 为什么要带学校前缀：`sourceId` 只在**一份配置内**唯一 —— 实测 `jwc-tzgg` 出现在 9 所学校的
+   * 预设里，只按 id 记会把 9 所学校的成败混进同一个桶，成功率与连续失败次数全都不可信
+   * （一所学校失败会把另一所的阈值抬高，真故障反而被压住）。
+   */
   sources: Record<string, ('ok' | 'fail')[]>;
+}
+
+/** 记账键：学校 + 源。读的时候必须用同一个函数，别手拼字符串。 */
+export function scopedKey(school: string, sourceId: string): string {
+  return `${school}:${sourceId}`;
+}
+
+/** 拆回 学校 / 源id（兼容 v0.11.1 之前的旧键：没有前缀，school 为空串）。 */
+export function splitKey(key: string): { school: string; sourceId: string } {
+  const at = key.indexOf(':');
+  return at < 0 ? { school: '', sourceId: key } : { school: key.slice(0, at), sourceId: key.slice(at + 1) };
+}
+
+/**
+ * 丢掉 v0.11.1 之前那种"只有 sourceId"的旧键。
+ *
+ * 它们的数字**本来就不可信**（跨学校撞键），留着只会让 doctor 显示别校的近况。
+ * 迁移是一次性的：第一次跑 run/doctor 时顺手清掉。
+ */
+export function dropLegacyKeys(state: RunsState): { state: RunsState; dropped: number } {
+  const sources: Record<string, ('ok' | 'fail')[]> = {};
+  let dropped = 0;
+  for (const [key, list] of Object.entries(state.sources)) {
+    if (key.includes(':')) sources[key] = list;
+    else dropped += 1;
+  }
+  return { state: { ...state, sources }, dropped };
+}
+
+/** 只取某所学校的近况，键还原成裸 sourceId（doctor 表格按 sourceId 查）。 */
+export function ratesForSchool(rates: Map<string, SourceRate>, school: string): Map<string, SourceRate> {
+  const out = new Map<string, SourceRate>();
+  for (const [key, rate] of rates) {
+    const parsed = splitKey(key);
+    if (parsed.school === school) out.set(parsed.sourceId, rate);
+  }
+  return out;
 }
 
 export const emptyRuns = (): RunsState => ({ version: 1, updatedAt: new Date(0).toISOString(), sources: {} });
@@ -61,10 +104,11 @@ export function saveRuns(state: RunsState, file: string = DEFAULT_RUNS_FILE): vo
 export function recordRun(
   results: SourceResult[],
   state: RunsState,
-  options: { at?: string; window?: number; periodMinutes?: number } = {},
+  options: { at?: string; window?: number; periodMinutes?: number; prefix?: string } = {},
 ): { state: RunsState; changed: boolean } {
   const at = options.at ?? new Date().toISOString();
   const window = options.window ?? DEFAULT_WINDOW;
+  const prefix = options.prefix ?? '';
   const periodMs = (options.periodMinutes ?? DEFAULT_PERIOD_MINUTES) * 60_000;
   const atMs = Date.parse(at);
   const anchorMs = Date.parse(state.updatedAt);
@@ -76,7 +120,8 @@ export function recordRun(
   for (const r of results) {
     if (r.skipped) continue;
     const outcome: 'ok' | 'fail' = r.ok && r.items.length > 0 ? 'ok' : 'fail';
-    const list = sources[r.sourceId] ?? [];
+    const key = `${prefix}${r.sourceId}`;
+    const list = sources[key] ?? [];
     const prev = list[list.length - 1];
 
     if (prev === outcome) {
@@ -84,7 +129,7 @@ export function recordRun(
       if (samePeriod) continue; // 同一失败期内的重试：不记
     }
 
-    sources[r.sourceId] = [...list, outcome].slice(-window);
+    sources[key] = [...list, outcome].slice(-window);
     appended = true;
   }
 

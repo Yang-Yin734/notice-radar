@@ -25,3 +25,6 @@ keystore.txt
 .probe-pages/
 .probe-out/
 .moe-work/
+
+# `radr rate --json=...` 的临时报告：体检结论写进 CHANGELOG，不必提交
+data/rate.json

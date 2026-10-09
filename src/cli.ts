@@ -2,7 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { loadAllSchoolSources, loadConfig, mergeSources, pageUrls, selectSources } from './core/config.ts';
+import { loadAllSchoolSources, loadConfig, loadSchoolConfigs, mergeSources, pageUrls, selectSources } from './core/config.ts';
 import type { RadarConfig, SourceConfig } from './core/config.ts';
 import { fetchHtml } from './core/fetch.ts';
 import { renderHtml } from './core/browser.ts';
@@ -10,9 +10,10 @@ import { getAdapter, listAdapters } from './adapters/index.ts';
 import { evaluate } from './core/filter.ts';
 import { loadState, markSeen, saveState, splitNew, dedupeAcrossSources } from './core/dedupe.ts';
 import { appendHistory, countBySource, loadHistory, renderStats, saveHistory, summarize } from './core/history.ts';
-import { loadRuns, recordRun, saveRuns, summarizeRuns } from './core/runs.ts';
+import { dropLegacyKeys, loadRuns, ratesForSchool, recordRun, saveRuns, scopedKey, summarizeRuns } from './core/runs.ts';
 import { renderDashboard } from './dashboard.ts';
-import { renderDoctor, renderJson, renderMarkdown } from './core/report.ts';
+import { rateOfRows, renderDoctor, renderJson, renderMarkdown, renderRateReport, summarizeRate } from './core/report.ts';
+import type { SchoolRate } from './core/report.ts';
 import { collectOnlyIds, explainTier, immediateItems, notifiable, splitByTier } from './core/tiers.ts';
 import {
   DEFAULT_ALERT_FILE,
@@ -117,6 +118,10 @@ interface Flags {
   channel: string | null;
   /** doctor：每个源顺带打印前 N 条解析结果（接入新学校时确认"没抓错东西"） */
   show: number;
+  /** 用户是否显式指定了 --config（rate：没指定就一次跑完全部学校预设） */
+  configExplicit: boolean;
+  /** rate：成功率低于这个门槛就以非零码退出（给 CI 用），缺省不设门槛 */
+  minRate: number | null;
 }
 
 function parseFlags(argv: string[]): Flags {
@@ -150,6 +155,8 @@ function parseFlags(argv: string[]): Flags {
     all: argv.includes('--all'),
     channel: get('channel'),
     show: get('show') ? Number(get('show')) : 0,
+    configExplicit: argv.some((a) => a.startsWith('--config')),
+    minRate: get('min') ? Number(get('min')) : null,
   };
 }
 
@@ -694,8 +701,13 @@ async function cmdRun(flags: Flags): Promise<number> {
   // 实测踩过坑：单次失败就告警 → 4 个源在同一秒一起告警，而下一轮全部恢复正常（纯误报）。
   // 所以：只有**连续**失败到阈值才告警，阈值见 alerts.failureStreak。
   const runsFile = path.join(path.dirname(flags.state), 'runs.json');
-  const runsRecord = recordRun(results, loadRuns(runsFile));
-  const streakOf = (sourceId: string) => failureStreak(runsRecord.state.sources[sourceId]);
+  // 记账键必须带学校前缀：不同学校的预设常复用同一个 sourceId（`jwc-tzgg` 出现在 9 所学校里）
+  const migrated = dropLegacyKeys(loadRuns(runsFile));
+  const runsRecord = recordRun(results, migrated.state, { prefix: `${cfg.school}:` });
+  if (migrated.dropped > 0) {
+    console.log(`▸ 清理了 ${migrated.dropped} 条旧版抓取记录（键里没有学校，跨校混在一起，数字不可信）`);
+  }
+  const streakOf = (sourceId: string) => failureStreak(runsRecord.state.sources[scopedKey(cfg.school, sourceId)]);
 
   const problems = detectProblems(results);
   // 「只采集不通知」的源连故障告警也不发：这些学校用户还没订阅，报警只会变成噪音
@@ -717,9 +729,9 @@ async function cmdRun(flags: Flags): Promise<number> {
   // 阈值按源算：长期不稳的源（例如只对国内 IP 友好的 WAF 站点）自动放宽，
   // 否则以 60% 的失败率、阈值 3，一两个小时就会骚扰用户一次（实测就是这样）。
   const sourceById = new Map(cfg.sources.map((s) => [s.id, s]));
-  const rateOf = (id: string) => successRate(runsRecord.state.sources[id]);
+  const rateOf = (id: string) => successRate(runsRecord.state.sources[scopedKey(cfg.school, id)]);
   const rateTextOf = (id: string) => {
-    const list = runsRecord.state.sources[id];
+    const list = runsRecord.state.sources[scopedKey(cfg.school, id)];
     if (!list || list.length === 0) return null;
     const ok = list.filter((x) => x === 'ok').length;
     return `近 ${list.length} 次成功 ${ok} 次`;
@@ -745,7 +757,12 @@ async function cmdRun(flags: Flags): Promise<number> {
 
   const { confirmed, pending } = confirmByStreak(
     alertable,
-    Object.fromEntries(Object.entries(runsRecord.state.sources).map(([id, list]) => [id, failureStreak(list)])),
+    // 这里要的是「源的连续失败次数」，所以把学校前缀去掉再交给它（它按 problem.sourceId 查）
+    Object.fromEntries(
+      Object.entries(runsRecord.state.sources)
+        .filter(([key]) => key.startsWith(`${cfg.school}:`))
+        .map(([key, list]) => [key.slice(cfg.school.length + 1), failureStreak(list)]),
+    ),
     thresholdOf,
   );
   if (pending.length > 0) {
@@ -800,8 +817,8 @@ async function cmdRun(flags: Flags): Promise<number> {
 
   // 每个源最近 N 次成功率（issue #6）：有新通知、出问题、或"连续失败的状态发生了变化"时写。
   // 其余情况（安静地成功）不写文件 —— 否则一天 72 次提交会把历史淹掉。
-  if (!flags.dry && (shouldWrite || problems.length > 0 || runsRecord.changed)) {
-    if (runsRecord.changed || problems.length > 0) {
+  if (!flags.dry && (shouldWrite || problems.length > 0 || runsRecord.changed || migrated.dropped > 0)) {
+    if (runsRecord.changed || problems.length > 0 || migrated.dropped > 0) {
       saveRuns(runsRecord.state, runsFile);
       console.log(`▸ 抓取近况已记录：${runsFile}（doctor 里会显示"最近 N 次成功 X 次"）`);
     }
@@ -861,7 +878,8 @@ async function cmdDoctor(flags: Flags): Promise<number> {
   const cfg = loadCfg(flags);
   console.log(`▸ 体检 ${cfg.name}：${cfg.sources.filter((s) => s.enabled).length} 个源\n`);
   const results = await collect(cfg, flags);
-  const rates = summarizeRuns(loadRuns(path.join(path.dirname(flags.state), 'runs.json')));
+  // 近况按「学校:源」记，这里还原成裸 sourceId 交给表格（同一份配置只可能属于一所学校）
+  const rates = ratesForSchool(summarizeRuns(loadRuns(path.join(path.dirname(flags.state), 'runs.json'))), cfg.school);
   console.log(renderDoctor(results, rates));
   const skipped = results.filter((r) => r.skipped).length;
   const broken = results.filter((r) => (!r.ok && !r.skipped) || (r.ok && r.items.length === 0)).length;
@@ -883,6 +901,59 @@ async function cmdDoctor(flags: Flags): Promise<number> {
   console.log('\n提示：状态 202 或体积 <4KB 通常是 WAF 挑战页；抓到了但条目为 0 说明选择器过时了。');
   if (skipped > 0) console.log(`本次跳过了 ${skipped} 个需要浏览器渲染的源（加 --allow-browser 可启用）。`);
   return broken === 0 ? 0 : 1;
+}
+
+/**
+ * 一次跑完全部学校预设，给出**抓取成功率**。
+ *
+ * 为什么单独做一个命令：`doctor` 只看一所学校、而且只看当下；`runs.json` 记的是"状态变化"
+ * （安静的成功不记），所以它那个百分比只能用来发现不稳定，不是可用率。
+ * 想知道"这套抓取到底靠不靠得住"，就得真的把每个源跑一遍、按学校分别统计。
+ */
+async function cmdRate(flags: Flags): Promise<number> {
+  const configs = flags.configExplicit ? [loadCfg(flags)] : loadSchoolConfigs();
+  if (configs.length === 0) {
+    console.error('✗ 没找到任何学校预设（config/schools/*.yaml）');
+    return 1;
+  }
+  const sourceCount = configs.reduce((n, c) => n + c.sources.filter((s) => s.enabled).length, 0);
+  console.log(
+    `▸ 抓取成功率体检：${configs.length} 所学校 / ${sourceCount} 个启用的源` +
+      `（源之间间隔 ${flags.delayMs}ms${flags.allowBrowser ? '，已允许真浏览器' : ''}）\n`,
+  );
+
+  const rows: SchoolRate[] = [];
+  for (const [index, cfg] of configs.entries()) {
+    if (index > 0 && flags.delayMs > 0) await sleep(flags.delayMs);
+    // --only 在这里没有意义（不同学校的源 id 会重名），所以只沿用 --allow-browser / --delay
+    const results = await collect(cfg, { ...flags, only: null });
+    rows.push(summarizeRate(cfg.school, cfg.name, results));
+    process.stdout.write(`  · ${cfg.name}：${results.filter((r) => r.ok && r.items.length > 0).length}/${results.length} 个源正常\n`);
+  }
+
+  console.log('');
+  console.log(renderRateReport(rows));
+  console.log(
+    '\n口径：成功率 = 正常源 / 计入统计的源；"跳过"（需要浏览器但没开 --allow-browser）与网络抖动都如实分列，' +
+      '不会藏起来。抓到了却解析不出条目按失败算 —— 选择器过时就是这么表现的。',
+  );
+
+  if (flags.json) {
+    fs.mkdirSync(path.dirname(flags.json), { recursive: true });
+    fs.writeFileSync(
+      flags.json,
+      `${JSON.stringify({ generatedAt: new Date().toISOString(), rate: rateOfRows(rows), schools: rows }, null, 2)}\n`,
+      'utf8',
+    );
+    console.log(`▸ 报告已写入 ${flags.json}`);
+  }
+
+  const rate = rateOfRows(rows);
+  if (flags.minRate !== null && rate < flags.minRate) {
+    console.error(`\n✗ 成功率 ${Math.round(rate * 100)}% 低于门槛 ${Math.round(flags.minRate * 100)}%`);
+    return 1;
+  }
+  return 0;
 }
 
 /** 渲染任意页面并把 DOM 存下来 —— 面对 WAF 站点时，用它摸清真实结构、再写选择器。 */
@@ -927,6 +998,8 @@ function usage(): void {
 用法：
   radr run      [--config=路径] [--dry] [--no-notify] [--json=路径] [--delay=毫秒] [--max=条数] [--only=源id] [--write-always] [--allow-browser]
   radr doctor   [--config=路径] [--only=源id] [--allow-browser]      体检：每个源能不能抓、解析出几条（含最近 N 次成功率）
+  radr rate     [--config=路径] [--json=文件] [--min=0.8] [--delay=毫秒] [--allow-browser]
+                                                       一次跑完全部学校预设，逐校统计抓取成功率（默认 20 所；--min 给 CI 当门槛）
   radr list     [--config=路径]                        列出配置里的源
   radr test-notify [--config=路径] [--channel=通道]     只发一条测试消息，验证推送通道配好没有（webhook/email/stdout）
   radr dashboard [--out=docs/index.html]               把历史归档渲染成静态仪表盘（GitHub Pages 用）
@@ -956,6 +1029,7 @@ let code = 0;
 try {
   if (command === 'run') code = await cmdRun(flags);
   else if (command === 'doctor') code = await cmdDoctor(flags);
+  else if (command === 'rate') code = await cmdRate(flags);
   else if (command === 'list') code = cmdList(flags);
   else if (command === 'test-notify') code = await cmdTestNotify(flags);
   else if (command === 'dashboard') code = cmdDashboard(flags);

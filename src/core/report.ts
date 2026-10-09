@@ -14,7 +14,7 @@ function stamp(d = new Date()): string {
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
 
-/** 渲染 Markdown 日报：适合直接推送到 Server酱/邮件，也适合提交进仓库当历史记录。 */
+/** 渲染 Markdown 日报：适合直接推送到手机/邮件，也适合提交进仓库当历史记录。 */
 export function renderMarkdown(results: SourceResult[], fresh: Notice[], options: ReportOptions = {}): string {
   const { title = '校园通知雷达', maxPerSource = 20 } = options;
   const ok = results.filter((r) => r.ok);
@@ -123,3 +123,118 @@ export function renderDoctor(results: SourceResult[], rates?: Map<string, Source
 export function renderJson(results: SourceResult[], fresh: Notice[]): string {
   return `${JSON.stringify({ generatedAt: new Date().toISOString(), results, fresh }, null, 2)}\n`;
 }
+
+// ------------------------------------------------------------ 抓取成功率
+
+export interface SchoolRate {
+  school: string;
+  name: string;
+  /** 计入成功率的源数（不含"跳过"—— 那是没开 --allow-browser 的预期行为） */
+  total: number;
+  /** 抓到并且解析出条目 */
+  ok: number;
+  /** 抓到了但一条也没解析出来：最阴险的失败（选择器过时了，看起来还"成功"） */
+  empty: number;
+  /** 网络层失败 */
+  failed: number;
+  skipped: number;
+  items: number;
+  tookMs: number;
+  /** 失败/无条目的明细，一行一条 */
+  problems: string[];
+}
+
+/**
+ * 口径（重要，别把两个数字混着看）：
+ *   · 成功率 = ok / total，`total` **不含** skipped（需要浏览器但没开开关 = 预期行为，不该拉低成功率）
+ *   · `empty`（抓到了却没条目）算失败：选择器过时就是这么表现的
+ */
+export function summarizeRate(school: string, name: string, results: SourceResult[]): SchoolRate {
+  const considered = results.filter((r) => !r.skipped);
+  const ok = considered.filter((r) => r.ok && r.items.length > 0);
+  const empty = considered.filter((r) => r.ok && r.items.length === 0);
+  const failed = considered.filter((r) => !r.ok);
+  return {
+    school,
+    name,
+    total: considered.length,
+    ok: ok.length,
+    empty: empty.length,
+    failed: failed.length,
+    skipped: results.length - considered.length,
+    items: results.reduce((n, r) => n + r.items.length, 0),
+    tookMs: results.reduce((n, r) => n + r.tookMs, 0),
+    problems: [
+      ...failed.map((r) => `${r.sourceName}：${r.error ?? '抓取失败'}`),
+      ...empty.map((r) => `${r.sourceName}：抓到了但没解析出条目（选择器可能过时）`),
+    ],
+  };
+}
+
+const percent = (rate: SchoolRate): string =>
+  rate.total === 0 ? '—' : `${Math.round((rate.ok / rate.total) * 100)}%`;
+
+function padVisual(s: string, width: number): string {
+  const visual = [...s].reduce((w, c) => w + (c.charCodeAt(0) > 255 ? 2 : 1), 0);
+  return s + ' '.repeat(Math.max(0, width - visual));
+}
+
+export function renderRateReport(rows: SchoolRate[]): string {
+  const lines: string[] = [];
+  const total = rows.reduce(
+    (acc, r) => ({
+      total: acc.total + r.total,
+      ok: acc.ok + r.ok,
+      empty: acc.empty + r.empty,
+      failed: acc.failed + r.failed,
+      skipped: acc.skipped + r.skipped,
+      items: acc.items + r.items,
+    }),
+    { total: 0, ok: 0, empty: 0, failed: 0, skipped: 0, items: 0 },
+  );
+
+  lines.push(
+    `${padVisual('学校', 26)}${padVisual('源', 5)}${padVisual('正常', 6)}${padVisual('无条目', 8)}${padVisual('失败', 6)}${padVisual('跳过', 6)}${padVisual('条目', 7)}${padVisual('耗时', 9)}成功率`,
+  );
+  lines.push('-'.repeat(88));
+  for (const r of rows) {
+    lines.push(
+      padVisual(r.name, 26) +
+        padVisual(String(r.total), 5) +
+        padVisual(String(r.ok), 6) +
+        padVisual(String(r.empty), 8) +
+        padVisual(String(r.failed), 6) +
+        padVisual(String(r.skipped), 6) +
+        padVisual(String(r.items), 7) +
+        padVisual(`${(r.tookMs / 1000).toFixed(1)}s`, 9) +
+        percent(r),
+    );
+  }
+
+  lines.push('-'.repeat(88));
+  lines.push(
+    padVisual(`合计 ${rows.length} 所`, 26) +
+      padVisual(String(total.total), 5) +
+      padVisual(String(total.ok), 6) +
+      padVisual(String(total.empty), 8) +
+      padVisual(String(total.failed), 6) +
+      padVisual(String(total.skipped), 6) +
+      padVisual(String(total.items), 7) +
+      padVisual('', 9) +
+      (total.total === 0 ? '—' : `${Math.round((total.ok / total.total) * 100)}%`),
+  );
+
+  const problems = rows.flatMap((r) => r.problems.map((p) => `${r.name} · ${p}`));
+  if (problems.length > 0) {
+    lines.push('');
+    lines.push('失败 / 无条目明细：');
+    for (const p of problems) lines.push(`  ✗ ${p}`);
+  }
+  return lines.join('\n');
+}
+
+export const rateOfRows = (rows: SchoolRate[]): number => {
+  const total = rows.reduce((n, r) => n + r.total, 0);
+  const ok = rows.reduce((n, r) => n + r.ok, 0);
+  return total === 0 ? 0 : ok / total;
+};

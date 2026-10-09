@@ -335,11 +335,25 @@ export function mergeSources(...groups: SourceConfig[][]): SourceConfig[] {
 }
 
 export function loadAllSchoolSources(dir = path.join('config', 'schools')): SourceConfig[] {
-  // 当前目录没有就退回包内置的预设（npm 包场景，`npx notice-radar` 是在用户自己目录里跑的）
+  const out: SourceConfig[] = [];
+  for (const f of presetFiles(dir)) {
+    try {
+      out.push(...loadConfig(f).sources);
+    } catch {
+      /* 某个预设写坏了不该让日报整体失败（可能正被人编辑） */
+    }
+  }
+  return out;
+}
+
+/**
+ * 列出 `config/schools/` 下的预设文件。当前目录没有就退回包内置的预设
+ * （npm 包场景，`npx notice-radar` 是在用户自己目录里跑的）。
+ */
+function presetFiles(dir: string): string[] {
   const pkgRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
   const dirs = [dir, path.join(pkgRoot, dir)].filter((d, i, all) => all.indexOf(d) === i);
 
-  const out: SourceConfig[] = [];
   for (const d of dirs) {
     let files: string[] = [];
     try {
@@ -347,14 +361,43 @@ export function loadAllSchoolSources(dir = path.join('config', 'schools')): Sour
     } catch {
       continue;
     }
-    for (const f of files) {
-      try {
-        out.push(...loadConfig(path.join(d, f)).sources);
-      } catch {
-        /* 某个预设写坏了不该让日报整体失败（可能正被人编辑） */
-      }
-    }
-    if (out.length) break;
+    if (files.length) return files.map((f) => path.join(d, f));
   }
-  return out;
+  return [];
+}
+
+/**
+ * 读全部学校预设，**按学校分组**（同一所学校的多个预设合并，如 `uestc.yaml` + `uestc-math.yaml`）。
+ *
+ * 为什么不复用 `loadAllSchoolSources()`：那个把所有学校的源按 id 并成一个数组，而 `sourceId`
+ * 只在**一份配置内**唯一 —— 实测 `jwc-tzgg` 出现在 9 所学校的预设里，按 id 合并会把它们当成同一个源。
+ * 要按学校分别统计成功率时，必须保留"这份源属于哪所学校"。
+ */
+export function loadSchoolConfigs(dir = path.join('config', 'schools')): RadarConfig[] {
+  const bySchool = new Map<string, RadarConfig>();
+  /** 学校的显示名以 `<school>.yaml` 为准 —— 否则 uestc 会被 uestc-math.yaml 的"数学科学学院"顶掉 */
+  const canonical = new Set<string>();
+  for (const file of presetFiles(dir)) {
+    let cfg: RadarConfig;
+    try {
+      cfg = loadConfig(file);
+    } catch {
+      continue; // 某个预设写坏了不该让整体失败（可能正被人编辑）
+    }
+    const isCanonical = path.basename(file).replace(/\.ya?ml$/, '') === cfg.school;
+    const prev = bySchool.get(cfg.school);
+    if (!prev) {
+      bySchool.set(cfg.school, cfg);
+      if (isCanonical) canonical.add(cfg.school);
+      continue;
+    }
+    const keepPrevName = canonical.has(cfg.school) || !isCanonical;
+    bySchool.set(cfg.school, {
+      ...prev,
+      name: keepPrevName ? prev.name : cfg.name,
+      sources: mergeSources(prev.sources, cfg.sources),
+    });
+    if (isCanonical) canonical.add(cfg.school);
+  }
+  return [...bySchool.values()];
 }
