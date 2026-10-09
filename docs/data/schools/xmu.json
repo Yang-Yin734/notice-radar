@@ -3,13 +3,13 @@
  "name": "厦门大学",
  "province": "福建省",
  "city": "厦门市",
- "generatedAt": "2026-10-09T14:23:51.990Z",
- "total": 10,
+ "generatedAt": "2026-10-09T14:40:23.502Z",
+ "total": 12,
  "bySource": [
   {
    "sourceId": "jwc-tzgg",
    "sourceName": "教务处·通知公告",
-   "count": 10
+   "count": 12
   }
  ],
  "units": [
@@ -19,10 +19,36 @@
    "sources": [
     "教务处·通知公告"
    ],
-   "count": 10
+   "count": 12
   }
  ],
  "items": [
+  {
+   "id": "c294a2303fad660b",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "xmu",
+   "title": "关于2026年12月12日全国大学英语四、六级考试教学楼封闭的通知",
+   "url": "https://jwc.xmu.edu.cn/info/1921/69912.htm",
+   "date": "2026-10-09",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-09T14:40:20.324Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "b9cc8351aa2320a3",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "xmu",
+   "title": "关于2026-2027学年第一学期公共数学、大学物理、公共计算机期中考试安排的通知",
+   "url": "https://jwc.xmu.edu.cn/info/1921/69902.htm",
+   "date": "2026-10-09",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-09T14:40:20.324Z",
+   "unit": "教务处"
+  },
   {
    "id": "301f2df9e815a714",
    "sourceId": "jwc-tzgg",
