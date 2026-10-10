@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-10T06:01:59.270Z",
+  "updatedAt": "2026-10-10T06:13:39.692Z",
   "sources": {
     "uestc:jwc-important": [
       "ok",
@@ -91,7 +91,6 @@
       "fail"
     ],
     "uestc:gr-notice": [
-      "ok",
       "fail",
       "fail",
       "ok",
@@ -110,7 +109,8 @@
       "fail",
       "ok",
       "fail",
-      "fail"
+      "fail",
+      "ok"
     ],
     "bnu:jwb-tzgg": [
       "fail",
@@ -135,7 +135,6 @@
       "ok"
     ],
     "ecnu:bksy-tzgg": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -154,7 +153,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "hnu:jwc-tzgg": [
       "fail",
@@ -220,7 +220,6 @@
       "fail"
     ],
     "nankai:jwc-tzgg": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -239,7 +238,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "njau:aao-tzgg": [
       "ok",
@@ -261,7 +261,6 @@
       "ok"
     ],
     "nju:jw-ggtz": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -280,7 +279,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "nwpu:jiaowu-tzgg": [
       "fail",
@@ -305,7 +305,6 @@
       "ok"
     ],
     "ouc:jwc-tzgg": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -324,10 +323,10 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "shufe:jwc-tzgg": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -346,7 +345,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "swufe:jwc-tzgg": [
       "fail",
@@ -393,7 +393,6 @@
       "fail"
     ],
     "tju:oaa-tzgg": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -412,7 +411,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "xidian:jwc-tzgg": [
       "fail",
