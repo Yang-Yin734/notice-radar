@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-10T15:43:53.551Z",
+  "updatedAt": "2026-10-10T16:14:07.460Z",
   "sources": {
     "uestc:jwc-important": [
       "ok",
@@ -157,6 +157,11 @@
       "ok"
     ],
     "hnu:jwc-tzgg": [
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
       "ok",
       "fail",
       "ok",
@@ -164,6 +169,23 @@
       "ok",
       "fail",
       "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok"
+    ],
+    "hust:ugs-tzgg": [
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
       "fail",
       "ok",
       "fail",
@@ -177,28 +199,6 @@
       "fail",
       "ok",
       "fail"
-    ],
-    "hust:ugs-tzgg": [
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok"
     ],
     "jiangnan:jwc-tzgg": [
       "fail",
