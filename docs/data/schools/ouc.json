@@ -3,13 +3,13 @@
  "name": "中国海洋大学",
  "province": "山东省",
  "city": "青岛市",
- "generatedAt": "2026-10-10T02:40:42.561Z",
- "total": 4,
+ "generatedAt": "2026-10-10T02:49:49.717Z",
+ "total": 5,
  "bySource": [
   {
    "sourceId": "jwc-tzgg",
    "sourceName": "教务处·通知公告",
-   "count": 4
+   "count": 5
   }
  ],
  "units": [
@@ -19,10 +19,23 @@
    "sources": [
     "教务处·通知公告"
    ],
-   "count": 4
+   "count": 5
   }
  ],
  "items": [
+  {
+   "id": "4ed2b5189d7d53ff",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "ouc",
+   "title": "关于公布2026年秋季学期准予参加结业后返校重考名单的通知",
+   "url": "https://jwc.ouc.edu.cn/2026/1010/c6517a538795/page.htm",
+   "date": "2026-10-10",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-10T02:49:23.527Z",
+   "unit": "教务处"
+  },
   {
    "id": "604000a399b76133",
    "sourceId": "jwc-tzgg",

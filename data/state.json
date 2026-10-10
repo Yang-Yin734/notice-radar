@@ -25,7 +25,9 @@
     "news-notice": [
       "8f9c670f22bec8f3",
       "24cd74c243c20b98",
-      "6a460cf85bc22591"
+      "6a460cf85bc22591",
+      "62afdf26e8afdb91",
+      "d8e752599c328e44"
     ],
     "math-jwgg": [
       "c52fd4f6c243e1c6",
@@ -56,7 +58,9 @@
     ],
     "news-academic": [
       "2fbaf9b38aa99cf4",
-      "1c02bd7e5e570880"
+      "1c02bd7e5e570880",
+      "c641cdb993bc6cc5",
+      "b8c41f96af301f8f"
     ],
     "jwc-tzgg": [
       "1e8331a1cb39858f",
@@ -119,7 +123,8 @@
       "4a361e80ed67c7b8",
       "301f2df9e815a714",
       "c294a2303fad660b",
-      "b9cc8351aa2320a3"
+      "b9cc8351aa2320a3",
+      "4ed2b5189d7d53ff"
     ],
     "ugs-tzgg": [
       "ae4325e4334a8a88",
@@ -228,5 +233,5 @@
       "5787f42ac7d64b11"
     ]
   },
-  "lastRun": "2026-10-09T14:40:20.322Z"
+  "lastRun": "2026-10-10T02:49:23.525Z"
 }

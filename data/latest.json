@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-01T09:50:59.942Z",
+  "generatedAt": "2026-10-10T02:48:46.453Z",
   "results": [
     {
       "sourceId": "jwc-important",
@@ -10,7 +10,7 @@
       "error": null,
       "status": 200,
       "bytes": 28693,
-      "tookMs": 2633,
+      "tookMs": 1923,
       "items": [
         {
           "id": "393edb8d41cfee20",
@@ -173,7 +173,7 @@
       "error": null,
       "status": 200,
       "bytes": 31566,
-      "tookMs": 329,
+      "tookMs": 330,
       "items": [
         {
           "id": "46e2a04970a512bc",
@@ -332,12 +332,53 @@
       "sourceName": "新闻网·公告",
       "url": "https://news.uestc.edu.cn/?n=UestcNews.Front.CategoryV2.Page&CatId=68",
       "adapter": "html-list",
-      "ok": false,
-      "error": "fetch failed",
-      "status": null,
-      "bytes": 0,
-      "tookMs": 3897,
-      "items": []
+      "ok": true,
+      "error": null,
+      "status": 200,
+      "bytes": 99070,
+      "tookMs": 2113,
+      "items": [
+        {
+          "id": "62afdf26e8afdb91",
+          "sourceId": "news-notice",
+          "sourceName": "新闻网·公告",
+          "school": "uestc",
+          "title": "学者论坛：宇宙的物质不对称: 被低能参数\"锁死\"的轻子生成(Leptogenesis Determined by Low Energy Parameters)",
+          "url": "https://news.uestc.edu.cn/info/1015/44210.htm",
+          "date": "2026-10-10",
+          "tag": "学术"
+        },
+        {
+          "id": "0b6bb9f7de3a5377",
+          "sourceId": "news-notice",
+          "sourceName": "新闻网·公告",
+          "school": "uestc",
+          "title": "成电舞台|四川省戏剧进校园演出剧目《红楼之凤》重磅登场",
+          "url": "https://news.uestc.edu.cn/info/1016/44215.htm",
+          "date": "2026-10-10",
+          "tag": "文化"
+        },
+        {
+          "id": "d8e752599c328e44",
+          "sourceId": "news-notice",
+          "sourceName": "新闻网·公告",
+          "school": "uestc",
+          "title": "成电讲坛 | 中国科学院院士徐星：书写恐龙王国的奇迹",
+          "url": "https://news.uestc.edu.cn/info/1015/44216.htm",
+          "date": "2026-10-10",
+          "tag": "学术"
+        },
+        {
+          "id": "57bfd288e0e3c0ab",
+          "sourceId": "news-notice",
+          "sourceName": "新闻网·公告",
+          "school": "uestc",
+          "title": "校史馆国庆期间闭馆公告",
+          "url": "https://news.uestc.edu.cn/info/1017/44108.htm",
+          "date": "2026-09-30",
+          "tag": "公告"
+        }
+      ]
     },
     {
       "sourceId": "news-academic",
@@ -347,9 +388,39 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 98750,
-      "tookMs": 1042,
+      "bytes": 99177,
+      "tookMs": 551,
       "items": [
+        {
+          "id": "c641cdb993bc6cc5",
+          "sourceId": "news-academic",
+          "sourceName": "新闻网·学术",
+          "school": "uestc",
+          "title": "学者论坛：宇宙的物质不对称: 被低能参数\"锁死\"的轻子生成(Leptogenesis Determined by Low Energy Parameters)",
+          "url": "https://news.uestc.edu.cn/info/1015/44210.htm",
+          "date": "2026-10-10",
+          "tag": "学术"
+        },
+        {
+          "id": "8ec5412e77133fac",
+          "sourceId": "news-academic",
+          "sourceName": "新闻网·学术",
+          "school": "uestc",
+          "title": "成电舞台|四川省戏剧进校园演出剧目《红楼之凤》重磅登场",
+          "url": "https://news.uestc.edu.cn/info/1016/44215.htm",
+          "date": "2026-10-10",
+          "tag": "文化"
+        },
+        {
+          "id": "b8c41f96af301f8f",
+          "sourceId": "news-academic",
+          "sourceName": "新闻网·学术",
+          "school": "uestc",
+          "title": "成电讲坛 | 中国科学院院士徐星：书写恐龙王国的奇迹",
+          "url": "https://news.uestc.edu.cn/info/1015/44216.htm",
+          "date": "2026-10-10",
+          "tag": "学术"
+        },
         {
           "id": "93d4a6f442c55ef0",
           "sourceId": "news-academic",
@@ -359,36 +430,6 @@
           "url": "https://news.uestc.edu.cn/info/1017/44108.htm",
           "date": "2026-09-30",
           "tag": "公告"
-        },
-        {
-          "id": "e2dd0b8238f589a0",
-          "sourceId": "news-academic",
-          "sourceName": "新闻网·学术",
-          "school": "uestc",
-          "title": "关于加强2026年国庆节假期安全工作的通知",
-          "url": "https://news.uestc.edu.cn/info/1017/44059.htm",
-          "date": "2026-09-29",
-          "tag": "公告"
-        },
-        {
-          "id": "2fbaf9b38aa99cf4",
-          "sourceId": "news-academic",
-          "sourceName": "新闻网·学术",
-          "school": "uestc",
-          "title": "学者论坛：超导百年：材料、强关联机理与 AI 逆向设计",
-          "url": "https://news.uestc.edu.cn/info/1015/43921.htm",
-          "date": "2026-09-25",
-          "tag": "学术"
-        },
-        {
-          "id": "1c02bd7e5e570880",
-          "sourceId": "news-academic",
-          "sourceName": "新闻网·学术",
-          "school": "uestc",
-          "title": "名师讲堂：Geometry, Mesh, and Higher-Order Finite Elements",
-          "url": "https://news.uestc.edu.cn/info/1015/43893.htm",
-          "date": "2026-09-24",
-          "tag": "学术"
         }
       ]
     },
@@ -400,9 +441,19 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 34689,
-      "tookMs": 2605,
+      "bytes": 34590,
+      "tookMs": 1872,
       "items": [
+        {
+          "id": "17a7e48dfd439818",
+          "sourceId": "gr-notice",
+          "sourceName": "研究生院·通知",
+          "school": "uestc",
+          "title": "关于召开2026年电子科技大学研究生教育综合改革大讨论的通知",
+          "url": "https://gr.uestc.edu.cn/tongzhi/133/14877",
+          "date": null,
+          "tag": null
+        },
         {
           "id": "3e5b2e445b6f2d58",
           "sourceId": "gr-notice",
@@ -592,16 +643,6 @@
           "url": "https://gr.uestc.edu.cn/tongzhi/133/8691",
           "date": null,
           "tag": null
-        },
-        {
-          "id": "053aaae3b326daf6",
-          "sourceId": "gr-notice",
-          "sourceName": "研究生院·通知",
-          "school": "uestc",
-          "title": "致研究生导师的一封信",
-          "url": "https://gr.uestc.edu.cn/tongzhi/133/8681",
-          "date": null,
-          "tag": null
         }
       ]
     },
@@ -634,26 +675,30 @@
   ],
   "fresh": [
     {
-      "id": "2fbaf9b38aa99cf4",
-      "sourceId": "news-academic",
-      "sourceName": "新闻网·学术",
+      "id": "62afdf26e8afdb91",
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
       "school": "uestc",
-      "title": "学者论坛：超导百年：材料、强关联机理与 AI 逆向设计",
-      "url": "https://news.uestc.edu.cn/info/1015/43921.htm",
-      "date": "2026-09-25",
+      "title": "学者论坛：宇宙的物质不对称: 被低能参数\"锁死\"的轻子生成(Leptogenesis Determined by Low Energy Parameters)",
+      "url": "https://news.uestc.edu.cn/info/1015/44210.htm",
+      "date": "2026-10-10",
       "tag": "学术",
-      "alsoIn": []
+      "alsoIn": [
+        "新闻网·学术"
+      ]
     },
     {
-      "id": "1c02bd7e5e570880",
-      "sourceId": "news-academic",
-      "sourceName": "新闻网·学术",
+      "id": "d8e752599c328e44",
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
       "school": "uestc",
-      "title": "名师讲堂：Geometry, Mesh, and Higher-Order Finite Elements",
-      "url": "https://news.uestc.edu.cn/info/1015/43893.htm",
-      "date": "2026-09-24",
+      "title": "成电讲坛 | 中国科学院院士徐星：书写恐龙王国的奇迹",
+      "url": "https://news.uestc.edu.cn/info/1015/44216.htm",
+      "date": "2026-10-10",
       "tag": "学术",
-      "alsoIn": []
+      "alsoIn": [
+        "新闻网·学术"
+      ]
     }
   ]
 }

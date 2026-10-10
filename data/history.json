@@ -1,7 +1,47 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-09T14:40:20.324Z",
+  "updatedAt": "2026-10-10T02:49:23.527Z",
   "items": [
+    {
+      "id": "4ed2b5189d7d53ff",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "ouc",
+      "title": "关于公布2026年秋季学期准予参加结业后返校重考名单的通知",
+      "url": "https://jwc.ouc.edu.cn/2026/1010/c6517a538795/page.htm",
+      "date": "2026-10-10",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-10T02:49:23.527Z"
+    },
+    {
+      "id": "62afdf26e8afdb91",
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
+      "school": "uestc",
+      "title": "学者论坛：宇宙的物质不对称: 被低能参数\"锁死\"的轻子生成(Leptogenesis Determined by Low Energy Parameters)",
+      "url": "https://news.uestc.edu.cn/info/1015/44210.htm",
+      "date": "2026-10-10",
+      "tag": "学术",
+      "alsoIn": [
+        "新闻网·学术"
+      ],
+      "firstSeenAt": "2026-10-10T02:48:46.456Z"
+    },
+    {
+      "id": "d8e752599c328e44",
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
+      "school": "uestc",
+      "title": "成电讲坛 | 中国科学院院士徐星：书写恐龙王国的奇迹",
+      "url": "https://news.uestc.edu.cn/info/1015/44216.htm",
+      "date": "2026-10-10",
+      "tag": "学术",
+      "alsoIn": [
+        "新闻网·学术"
+      ],
+      "firstSeenAt": "2026-10-10T02:48:46.456Z"
+    },
     {
       "id": "c294a2303fad660b",
       "sourceId": "jwc-tzgg",

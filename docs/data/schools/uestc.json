@@ -3,9 +3,14 @@
  "name": "电子科技大学",
  "province": "四川省",
  "city": "成都市",
- "generatedAt": "2026-10-10T02:40:42.561Z",
- "total": 44,
+ "generatedAt": "2026-10-10T02:49:49.717Z",
+ "total": 46,
  "bySource": [
+  {
+   "sourceId": "news-notice",
+   "sourceName": "新闻网·公告",
+   "count": 5
+  },
   {
    "sourceId": "math-jwgg",
    "sourceName": "数学科学学院·教务公告",
@@ -15,11 +20,6 @@
    "sourceId": "news-academic",
    "sourceName": "新闻网·学术",
    "count": 2
-  },
-  {
-   "sourceId": "news-notice",
-   "sourceName": "新闻网·公告",
-   "count": 3
   },
   {
    "sourceId": "math-xsgz",
@@ -60,10 +60,10 @@
    "id": "新闻网",
    "name": "新闻网",
    "sources": [
-    "新闻网·学术",
-    "新闻网·公告"
+    "新闻网·公告",
+    "新闻网·学术"
    ],
-   "count": 5
+   "count": 7
   },
   {
    "id": "研究生院",
@@ -73,6 +73,36 @@
   }
  ],
  "items": [
+  {
+   "id": "62afdf26e8afdb91",
+   "sourceId": "news-notice",
+   "sourceName": "新闻网·公告",
+   "school": "uestc",
+   "title": "学者论坛：宇宙的物质不对称: 被低能参数\"锁死\"的轻子生成(Leptogenesis Determined by Low Energy Parameters)",
+   "url": "https://news.uestc.edu.cn/info/1015/44210.htm",
+   "date": "2026-10-10",
+   "tag": "学术",
+   "alsoIn": [
+    "新闻网·学术"
+   ],
+   "firstSeenAt": "2026-10-10T02:48:46.456Z",
+   "unit": "新闻网"
+  },
+  {
+   "id": "d8e752599c328e44",
+   "sourceId": "news-notice",
+   "sourceName": "新闻网·公告",
+   "school": "uestc",
+   "title": "成电讲坛 | 中国科学院院士徐星：书写恐龙王国的奇迹",
+   "url": "https://news.uestc.edu.cn/info/1015/44216.htm",
+   "date": "2026-10-10",
+   "tag": "学术",
+   "alsoIn": [
+    "新闻网·学术"
+   ],
+   "firstSeenAt": "2026-10-10T02:48:46.456Z",
+   "unit": "新闻网"
+  },
   {
    "id": "286698afdbbfeb84",
    "sourceId": "math-jwgg",
