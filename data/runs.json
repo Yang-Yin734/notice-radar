@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-10T18:39:01.609Z",
+  "updatedAt": "2026-10-10T18:55:33.108Z",
   "sources": {
     "uestc:jwc-important": [
       "fail",
@@ -157,7 +157,6 @@
       "ok"
     ],
     "hnu:jwc-tzgg": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -176,6 +175,7 @@
       "ok",
       "fail",
       "ok",
+      "fail",
       "fail"
     ],
     "hust:ugs-tzgg": [
@@ -462,7 +462,8 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "zzu:jwc-tzgg": [
       "ok"
