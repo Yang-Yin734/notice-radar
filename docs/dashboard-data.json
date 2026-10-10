@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-10-10T08:52:29.407Z",
-  "total": 198,
+  "generatedAt": "2026-10-10T09:20:42.502Z",
+  "total": 199,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
       "sourceName": "教务处·通知公告",
-      "count": 62
+      "count": 63
     },
     {
       "sourceId": "jwb-tzgg",
@@ -79,6 +79,18 @@
     }
   ],
   "items": [
+    {
+      "id": "5a4f3448d320970a",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "xidian",
+      "title": "关于开展2026~2027学年本科生学籍电子注册的通知",
+      "url": "https://jwc.xidian.edu.cn/info/1012/23493.htm",
+      "date": "2026-10-10",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-10T09:20:30.875Z"
+    },
     {
       "id": "4ed2b5189d7d53ff",
       "sourceId": "jwc-tzgg",
