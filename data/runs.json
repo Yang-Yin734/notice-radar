@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-10T04:00:40.970Z",
+  "updatedAt": "2026-10-10T04:19:26.398Z",
   "sources": {
     "uestc:jwc-important": [
       "ok",
@@ -48,7 +48,6 @@
     ],
     "uestc:news-notice": [
       "fail",
-      "fail",
       "ok",
       "fail",
       "fail",
@@ -66,7 +65,8 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "uestc:news-academic": [
       "ok",
@@ -169,7 +169,8 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "hust:ugs-tzgg": [
       "fail",
