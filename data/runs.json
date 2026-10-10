@@ -1,9 +1,8 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-10T00:37:27.127Z",
+  "updatedAt": "2026-10-10T01:04:55.671Z",
   "sources": {
     "uestc:jwc-important": [
-      "fail",
       "ok",
       "fail",
       "fail",
@@ -22,10 +21,10 @@
       "fail",
       "fail",
       "ok",
+      "fail",
       "fail"
     ],
     "uestc:jwc-student": [
-      "fail",
       "ok",
       "fail",
       "fail",
@@ -44,10 +43,10 @@
       "fail",
       "fail",
       "ok",
+      "fail",
       "fail"
     ],
     "uestc:news-notice": [
-      "fail",
       "ok",
       "fail",
       "fail",
@@ -66,10 +65,10 @@
       "fail",
       "fail",
       "ok",
+      "fail",
       "fail"
     ],
     "uestc:news-academic": [
-      "fail",
       "ok",
       "fail",
       "fail",
@@ -88,10 +87,10 @@
       "fail",
       "fail",
       "ok",
+      "fail",
       "fail"
     ],
     "uestc:gr-notice": [
-      "fail",
       "ok",
       "fail",
       "fail",
@@ -110,6 +109,7 @@
       "fail",
       "fail",
       "ok",
+      "fail",
       "fail"
     ],
     "bnu:jwb-tzgg": [
@@ -128,7 +128,8 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "ecnu:bksy-tzgg": [
       "fail",
@@ -209,7 +210,6 @@
       "fail"
     ],
     "nankai:jwc-tzgg": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -228,7 +228,8 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "njau:aao-tzgg": [
       "ok",
@@ -302,7 +303,6 @@
       "fail"
     ],
     "shufe:jwc-tzgg": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -321,10 +321,10 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "swufe:jwc-tzgg": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -343,7 +343,8 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "sysu:jwb-tzgg": [
       "ok",
@@ -368,7 +369,6 @@
       "fail"
     ],
     "tju:oaa-tzgg": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -387,7 +387,8 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "xidian:jwc-tzgg": [
       "ok",
