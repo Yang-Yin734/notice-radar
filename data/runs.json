@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-10T04:57:10.986Z",
+  "updatedAt": "2026-10-10T05:12:25.744Z",
   "sources": {
     "uestc:jwc-important": [
       "fail",
@@ -135,46 +135,6 @@
       "ok"
     ],
     "ecnu:bksy-tzgg": [
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok"
-    ],
-    "hnu:jwc-tzgg": [
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok"
-    ],
-    "hust:ugs-tzgg": [
       "ok",
       "fail",
       "ok",
@@ -195,6 +155,46 @@
       "fail",
       "ok",
       "fail"
+    ],
+    "hnu:jwc-tzgg": [
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok"
+    ],
+    "hust:ugs-tzgg": [
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok"
     ],
     "jiangnan:jwc-tzgg": [
       "fail",
@@ -326,7 +326,6 @@
       "ok"
     ],
     "shufe:jwc-tzgg": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -345,7 +344,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "swufe:jwc-tzgg": [
       "fail",
