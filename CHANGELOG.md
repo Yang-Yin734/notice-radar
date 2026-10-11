@@ -2,6 +2,30 @@
 
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## v0.11.2 — 2026-10-11
+
+### 修复：网页版会悄悄消失，而自己电脑看不出来
+
+现象：**别的电脑打不开网页版**（`https://yang-yin734.github.io/notice-radar/` 整站 404），
+自己电脑却一切正常 —— 因为 `sw.js` 把外壳缓存了，本机断网都能打开旧页面，只有**没有缓存的设备**会撞上 404。
+
+原因：网页版一直由 **GitHub 内置的 branch builder** 发布（`source = main` 的 `/docs`，
+`build_type = legacy`），仓库里没有自己的发布工作流。站点被停用后（`GET /repos/…/pages` → 404、
+`has_pages = false`）**不会有任何红灯**：Actions 全绿，只能靠"别人说打不开"才发现。
+上一次成功部署停在 2026-10-08T10:14Z（sha `4a0b0ef`），之后站点就没了。
+
+- 已修：用 Pages API 重新打开发布（`POST /repos/{owner}/{repo}/pages`，
+  `{"source":{"branch":"main","path":"/docs"}}`）→ 构建 `built` → 验证站点根 200，
+  `dashboard-data.json` / `version.json` / `sw.js` / `manifest.webmanifest` 全部 200，页面版本与仓库一致。
+- 新增 `tools/enable-pages.ts`：一条命令恢复（token 依次取 `--token` → `GITHUB_TOKEN`/`GH_TOKEN` →
+  `git credential fill`，然后重新打开 → 等构建结束 → 自己访问一次做验证；`--dry-run` 只打印等价的 curl）。
+- 新增 `tools/pages-watch.ts` + `.github/workflows/pages-watch.yml`：**每 6 小时**查一次，
+  判定 = 站点 200 + 是应用外壳 + 版本与仓库 `docs/version.json` 一致（带 6 次重试，避开"刚推完、构建在途"），
+  出问题就红，并在运行摘要里直接给出恢复命令。判定本身是纯函数 `evaluateHealth()`，配 7 条测试。
+- 顺带澄清一处容易误解的文档：四个镜像（jsDelivr → Statically → githack → Pages）是**数据**的镜像，
+  **外壳 HTML 只有 `github.io` 一个来源**。README 新增「网页版打不开？（最常见的原因：Pages 被停用）」一节
+  （排查顺序 + 应急入口），并修掉 README 上停在 v0.10.21 的版本徽章。
+
 ## v0.11.1 — 2026-10-09
 
 ### 修复：抓取近况把不同学校的同名源混成了一个桶

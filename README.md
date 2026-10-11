@@ -10,11 +10,11 @@
 [![android-apk](https://github.com/Yang-Yin734/notice-radar/actions/workflows/android.yml/badge.svg)](https://github.com/Yang-Yin734/notice-radar/actions/workflows/android.yml)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![node](https://img.shields.io/badge/node-%3E%3D22.18-339933.svg)](package.json)
-[![version](https://img.shields.io/badge/version-v0.10.21-4d6bfe.svg)](CHANGELOG.md)
+[![version](https://img.shields.io/badge/version-v0.11.2-4d6bfe.svg)](CHANGELOG.md)
 
 ### 📲 [**下载 Android 安装包（APK）**](https://github.com/Yang-Yin734/notice-radar/releases/download/android-latest/notice-radar.apk)
 
-装到手机上就是独立应用；也可以直接用网页版 → **<https://yang-yin734.github.io/notice-radar/>**
+装到手机上就是独立应用；也可以直接用网页版 → **<https://yang-yin734.github.io/notice-radar/>**（打不开？见[排查清单](#网页版打不开最常见的原因pages-被停用)）
 
 </div>
 
@@ -32,6 +32,8 @@
 > - 没有 WebView、没有地址栏、不跳浏览器；外部链接才交给系统浏览器
 > - 打开时先读内置数据，联网时按镜像顺序刷新：**jsDelivr → Statically → githack → GitHub Pages**（垫底），
 >   因为 `github.io` 在国内经常打不开；抓到的新数据存在本机
+>   （这只是**数据**的镜像；**外壳 HTML 仍然只有 `github.io` 一个来源**，站点本身出问题见
+>   [网页版打不开？](#网页版打不开最常见的原因pages-被停用)）
 > - **应用内不会出现"安装到手机"的引导**（那只对网页版访客有意义）；网页版才有那个横幅
 > - 系统栏内边距用 Compose 的 `Scaffold`/`WindowInsets` 正确处理，窗口底色跟随应用主题（含深色），
 >   不会出现底部白条
@@ -594,6 +596,36 @@ config/
 - 原始数据也放了一份：`docs/dashboard-data.json`，自己做图表、接别的工具随便用
 
 本地重建：`npm run dashboard`（产物是 `docs/index.html` + `docs/dashboard-data.json` + `docs/version.json`）。
+
+### 网页版打不开？（最常见的原因：Pages 被停用）
+
+网页版外壳（`docs/index.html`）**只有 `github.io` 这一个来源**——数据有四个镜像，外壳没有。所以
+`https://yang-yin734.github.io/notice-radar/` 一旦整站 404，就是"别人电脑全打不开"。
+
+**最坑的一点：在自己电脑上可能看起来是好的。** 因为 `sw.js` 把外壳缓存了，本机断网也能打开旧页面，
+只有**没有缓存的电脑**会看到 404。所以判断"是不是真挂了"要用别的设备，或者硬刷新一次（清除缓存重载）。
+
+按顺序排查：
+
+1. **整站 404（连 GitHub 的 404 页面都没有本站内容）** —— Pages 被停用了。一条命令重新打开：
+
+   ```bash
+   node tools/enable-pages.ts          # 本机跑：自动读 git 凭据、重新打开、等构建、自己验证
+   # 或者手写一次 API 调用（token 需要 classic repo 权限）
+   curl -sS -X POST -H "Authorization: Bearer $TOKEN" -H 'Accept: application/vnd.github+json' \
+     https://api.github.com/repos/Yang-Yin734/notice-radar/pages \
+     -d '{"source":{"branch":"main","path":"/docs"}}'
+   ```
+
+2. **站点在、但版本是旧的** —— Pages 没跟上最新构建，等一两分钟；还不行看 Actions 里的
+   `pages build and deployment` 那一次跑成什么样。
+3. **只有你这台电脑/这个网络打不开** —— `github.io` 在国内经常不通，换网络，或先用应急入口
+   <https://raw.githack.com/Yang-Yin734/notice-radar/main/docs/index.html>（html 直出）。
+   注意应急入口是**另一个域名**，离线缓存/"添加到主屏幕"用不了，能正常上网时还是回到 `github.io` 那个。
+
+**这套东西不再靠人肉发现**：`pages-watch.yml` 每 6 小时检查一次（站点 200 + 是应用外壳 + 版本与
+`docs/version.json` 一致），出问题会红并在运行摘要里直接给出上面那条恢复命令。本机想手查：
+`node tools/pages-watch.ts`。
 
 ## 选学校 / 选学院
 

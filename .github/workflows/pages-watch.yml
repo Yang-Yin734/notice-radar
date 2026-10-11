@@ -1,0 +1,62 @@
+name: pages-watch
+
+# 网页版看门狗：站点会不会又悄悄消失。
+#
+# 2026-10-11 真事：仓库的 Pages 被停用后 `https://yang-yin734.github.io/notice-radar/` 直接 404，
+# 而本机因为 Service Worker 缓存了外壳照样打得开，只有别人的电脑会发现打不开。
+# Pages 由 GitHub 内置 branch builder 发布（source = main 的 /docs），没有我们自己的工作流，
+# 所以它出事时 Actions 里没有任何红灯 —— 只能靠这个定时任务替我们盯。
+#
+# 判定：站点根 200 + 是应用外壳 + 版本与仓库 docs/version.json 一致（带重试，避开"刚推完、构建在途"）。
+# 出问题时运行摘要里会直接给出恢复命令。
+on:
+  schedule:
+    - cron: '17 3,9,15,21 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+
+      - name: 检查网页版是否还在、是否最新
+        run: node tools/pages-watch.ts --retry=6 --wait=30000 2>&1 | tee pages-watch.log
+
+      - name: 出问题时给出恢复办法
+        if: failure()
+        run: |
+          {
+            echo '## ✗ 网页版站点不可用'
+            echo ''
+            echo '```'
+            cat pages-watch.log
+            echo '```'
+            echo ''
+            echo '最常见的原因就是 Pages 被停用（整站 404）。恢复办法二选一：'
+            echo ''
+            echo '```bash'
+            echo '# 1) 一条 API 调用就能重新打开（token 需要 classic repo 权限）'
+            echo "curl -sS -X POST -H \"Authorization: Bearer \$TOKEN\" -H 'Accept: application/vnd.github+json' \\"
+            echo "  https://api.github.com/repos/${{ github.repository }}/pages \\"
+            echo "  -d '{\"source\":{\"branch\":\"main\",\"path\":\"/docs\"}}'"
+            echo ''
+            echo '# 2) 或者在本机（已登录 git 的前提下）'
+            echo 'node tools/enable-pages.ts'
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pages-watch
+          path: pages-watch.log
+          if-no-files-found: warn
