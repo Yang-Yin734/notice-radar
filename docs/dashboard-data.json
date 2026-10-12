@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-12T04:03:33.598Z",
-  "total": 207,
+  "generatedAt": "2026-10-12T04:13:25.688Z",
+  "total": 208,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
@@ -40,7 +40,7 @@
     {
       "sourceId": "jw-ggtz",
       "sourceName": "本科生院·公告通知",
-      "count": 8
+      "count": 9
     },
     {
       "sourceId": "jwc-jxtz",
@@ -79,6 +79,18 @@
     }
   ],
   "items": [
+    {
+      "id": "cf0fc6928234fc17",
+      "sourceId": "jw-ggtz",
+      "sourceName": "本科生院·公告通知",
+      "school": "nju",
+      "title": "2026年11月6-7日普通话水平测试网络报名通知",
+      "url": "https://jw.nju.edu.cn/e8/28/c26263a845864/page.htm",
+      "date": "2026-10-12",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-12T04:13:00.964Z"
+    },
     {
       "id": "6a991d485cad2120",
       "sourceId": "jwc-tzgg",
