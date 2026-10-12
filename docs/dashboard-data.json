@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-10-12T01:51:57.214Z",
-  "total": 200,
+  "generatedAt": "2026-10-12T02:02:48.885Z",
+  "total": 202,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
       "sourceName": "教务处·通知公告",
-      "count": 64
+      "count": 66
     },
     {
       "sourceId": "jwb-tzgg",
@@ -79,6 +79,30 @@
     }
   ],
   "items": [
+    {
+      "id": "4abb1f0741c412f2",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "jiangnan",
+      "title": "关于2026—2027—1学期本科生修读研究生课程选课的通知",
+      "url": "https://jwc.jiangnan.edu.cn/content.jsp?urltype=news.NewsContentUrl&wbtreeid=1003&wbnewsid=8008",
+      "date": "2026-10-12",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-12T02:02:14.497Z"
+    },
+    {
+      "id": "91414ea4413bd1ec",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "hnu",
+      "title": "关于举行2026-2027-1学期课程期中考试的通知",
+      "url": "https://jwc.hnu.edu.cn/info/1083/14824.htm",
+      "date": "2026-10-12",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-12T02:02:11.310Z"
+    },
     {
       "id": "361bfe7ac3ebc0ac",
       "sourceId": "jwc-tzgg",

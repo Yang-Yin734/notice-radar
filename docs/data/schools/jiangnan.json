@@ -3,13 +3,13 @@
  "name": "江南大学",
  "province": "江苏省",
  "city": "无锡市",
- "generatedAt": "2026-10-12T01:51:57.214Z",
- "total": 8,
+ "generatedAt": "2026-10-12T02:02:48.885Z",
+ "total": 9,
  "bySource": [
   {
    "sourceId": "jwc-tzgg",
    "sourceName": "教务处·通知公告",
-   "count": 8
+   "count": 9
   }
  ],
  "units": [
@@ -19,10 +19,23 @@
    "sources": [
     "教务处·通知公告"
    ],
-   "count": 8
+   "count": 9
   }
  ],
  "items": [
+  {
+   "id": "4abb1f0741c412f2",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "jiangnan",
+   "title": "关于2026—2027—1学期本科生修读研究生课程选课的通知",
+   "url": "https://jwc.jiangnan.edu.cn/content.jsp?urltype=news.NewsContentUrl&wbtreeid=1003&wbnewsid=8008",
+   "date": "2026-10-12",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-12T02:02:14.497Z",
+   "unit": "教务处"
+  },
   {
    "id": "6ae6007342fbf1da",
    "sourceId": "jwc-tzgg",
