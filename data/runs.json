@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-12T22:19:11.912Z",
+  "updatedAt": "2026-10-12T22:37:47.015Z",
   "sources": {
     "uestc:jwc-important": [
       "ok",
@@ -157,7 +157,6 @@
       "ok"
     ],
     "hnu:jwc-tzgg": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -175,6 +174,7 @@
       "fail",
       "fail",
       "ok",
+      "fail",
       "fail",
       "fail"
     ],
@@ -201,7 +201,6 @@
       "ok"
     ],
     "jiangnan:jwc-tzgg": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -220,7 +219,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "nankai:jwc-tzgg": [
       "fail",
