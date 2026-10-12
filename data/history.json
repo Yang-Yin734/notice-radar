@@ -1,7 +1,19 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-10T09:20:30.875Z",
+  "updatedAt": "2026-10-12T01:30:12.117Z",
   "items": [
+    {
+      "id": "361bfe7ac3ebc0ac",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "xidian",
+      "title": "关于2026-2027学年第一学期 2026级学生转专业先修课程选课的通知",
+      "url": "https://jwc.xidian.edu.cn/2j-ce-nry.jsp?urltype=news.NewsContentUrl&wbtreeid=1012&wbnewsid=23513",
+      "date": "2026-10-12",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-12T01:30:12.117Z"
+    },
     {
       "id": "5a4f3448d320970a",
       "sourceId": "jwc-tzgg",
