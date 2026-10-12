@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-12T04:59:48.739Z",
+  "updatedAt": "2026-10-12T05:20:39.205Z",
   "sources": {
     "uestc:jwc-important": [
       "fail",
@@ -93,7 +93,6 @@
     "uestc:gr-notice": [
       "fail",
       "fail",
-      "fail",
       "ok",
       "fail",
       "fail",
@@ -110,7 +109,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "bnu:jwb-tzgg": [
       "fail",
@@ -179,28 +179,6 @@
       "ok"
     ],
     "hust:ugs-tzgg": [
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail"
-    ],
-    "jiangnan:jwc-tzgg": [
       "fail",
       "ok",
       "fail",
@@ -221,6 +199,28 @@
       "ok",
       "fail",
       "ok"
+    ],
+    "jiangnan:jwc-tzgg": [
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail"
     ],
     "nankai:jwc-tzgg": [
       "fail",
