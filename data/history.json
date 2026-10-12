@@ -1,7 +1,19 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-12T02:02:14.497Z",
+  "updatedAt": "2026-10-12T02:36:31.298Z",
   "items": [
+    {
+      "id": "a944ce59ae2b71b2",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "nankai",
+      "title": "关于南开大学第二批课程思政案例库验收与评优结果的公示",
+      "url": "https://jwc.nankai.edu.cn/2026/1012/c35436a604138/page.htm",
+      "date": "2026-10-12",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-12T02:36:31.298Z"
+    },
     {
       "id": "4abb1f0741c412f2",
       "sourceId": "jwc-tzgg",
