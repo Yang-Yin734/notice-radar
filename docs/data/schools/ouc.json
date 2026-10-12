@@ -3,13 +3,13 @@
  "name": "中国海洋大学",
  "province": "山东省",
  "city": "青岛市",
- "generatedAt": "2026-10-12T02:58:25.192Z",
- "total": 5,
+ "generatedAt": "2026-10-12T03:28:40.543Z",
+ "total": 6,
  "bySource": [
   {
    "sourceId": "jwc-tzgg",
    "sourceName": "教务处·通知公告",
-   "count": 5
+   "count": 6
   }
  ],
  "units": [
@@ -19,10 +19,23 @@
    "sources": [
     "教务处·通知公告"
    ],
-   "count": 5
+   "count": 6
   }
  ],
  "items": [
+  {
+   "id": "6a991d485cad2120",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "ouc",
+   "title": "关于全日制本科生申请2026年10月批次毕业的通知",
+   "url": "https://jwc.ouc.edu.cn/2026/1012/c6517a538866/page.htm",
+   "date": "2026-10-12",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-12T03:28:21.051Z",
+   "unit": "教务处"
+  },
   {
    "id": "4ed2b5189d7d53ff",
    "sourceId": "jwc-tzgg",

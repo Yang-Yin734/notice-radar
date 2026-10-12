@@ -3,9 +3,14 @@
  "name": "电子科技大学",
  "province": "四川省",
  "city": "成都市",
- "generatedAt": "2026-10-12T02:58:25.192Z",
- "total": 46,
+ "generatedAt": "2026-10-12T03:28:40.543Z",
+ "total": 47,
  "bySource": [
+  {
+   "sourceId": "jwc-student",
+   "sourceName": "教务处·学生事务公告",
+   "count": 14
+  },
   {
    "sourceId": "news-notice",
    "sourceName": "新闻网·公告",
@@ -25,11 +30,6 @@
    "sourceId": "math-xsgz",
    "sourceName": "数学科学学院·学生工作",
    "count": 6
-  },
-  {
-   "sourceId": "jwc-student",
-   "sourceName": "教务处·学生事务公告",
-   "count": 13
   },
   {
    "sourceId": "jwc-important",
@@ -54,7 +54,7 @@
     "教务处·学生事务公告",
     "教务处·重要公告"
    ],
-   "count": 17
+   "count": 18
   },
   {
    "id": "新闻网",
@@ -73,6 +73,19 @@
   }
  ],
  "items": [
+  {
+   "id": "bac78f0f2b47a3e0",
+   "sourceId": "jwc-student",
+   "sourceName": "教务处·学生事务公告",
+   "school": "uestc",
+   "title": "关于本学期大面积课程期中考试安排的通知",
+   "url": "https://www.jwc.uestc.edu.cn/info/17e4e9099929bc70a1667121ef7ea484",
+   "date": "2026-10-12",
+   "tag": "考试",
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-12T03:27:58.897Z",
+   "unit": "教务处"
+  },
   {
    "id": "62afdf26e8afdb91",
    "sourceId": "news-notice",

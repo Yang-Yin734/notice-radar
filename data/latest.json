@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-10T02:48:46.453Z",
+  "generatedAt": "2026-10-12T03:27:58.894Z",
   "results": [
     {
       "sourceId": "jwc-important",
@@ -10,7 +10,7 @@
       "error": null,
       "status": 200,
       "bytes": 28693,
-      "tookMs": 1923,
+      "tookMs": 1915,
       "items": [
         {
           "id": "393edb8d41cfee20",
@@ -172,9 +172,19 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 31566,
-      "tookMs": 330,
+      "bytes": 31444,
+      "tookMs": 305,
       "items": [
+        {
+          "id": "bac78f0f2b47a3e0",
+          "sourceId": "jwc-student",
+          "sourceName": "教务处·学生事务公告",
+          "school": "uestc",
+          "title": "关于本学期大面积课程期中考试安排的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/17e4e9099929bc70a1667121ef7ea484",
+          "date": "2026-10-12",
+          "tag": "考试"
+        },
         {
           "id": "46e2a04970a512bc",
           "sourceId": "jwc-student",
@@ -314,16 +324,6 @@
           "url": "https://www.jwc.uestc.edu.cn/info/30d196608fe3a20ae08ada0b22a573a4",
           "date": "2026-01-20",
           "tag": "考试"
-        },
-        {
-          "id": "a204de2e288a7bf5",
-          "sourceId": "jwc-student",
-          "sourceName": "教务处·学生事务公告",
-          "school": "uestc",
-          "title": "2025级“电子和计算机（ECE）关键核心领域科技创新领军人才培养计划”春季校内遴选通知",
-          "url": "https://www.jwc.uestc.edu.cn/info/9a09b2f3031a6a2abbd4ba85c1e1eca5",
-          "date": "2026-01-07",
-          "tag": "教管"
         }
       ]
     },
@@ -335,8 +335,8 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 99070,
-      "tookMs": 2113,
+      "bytes": 99118,
+      "tookMs": 2045,
       "items": [
         {
           "id": "62afdf26e8afdb91",
@@ -388,8 +388,8 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 99177,
-      "tookMs": 551,
+      "bytes": 99099,
+      "tookMs": 514,
       "items": [
         {
           "id": "c641cdb993bc6cc5",
@@ -441,8 +441,8 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 34590,
-      "tookMs": 1872,
+      "bytes": 34629,
+      "tookMs": 1776,
       "items": [
         {
           "id": "17a7e48dfd439818",
@@ -675,30 +675,15 @@
   ],
   "fresh": [
     {
-      "id": "62afdf26e8afdb91",
-      "sourceId": "news-notice",
-      "sourceName": "新闻网·公告",
+      "id": "bac78f0f2b47a3e0",
+      "sourceId": "jwc-student",
+      "sourceName": "教务处·学生事务公告",
       "school": "uestc",
-      "title": "学者论坛：宇宙的物质不对称: 被低能参数\"锁死\"的轻子生成(Leptogenesis Determined by Low Energy Parameters)",
-      "url": "https://news.uestc.edu.cn/info/1015/44210.htm",
-      "date": "2026-10-10",
-      "tag": "学术",
-      "alsoIn": [
-        "新闻网·学术"
-      ]
-    },
-    {
-      "id": "d8e752599c328e44",
-      "sourceId": "news-notice",
-      "sourceName": "新闻网·公告",
-      "school": "uestc",
-      "title": "成电讲坛 | 中国科学院院士徐星：书写恐龙王国的奇迹",
-      "url": "https://news.uestc.edu.cn/info/1015/44216.htm",
-      "date": "2026-10-10",
-      "tag": "学术",
-      "alsoIn": [
-        "新闻网·学术"
-      ]
+      "title": "关于本学期大面积课程期中考试安排的通知",
+      "url": "https://www.jwc.uestc.edu.cn/info/17e4e9099929bc70a1667121ef7ea484",
+      "date": "2026-10-12",
+      "tag": "考试",
+      "alsoIn": []
     }
   ]
 }
