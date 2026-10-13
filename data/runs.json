@@ -1,10 +1,9 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-13T02:07:22.696Z",
+  "updatedAt": "2026-10-13T02:16:28.328Z",
   "sources": {
     "uestc:jwc-important": [
       "fail",
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -22,10 +21,10 @@
       "fail",
       "ok",
       "fail",
-      "fail"
+      "fail",
+      "ok"
     ],
     "uestc:jwc-student": [
-      "ok",
       "fail",
       "fail",
       "fail",
@@ -44,7 +43,8 @@
       "fail",
       "ok",
       "fail",
-      "fail"
+      "fail",
+      "ok"
     ],
     "uestc:news-notice": [
       "ok",
