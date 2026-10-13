@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-13T04:53:04.011Z",
-  "total": 211,
+  "generatedAt": "2026-10-13T05:23:50.923Z",
+  "total": 212,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
@@ -38,6 +38,11 @@
       "count": 13
     },
     {
+      "sourceId": "bksy-tzgg",
+      "sourceName": "本科生院·通知公告",
+      "count": 9
+    },
+    {
       "sourceId": "jw-ggtz",
       "sourceName": "本科生院·公告通知",
       "count": 9
@@ -45,11 +50,6 @@
     {
       "sourceId": "jwc-jxtz",
       "sourceName": "教务处·教学通知",
-      "count": 8
-    },
-    {
-      "sourceId": "bksy-tzgg",
-      "sourceName": "本科生院·通知公告",
       "count": 8
     },
     {
@@ -79,6 +79,18 @@
     }
   ],
   "items": [
+    {
+      "id": "7b704df51dd517ed",
+      "sourceId": "bksy-tzgg",
+      "sourceName": "本科生院·通知公告",
+      "school": "ecnu",
+      "title": "关于推荐参加全国第八届大学生艺术展演上海市活动艺术表演类、高校美育改革创新优秀成果的公示",
+      "url": "https://bksy.ecnu.edu.cn/fc/e1/c40503a785633/page.htm",
+      "date": "2026-10-13",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-13T05:22:41.113Z"
+    },
     {
       "id": "3172a1781db5791d",
       "sourceId": "jwc-tzgg",
