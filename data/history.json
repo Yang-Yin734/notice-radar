@@ -1,7 +1,19 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-13T06:55:42.919Z",
+  "updatedAt": "2026-10-13T09:49:35.120Z",
   "items": [
+    {
+      "id": "341559d483511715",
+      "sourceId": "jiaowu-tzgg",
+      "sourceName": "教务部·通知公告",
+      "school": "nwpu",
+      "title": "关于举办2026年第23届CASC杯曼弗雷德·拉克斯国际空间法模拟法庭竞赛、第15届中国WTO模拟法庭比赛、第24届“贸仲杯”国际商事仲裁模拟仲裁庭辩论赛校内选拔的通知",
+      "url": "https://jiaowu.nwpu.edu.cn/info/1164/30328.htm",
+      "date": "2026-10-13",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-13T09:49:35.120Z"
+    },
     {
       "id": "c327689e31415c90",
       "sourceId": "news-notice",
