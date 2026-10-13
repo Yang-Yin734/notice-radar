@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-03T00:13:57.222Z",
+  "generatedAt": "2026-10-13T00:17:42.558Z",
   "results": [
     {
       "sourceId": "math-jwgg",
@@ -9,8 +9,8 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 22799,
-      "tookMs": 17016,
+      "bytes": 22815,
+      "tookMs": 15817,
       "items": [
         {
           "id": "286698afdbbfeb84",
@@ -172,8 +172,8 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 22588,
-      "tookMs": 6572,
+      "bytes": 22641,
+      "tookMs": 6494,
       "items": [
         {
           "id": "37e735c6e4c9e45b",
@@ -183,6 +183,16 @@
           "title": "数学科学学院2026年研究生奖学金（国家、学业）评定实施细则公布",
           "url": "https://www.math.uestc.edu.cn/info/1044/9693.htm",
           "date": "2026-01-13",
+          "tag": null
+        },
+        {
+          "id": "6e0f3ffb1bc24f88",
+          "sourceId": "math-xsgz",
+          "sourceName": "数学科学学院·学生工作",
+          "school": "uestc",
+          "title": "数学科学学院2026-2027学年研究生学业奖学金综合测评得分核对",
+          "url": "https://www.math.uestc.edu.cn/info/1044/10285.htm",
+          "date": "2026-10-12",
           "tag": null
         },
         {
@@ -314,29 +324,19 @@
           "url": "https://www.math.uestc.edu.cn/info/1044/9839.htm",
           "date": "2026-03-31",
           "tag": null
-        },
-        {
-          "id": "d61abc9d0314b3ba",
-          "sourceId": "math-xsgz",
-          "sourceName": "数学科学学院·学生工作",
-          "school": "uestc",
-          "title": "2026年清明节假期学生安全须知",
-          "url": "https://www.math.uestc.edu.cn/info/1044/9829.htm",
-          "date": "2026-03-31",
-          "tag": null
         }
       ]
     }
   ],
   "fresh": [
     {
-      "id": "286698afdbbfeb84",
-      "sourceId": "math-jwgg",
-      "sourceName": "数学科学学院·教务公告",
+      "id": "6e0f3ffb1bc24f88",
+      "sourceId": "math-xsgz",
+      "sourceName": "数学科学学院·学生工作",
       "school": "uestc",
-      "title": "2026-2027-1学期“微积分I”、“线性代数与空间解析几何”课程答疑安排",
-      "url": "https://www.math.uestc.edu.cn/info/1043/10280.htm",
-      "date": "2026-09-30",
+      "title": "数学科学学院2026-2027学年研究生学业奖学金综合测评得分核对",
+      "url": "https://www.math.uestc.edu.cn/info/1044/10285.htm",
+      "date": "2026-10-12",
       "tag": null,
       "alsoIn": []
     }

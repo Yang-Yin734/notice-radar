@@ -55,7 +55,7 @@
     {
       "sourceId": "math-xsgz",
       "sourceName": "数学科学学院·学生工作",
-      "count": 6
+      "count": 7
     },
     {
       "sourceId": "news-notice",
@@ -79,6 +79,18 @@
     }
   ],
   "items": [
+    {
+      "id": "6e0f3ffb1bc24f88",
+      "sourceId": "math-xsgz",
+      "sourceName": "数学科学学院·学生工作",
+      "school": "uestc",
+      "title": "数学科学学院2026-2027学年研究生学业奖学金综合测评得分核对",
+      "url": "https://www.math.uestc.edu.cn/info/1044/10285.htm",
+      "date": "2026-10-12",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-13T00:17:42.564Z"
+    },
     {
       "id": "cf0fc6928234fc17",
       "sourceId": "jw-ggtz",
