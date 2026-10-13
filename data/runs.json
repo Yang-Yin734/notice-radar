@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-13T22:50:41.401Z",
+  "updatedAt": "2026-10-13T23:11:49.415Z",
   "sources": {
     "uestc:jwc-important": [
       "fail",
@@ -157,7 +157,6 @@
       "ok"
     ],
     "hnu:jwc-tzgg": [
-      "fail",
       "ok",
       "fail",
       "fail",
@@ -176,7 +175,8 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "hust:ugs-tzgg": [
       "fail",
@@ -446,7 +446,6 @@
       "ok"
     ],
     "xmu:jwc-tzgg": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -465,7 +464,8 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "zzu:jwc-tzgg": [
       "ok",
