@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-13T14:30:50.848Z",
-  "total": 214,
+  "generatedAt": "2026-10-13T14:55:55.915Z",
+  "total": 215,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
@@ -40,7 +40,7 @@
     {
       "sourceId": "bksy-tzgg",
       "sourceName": "本科生院·通知公告",
-      "count": 9
+      "count": 10
     },
     {
       "sourceId": "jw-ggtz",
@@ -79,6 +79,18 @@
     }
   ],
   "items": [
+    {
+      "id": "d8c669a26846367f",
+      "sourceId": "bksy-tzgg",
+      "sourceName": "本科生院·通知公告",
+      "school": "ecnu",
+      "title": "关于2027年寒假新加坡南洋理工大学“科研素养提升”访学研修项目的报名通知",
+      "url": "http://www.jiaoliu.ecnu.edu.cn/fd/75/c11184a785781/page.htm",
+      "date": "2026-10-13",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-13T14:55:08.711Z"
+    },
     {
       "id": "341559d483511715",
       "sourceId": "jiaowu-tzgg",
