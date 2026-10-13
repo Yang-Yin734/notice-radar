@@ -3,9 +3,14 @@
  "name": "电子科技大学",
  "province": "四川省",
  "city": "成都市",
- "generatedAt": "2026-10-13T00:28:35.673Z",
- "total": 47,
+ "generatedAt": "2026-10-13T01:02:56.145Z",
+ "total": 48,
  "bySource": [
+  {
+   "sourceId": "math-xsgz",
+   "sourceName": "数学科学学院·学生工作",
+   "count": 7
+  },
   {
    "sourceId": "jwc-student",
    "sourceName": "教务处·学生事务公告",
@@ -27,11 +32,6 @@
    "count": 2
   },
   {
-   "sourceId": "math-xsgz",
-   "sourceName": "数学科学学院·学生工作",
-   "count": 6
-  },
-  {
    "sourceId": "jwc-important",
    "sourceName": "教务处·重要公告",
    "count": 4
@@ -42,10 +42,10 @@
    "id": "数学科学学院",
    "name": "数学科学学院",
    "sources": [
-    "数学科学学院·教务公告",
-    "数学科学学院·学生工作"
+    "数学科学学院·学生工作",
+    "数学科学学院·教务公告"
    ],
-   "count": 22
+   "count": 23
   },
   {
    "id": "教务处",
@@ -73,6 +73,19 @@
   }
  ],
  "items": [
+  {
+   "id": "6e0f3ffb1bc24f88",
+   "sourceId": "math-xsgz",
+   "sourceName": "数学科学学院·学生工作",
+   "school": "uestc",
+   "title": "数学科学学院2026-2027学年研究生学业奖学金综合测评得分核对",
+   "url": "https://www.math.uestc.edu.cn/info/1044/10285.htm",
+   "date": "2026-10-12",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-13T00:17:42.564Z",
+   "unit": "数学科学学院"
+  },
   {
    "id": "bac78f0f2b47a3e0",
    "sourceId": "jwc-student",

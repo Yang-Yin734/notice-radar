@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-13T00:28:35.673Z",
-  "total": 208,
+  "generatedAt": "2026-10-13T01:02:56.145Z",
+  "total": 210,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
@@ -10,7 +10,7 @@
     {
       "sourceId": "jwb-tzgg",
       "sourceName": "教务部·通知公告",
-      "count": 21
+      "count": 22
     },
     {
       "sourceId": "math-jwgg",
@@ -79,6 +79,18 @@
     }
   ],
   "items": [
+    {
+      "id": "aa0695bfdfdf2191",
+      "sourceId": "jwb-tzgg",
+      "sourceName": "教务部·通知公告",
+      "school": "bnu",
+      "title": "【实践教学】 关于组织参加第42届全国部分地区大学生物理竞赛的通知",
+      "url": "https://physics.bnu.edu.cn/tzgg/d7dce6a55fd544449533e99fa11d82da.htm",
+      "date": "2026-10-13",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-13T01:01:50.608Z"
+    },
     {
       "id": "6e0f3ffb1bc24f88",
       "sourceId": "math-xsgz",

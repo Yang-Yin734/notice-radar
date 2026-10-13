@@ -3,13 +3,13 @@
  "name": "北京师范大学",
  "province": "北京市",
  "city": "",
- "generatedAt": "2026-10-13T00:28:35.673Z",
- "total": 18,
+ "generatedAt": "2026-10-13T01:02:56.145Z",
+ "total": 19,
  "bySource": [
   {
    "sourceId": "jwb-tzgg",
    "sourceName": "教务部·通知公告",
-   "count": 18
+   "count": 19
   }
  ],
  "units": [
@@ -19,10 +19,23 @@
    "sources": [
     "教务部·通知公告"
    ],
-   "count": 18
+   "count": 19
   }
  ],
  "items": [
+  {
+   "id": "aa0695bfdfdf2191",
+   "sourceId": "jwb-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "bnu",
+   "title": "【实践教学】 关于组织参加第42届全国部分地区大学生物理竞赛的通知",
+   "url": "https://physics.bnu.edu.cn/tzgg/d7dce6a55fd544449533e99fa11d82da.htm",
+   "date": "2026-10-13",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-13T01:01:50.608Z",
+   "unit": "教务部"
+  },
   {
    "id": "145fac975e831b03",
    "sourceId": "jwb-tzgg",
