@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-12T03:27:58.894Z",
+  "generatedAt": "2026-10-13T06:55:42.917Z",
   "results": [
     {
       "sourceId": "jwc-important",
@@ -10,7 +10,7 @@
       "error": null,
       "status": 200,
       "bytes": 28693,
-      "tookMs": 1915,
+      "tookMs": 1046,
       "items": [
         {
           "id": "393edb8d41cfee20",
@@ -173,7 +173,7 @@
       "error": null,
       "status": 200,
       "bytes": 31444,
-      "tookMs": 305,
+      "tookMs": 277,
       "items": [
         {
           "id": "bac78f0f2b47a3e0",
@@ -335,9 +335,19 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 99118,
-      "tookMs": 2045,
+      "bytes": 99151,
+      "tookMs": 1856,
       "items": [
+        {
+          "id": "c327689e31415c90",
+          "sourceId": "news-notice",
+          "sourceName": "新闻网·公告",
+          "school": "uestc",
+          "title": "名师讲堂：From Perception to Control: Learning-Based Approaches and Algorithmic Enhancements",
+          "url": "https://news.uestc.edu.cn/info/1015/44334.htm",
+          "date": "2026-10-13",
+          "tag": "学术"
+        },
         {
           "id": "62afdf26e8afdb91",
           "sourceId": "news-notice",
@@ -367,16 +377,6 @@
           "url": "https://news.uestc.edu.cn/info/1015/44216.htm",
           "date": "2026-10-10",
           "tag": "学术"
-        },
-        {
-          "id": "57bfd288e0e3c0ab",
-          "sourceId": "news-notice",
-          "sourceName": "新闻网·公告",
-          "school": "uestc",
-          "title": "校史馆国庆期间闭馆公告",
-          "url": "https://news.uestc.edu.cn/info/1017/44108.htm",
-          "date": "2026-09-30",
-          "tag": "公告"
         }
       ]
     },
@@ -388,9 +388,19 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 99099,
-      "tookMs": 514,
+      "bytes": 99206,
+      "tookMs": 461,
       "items": [
+        {
+          "id": "f144f030eb83831b",
+          "sourceId": "news-academic",
+          "sourceName": "新闻网·学术",
+          "school": "uestc",
+          "title": "名师讲堂：From Perception to Control: Learning-Based Approaches and Algorithmic Enhancements",
+          "url": "https://news.uestc.edu.cn/info/1015/44334.htm",
+          "date": "2026-10-13",
+          "tag": "学术"
+        },
         {
           "id": "c641cdb993bc6cc5",
           "sourceId": "news-academic",
@@ -420,16 +430,6 @@
           "url": "https://news.uestc.edu.cn/info/1015/44216.htm",
           "date": "2026-10-10",
           "tag": "学术"
-        },
-        {
-          "id": "93d4a6f442c55ef0",
-          "sourceId": "news-academic",
-          "sourceName": "新闻网·学术",
-          "school": "uestc",
-          "title": "校史馆国庆期间闭馆公告",
-          "url": "https://news.uestc.edu.cn/info/1017/44108.htm",
-          "date": "2026-09-30",
-          "tag": "公告"
         }
       ]
     },
@@ -441,8 +441,8 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 34629,
-      "tookMs": 1776,
+      "bytes": 34659,
+      "tookMs": 976,
       "items": [
         {
           "id": "17a7e48dfd439818",
@@ -675,15 +675,17 @@
   ],
   "fresh": [
     {
-      "id": "bac78f0f2b47a3e0",
-      "sourceId": "jwc-student",
-      "sourceName": "教务处·学生事务公告",
+      "id": "c327689e31415c90",
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
       "school": "uestc",
-      "title": "关于本学期大面积课程期中考试安排的通知",
-      "url": "https://www.jwc.uestc.edu.cn/info/17e4e9099929bc70a1667121ef7ea484",
-      "date": "2026-10-12",
-      "tag": "考试",
-      "alsoIn": []
+      "title": "名师讲堂：From Perception to Control: Learning-Based Approaches and Algorithmic Enhancements",
+      "url": "https://news.uestc.edu.cn/info/1015/44334.htm",
+      "date": "2026-10-13",
+      "tag": "学术",
+      "alsoIn": [
+        "新闻网·学术"
+      ]
     }
   ]
 }

@@ -3,9 +3,14 @@
  "name": "电子科技大学",
  "province": "四川省",
  "city": "成都市",
- "generatedAt": "2026-10-13T06:31:59.589Z",
- "total": 48,
+ "generatedAt": "2026-10-13T06:56:35.750Z",
+ "total": 49,
  "bySource": [
+  {
+   "sourceId": "news-notice",
+   "sourceName": "新闻网·公告",
+   "count": 6
+  },
   {
    "sourceId": "math-xsgz",
    "sourceName": "数学科学学院·学生工作",
@@ -15,11 +20,6 @@
    "sourceId": "jwc-student",
    "sourceName": "教务处·学生事务公告",
    "count": 14
-  },
-  {
-   "sourceId": "news-notice",
-   "sourceName": "新闻网·公告",
-   "count": 5
   },
   {
    "sourceId": "math-jwgg",
@@ -63,7 +63,7 @@
     "新闻网·公告",
     "新闻网·学术"
    ],
-   "count": 7
+   "count": 8
   },
   {
    "id": "研究生院",
@@ -73,6 +73,21 @@
   }
  ],
  "items": [
+  {
+   "id": "c327689e31415c90",
+   "sourceId": "news-notice",
+   "sourceName": "新闻网·公告",
+   "school": "uestc",
+   "title": "名师讲堂：From Perception to Control: Learning-Based Approaches and Algorithmic Enhancements",
+   "url": "https://news.uestc.edu.cn/info/1015/44334.htm",
+   "date": "2026-10-13",
+   "tag": "学术",
+   "alsoIn": [
+    "新闻网·学术"
+   ],
+   "firstSeenAt": "2026-10-13T06:55:42.919Z",
+   "unit": "新闻网"
+  },
   {
    "id": "6e0f3ffb1bc24f88",
    "sourceId": "math-xsgz",

@@ -1,7 +1,21 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-13T05:22:41.113Z",
+  "updatedAt": "2026-10-13T06:55:42.919Z",
   "items": [
+    {
+      "id": "c327689e31415c90",
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
+      "school": "uestc",
+      "title": "名师讲堂：From Perception to Control: Learning-Based Approaches and Algorithmic Enhancements",
+      "url": "https://news.uestc.edu.cn/info/1015/44334.htm",
+      "date": "2026-10-13",
+      "tag": "学术",
+      "alsoIn": [
+        "新闻网·学术"
+      ],
+      "firstSeenAt": "2026-10-13T06:55:42.919Z"
+    },
     {
       "id": "7b704df51dd517ed",
       "sourceId": "bksy-tzgg",
