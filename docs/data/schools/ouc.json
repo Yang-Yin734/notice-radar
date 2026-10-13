@@ -3,13 +3,13 @@
  "name": "中国海洋大学",
  "province": "山东省",
  "city": "青岛市",
- "generatedAt": "2026-10-13T02:17:41.212Z",
- "total": 6,
+ "generatedAt": "2026-10-13T02:40:34.564Z",
+ "total": 7,
  "bySource": [
   {
    "sourceId": "jwc-tzgg",
    "sourceName": "教务处·通知公告",
-   "count": 6
+   "count": 7
   }
  ],
  "units": [
@@ -19,10 +19,23 @@
    "sources": [
     "教务处·通知公告"
    ],
-   "count": 6
+   "count": 7
   }
  ],
  "items": [
+  {
+   "id": "3172a1781db5791d",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "ouc",
+   "title": "关于大学英语选课学生登录U校园AI版注册课程的通知",
+   "url": "https://jwc.ouc.edu.cn/2026/1013/c6517a539017/page.htm",
+   "date": "2026-10-13",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-13T02:40:11.651Z",
+   "unit": "教务处"
+  },
   {
    "id": "6a991d485cad2120",
    "sourceId": "jwc-tzgg",
