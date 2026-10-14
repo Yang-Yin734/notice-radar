@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-14T01:56:57.726Z",
+  "updatedAt": "2026-10-14T02:23:07.561Z",
   "sources": {
     "uestc:jwc-important": [
       "fail",
@@ -157,7 +157,6 @@
       "ok"
     ],
     "hnu:jwc-tzgg": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -176,7 +175,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "hust:ugs-tzgg": [
       "ok",
@@ -223,7 +223,6 @@
       "fail"
     ],
     "nankai:jwc-tzgg": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -242,7 +241,8 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "njau:aao-tzgg": [
       "fail",
@@ -311,7 +311,6 @@
       "ok"
     ],
     "ouc:jwc-tzgg": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -330,7 +329,8 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "shufe:jwc-tzgg": [
       "fail",
@@ -446,7 +446,6 @@
       "ok"
     ],
     "xmu:jwc-tzgg": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -465,7 +464,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "zzu:jwc-tzgg": [
       "ok",
