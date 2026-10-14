@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-14T01:22:09.627Z",
-  "total": 215,
+  "generatedAt": "2026-10-14T01:57:25.239Z",
+  "total": 216,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
@@ -53,14 +53,14 @@
       "count": 8
     },
     {
-      "sourceId": "math-xsgz",
-      "sourceName": "数学科学学院·学生工作",
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
       "count": 7
     },
     {
-      "sourceId": "news-notice",
-      "sourceName": "新闻网·公告",
-      "count": 6
+      "sourceId": "math-xsgz",
+      "sourceName": "数学科学学院·学生工作",
+      "count": 7
     },
     {
       "sourceId": "oaa-tzgg",
@@ -79,6 +79,20 @@
     }
   ],
   "items": [
+    {
+      "id": "1c89324d3bcab97f",
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
+      "school": "uestc",
+      "title": "「人文×科技」思想者论坛第三十九期讲座预告",
+      "url": "https://news.uestc.edu.cn/info/1015/44357.htm",
+      "date": "2026-10-14",
+      "tag": "学术",
+      "alsoIn": [
+        "新闻网·学术"
+      ],
+      "firstSeenAt": "2026-10-14T01:56:23.438Z"
+    },
     {
       "id": "d8c669a26846367f",
       "sourceId": "bksy-tzgg",

@@ -3,13 +3,13 @@
  "name": "电子科技大学",
  "province": "四川省",
  "city": "成都市",
- "generatedAt": "2026-10-14T01:22:09.627Z",
- "total": 49,
+ "generatedAt": "2026-10-14T01:57:25.239Z",
+ "total": 50,
  "bySource": [
   {
    "sourceId": "news-notice",
    "sourceName": "新闻网·公告",
-   "count": 6
+   "count": 7
   },
   {
    "sourceId": "math-xsgz",
@@ -63,7 +63,7 @@
     "新闻网·公告",
     "新闻网·学术"
    ],
-   "count": 8
+   "count": 9
   },
   {
    "id": "研究生院",
@@ -73,6 +73,21 @@
   }
  ],
  "items": [
+  {
+   "id": "1c89324d3bcab97f",
+   "sourceId": "news-notice",
+   "sourceName": "新闻网·公告",
+   "school": "uestc",
+   "title": "「人文×科技」思想者论坛第三十九期讲座预告",
+   "url": "https://news.uestc.edu.cn/info/1015/44357.htm",
+   "date": "2026-10-14",
+   "tag": "学术",
+   "alsoIn": [
+    "新闻网·学术"
+   ],
+   "firstSeenAt": "2026-10-14T01:56:23.438Z",
+   "unit": "新闻网"
+  },
   {
    "id": "c327689e31415c90",
    "sourceId": "news-notice",
