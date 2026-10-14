@@ -1,7 +1,19 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-14T03:24:54.877Z",
+  "updatedAt": "2026-10-14T06:46:46.533Z",
   "items": [
+    {
+      "id": "373f249c7b506d5c",
+      "sourceId": "jw-ggtz",
+      "sourceName": "本科生院·公告通知",
+      "school": "nju",
+      "title": "2026年度江苏省产业教授拟推荐申报人员名单公示",
+      "url": "https://jw.nju.edu.cn/e8/d6/c26263a846038/page.htm",
+      "date": "2026-10-14",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-14T06:46:46.533Z"
+    },
     {
       "id": "8329283ea2f14145",
       "sourceId": "ugs-tzgg",
