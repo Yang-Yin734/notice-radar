@@ -3,13 +3,13 @@
  "name": "华中科技大学",
  "province": "湖北省",
  "city": "武汉市",
- "generatedAt": "2026-10-14T03:07:48.467Z",
- "total": 13,
+ "generatedAt": "2026-10-14T03:25:31.117Z",
+ "total": 14,
  "bySource": [
   {
    "sourceId": "ugs-tzgg",
    "sourceName": "本科生院·通知公告",
-   "count": 13
+   "count": 14
   }
  ],
  "units": [
@@ -19,10 +19,23 @@
    "sources": [
     "本科生院·通知公告"
    ],
-   "count": 13
+   "count": 14
   }
  ],
  "items": [
+  {
+   "id": "8329283ea2f14145",
+   "sourceId": "ugs-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "school": "hust",
+   "title": "关于做好2027届全日制普通本科生毕业设计（论文）工作的通知",
+   "url": "https://ugs.hust.edu.cn/info/1142/7623.htm",
+   "date": "2026-10-14",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-14T03:24:54.877Z",
+   "unit": "本科生院"
+  },
   {
    "id": "c438724b630cd8c0",
    "sourceId": "ugs-tzgg",

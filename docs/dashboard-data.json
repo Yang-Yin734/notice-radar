@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-14T03:07:48.467Z",
-  "total": 216,
+  "generatedAt": "2026-10-14T03:25:31.117Z",
+  "total": 217,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
@@ -28,14 +28,14 @@
       "count": 15
     },
     {
-      "sourceId": "jwc-student",
-      "sourceName": "教务处·学生事务公告",
+      "sourceId": "ugs-tzgg",
+      "sourceName": "本科生院·通知公告",
       "count": 14
     },
     {
-      "sourceId": "ugs-tzgg",
-      "sourceName": "本科生院·通知公告",
-      "count": 13
+      "sourceId": "jwc-student",
+      "sourceName": "教务处·学生事务公告",
+      "count": 14
     },
     {
       "sourceId": "bksy-tzgg",
@@ -79,6 +79,18 @@
     }
   ],
   "items": [
+    {
+      "id": "8329283ea2f14145",
+      "sourceId": "ugs-tzgg",
+      "sourceName": "本科生院·通知公告",
+      "school": "hust",
+      "title": "关于做好2027届全日制普通本科生毕业设计（论文）工作的通知",
+      "url": "https://ugs.hust.edu.cn/info/1142/7623.htm",
+      "date": "2026-10-14",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-14T03:24:54.877Z"
+    },
     {
       "id": "1c89324d3bcab97f",
       "sourceId": "news-notice",
