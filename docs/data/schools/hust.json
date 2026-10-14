@@ -3,13 +3,13 @@
  "name": "华中科技大学",
  "province": "湖北省",
  "city": "武汉市",
- "generatedAt": "2026-10-14T10:35:34.716Z",
- "total": 14,
+ "generatedAt": "2026-10-14T11:00:04.663Z",
+ "total": 15,
  "bySource": [
   {
    "sourceId": "ugs-tzgg",
    "sourceName": "本科生院·通知公告",
-   "count": 14
+   "count": 15
   }
  ],
  "units": [
@@ -19,10 +19,23 @@
    "sources": [
     "本科生院·通知公告"
    ],
-   "count": 14
+   "count": 15
   }
  ],
  "items": [
+  {
+   "id": "541c03afc382f740",
+   "sourceId": "ugs-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "school": "hust",
+   "title": "关于公示我校2026年秋季学期微专业拟录取名单的通知",
+   "url": "https://ugs.hust.edu.cn/info/1142/7624.htm",
+   "date": "2026-10-14",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-14T10:59:29.321Z",
+   "unit": "本科生院"
+  },
   {
    "id": "8329283ea2f14145",
    "sourceId": "ugs-tzgg",

@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-14T10:35:34.716Z",
-  "total": 218,
+  "generatedAt": "2026-10-14T11:00:04.663Z",
+  "total": 219,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
@@ -18,6 +18,11 @@
       "count": 16
     },
     {
+      "sourceId": "ugs-tzgg",
+      "sourceName": "本科生院·通知公告",
+      "count": 15
+    },
+    {
       "sourceId": "jiaowu-tzgg",
       "sourceName": "教务部·通知公告",
       "count": 15
@@ -26,11 +31,6 @@
       "sourceId": "aao-tzgg",
       "sourceName": "教务处·通知公告",
       "count": 15
-    },
-    {
-      "sourceId": "ugs-tzgg",
-      "sourceName": "本科生院·通知公告",
-      "count": 14
     },
     {
       "sourceId": "jwc-student",
@@ -79,6 +79,18 @@
     }
   ],
   "items": [
+    {
+      "id": "541c03afc382f740",
+      "sourceId": "ugs-tzgg",
+      "sourceName": "本科生院·通知公告",
+      "school": "hust",
+      "title": "关于公示我校2026年秋季学期微专业拟录取名单的通知",
+      "url": "https://ugs.hust.edu.cn/info/1142/7624.htm",
+      "date": "2026-10-14",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-14T10:59:29.321Z"
+    },
     {
       "id": "373f249c7b506d5c",
       "sourceId": "jw-ggtz",
