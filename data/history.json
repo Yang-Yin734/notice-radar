@@ -1,7 +1,19 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-15T03:21:28.303Z",
+  "updatedAt": "2026-10-15T10:02:42.019Z",
   "items": [
+    {
+      "id": "95085a1f711fa741",
+      "sourceId": "jwc-jxtz",
+      "sourceName": "教务处·教学通知",
+      "school": "xjtu",
+      "title": "[竞赛安排]关于组织华为ICT大赛2026-2027报名的通知",
+      "url": "https://jwc.xjtu.edu.cn/info/1172/10521.htm",
+      "date": "2026-10-15",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-15T10:02:42.019Z"
+    },
     {
       "id": "d13cc13718fee3d4",
       "sourceId": "news-notice",
