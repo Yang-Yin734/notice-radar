@@ -1,7 +1,21 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-15T00:22:40.347Z",
+  "updatedAt": "2026-10-15T03:21:28.303Z",
   "items": [
+    {
+      "id": "d13cc13718fee3d4",
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
+      "school": "uestc",
+      "title": "学者论坛：Pickup Opportunity as Resource A Probabilistic Approach for Demand-Aware Ride-Sharing Optimization",
+      "url": "https://news.uestc.edu.cn/info/1015/44384.htm",
+      "date": "2026-10-15",
+      "tag": "学术",
+      "alsoIn": [
+        "新闻网·学术"
+      ],
+      "firstSeenAt": "2026-10-15T03:21:28.303Z"
+    },
     {
       "id": "3e1b8fca50e8057f",
       "sourceId": "math-xsgz",

@@ -1,6 +1,6 @@
 {
-  "consecutiveAllFail": 4,
-  "updatedAt": "2026-10-15T03:01:12.881Z",
-  "lastOutcome": "fail",
-  "reported": true
+  "consecutiveAllFail": 0,
+  "updatedAt": "2026-10-15T03:21:28.406Z",
+  "lastOutcome": "ok",
+  "reported": false
 }

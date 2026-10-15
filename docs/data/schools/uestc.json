@@ -3,18 +3,18 @@
  "name": "电子科技大学",
  "province": "四川省",
  "city": "成都市",
- "generatedAt": "2026-10-15T03:02:39.316Z",
- "total": 51,
+ "generatedAt": "2026-10-15T03:22:38.583Z",
+ "total": 52,
  "bySource": [
+  {
+   "sourceId": "news-notice",
+   "sourceName": "新闻网·公告",
+   "count": 8
+  },
   {
    "sourceId": "math-xsgz",
    "sourceName": "数学科学学院·学生工作",
    "count": 8
-  },
-  {
-   "sourceId": "news-notice",
-   "sourceName": "新闻网·公告",
-   "count": 7
   },
   {
    "sourceId": "jwc-student",
@@ -63,7 +63,7 @@
     "新闻网·公告",
     "新闻网·学术"
    ],
-   "count": 9
+   "count": 10
   },
   {
    "id": "研究生院",
@@ -73,6 +73,21 @@
   }
  ],
  "items": [
+  {
+   "id": "d13cc13718fee3d4",
+   "sourceId": "news-notice",
+   "sourceName": "新闻网·公告",
+   "school": "uestc",
+   "title": "学者论坛：Pickup Opportunity as Resource A Probabilistic Approach for Demand-Aware Ride-Sharing Optimization",
+   "url": "https://news.uestc.edu.cn/info/1015/44384.htm",
+   "date": "2026-10-15",
+   "tag": "学术",
+   "alsoIn": [
+    "新闻网·学术"
+   ],
+   "firstSeenAt": "2026-10-15T03:21:28.303Z",
+   "unit": "新闻网"
+  },
   {
    "id": "3e1b8fca50e8057f",
    "sourceId": "math-xsgz",
