@@ -3,17 +3,17 @@
  "name": "电子科技大学",
  "province": "四川省",
  "city": "成都市",
- "generatedAt": "2026-10-15T00:09:52.120Z",
- "total": 50,
+ "generatedAt": "2026-10-15T00:35:56.463Z",
+ "total": 51,
  "bySource": [
-  {
-   "sourceId": "news-notice",
-   "sourceName": "新闻网·公告",
-   "count": 7
-  },
   {
    "sourceId": "math-xsgz",
    "sourceName": "数学科学学院·学生工作",
+   "count": 8
+  },
+  {
+   "sourceId": "news-notice",
+   "sourceName": "新闻网·公告",
    "count": 7
   },
   {
@@ -45,7 +45,7 @@
     "数学科学学院·学生工作",
     "数学科学学院·教务公告"
    ],
-   "count": 23
+   "count": 24
   },
   {
    "id": "教务处",
@@ -73,6 +73,19 @@
   }
  ],
  "items": [
+  {
+   "id": "3e1b8fca50e8057f",
+   "sourceId": "math-xsgz",
+   "sourceName": "数学科学学院·学生工作",
+   "school": "uestc",
+   "title": "数学科学学院2026年研究生国家奖学金申请人材料公示",
+   "url": "https://www.math.uestc.edu.cn/info/1044/10289.htm",
+   "date": "2026-10-14",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-15T00:22:40.347Z",
+   "unit": "数学科学学院"
+  },
   {
    "id": "1c89324d3bcab97f",
    "sourceId": "news-notice",
