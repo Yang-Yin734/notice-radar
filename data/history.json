@@ -1,7 +1,19 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-14T10:59:29.321Z",
+  "updatedAt": "2026-10-15T00:22:40.347Z",
   "items": [
+    {
+      "id": "3e1b8fca50e8057f",
+      "sourceId": "math-xsgz",
+      "sourceName": "数学科学学院·学生工作",
+      "school": "uestc",
+      "title": "数学科学学院2026年研究生国家奖学金申请人材料公示",
+      "url": "https://www.math.uestc.edu.cn/info/1044/10289.htm",
+      "date": "2026-10-14",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-15T00:22:40.347Z"
+    },
     {
       "id": "541c03afc382f740",
       "sourceId": "ugs-tzgg",

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-13T00:17:42.558Z",
+  "generatedAt": "2026-10-15T00:22:40.335Z",
   "results": [
     {
       "sourceId": "math-jwgg",
@@ -10,7 +10,7 @@
       "error": null,
       "status": 200,
       "bytes": 22815,
-      "tookMs": 15817,
+      "tookMs": 24352,
       "items": [
         {
           "id": "286698afdbbfeb84",
@@ -172,8 +172,8 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 22641,
-      "tookMs": 6494,
+      "bytes": 22627,
+      "tookMs": 6354,
       "items": [
         {
           "id": "37e735c6e4c9e45b",
@@ -186,13 +186,13 @@
           "tag": null
         },
         {
-          "id": "6e0f3ffb1bc24f88",
+          "id": "3e1b8fca50e8057f",
           "sourceId": "math-xsgz",
           "sourceName": "数学科学学院·学生工作",
           "school": "uestc",
-          "title": "数学科学学院2026-2027学年研究生学业奖学金综合测评得分核对",
-          "url": "https://www.math.uestc.edu.cn/info/1044/10285.htm",
-          "date": "2026-10-12",
+          "title": "数学科学学院2026年研究生国家奖学金申请人材料公示",
+          "url": "https://www.math.uestc.edu.cn/info/1044/10289.htm",
+          "date": "2026-10-14",
           "tag": null
         },
         {
@@ -330,13 +330,13 @@
   ],
   "fresh": [
     {
-      "id": "6e0f3ffb1bc24f88",
+      "id": "3e1b8fca50e8057f",
       "sourceId": "math-xsgz",
       "sourceName": "数学科学学院·学生工作",
       "school": "uestc",
-      "title": "数学科学学院2026-2027学年研究生学业奖学金综合测评得分核对",
-      "url": "https://www.math.uestc.edu.cn/info/1044/10285.htm",
-      "date": "2026-10-12",
+      "title": "数学科学学院2026年研究生国家奖学金申请人材料公示",
+      "url": "https://www.math.uestc.edu.cn/info/1044/10289.htm",
+      "date": "2026-10-14",
       "tag": null,
       "alsoIn": []
     }

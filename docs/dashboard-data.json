@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-15T00:09:52.120Z",
-  "total": 219,
+  "generatedAt": "2026-10-15T00:22:40.668Z",
+  "total": 220,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
@@ -48,6 +48,11 @@
       "count": 10
     },
     {
+      "sourceId": "math-xsgz",
+      "sourceName": "数学科学学院·学生工作",
+      "count": 8
+    },
+    {
       "sourceId": "jwc-jxtz",
       "sourceName": "教务处·教学通知",
       "count": 8
@@ -55,11 +60,6 @@
     {
       "sourceId": "news-notice",
       "sourceName": "新闻网·公告",
-      "count": 7
-    },
-    {
-      "sourceId": "math-xsgz",
-      "sourceName": "数学科学学院·学生工作",
       "count": 7
     },
     {
@@ -79,6 +79,18 @@
     }
   ],
   "items": [
+    {
+      "id": "3e1b8fca50e8057f",
+      "sourceId": "math-xsgz",
+      "sourceName": "数学科学学院·学生工作",
+      "school": "uestc",
+      "title": "数学科学学院2026年研究生国家奖学金申请人材料公示",
+      "url": "https://www.math.uestc.edu.cn/info/1044/10289.htm",
+      "date": "2026-10-14",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-15T00:22:40.347Z"
+    },
     {
       "id": "541c03afc382f740",
       "sourceId": "ugs-tzgg",
