@@ -3,13 +3,13 @@
  "name": "西安交通大学",
  "province": "陕西省",
  "city": "西安市",
- "generatedAt": "2026-10-15T09:23:48.852Z",
- "total": 8,
+ "generatedAt": "2026-10-15T10:23:46.953Z",
+ "total": 9,
  "bySource": [
   {
    "sourceId": "jwc-jxtz",
    "sourceName": "教务处·教学通知",
-   "count": 8
+   "count": 9
   }
  ],
  "units": [
@@ -19,10 +19,23 @@
    "sources": [
     "教务处·教学通知"
    ],
-   "count": 8
+   "count": 9
   }
  ],
  "items": [
+  {
+   "id": "95085a1f711fa741",
+   "sourceId": "jwc-jxtz",
+   "sourceName": "教务处·教学通知",
+   "school": "xjtu",
+   "title": "[竞赛安排]关于组织华为ICT大赛2026-2027报名的通知",
+   "url": "https://jwc.xjtu.edu.cn/info/1172/10521.htm",
+   "date": "2026-10-15",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-15T10:02:42.019Z",
+   "unit": "教务处"
+  },
   {
    "id": "bde8ba093dcb7f26",
    "sourceId": "jwc-jxtz",

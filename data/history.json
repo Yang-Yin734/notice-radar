@@ -1,7 +1,19 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-15T10:02:42.019Z",
+  "updatedAt": "2026-10-15T10:23:04.534Z",
   "items": [
+    {
+      "id": "42a13504dbdbd9b6",
+      "sourceId": "ugs-tzgg",
+      "sourceName": "本科生院·通知公告",
+      "school": "hust",
+      "title": "关于做好2026～2027学年度第一学期2026级普通本科生思政选择性必修课选课工作...",
+      "url": "https://ugs.hust.edu.cn/info/1142/7625.htm",
+      "date": "2026-10-15",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-15T10:23:04.534Z"
+    },
     {
       "id": "95085a1f711fa741",
       "sourceId": "jwc-jxtz",

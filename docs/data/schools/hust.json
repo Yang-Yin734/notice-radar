@@ -3,13 +3,13 @@
  "name": "华中科技大学",
  "province": "湖北省",
  "city": "武汉市",
- "generatedAt": "2026-10-15T09:23:48.852Z",
- "total": 15,
+ "generatedAt": "2026-10-15T10:23:46.953Z",
+ "total": 16,
  "bySource": [
   {
    "sourceId": "ugs-tzgg",
    "sourceName": "本科生院·通知公告",
-   "count": 15
+   "count": 16
   }
  ],
  "units": [
@@ -19,10 +19,23 @@
    "sources": [
     "本科生院·通知公告"
    ],
-   "count": 15
+   "count": 16
   }
  ],
  "items": [
+  {
+   "id": "42a13504dbdbd9b6",
+   "sourceId": "ugs-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "school": "hust",
+   "title": "关于做好2026～2027学年度第一学期2026级普通本科生思政选择性必修课选课工作...",
+   "url": "https://ugs.hust.edu.cn/info/1142/7625.htm",
+   "date": "2026-10-15",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-15T10:23:04.534Z",
+   "unit": "本科生院"
+  },
   {
    "id": "541c03afc382f740",
    "sourceId": "ugs-tzgg",
