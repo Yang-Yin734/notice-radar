@@ -1,7 +1,21 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-16T02:58:59.344Z",
+  "updatedAt": "2026-10-16T08:03:15.233Z",
   "items": [
+    {
+      "id": "ef14c468c0335619",
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
+      "school": "uestc",
+      "title": "学者论坛：Pickup Opportunity as Resource A Probabilistic Approach for Demand-Aware Ride-Sharing Optimization",
+      "url": "https://news.uestc.edu.cn/info/1015/44384.htm",
+      "date": "2026-10-16",
+      "tag": "学术",
+      "alsoIn": [
+        "新闻网·学术"
+      ],
+      "firstSeenAt": "2026-10-16T08:03:15.233Z"
+    },
     {
       "id": "987a0fc1c588ec54",
       "sourceId": "jwc-tzgg",
@@ -13,6 +27,20 @@
       "tag": null,
       "alsoIn": [],
       "firstSeenAt": "2026-10-16T02:58:59.344Z"
+    },
+    {
+      "id": "5871e06cfd654b0b",
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
+      "school": "uestc",
+      "title": "学者论坛：Finite-Time Singularity Formation for Supercritical Evolution Equations",
+      "url": "https://news.uestc.edu.cn/info/1015/44428.htm",
+      "date": "2026-10-15",
+      "tag": "学术",
+      "alsoIn": [
+        "新闻网·学术"
+      ],
+      "firstSeenAt": "2026-10-16T08:03:15.233Z"
     },
     {
       "id": "42a13504dbdbd9b6",

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-15T03:21:28.300Z",
+  "generatedAt": "2026-10-16T08:03:15.229Z",
   "results": [
     {
       "sourceId": "jwc-important",
@@ -10,7 +10,7 @@
       "error": null,
       "status": 200,
       "bytes": 28693,
-      "tookMs": 3985,
+      "tookMs": 2172,
       "items": [
         {
           "id": "393edb8d41cfee20",
@@ -173,7 +173,7 @@
       "error": null,
       "status": 200,
       "bytes": 31444,
-      "tookMs": 322,
+      "tookMs": 316,
       "items": [
         {
           "id": "bac78f0f2b47a3e0",
@@ -335,16 +335,26 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 99376,
-      "tookMs": 2492,
+      "bytes": 99218,
+      "tookMs": 3636,
       "items": [
         {
-          "id": "d13cc13718fee3d4",
+          "id": "ef14c468c0335619",
           "sourceId": "news-notice",
           "sourceName": "新闻网·公告",
           "school": "uestc",
           "title": "学者论坛：Pickup Opportunity as Resource A Probabilistic Approach for Demand-Aware Ride-Sharing Optimization",
           "url": "https://news.uestc.edu.cn/info/1015/44384.htm",
+          "date": "2026-10-16",
+          "tag": "学术"
+        },
+        {
+          "id": "5871e06cfd654b0b",
+          "sourceId": "news-notice",
+          "sourceName": "新闻网·公告",
+          "school": "uestc",
+          "title": "学者论坛：Finite-Time Singularity Formation for Supercritical Evolution Equations",
+          "url": "https://news.uestc.edu.cn/info/1015/44428.htm",
           "date": "2026-10-15",
           "tag": "学术"
         },
@@ -367,16 +377,6 @@
           "url": "https://news.uestc.edu.cn/info/1015/44334.htm",
           "date": "2026-10-13",
           "tag": "学术"
-        },
-        {
-          "id": "62afdf26e8afdb91",
-          "sourceId": "news-notice",
-          "sourceName": "新闻网·公告",
-          "school": "uestc",
-          "title": "学者论坛：宇宙的物质不对称: 被低能参数\"锁死\"的轻子生成(Leptogenesis Determined by Low Energy Parameters)",
-          "url": "https://news.uestc.edu.cn/info/1015/44210.htm",
-          "date": "2026-10-10",
-          "tag": "学术"
         }
       ]
     },
@@ -388,16 +388,26 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 99377,
-      "tookMs": 527,
+      "bytes": 99226,
+      "tookMs": 554,
       "items": [
         {
-          "id": "4742ac55362e0875",
+          "id": "87f9741e42473e28",
           "sourceId": "news-academic",
           "sourceName": "新闻网·学术",
           "school": "uestc",
           "title": "学者论坛：Pickup Opportunity as Resource A Probabilistic Approach for Demand-Aware Ride-Sharing Optimization",
           "url": "https://news.uestc.edu.cn/info/1015/44384.htm",
+          "date": "2026-10-16",
+          "tag": "学术"
+        },
+        {
+          "id": "5302f2149f371308",
+          "sourceId": "news-academic",
+          "sourceName": "新闻网·学术",
+          "school": "uestc",
+          "title": "学者论坛：Finite-Time Singularity Formation for Supercritical Evolution Equations",
+          "url": "https://news.uestc.edu.cn/info/1015/44428.htm",
           "date": "2026-10-15",
           "tag": "学术"
         },
@@ -420,16 +430,6 @@
           "url": "https://news.uestc.edu.cn/info/1015/44334.htm",
           "date": "2026-10-13",
           "tag": "学术"
-        },
-        {
-          "id": "c641cdb993bc6cc5",
-          "sourceId": "news-academic",
-          "sourceName": "新闻网·学术",
-          "school": "uestc",
-          "title": "学者论坛：宇宙的物质不对称: 被低能参数\"锁死\"的轻子生成(Leptogenesis Determined by Low Energy Parameters)",
-          "url": "https://news.uestc.edu.cn/info/1015/44210.htm",
-          "date": "2026-10-10",
-          "tag": "学术"
         }
       ]
     },
@@ -441,8 +441,8 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 34602,
-      "tookMs": 1099,
+      "bytes": 34588,
+      "tookMs": 5182,
       "items": [
         {
           "id": "17a7e48dfd439818",
@@ -675,12 +675,25 @@
   ],
   "fresh": [
     {
-      "id": "d13cc13718fee3d4",
+      "id": "ef14c468c0335619",
       "sourceId": "news-notice",
       "sourceName": "新闻网·公告",
       "school": "uestc",
       "title": "学者论坛：Pickup Opportunity as Resource A Probabilistic Approach for Demand-Aware Ride-Sharing Optimization",
       "url": "https://news.uestc.edu.cn/info/1015/44384.htm",
+      "date": "2026-10-16",
+      "tag": "学术",
+      "alsoIn": [
+        "新闻网·学术"
+      ]
+    },
+    {
+      "id": "5871e06cfd654b0b",
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
+      "school": "uestc",
+      "title": "学者论坛：Finite-Time Singularity Formation for Supercritical Evolution Equations",
+      "url": "https://news.uestc.edu.cn/info/1015/44428.htm",
       "date": "2026-10-15",
       "tag": "学术",
       "alsoIn": [

@@ -1,11 +1,10 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-16T07:33:58.789Z",
+  "updatedAt": "2026-10-16T08:04:14.275Z",
   "sources": {
     "uestc:jwc-important": [
       "fail",
       "fail",
-      "fail",
       "ok",
       "fail",
       "fail",
@@ -22,12 +21,12 @@
       "fail",
       "fail",
       "fail",
-      "fail"
+      "fail",
+      "ok"
     ],
     "uestc:jwc-student": [
       "fail",
       "fail",
-      "fail",
       "ok",
       "fail",
       "fail",
@@ -44,11 +43,11 @@
       "fail",
       "fail",
       "fail",
-      "fail"
+      "fail",
+      "ok"
     ],
     "uestc:news-notice": [
       "fail",
-      "fail",
       "ok",
       "fail",
       "fail",
@@ -66,12 +65,12 @@
       "fail",
       "fail",
       "fail",
-      "fail"
+      "fail",
+      "ok"
     ],
     "uestc:news-academic": [
       "fail",
       "fail",
-      "fail",
       "ok",
       "fail",
       "fail",
@@ -88,12 +87,12 @@
       "fail",
       "fail",
       "fail",
-      "fail"
+      "fail",
+      "ok"
     ],
     "uestc:gr-notice": [
       "fail",
       "fail",
-      "fail",
       "ok",
       "fail",
       "fail",
@@ -110,10 +109,10 @@
       "fail",
       "fail",
       "fail",
-      "fail"
+      "fail",
+      "ok"
     ],
     "bnu:jwb-tzgg": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -132,7 +131,8 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "ecnu:bksy-tzgg": [
       "ok",
@@ -267,7 +267,6 @@
       "ok"
     ],
     "nju:jw-ggtz": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -286,7 +285,8 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "nwpu:jiaowu-tzgg": [
       "fail",
@@ -377,7 +377,6 @@
       "fail"
     ],
     "sysu:jwb-tzgg": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -396,7 +395,8 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "tju:oaa-tzgg": [
       "ok",
@@ -421,7 +421,6 @@
       "fail"
     ],
     "xidian:jwc-tzgg": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -440,7 +439,8 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "xjtu:jwc-jxtz": [
       "ok"

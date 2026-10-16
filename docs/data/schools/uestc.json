@@ -3,13 +3,13 @@
  "name": "电子科技大学",
  "province": "四川省",
  "city": "成都市",
- "generatedAt": "2026-10-16T07:34:50.212Z",
- "total": 52,
+ "generatedAt": "2026-10-16T08:04:24.635Z",
+ "total": 54,
  "bySource": [
   {
    "sourceId": "news-notice",
    "sourceName": "新闻网·公告",
-   "count": 8
+   "count": 10
   },
   {
    "sourceId": "math-xsgz",
@@ -63,7 +63,7 @@
     "新闻网·公告",
     "新闻网·学术"
    ],
-   "count": 10
+   "count": 12
   },
   {
    "id": "研究生院",
@@ -73,6 +73,36 @@
   }
  ],
  "items": [
+  {
+   "id": "ef14c468c0335619",
+   "sourceId": "news-notice",
+   "sourceName": "新闻网·公告",
+   "school": "uestc",
+   "title": "学者论坛：Pickup Opportunity as Resource A Probabilistic Approach for Demand-Aware Ride-Sharing Optimization",
+   "url": "https://news.uestc.edu.cn/info/1015/44384.htm",
+   "date": "2026-10-16",
+   "tag": "学术",
+   "alsoIn": [
+    "新闻网·学术"
+   ],
+   "firstSeenAt": "2026-10-16T08:03:15.233Z",
+   "unit": "新闻网"
+  },
+  {
+   "id": "5871e06cfd654b0b",
+   "sourceId": "news-notice",
+   "sourceName": "新闻网·公告",
+   "school": "uestc",
+   "title": "学者论坛：Finite-Time Singularity Formation for Supercritical Evolution Equations",
+   "url": "https://news.uestc.edu.cn/info/1015/44428.htm",
+   "date": "2026-10-15",
+   "tag": "学术",
+   "alsoIn": [
+    "新闻网·学术"
+   ],
+   "firstSeenAt": "2026-10-16T08:03:15.233Z",
+   "unit": "新闻网"
+  },
   {
    "id": "d13cc13718fee3d4",
    "sourceId": "news-notice",
