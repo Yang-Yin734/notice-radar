@@ -1,7 +1,31 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-16T08:03:15.233Z",
+  "updatedAt": "2026-10-16T08:38:58.643Z",
   "items": [
+    {
+      "id": "2cde1cec9e91ce57",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "xidian",
+      "title": "陕西省普通本科高校精品教学资源 （教案、课件）推荐入库项目公示",
+      "url": "https://jwc.xidian.edu.cn/info/1012/23573.htm",
+      "date": "2026-10-16",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-16T08:38:58.643Z"
+    },
+    {
+      "id": "65e6aaa3e99f1eca",
+      "sourceId": "jiaowu-tzgg",
+      "sourceName": "教务部·通知公告",
+      "school": "nwpu",
+      "title": "关于第十一届“科云杯”全国大学生财会职业能力大赛校赛结果的公示",
+      "url": "https://jiaowu.nwpu.edu.cn/info/1164/30448.htm",
+      "date": "2026-10-16",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-16T08:38:41.269Z"
+    },
     {
       "id": "ef14c468c0335619",
       "sourceId": "news-notice",

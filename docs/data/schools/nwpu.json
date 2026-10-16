@@ -3,13 +3,13 @@
  "name": "西北工业大学",
  "province": "陕西省",
  "city": "西安市",
- "generatedAt": "2026-10-16T08:04:24.635Z",
- "total": 15,
+ "generatedAt": "2026-10-16T08:39:07.788Z",
+ "total": 16,
  "bySource": [
   {
    "sourceId": "jiaowu-tzgg",
    "sourceName": "教务部·通知公告",
-   "count": 15
+   "count": 16
   }
  ],
  "units": [
@@ -19,10 +19,23 @@
    "sources": [
     "教务部·通知公告"
    ],
-   "count": 15
+   "count": 16
   }
  ],
  "items": [
+  {
+   "id": "65e6aaa3e99f1eca",
+   "sourceId": "jiaowu-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "nwpu",
+   "title": "关于第十一届“科云杯”全国大学生财会职业能力大赛校赛结果的公示",
+   "url": "https://jiaowu.nwpu.edu.cn/info/1164/30448.htm",
+   "date": "2026-10-16",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-16T08:38:41.269Z",
+   "unit": "教务部"
+  },
   {
    "id": "341559d483511715",
    "sourceId": "jiaowu-tzgg",

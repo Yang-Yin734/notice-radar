@@ -3,13 +3,13 @@
  "name": "西安电子科技大学",
  "province": "陕西省",
  "city": "西安市",
- "generatedAt": "2026-10-16T08:04:24.635Z",
- "total": 9,
+ "generatedAt": "2026-10-16T08:39:07.788Z",
+ "total": 10,
  "bySource": [
   {
    "sourceId": "jwc-tzgg",
    "sourceName": "教务处·通知公告",
-   "count": 9
+   "count": 10
   }
  ],
  "units": [
@@ -19,10 +19,23 @@
    "sources": [
     "教务处·通知公告"
    ],
-   "count": 9
+   "count": 10
   }
  ],
  "items": [
+  {
+   "id": "2cde1cec9e91ce57",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "xidian",
+   "title": "陕西省普通本科高校精品教学资源 （教案、课件）推荐入库项目公示",
+   "url": "https://jwc.xidian.edu.cn/info/1012/23573.htm",
+   "date": "2026-10-16",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-16T08:38:58.643Z",
+   "unit": "教务处"
+  },
   {
    "id": "361bfe7ac3ebc0ac",
    "sourceId": "jwc-tzgg",
