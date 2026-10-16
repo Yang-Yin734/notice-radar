@@ -1,7 +1,21 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-16T10:02:11.984Z",
+  "updatedAt": "2026-10-16T10:59:17.302Z",
   "items": [
+    {
+      "id": "f6da40c1cdb52108",
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
+      "school": "uestc",
+      "title": "学者论坛：光子莫尔晶格中光波的局域和输运",
+      "url": "https://news.uestc.edu.cn/info/1015/44438.htm",
+      "date": "2026-10-16",
+      "tag": "学术",
+      "alsoIn": [
+        "新闻网·学术"
+      ],
+      "firstSeenAt": "2026-10-16T10:59:17.302Z"
+    },
     {
       "id": "a5658d7e15e4c693",
       "sourceId": "jwc-jxtz",

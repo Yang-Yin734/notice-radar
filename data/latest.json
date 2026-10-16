@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-16T08:03:15.229Z",
+  "generatedAt": "2026-10-16T10:59:17.300Z",
   "results": [
     {
       "sourceId": "jwc-important",
@@ -10,7 +10,7 @@
       "error": null,
       "status": 200,
       "bytes": 28693,
-      "tookMs": 2172,
+      "tookMs": 1731,
       "items": [
         {
           "id": "393edb8d41cfee20",
@@ -173,7 +173,7 @@
       "error": null,
       "status": 200,
       "bytes": 31444,
-      "tookMs": 316,
+      "tookMs": 323,
       "items": [
         {
           "id": "bac78f0f2b47a3e0",
@@ -335,9 +335,19 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 99218,
-      "tookMs": 3636,
+      "bytes": 99240,
+      "tookMs": 1979,
       "items": [
+        {
+          "id": "f6da40c1cdb52108",
+          "sourceId": "news-notice",
+          "sourceName": "新闻网·公告",
+          "school": "uestc",
+          "title": "学者论坛：光子莫尔晶格中光波的局域和输运",
+          "url": "https://news.uestc.edu.cn/info/1015/44438.htm",
+          "date": "2026-10-16",
+          "tag": "学术"
+        },
         {
           "id": "ef14c468c0335619",
           "sourceId": "news-notice",
@@ -367,16 +377,6 @@
           "url": "https://news.uestc.edu.cn/info/1015/44357.htm",
           "date": "2026-10-14",
           "tag": "学术"
-        },
-        {
-          "id": "c327689e31415c90",
-          "sourceId": "news-notice",
-          "sourceName": "新闻网·公告",
-          "school": "uestc",
-          "title": "名师讲堂：From Perception to Control: Learning-Based Approaches and Algorithmic Enhancements",
-          "url": "https://news.uestc.edu.cn/info/1015/44334.htm",
-          "date": "2026-10-13",
-          "tag": "学术"
         }
       ]
     },
@@ -388,9 +388,19 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 99226,
-      "tookMs": 554,
+      "bytes": 99260,
+      "tookMs": 773,
       "items": [
+        {
+          "id": "2128d9b881a21a50",
+          "sourceId": "news-academic",
+          "sourceName": "新闻网·学术",
+          "school": "uestc",
+          "title": "学者论坛：光子莫尔晶格中光波的局域和输运",
+          "url": "https://news.uestc.edu.cn/info/1015/44438.htm",
+          "date": "2026-10-16",
+          "tag": "学术"
+        },
         {
           "id": "87f9741e42473e28",
           "sourceId": "news-academic",
@@ -420,16 +430,6 @@
           "url": "https://news.uestc.edu.cn/info/1015/44357.htm",
           "date": "2026-10-14",
           "tag": "学术"
-        },
-        {
-          "id": "f144f030eb83831b",
-          "sourceId": "news-academic",
-          "sourceName": "新闻网·学术",
-          "school": "uestc",
-          "title": "名师讲堂：From Perception to Control: Learning-Based Approaches and Algorithmic Enhancements",
-          "url": "https://news.uestc.edu.cn/info/1015/44334.htm",
-          "date": "2026-10-13",
-          "tag": "学术"
         }
       ]
     },
@@ -441,8 +441,8 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 34588,
-      "tookMs": 5182,
+      "bytes": 34620,
+      "tookMs": 1750,
       "items": [
         {
           "id": "17a7e48dfd439818",
@@ -675,26 +675,13 @@
   ],
   "fresh": [
     {
-      "id": "ef14c468c0335619",
+      "id": "f6da40c1cdb52108",
       "sourceId": "news-notice",
       "sourceName": "新闻网·公告",
       "school": "uestc",
-      "title": "学者论坛：Pickup Opportunity as Resource A Probabilistic Approach for Demand-Aware Ride-Sharing Optimization",
-      "url": "https://news.uestc.edu.cn/info/1015/44384.htm",
+      "title": "学者论坛：光子莫尔晶格中光波的局域和输运",
+      "url": "https://news.uestc.edu.cn/info/1015/44438.htm",
       "date": "2026-10-16",
-      "tag": "学术",
-      "alsoIn": [
-        "新闻网·学术"
-      ]
-    },
-    {
-      "id": "5871e06cfd654b0b",
-      "sourceId": "news-notice",
-      "sourceName": "新闻网·公告",
-      "school": "uestc",
-      "title": "学者论坛：Finite-Time Singularity Formation for Supercritical Evolution Equations",
-      "url": "https://news.uestc.edu.cn/info/1015/44428.htm",
-      "date": "2026-10-15",
       "tag": "学术",
       "alsoIn": [
         "新闻网·学术"

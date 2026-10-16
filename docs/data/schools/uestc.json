@@ -3,13 +3,13 @@
  "name": "电子科技大学",
  "province": "四川省",
  "city": "成都市",
- "generatedAt": "2026-10-16T10:02:20.633Z",
- "total": 54,
+ "generatedAt": "2026-10-16T11:00:05.351Z",
+ "total": 55,
  "bySource": [
   {
    "sourceId": "news-notice",
    "sourceName": "新闻网·公告",
-   "count": 10
+   "count": 11
   },
   {
    "sourceId": "math-xsgz",
@@ -63,7 +63,7 @@
     "新闻网·公告",
     "新闻网·学术"
    ],
-   "count": 12
+   "count": 13
   },
   {
    "id": "研究生院",
@@ -73,6 +73,21 @@
   }
  ],
  "items": [
+  {
+   "id": "f6da40c1cdb52108",
+   "sourceId": "news-notice",
+   "sourceName": "新闻网·公告",
+   "school": "uestc",
+   "title": "学者论坛：光子莫尔晶格中光波的局域和输运",
+   "url": "https://news.uestc.edu.cn/info/1015/44438.htm",
+   "date": "2026-10-16",
+   "tag": "学术",
+   "alsoIn": [
+    "新闻网·学术"
+   ],
+   "firstSeenAt": "2026-10-16T10:59:17.302Z",
+   "unit": "新闻网"
+  },
   {
    "id": "ef14c468c0335619",
    "sourceId": "news-notice",
