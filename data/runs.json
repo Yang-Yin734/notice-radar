@@ -1,9 +1,8 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-16T04:46:23.328Z",
+  "updatedAt": "2026-10-16T05:16:51.835Z",
   "sources": {
     "uestc:jwc-important": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -21,11 +20,11 @@
       "ok",
       "fail",
       "ok",
+      "fail",
       "fail",
       "fail"
     ],
     "uestc:jwc-student": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -43,11 +42,11 @@
       "ok",
       "fail",
       "ok",
+      "fail",
       "fail",
       "fail"
     ],
     "uestc:news-notice": [
-      "fail",
       "ok",
       "fail",
       "fail",
@@ -64,12 +63,12 @@
       "ok",
       "fail",
       "ok",
+      "fail",
       "fail",
       "fail",
       "fail"
     ],
     "uestc:news-academic": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -87,11 +86,11 @@
       "ok",
       "fail",
       "ok",
+      "fail",
       "fail",
       "fail"
     ],
     "uestc:gr-notice": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -109,11 +108,11 @@
       "ok",
       "fail",
       "ok",
+      "fail",
       "fail",
       "fail"
     ],
     "bnu:jwb-tzgg": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -132,7 +131,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "ecnu:bksy-tzgg": [
       "ok",
