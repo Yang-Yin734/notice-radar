@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-10-16T02:24:15.801Z",
-  "total": 223,
+  "generatedAt": "2026-10-16T02:59:25.833Z",
+  "total": 224,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
       "sourceName": "教务处·通知公告",
-      "count": 70
+      "count": 71
     },
     {
       "sourceId": "jwb-tzgg",
@@ -79,6 +79,18 @@
     }
   ],
   "items": [
+    {
+      "id": "987a0fc1c588ec54",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "nankai",
+      "title": "南开大学 2027 届本科毕业生图像信息采集通知",
+      "url": "https://jwc.nankai.edu.cn/2026/1016/c35436a604514/page.htm",
+      "date": "2026-10-16",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-16T02:58:59.344Z"
+    },
     {
       "id": "42a13504dbdbd9b6",
       "sourceId": "ugs-tzgg",

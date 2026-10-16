@@ -3,13 +3,13 @@
  "name": "南开大学",
  "province": "天津市",
  "city": "",
- "generatedAt": "2026-10-16T02:24:15.801Z",
- "total": 6,
+ "generatedAt": "2026-10-16T02:59:25.833Z",
+ "total": 7,
  "bySource": [
   {
    "sourceId": "jwc-tzgg",
    "sourceName": "教务处·通知公告",
-   "count": 6
+   "count": 7
   }
  ],
  "units": [
@@ -19,10 +19,23 @@
    "sources": [
     "教务处·通知公告"
    ],
-   "count": 6
+   "count": 7
   }
  ],
  "items": [
+  {
+   "id": "987a0fc1c588ec54",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "nankai",
+   "title": "南开大学 2027 届本科毕业生图像信息采集通知",
+   "url": "https://jwc.nankai.edu.cn/2026/1016/c35436a604514/page.htm",
+   "date": "2026-10-16",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-16T02:58:59.344Z",
+   "unit": "教务处"
+  },
   {
    "id": "a944ce59ae2b71b2",
    "sourceId": "jwc-tzgg",
