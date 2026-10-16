@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-16T09:22:15.814Z",
-  "total": 228,
+  "generatedAt": "2026-10-16T10:02:20.633Z",
+  "total": 229,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
@@ -38,6 +38,11 @@
       "count": 14
     },
     {
+      "sourceId": "jwc-jxtz",
+      "sourceName": "教务处·教学通知",
+      "count": 10
+    },
+    {
       "sourceId": "news-notice",
       "sourceName": "新闻网·公告",
       "count": 10
@@ -51,11 +56,6 @@
       "sourceId": "bksy-tzgg",
       "sourceName": "本科生院·通知公告",
       "count": 10
-    },
-    {
-      "sourceId": "jwc-jxtz",
-      "sourceName": "教务处·教学通知",
-      "count": 9
     },
     {
       "sourceId": "math-xsgz",
@@ -79,6 +79,18 @@
     }
   ],
   "items": [
+    {
+      "id": "a5658d7e15e4c693",
+      "sourceId": "jwc-jxtz",
+      "sourceName": "教务处·教学通知",
+      "school": "xjtu",
+      "title": "[竞赛安排]关于组织第十二届国际大学生智能农业装备创新大赛报名的通知",
+      "url": "https://jwc.xjtu.edu.cn/info/1172/10541.htm",
+      "date": "2026-10-16",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-16T10:02:11.984Z"
+    },
     {
       "id": "2cde1cec9e91ce57",
       "sourceId": "jwc-tzgg",

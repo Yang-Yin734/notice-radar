@@ -1,7 +1,19 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-16T08:38:58.643Z",
+  "updatedAt": "2026-10-16T10:02:11.984Z",
   "items": [
+    {
+      "id": "a5658d7e15e4c693",
+      "sourceId": "jwc-jxtz",
+      "sourceName": "教务处·教学通知",
+      "school": "xjtu",
+      "title": "[竞赛安排]关于组织第十二届国际大学生智能农业装备创新大赛报名的通知",
+      "url": "https://jwc.xjtu.edu.cn/info/1172/10541.htm",
+      "date": "2026-10-16",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-16T10:02:11.984Z"
+    },
     {
       "id": "2cde1cec9e91ce57",
       "sourceId": "jwc-tzgg",

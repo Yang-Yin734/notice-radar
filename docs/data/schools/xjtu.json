@@ -3,13 +3,13 @@
  "name": "西安交通大学",
  "province": "陕西省",
  "city": "西安市",
- "generatedAt": "2026-10-16T09:22:15.814Z",
- "total": 9,
+ "generatedAt": "2026-10-16T10:02:20.633Z",
+ "total": 10,
  "bySource": [
   {
    "sourceId": "jwc-jxtz",
    "sourceName": "教务处·教学通知",
-   "count": 9
+   "count": 10
   }
  ],
  "units": [
@@ -19,10 +19,23 @@
    "sources": [
     "教务处·教学通知"
    ],
-   "count": 9
+   "count": 10
   }
  ],
  "items": [
+  {
+   "id": "a5658d7e15e4c693",
+   "sourceId": "jwc-jxtz",
+   "sourceName": "教务处·教学通知",
+   "school": "xjtu",
+   "title": "[竞赛安排]关于组织第十二届国际大学生智能农业装备创新大赛报名的通知",
+   "url": "https://jwc.xjtu.edu.cn/info/1172/10541.htm",
+   "date": "2026-10-16",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-16T10:02:11.984Z",
+   "unit": "教务处"
+  },
   {
    "id": "95085a1f711fa741",
    "sourceId": "jwc-jxtz",
