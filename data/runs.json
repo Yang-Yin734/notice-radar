@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-18T00:00:58.902Z",
+  "updatedAt": "2026-10-18T00:15:17.739Z",
   "sources": {
     "uestc:jwc-important": [
       "ok",
@@ -113,7 +113,6 @@
       "fail"
     ],
     "bnu:jwb-tzgg": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -132,10 +131,10 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "ecnu:bksy-tzgg": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -154,7 +153,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "hnu:jwc-tzgg": [
       "fail",
@@ -223,7 +223,6 @@
       "fail"
     ],
     "nankai:jwc-tzgg": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -242,7 +241,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "njau:aao-tzgg": [
       "fail",
@@ -289,7 +289,6 @@
       "fail"
     ],
     "nwpu:jiaowu-tzgg": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -308,7 +307,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "ouc:jwc-tzgg": [
       "ok",
@@ -333,7 +333,6 @@
       "fail"
     ],
     "shufe:jwc-tzgg": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -352,7 +351,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "swufe:jwc-tzgg": [
       "ok",
