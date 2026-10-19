@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-19T04:05:30.265Z",
+  "updatedAt": "2026-10-19T04:38:29.781Z",
   "sources": {
     "uestc:jwc-important": [
       "ok",
@@ -47,7 +47,6 @@
       "ok"
     ],
     "uestc:news-notice": [
-      "ok",
       "fail",
       "fail",
       "fail",
@@ -66,7 +65,8 @@
       "fail",
       "fail",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "uestc:news-academic": [
       "fail",
@@ -135,7 +135,6 @@
       "ok"
     ],
     "ecnu:bksy-tzgg": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -154,7 +153,8 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "hnu:jwc-tzgg": [
       "fail",
