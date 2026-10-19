@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-10-19T08:55:50.078Z",
-  "total": 231,
+  "generatedAt": "2026-10-19T09:21:17.876Z",
+  "total": 232,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
       "sourceName": "教务处·通知公告",
-      "count": 72
+      "count": 73
     },
     {
       "sourceId": "jwb-tzgg",
@@ -79,6 +79,18 @@
     }
   ],
   "items": [
+    {
+      "id": "770e5d79f0e279ce",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "hnu",
+      "title": "关于发放2026年上半年日本语能力测试(JLPT)成绩单及合格证书的通知",
+      "url": "https://jwc.hnu.edu.cn/info/1022/14831.htm",
+      "date": "2026-10-19",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-19T09:20:35.271Z"
+    },
     {
       "id": "f74638374d9519db",
       "sourceId": "aao-tzgg",

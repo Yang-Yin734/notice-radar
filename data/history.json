@@ -1,7 +1,19 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-19T06:18:21.519Z",
+  "updatedAt": "2026-10-19T09:20:35.271Z",
   "items": [
+    {
+      "id": "770e5d79f0e279ce",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "hnu",
+      "title": "关于发放2026年上半年日本语能力测试(JLPT)成绩单及合格证书的通知",
+      "url": "https://jwc.hnu.edu.cn/info/1022/14831.htm",
+      "date": "2026-10-19",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-19T09:20:35.271Z"
+    },
     {
       "id": "f74638374d9519db",
       "sourceId": "aao-tzgg",
