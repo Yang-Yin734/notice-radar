@@ -3,13 +3,13 @@
  "name": "西安交通大学",
  "province": "陕西省",
  "city": "西安市",
- "generatedAt": "2026-10-19T09:21:17.876Z",
- "total": 10,
+ "generatedAt": "2026-10-19T10:00:36.303Z",
+ "total": 11,
  "bySource": [
   {
    "sourceId": "jwc-jxtz",
    "sourceName": "教务处·教学通知",
-   "count": 10
+   "count": 11
   }
  ],
  "units": [
@@ -19,10 +19,23 @@
    "sources": [
     "教务处·教学通知"
    ],
-   "count": 10
+   "count": 11
   }
  ],
  "items": [
+  {
+   "id": "fcb894b1443dc080",
+   "sourceId": "jwc-jxtz",
+   "sourceName": "教务处·教学通知",
+   "school": "xjtu",
+   "title": "[竞赛安排]关于组织开展第十八届蓝桥杯大赛数字科技创新赛(智能装备数字化建模大赛)报名工作的通知",
+   "url": "https://jwc.xjtu.edu.cn/info/1172/10543.htm",
+   "date": "2026-10-19",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-19T10:00:27.131Z",
+   "unit": "教务处"
+  },
   {
    "id": "a5658d7e15e4c693",
    "sourceId": "jwc-jxtz",

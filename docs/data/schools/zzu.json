@@ -3,13 +3,13 @@
  "name": "郑州大学",
  "province": "河南省",
  "city": "郑州市",
- "generatedAt": "2026-10-19T09:21:17.876Z",
- "total": 8,
+ "generatedAt": "2026-10-19T10:00:36.303Z",
+ "total": 9,
  "bySource": [
   {
    "sourceId": "jwc-tzgg",
    "sourceName": "教务部·通知公告",
-   "count": 8
+   "count": 9
   }
  ],
  "units": [
@@ -19,10 +19,23 @@
    "sources": [
     "教务部·通知公告"
    ],
-   "count": 8
+   "count": 9
   }
  ],
  "items": [
+  {
+   "id": "742e413a2adc44cb",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "zzu",
+   "title": "关于郑州大学2026年微专业招生报名的通知",
+   "url": "https://www5.zzu.edu.cn/jwc/info/1125/5413.htm",
+   "date": "2026-10-19",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-19T10:00:36.097Z",
+   "unit": "教务部"
+  },
   {
    "id": "fc0cbcd788d85de3",
    "sourceId": "jwc-tzgg",

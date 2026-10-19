@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-10-19T09:21:17.876Z",
-  "total": 232,
+  "generatedAt": "2026-10-19T10:00:36.303Z",
+  "total": 234,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
-      "sourceName": "教务处·通知公告",
-      "count": 73
+      "sourceName": "教务部·通知公告",
+      "count": 74
     },
     {
       "sourceId": "jwb-tzgg",
@@ -38,14 +38,14 @@
       "count": 14
     },
     {
-      "sourceId": "news-notice",
-      "sourceName": "新闻网·公告",
+      "sourceId": "jwc-jxtz",
+      "sourceName": "教务处·教学通知",
       "count": 11
     },
     {
-      "sourceId": "jwc-jxtz",
-      "sourceName": "教务处·教学通知",
-      "count": 10
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
+      "count": 11
     },
     {
       "sourceId": "jw-ggtz",
@@ -79,6 +79,30 @@
     }
   ],
   "items": [
+    {
+      "id": "742e413a2adc44cb",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务部·通知公告",
+      "school": "zzu",
+      "title": "关于郑州大学2026年微专业招生报名的通知",
+      "url": "https://www5.zzu.edu.cn/jwc/info/1125/5413.htm",
+      "date": "2026-10-19",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-19T10:00:36.097Z"
+    },
+    {
+      "id": "fcb894b1443dc080",
+      "sourceId": "jwc-jxtz",
+      "sourceName": "教务处·教学通知",
+      "school": "xjtu",
+      "title": "[竞赛安排]关于组织开展第十八届蓝桥杯大赛数字科技创新赛(智能装备数字化建模大赛)报名工作的通知",
+      "url": "https://jwc.xjtu.edu.cn/info/1172/10543.htm",
+      "date": "2026-10-19",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-19T10:00:27.131Z"
+    },
     {
       "id": "770e5d79f0e279ce",
       "sourceId": "jwc-tzgg",
