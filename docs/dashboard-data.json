@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-19T05:51:13.112Z",
-  "total": 230,
+  "generatedAt": "2026-10-19T06:19:00.309Z",
+  "total": 231,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
@@ -11,6 +11,11 @@
       "sourceId": "jwb-tzgg",
       "sourceName": "教务部·通知公告",
       "count": 22
+    },
+    {
+      "sourceId": "aao-tzgg",
+      "sourceName": "教务处·通知公告",
+      "count": 16
     },
     {
       "sourceId": "jiaowu-tzgg",
@@ -26,11 +31,6 @@
       "sourceId": "math-jwgg",
       "sourceName": "数学科学学院·教务公告",
       "count": 16
-    },
-    {
-      "sourceId": "aao-tzgg",
-      "sourceName": "教务处·通知公告",
-      "count": 15
     },
     {
       "sourceId": "jwc-student",
@@ -79,6 +79,18 @@
     }
   ],
   "items": [
+    {
+      "id": "f74638374d9519db",
+      "sourceId": "aao-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "njau",
+      "title": "关于2026年南京农业大学新文科实践创新大赛拟获奖名单的公示",
+      "url": "https://aao.njau.edu.cn/info/1101/7010.htm",
+      "date": "2026-10-19",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-19T06:18:21.519Z"
+    },
     {
       "id": "f6da40c1cdb52108",
       "sourceId": "news-notice",

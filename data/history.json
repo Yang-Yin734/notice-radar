@@ -1,7 +1,19 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-16T10:59:17.302Z",
+  "updatedAt": "2026-10-19T06:18:21.519Z",
   "items": [
+    {
+      "id": "f74638374d9519db",
+      "sourceId": "aao-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "njau",
+      "title": "关于2026年南京农业大学新文科实践创新大赛拟获奖名单的公示",
+      "url": "https://aao.njau.edu.cn/info/1101/7010.htm",
+      "date": "2026-10-19",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-19T06:18:21.519Z"
+    },
     {
       "id": "f6da40c1cdb52108",
       "sourceId": "news-notice",

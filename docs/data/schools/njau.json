@@ -3,13 +3,13 @@
  "name": "南京农业大学",
  "province": "江苏省",
  "city": "南京市",
- "generatedAt": "2026-10-19T05:51:13.112Z",
- "total": 15,
+ "generatedAt": "2026-10-19T06:19:00.309Z",
+ "total": 16,
  "bySource": [
   {
    "sourceId": "aao-tzgg",
    "sourceName": "教务处·通知公告",
-   "count": 15
+   "count": 16
   }
  ],
  "units": [
@@ -19,10 +19,23 @@
    "sources": [
     "教务处·通知公告"
    ],
-   "count": 15
+   "count": 16
   }
  ],
  "items": [
+  {
+   "id": "f74638374d9519db",
+   "sourceId": "aao-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "njau",
+   "title": "关于2026年南京农业大学新文科实践创新大赛拟获奖名单的公示",
+   "url": "https://aao.njau.edu.cn/info/1101/7010.htm",
+   "date": "2026-10-19",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-19T06:18:21.519Z",
+   "unit": "教务处"
+  },
   {
    "id": "5787f42ac7d64b11",
    "sourceId": "aao-tzgg",
