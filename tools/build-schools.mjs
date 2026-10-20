@@ -330,7 +330,9 @@ function build() {
   const mdFile = path.join(repo, 'docs', 'schools.md');
   const sorted = [...activeEntries].sort((a, b) => b.total - a.total || a.name.localeCompare(b.name, 'zh'));
   const rows = sorted.map((s) => {
-    const where = [s.province, s.city].filter(Boolean).join(' · ') || '—';
+    // 城市名常自带"市"（西安市），跟在省后面变成"陕西省 · 西安市"读着别扭，去掉重复后缀
+    const city = s.city && !s.city.includes('·') ? s.city.replace(/市$/, '') : s.city;
+    const where = [s.province, city].filter(Boolean).join(' · ') || '—';
     const units = s.units.map((u) => u.name).join('、') || '—';
     return `| ${s.name} | ${where} | ${s.units.length} | ${s.total} | ${s.latest || '—'} | ${units} |`;
   });
