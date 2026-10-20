@@ -38,6 +38,22 @@ jobs:
           MAIL_FROM: ${{ secrets.MAIL_FROM }}
         run: node src/cli.ts test-notify
 
+      - name: 配置状态推送密钥
+        # main 受规则集保护，机器人的结果提交要用白名单里的部署密钥推送
+        if: always()
+        env:
+          STATE_DEPLOY_KEY: ${{ secrets.STATE_DEPLOY_KEY }}
+        run: |
+          if [ -z "$STATE_DEPLOY_KEY" ]; then
+            echo "没有 STATE_DEPLOY_KEY，沿用 GITHUB_TOKEN 推送"
+            exit 0
+          fi
+          mkdir -p ~/.ssh
+          printf '%s\n' "$STATE_DEPLOY_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -t ed25519 github.com >> ~/.ssh/known_hosts 2>/dev/null
+          git remote set-url origin "git@github.com:${GITHUB_REPOSITORY}.git"
+
       - name: 提交推送结果（便于查证）
         if: always()
         run: |
