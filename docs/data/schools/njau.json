@@ -3,13 +3,13 @@
  "name": "南京农业大学",
  "province": "江苏省",
  "city": "南京市",
- "generatedAt": "2026-10-20T08:15:04.883Z",
- "total": 16,
+ "generatedAt": "2026-10-20T09:15:48.221Z",
+ "total": 17,
  "bySource": [
   {
    "sourceId": "aao-tzgg",
    "sourceName": "教务处·通知公告",
-   "count": 16
+   "count": 17
   }
  ],
  "units": [
@@ -19,10 +19,23 @@
    "sources": [
     "教务处·通知公告"
    ],
-   "count": 16
+   "count": 17
   }
  ],
  "items": [
+  {
+   "id": "7c00004961c905d0",
+   "sourceId": "aao-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "njau",
+   "title": "2025-2026学年“实践周改革创新优秀案例”“实践周优秀组织单位”拟获奖名单公示",
+   "url": "https://aao.njau.edu.cn/info/1144/7013.htm",
+   "date": "2026-10-20",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-20T08:50:02.461Z",
+   "unit": "教务处"
+  },
   {
    "id": "f74638374d9519db",
    "sourceId": "aao-tzgg",
