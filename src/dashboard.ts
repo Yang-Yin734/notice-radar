@@ -78,7 +78,7 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>${escapeHtml(title)}</title>
 <meta name="description" content="高校官网通知的自动归档与检索：notice-radar 定时抓取，手机上可添加到主屏幕当应用用。">
-<meta name="theme-color" content="#1f2a3d">
+<meta name="theme-color" id="theme-color" content="#1f2a3d">
 <meta name="color-scheme" content="light dark">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="${escapeHtml(title)}">
@@ -86,6 +86,18 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="apple-touch-icon" href="icon-192.png">
 <link rel="icon" href="icon-192.png">
+<script>
+  // 首帧就把深浅色定下来（早于样式表与正文）：否则深色用户每次打开都先闪一下白。
+  // 这段必须内联、必须放在 <style> 之前，不能用 defer。
+  (function () {
+    var mode = null;
+    try { mode = JSON.parse(localStorage.getItem('notice-radar:theme') || '[]')[0]; } catch (e) {}
+    var html = document.documentElement;
+    if (mode === 'dark' || mode === 'light') html.className = mode;
+    var dark = mode === 'dark' || (mode !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches);
+    html.style.colorScheme = dark ? 'dark' : 'light';
+  })();
+</script>
 <style>
   :root {
     --bg:#eef1f6; --card:#fff; --ink:#1f2a3d; --muted:#868e96; --line:#e9ecf1;
@@ -239,6 +251,24 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     .tabbar button .dot { display:none; }
     .toast { bottom:96px; }
   }
+
+  /* ---------- 手感优化 ---------- */
+  /* 两三百张卡片一次性建 DOM：屏幕外的直接跳过布局与绘制，滚到才计算。
+     contain-intrinsic-size 给一个估算高度，滚动条不会因为"算完发现更高"而乱跳。 */
+  .item { content-visibility: auto; contain-intrinsic-size: auto 92px; }
+  .item, .chip, .iconbtn, .tabbar button, .btn {
+    transition: transform .12s ease, opacity .12s ease, background-color .12s ease;
+  }
+  .item:active, .chip:active { transform: scale(.994); }
+  .iconbtn:active, .tabbar button:active, .btn:active { transform: scale(.94); }
+  .tips { display:flex; flex-wrap:wrap; align-items:center; gap:4px 8px; margin:0 0 10px;
+    font-size:12.5px; line-height:1.7; color:var(--muted); }
+  .tips b { color:var(--ink); font-weight:600; }
+  .tips code { background:var(--bar); border-radius:6px; padding:1px 6px; font-size:12px; color:var(--ink); }
+  .tips .sep { opacity:.5; }
+  .tips button { margin-left:auto; background:none; border:0; color:var(--muted); font-size:12px;
+    padding:4px 6px; cursor:pointer; border-radius:6px; }
+  .tips button:hover { background:var(--bar); color:var(--ink); }
 </style>
 </head>
 <body>
@@ -260,6 +290,15 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     </div>
     <div class="controls"><input id="q" type="search" placeholder="搜索标题，例如：退课 / 四六级 / 推免" enterkeyhint="search"></div>
     <div class="chips" id="chips"></div>
+    <div class="tips" id="tips" hidden>
+      <b>第一次用？</b>
+      <span>搜关键词，比如 <code>退课</code>、<code>四六级</code></span>
+      <span class="sep">·</span>
+      <span>点上面按钮按来源筛</span>
+      <span class="sep">·</span>
+      <span>点 ☆ 收藏，设置里只看已接入的学校</span>
+      <button id="tips-close" type="button">知道了</button>
+    </div>
     <div id="list"></div>
   </section>
 
@@ -561,13 +600,20 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
       b.classList.toggle('active', b.dataset.view === view && (view !== 'list' || b.dataset.filter === state.filter));
     });
     if (view === 'stats') renderStats();
-    if (view === 'settings') { loadPushState(); checkVersion(false); }
+    // 这里原来还调一个 loadPushState 函数，它在 v0.11.0 删掉第三方推送时一起删了 ——
+    // 每次点"设置"都抛一次 ReferenceError（页面照常切换，但控制台每次报一次，checkVersion 也再没跑到）。
+    if (view === 'settings') checkVersion(false);
   }
 
   function renderAll() { renderChips(); renderList(); renderChrome(); }
 
+  // 输入不逐字重建列表：手快的时候（中文输入法、长按连打）每敲一个字重建 200 张卡片，
+  // 低端机上就会看到"字出来了、列表还没跟上"。90ms 合并成一次。
+  var queryTimer = 0;
   document.getElementById('q').addEventListener('input', function (e) {
-    state.query = e.target.value; renderList();
+    var value = e.target.value;
+    clearTimeout(queryTimer);
+    queryTimer = setTimeout(function () { state.query = value; renderList(); }, 90);
   });
   document.getElementById('chips').addEventListener('click', function (e) {
     var chip = e.target.closest('.chip'); if (!chip) return;
@@ -575,20 +621,34 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     if (state.filter === 'fav') state.filter = 'all';
     renderChips(); renderList(); showView('list');
   });
+  // 点收藏 / 点标题：只改这一张卡片的 DOM，不重建整张列表。
+  // 原来每次点 ☆ 都 renderList()（200 张卡片全重画），手机上就会有半秒的"按了没反应"。
   document.getElementById('list').addEventListener('click', function (e) {
     var fav = e.target.closest('[data-fav]');
     if (fav) {
       var id = fav.dataset.fav;
-      if (state.fav.has(id)) state.fav.delete(id); else state.fav.add(id);
+      var on = !state.fav.has(id);
+      if (on) state.fav.add(id); else state.fav.delete(id);
       lsWrite(KEY_FAV, Array.from(state.fav));
-      renderList(); renderChrome();
+      fav.classList.toggle('on', on);
+      fav.textContent = on ? '★' : '☆';
+      fav.setAttribute('aria-pressed', on ? 'true' : 'false');
+      // 例外：正在看"收藏"页时取消收藏，卡片必须立刻消失，这时才重建
+      if (state.filter === 'fav' && !on) renderList();
+      renderChrome();
       return;
     }
     var open = e.target.closest('[data-open]');
     if (open) {
-      state.read.add(open.dataset.open);
+      var oid = open.dataset.open;
+      var card = open.closest('.item');
+      if (card && !state.read.has(oid)) {
+        card.classList.remove('unread');
+        card.classList.add('read');
+      }
+      state.read.add(oid);
       lsWrite(KEY_READ, Array.from(state.read));
-      renderList(); renderChrome();
+      renderChrome();
     }
   });
   document.getElementById('tabbar').addEventListener('click', function (e) {
@@ -597,14 +657,50 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     state.source = 'all';
     renderChips(); renderList(); showView(btn.dataset.view);
   });
-  document.getElementById('theme').addEventListener('click', function () {
+  // ---------- 深浅色：按一下立刻变，不刷新、不重载 ----------
+  // 换的是 <html> 上的 class + color-scheme + theme-color（手机状态栏），
+  // 三样都改才不会出现"内容变了、顶部状态栏还是黑/白"的错觉。
+  function systemDark() { return matchMedia('(prefers-color-scheme: dark)').matches; }
+  function effectiveDark() {
     var html = document.documentElement;
-    var isDark = html.classList.contains('dark') ||
-      (!html.classList.contains('light') && matchMedia('(prefers-color-scheme: dark)').matches);
+    if (html.classList.contains('dark')) return true;
+    if (html.classList.contains('light')) return false;
+    return systemDark();
+  }
+  function paintTheme(mode, dark) {
+    var html = document.documentElement;
     html.classList.remove('dark', 'light');
-    html.classList.add(isDark ? 'light' : 'dark');
-    lsWrite(KEY_THEME, [isDark ? 'light' : 'dark']);
+    if (mode) html.classList.add(mode);
+    html.style.colorScheme = dark ? 'dark' : 'light';
+    var meta = document.getElementById('theme-color');
+    if (meta) meta.setAttribute('content', dark ? '#12161f' : '#eef1f6');
+    var btn = document.getElementById('theme');
+    if (btn) {
+      btn.textContent = dark ? '☀' : '☾';
+      btn.title = dark ? '切到浅色' : '切到深色';
+      btn.setAttribute('aria-label', btn.title);
+      btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
+    }
+  }
+  document.getElementById('theme').addEventListener('click', function () {
+    var next = effectiveDark() ? 'light' : 'dark';
+    paintTheme(next, next === 'dark');
+    lsWrite(KEY_THEME, [next]);
   });
+  // 没手动选过（= 跟随系统）时，系统白天/夜间切换也要跟着变
+  try {
+    matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () {
+      var html = document.documentElement;
+      if (!html.classList.contains('dark') && !html.classList.contains('light')) paintTheme(null, systemDark());
+    });
+  } catch (e) {
+    // 老浏览器没有 addEventListener 版 MediaQueryList，忽略即可（重开页面仍是对的）
+  }
+  paintTheme(
+    document.documentElement.classList.contains('dark') ? 'dark'
+      : document.documentElement.classList.contains('light') ? 'light' : null,
+    effectiveDark()
+  );
 
   // ---------- 学校 / 学院选择（读的是同源的 data/schools/*，不参与抓取） ----------
   var schoolIndex = null;
@@ -1102,7 +1198,26 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     }
   })();
   checkVersion(false);
-  setTimeout(function () { refreshFromNetwork(false); }, 800);
+
+  // 首次使用：给一行"怎么用"的提示，点过"知道了"就永不再出现（存 localStorage）
+  try {
+    if (!localStorage.getItem('notice-radar:tips')) document.getElementById('tips').hidden = false;
+  } catch (e) {}
+  document.getElementById('tips-close').addEventListener('click', function () {
+    document.getElementById('tips').hidden = true;
+    try { localStorage.setItem('notice-radar:tips', '1'); } catch (e) {}
+  });
+
+  // 后台静默更新不要卡在打开后的第 800ms：那一刻用户往往正在点第一下。
+  // 放到浏览器空闲时段，并且在离线/省流量模式下干脆不拉。
+  (function scheduleRefresh() {
+    var run = function () {
+      if (navigator.onLine === false) return;
+      refreshFromNetwork(false);
+    };
+    if ('requestIdleCallback' in window) requestIdleCallback(run, { timeout: 5000 });
+    else setTimeout(run, 2500);
+  })();
 })();
 </script>
 </body></html>

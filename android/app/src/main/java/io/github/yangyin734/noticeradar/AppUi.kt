@@ -108,6 +108,11 @@ fun NoticeRadarApp(store: Store) {
     var fav by remember { mutableStateOf(store.favIds()) }
     var refreshing by remember { mutableStateOf(false) }
     var toast by remember { mutableStateOf<String?>(null) }
+    // 深浅色必须放在 Compose 的可观察状态里：以前直接读 store.themeOverride（SharedPreferences 的
+    // 普通属性），写进去不会触发重组，于是"点了没反应、得再按一下刷新"才看到变化。
+    var darkOverride by remember { mutableStateOf(store.themeOverride) }
+    // 首次使用提示：本次打开里点过"知道了"就收起
+    var hintDone by remember { mutableStateOf(false) }
     // 新版本提示：打开应用就检查一次（以前只在"设置 → 应用更新"里查，用户根本看不到）
     var updateVersion by remember { mutableStateOf<String?>(null) }
     // 选校：学校 id / 已勾选学院 / 学校目录。全部只在本机记忆（schoolId 为空 = 没主动选过）
@@ -205,7 +210,7 @@ fun NoticeRadarApp(store: Store) {
         }
     }
 
-    val dark = store.themeOverride ?: isSystemInDarkTheme()
+    val dark = darkOverride ?: isSystemInDarkTheme()
 
     MaterialTheme(colorScheme = if (dark) DarkColors else LightColors) {
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
@@ -230,7 +235,13 @@ fun NoticeRadarApp(store: Store) {
                         title = "校园通知雷达",
                         subtitle = snapshot?.let { "${it.items.size} 条 · 未读 ${it.items.count { n -> n.id !in read }}" } ?: "加载中…",
                         refreshing = refreshing,
-                        onToggleTheme = { store.themeOverride = !dark },
+                        dark = dark,
+                        // 一次点击立刻重组：改状态 + 落盘各一次
+                        onToggleTheme = {
+                            val next = !dark
+                            darkOverride = next
+                            store.themeOverride = next
+                        },
                         onRefresh = {
                             scope.launch {
                                 refreshing = true
@@ -265,6 +276,17 @@ fun NoticeRadarApp(store: Store) {
                                         store.dismissedUpdateVersion = version
                                         updateVersion = null
                                     },
+                                )
+                            }
+                            // 第一次打开（没选过学校、也一条都没读过）先告诉用户"这是哪所学校、去哪儿换"
+                            if (tab == 0 && !hintDone && schoolId.isEmpty() && read.isEmpty()) {
+                                FirstRunHint(
+                                    onPickSchool = {
+                                        hintDone = true
+                                        tab = 3
+                                        loadSchoolIndex()
+                                    },
+                                    onDismiss = { hintDone = true },
                                 )
                             }
                             NoticeList(
@@ -379,6 +401,40 @@ private fun UpdateBanner(version: String, apkUrl: String, onDismiss: () -> Unit)
 }
 
 /**
+ * 首次使用提示：现在显示的是哪所学校、去哪儿换成自己的学校。
+ * 选过学校或者读过一条通知之后这条就不再出现（不需要额外存偏好）。
+ */
+@Composable
+private fun FirstRunHint(onPickSchool: () -> Unit, onDismiss: () -> Unit) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 12.dp, vertical = 6.dp)
+            .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(12.dp))
+            .padding(start = 12.dp, end = 4.dp, top = 8.dp, bottom = 8.dp),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        Column(Modifier.weight(1f)) {
+            Text(
+                "先选你的学校",
+                fontSize = 13.5.sp,
+                fontWeight = FontWeight.SemiBold,
+                color = MaterialTheme.colorScheme.onSurface,
+            )
+            Text(
+                "现在显示的是电子科技大学的通知；国内已接入 19 所，选完只显示你们学校的。",
+                fontSize = 11.5.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+            )
+        }
+        TextButton(onClick = onPickSchool) { Text("去选", fontSize = 13.sp) }
+        TextButton(onClick = onDismiss) {
+            Text("✕", fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        }
+    }
+}
+
+/**
  * 应用内更新：下载 → 调起系统安装器。
  *
  * 为什么要有它：以前点"更新"是打开浏览器去 GitHub 下载，用户得自己找安装包再安装，
@@ -453,6 +509,7 @@ private fun AppHeader(
     title: String,
     subtitle: String,
     refreshing: Boolean,
+    dark: Boolean,
     onToggleTheme: () -> Unit,
     onRefresh: () -> Unit,
 ) {
@@ -466,7 +523,7 @@ private fun AppHeader(
         Spacer(Modifier.weight(1f))
         // 与网页版一致：顶栏一个按钮，点一下就切深浅色（不再是设置里的开关）
         TextButton(onClick = onToggleTheme) {
-            Text("◐", fontSize = 17.sp)
+            Text(if (dark) "☀" else "☾", fontSize = 17.sp)
         }
         TextButton(onClick = onRefresh, enabled = !refreshing) {
             Text(if (refreshing) "刷新中…" else "刷新", fontSize = 13.sp)
