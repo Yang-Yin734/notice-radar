@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-20T00:25:48.767Z",
+  "generatedAt": "2026-10-20T12:33:45.820Z",
   "results": [
     {
       "sourceId": "math-jwgg",
@@ -9,9 +9,19 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 22835,
-      "tookMs": 17216,
+      "bytes": 22858,
+      "tookMs": 21329,
       "items": [
+        {
+          "id": "ee41da2273505155",
+          "sourceId": "math-jwgg",
+          "sourceName": "数学科学学院·教务公告",
+          "school": "uestc",
+          "title": "关于2026-2027-1学期举办“微积分I疑难分析讲座（一）”的通知",
+          "url": "https://www.math.uestc.edu.cn/info/1043/10309.htm",
+          "date": "2026-10-20",
+          "tag": null
+        },
         {
           "id": "286698afdbbfeb84",
           "sourceId": "math-jwgg",
@@ -151,16 +161,6 @@
           "url": "https://www.math.uestc.edu.cn/info/1043/9688.htm",
           "date": "2026-01-08",
           "tag": null
-        },
-        {
-          "id": "bb6a8dee06b3ca08",
-          "sourceId": "math-jwgg",
-          "sourceName": "数学科学学院·教务公告",
-          "school": "uestc",
-          "title": "关于数学科学学院2022级本科毕业设计初期检查的通知",
-          "url": "https://www.math.uestc.edu.cn/info/1043/9658.htm",
-          "date": "2025-12-26",
-          "tag": null
         }
       ]
     },
@@ -173,7 +173,7 @@
       "error": null,
       "status": 200,
       "bytes": 22674,
-      "tookMs": 6534,
+      "tookMs": 7012,
       "items": [
         {
           "id": "37e735c6e4c9e45b",
@@ -330,24 +330,13 @@
   ],
   "fresh": [
     {
-      "id": "6121e05a7156c7b9",
-      "sourceId": "math-xsgz",
-      "sourceName": "数学科学学院·学生工作",
+      "id": "ee41da2273505155",
+      "sourceId": "math-jwgg",
+      "sourceName": "数学科学学院·教务公告",
       "school": "uestc",
-      "title": "数学科学学院2026年研究生国家奖学金推荐名单公示",
-      "url": "https://www.math.uestc.edu.cn/info/1044/10299.htm",
-      "date": "2026-10-19",
-      "tag": null,
-      "alsoIn": []
-    },
-    {
-      "id": "a2ee20513435a09b",
-      "sourceId": "math-xsgz",
-      "sourceName": "数学科学学院·学生工作",
-      "school": "uestc",
-      "title": "数学科学学院2026-2027学年研究生学业奖学金名单公示",
-      "url": "https://www.math.uestc.edu.cn/info/1044/10298.htm",
-      "date": "2026-10-19",
+      "title": "关于2026-2027-1学期举办“微积分I疑难分析讲座（一）”的通知",
+      "url": "https://www.math.uestc.edu.cn/info/1043/10309.htm",
+      "date": "2026-10-20",
       "tag": null,
       "alsoIn": []
     }
