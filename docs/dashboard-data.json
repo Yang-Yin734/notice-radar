@@ -13,6 +13,11 @@
       "count": 23
     },
     {
+      "sourceId": "math-jwgg",
+      "sourceName": "数学科学学院·教务公告",
+      "count": 17
+    },
+    {
       "sourceId": "ugs-tzgg",
       "sourceName": "本科生院·通知公告",
       "count": 17
@@ -26,11 +31,6 @@
       "sourceId": "jiaowu-tzgg",
       "sourceName": "教务部·通知公告",
       "count": 17
-    },
-    {
-      "sourceId": "math-jwgg",
-      "sourceName": "数学科学学院·教务公告",
-      "count": 16
     },
     {
       "sourceId": "jwc-student",
@@ -79,6 +79,18 @@
     }
   ],
   "items": [
+    {
+      "id": "ee41da2273505155",
+      "sourceId": "math-jwgg",
+      "sourceName": "数学科学学院·教务公告",
+      "school": "uestc",
+      "title": "关于2026-2027-1学期举办“微积分I疑难分析讲座（一）”的通知",
+      "url": "https://www.math.uestc.edu.cn/info/1043/10309.htm",
+      "date": "2026-10-20",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-20T12:33:45.825Z"
+    },
     {
       "id": "64ba4e5af4d8c240",
       "sourceId": "ugs-tzgg",

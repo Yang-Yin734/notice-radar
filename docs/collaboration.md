@@ -40,7 +40,9 @@ git push -u origin feat/school-zzu-college    # 4. 推到自己的分支（不�
 
 定时抓取（`poll` / `poll-math`）每轮会把状态写回 `data/runs.json`、`data/state.json`、`data/history.json`
 和重建后的 `docs/`，提交信息形如 `chore(state): 2026-10-20T00:45Z [skip ci]`。
-这些由 GitHub Actions 身份提交，走白名单，不占用你的审阅。**不要手动改这些文件**——下一轮会被覆盖。
+这些提交用一把**部署密钥**推送（Secret 名 `STATE_DEPLOY_KEY`，对应仓库 Settings → Deploy keys 里的
+`state-bot`，写权限），而它在 main 的规则集里是白名单成员——机器人能直接推，人不能。
+**不要手动改这些文件**——下一轮会被覆盖。
 
 ## 改 `.github/workflows/` 要特别说明
 
