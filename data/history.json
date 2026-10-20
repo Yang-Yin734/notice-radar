@@ -1,7 +1,35 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-20T03:18:42.679Z",
+  "updatedAt": "2026-10-20T03:38:39.075Z",
   "items": [
+    {
+      "id": "b7b925e6aa2f51b0",
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
+      "school": "uestc",
+      "title": "名师讲堂：Small Droplets, Big Chemistry: Reactivity at Water and Organic Interfaces",
+      "url": "https://news.uestc.edu.cn/info/1015/44526.htm",
+      "date": "2026-10-20",
+      "tag": "学术",
+      "alsoIn": [
+        "新闻网·学术"
+      ],
+      "firstSeenAt": "2026-10-20T03:38:39.075Z"
+    },
+    {
+      "id": "452f5b63ea5a469c",
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
+      "school": "uestc",
+      "title": "学者论坛：复杂体系量子物态超快调控和探测",
+      "url": "https://news.uestc.edu.cn/info/1015/44525.htm",
+      "date": "2026-10-20",
+      "tag": "学术",
+      "alsoIn": [
+        "新闻网·学术"
+      ],
+      "firstSeenAt": "2026-10-20T03:38:39.075Z"
+    },
     {
       "id": "3bfdeced0e7279c9",
       "sourceId": "jiaowu-tzgg",

@@ -3,18 +3,18 @@
  "name": "电子科技大学",
  "province": "四川省",
  "city": "成都市",
- "generatedAt": "2026-10-20T03:19:21.620Z",
- "total": 57,
+ "generatedAt": "2026-10-20T03:39:26.411Z",
+ "total": 59,
  "bySource": [
+  {
+   "sourceId": "news-notice",
+   "sourceName": "新闻网·公告",
+   "count": 13
+  },
   {
    "sourceId": "math-xsgz",
    "sourceName": "数学科学学院·学生工作",
    "count": 10
-  },
-  {
-   "sourceId": "news-notice",
-   "sourceName": "新闻网·公告",
-   "count": 11
   },
   {
    "sourceId": "jwc-student",
@@ -63,7 +63,7 @@
     "新闻网·公告",
     "新闻网·学术"
    ],
-   "count": 13
+   "count": 15
   },
   {
    "id": "研究生院",
@@ -73,6 +73,36 @@
   }
  ],
  "items": [
+  {
+   "id": "b7b925e6aa2f51b0",
+   "sourceId": "news-notice",
+   "sourceName": "新闻网·公告",
+   "school": "uestc",
+   "title": "名师讲堂：Small Droplets, Big Chemistry: Reactivity at Water and Organic Interfaces",
+   "url": "https://news.uestc.edu.cn/info/1015/44526.htm",
+   "date": "2026-10-20",
+   "tag": "学术",
+   "alsoIn": [
+    "新闻网·学术"
+   ],
+   "firstSeenAt": "2026-10-20T03:38:39.075Z",
+   "unit": "新闻网"
+  },
+  {
+   "id": "452f5b63ea5a469c",
+   "sourceId": "news-notice",
+   "sourceName": "新闻网·公告",
+   "school": "uestc",
+   "title": "学者论坛：复杂体系量子物态超快调控和探测",
+   "url": "https://news.uestc.edu.cn/info/1015/44525.htm",
+   "date": "2026-10-20",
+   "tag": "学术",
+   "alsoIn": [
+    "新闻网·学术"
+   ],
+   "firstSeenAt": "2026-10-20T03:38:39.075Z",
+   "unit": "新闻网"
+  },
   {
    "id": "6121e05a7156c7b9",
    "sourceId": "math-xsgz",
