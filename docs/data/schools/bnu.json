@@ -3,13 +3,13 @@
  "name": "北京师范大学",
  "province": "北京市",
  "city": "",
- "generatedAt": "2026-10-20T06:09:50.637Z",
- "total": 19,
+ "generatedAt": "2026-10-20T06:34:43.919Z",
+ "total": 20,
  "bySource": [
   {
    "sourceId": "jwb-tzgg",
    "sourceName": "教务部·通知公告",
-   "count": 19
+   "count": 20
   }
  ],
  "units": [
@@ -19,10 +19,23 @@
    "sources": [
     "教务部·通知公告"
    ],
-   "count": 19
+   "count": 20
   }
  ],
  "items": [
+  {
+   "id": "57d6efd456b32442",
+   "sourceId": "jwb-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "bnu",
+   "title": "【学业管理】 关于2026-2027学年第一学期硕士生思政课（前半学期）考试安排的通知",
+   "url": "https://jwb.bnu.edu.cn/pygc/xygl/jxap/494c7ec0396340a785bc672165251542.htm",
+   "date": "2026-10-20",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-20T06:33:44.959Z",
+   "unit": "教务部"
+  },
   {
    "id": "aa0695bfdfdf2191",
    "sourceId": "jwb-tzgg",

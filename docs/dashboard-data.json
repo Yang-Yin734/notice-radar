@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-20T06:09:50.637Z",
-  "total": 241,
+  "generatedAt": "2026-10-20T06:34:43.919Z",
+  "total": 242,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
@@ -10,7 +10,7 @@
     {
       "sourceId": "jwb-tzgg",
       "sourceName": "教务部·通知公告",
-      "count": 22
+      "count": 23
     },
     {
       "sourceId": "jiaowu-tzgg",
@@ -79,6 +79,18 @@
     }
   ],
   "items": [
+    {
+      "id": "57d6efd456b32442",
+      "sourceId": "jwb-tzgg",
+      "sourceName": "教务部·通知公告",
+      "school": "bnu",
+      "title": "【学业管理】 关于2026-2027学年第一学期硕士生思政课（前半学期）考试安排的通知",
+      "url": "https://jwb.bnu.edu.cn/pygc/xygl/jxap/494c7ec0396340a785bc672165251542.htm",
+      "date": "2026-10-20",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-20T06:33:44.959Z"
+    },
     {
       "id": "b7b925e6aa2f51b0",
       "sourceId": "news-notice",
