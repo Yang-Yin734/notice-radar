@@ -3,18 +3,18 @@
  "name": "电子科技大学",
  "province": "四川省",
  "city": "成都市",
- "generatedAt": "2026-10-20T00:12:45.812Z",
- "total": 55,
+ "generatedAt": "2026-10-20T00:48:17.807Z",
+ "total": 57,
  "bySource": [
+  {
+   "sourceId": "math-xsgz",
+   "sourceName": "数学科学学院·学生工作",
+   "count": 10
+  },
   {
    "sourceId": "news-notice",
    "sourceName": "新闻网·公告",
    "count": 11
-  },
-  {
-   "sourceId": "math-xsgz",
-   "sourceName": "数学科学学院·学生工作",
-   "count": 8
   },
   {
    "sourceId": "jwc-student",
@@ -45,7 +45,7 @@
     "数学科学学院·学生工作",
     "数学科学学院·教务公告"
    ],
-   "count": 24
+   "count": 26
   },
   {
    "id": "教务处",
@@ -73,6 +73,32 @@
   }
  ],
  "items": [
+  {
+   "id": "6121e05a7156c7b9",
+   "sourceId": "math-xsgz",
+   "sourceName": "数学科学学院·学生工作",
+   "school": "uestc",
+   "title": "数学科学学院2026年研究生国家奖学金推荐名单公示",
+   "url": "https://www.math.uestc.edu.cn/info/1044/10299.htm",
+   "date": "2026-10-19",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-20T00:25:48.770Z",
+   "unit": "数学科学学院"
+  },
+  {
+   "id": "a2ee20513435a09b",
+   "sourceId": "math-xsgz",
+   "sourceName": "数学科学学院·学生工作",
+   "school": "uestc",
+   "title": "数学科学学院2026-2027学年研究生学业奖学金名单公示",
+   "url": "https://www.math.uestc.edu.cn/info/1044/10298.htm",
+   "date": "2026-10-19",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-20T00:25:48.770Z",
+   "unit": "数学科学学院"
+  },
   {
    "id": "f6da40c1cdb52108",
    "sourceId": "news-notice",

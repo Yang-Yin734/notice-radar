@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-10-20T00:45:23.094Z",
-  "total": 236,
+  "generatedAt": "2026-10-20T00:48:17.807Z",
+  "total": 238,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
-      "sourceName": "教务部·通知公告",
-      "count": 74
+      "sourceName": "教务处·通知公告",
+      "count": 76
     },
     {
       "sourceId": "jwb-tzgg",
@@ -79,6 +79,30 @@
     }
   ],
   "items": [
+    {
+      "id": "5505bc75be053b6d",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "ouc",
+      "title": "关于2026年秋季学期本科课程期中考试的通知",
+      "url": "https://jwc.ouc.edu.cn/2026/1019/c6517a539550/page.htm",
+      "date": "2026-10-19",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-20T00:47:59.593Z"
+    },
+    {
+      "id": "7d7e97f129bda4c7",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "ouc",
+      "title": "关于组织2026年秋季学期本科课程期末考试的通知",
+      "url": "https://jwc.ouc.edu.cn/2026/1019/c6517a539551/page.htm",
+      "date": "2026-10-19",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-20T00:47:59.593Z"
+    },
     {
       "id": "6121e05a7156c7b9",
       "sourceId": "math-xsgz",

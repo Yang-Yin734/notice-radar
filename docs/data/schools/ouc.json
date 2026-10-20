@@ -3,13 +3,13 @@
  "name": "中国海洋大学",
  "province": "山东省",
  "city": "青岛市",
- "generatedAt": "2026-10-20T00:12:45.812Z",
- "total": 7,
+ "generatedAt": "2026-10-20T00:48:17.807Z",
+ "total": 9,
  "bySource": [
   {
    "sourceId": "jwc-tzgg",
    "sourceName": "教务处·通知公告",
-   "count": 7
+   "count": 9
   }
  ],
  "units": [
@@ -19,10 +19,36 @@
    "sources": [
     "教务处·通知公告"
    ],
-   "count": 7
+   "count": 9
   }
  ],
  "items": [
+  {
+   "id": "5505bc75be053b6d",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "ouc",
+   "title": "关于2026年秋季学期本科课程期中考试的通知",
+   "url": "https://jwc.ouc.edu.cn/2026/1019/c6517a539550/page.htm",
+   "date": "2026-10-19",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-20T00:47:59.593Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "7d7e97f129bda4c7",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "ouc",
+   "title": "关于组织2026年秋季学期本科课程期末考试的通知",
+   "url": "https://jwc.ouc.edu.cn/2026/1019/c6517a539551/page.htm",
+   "date": "2026-10-19",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-20T00:47:59.593Z",
+   "unit": "教务处"
+  },
   {
    "id": "3172a1781db5791d",
    "sourceId": "jwc-tzgg",
