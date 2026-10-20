@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-15T00:22:40.335Z",
+  "generatedAt": "2026-10-20T00:25:48.767Z",
   "results": [
     {
       "sourceId": "math-jwgg",
@@ -9,8 +9,8 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 22815,
-      "tookMs": 24352,
+      "bytes": 22835,
+      "tookMs": 17216,
       "items": [
         {
           "id": "286698afdbbfeb84",
@@ -172,8 +172,8 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 22627,
-      "tookMs": 6354,
+      "bytes": 22674,
+      "tookMs": 6534,
       "items": [
         {
           "id": "37e735c6e4c9e45b",
@@ -186,13 +186,23 @@
           "tag": null
         },
         {
-          "id": "3e1b8fca50e8057f",
+          "id": "6121e05a7156c7b9",
           "sourceId": "math-xsgz",
           "sourceName": "数学科学学院·学生工作",
           "school": "uestc",
-          "title": "数学科学学院2026年研究生国家奖学金申请人材料公示",
-          "url": "https://www.math.uestc.edu.cn/info/1044/10289.htm",
-          "date": "2026-10-14",
+          "title": "数学科学学院2026年研究生国家奖学金推荐名单公示",
+          "url": "https://www.math.uestc.edu.cn/info/1044/10299.htm",
+          "date": "2026-10-19",
+          "tag": null
+        },
+        {
+          "id": "a2ee20513435a09b",
+          "sourceId": "math-xsgz",
+          "sourceName": "数学科学学院·学生工作",
+          "school": "uestc",
+          "title": "数学科学学院2026-2027学年研究生学业奖学金名单公示",
+          "url": "https://www.math.uestc.edu.cn/info/1044/10298.htm",
+          "date": "2026-10-19",
           "tag": null
         },
         {
@@ -314,29 +324,30 @@
           "url": "https://www.math.uestc.edu.cn/info/1044/9859.htm",
           "date": "2026-04-07",
           "tag": null
-        },
-        {
-          "id": "68b97b091ab8f428",
-          "sourceId": "math-xsgz",
-          "sourceName": "数学科学学院·学生工作",
-          "school": "uestc",
-          "title": "关于评选学生先进个人及标兵的通知",
-          "url": "https://www.math.uestc.edu.cn/info/1044/9839.htm",
-          "date": "2026-03-31",
-          "tag": null
         }
       ]
     }
   ],
   "fresh": [
     {
-      "id": "3e1b8fca50e8057f",
+      "id": "6121e05a7156c7b9",
       "sourceId": "math-xsgz",
       "sourceName": "数学科学学院·学生工作",
       "school": "uestc",
-      "title": "数学科学学院2026年研究生国家奖学金申请人材料公示",
-      "url": "https://www.math.uestc.edu.cn/info/1044/10289.htm",
-      "date": "2026-10-14",
+      "title": "数学科学学院2026年研究生国家奖学金推荐名单公示",
+      "url": "https://www.math.uestc.edu.cn/info/1044/10299.htm",
+      "date": "2026-10-19",
+      "tag": null,
+      "alsoIn": []
+    },
+    {
+      "id": "a2ee20513435a09b",
+      "sourceId": "math-xsgz",
+      "sourceName": "数学科学学院·学生工作",
+      "school": "uestc",
+      "title": "数学科学学院2026-2027学年研究生学业奖学金名单公示",
+      "url": "https://www.math.uestc.edu.cn/info/1044/10298.htm",
+      "date": "2026-10-19",
       "tag": null,
       "alsoIn": []
     }
