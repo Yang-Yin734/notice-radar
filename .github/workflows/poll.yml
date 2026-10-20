@@ -113,6 +113,25 @@ jobs:
           # 同时重建"学校目录 + 按校拆分的数据"（网页/应用的选校功能读它）
           node tools/build-schools.mjs
 
+      - name: 配置状态推送密钥
+        # main 受规则集保护（必须走 PR），但定时抓取要把 data/ 与 docs/ 写回 main。
+        # 解决办法：用一把「部署密钥」推送，它在保护规则里是白名单成员。
+        # 没有配 STATE_DEPLOY_KEY 时保持原样（用 GITHUB_TOKEN），不影响已有部署。
+        if: always()
+        env:
+          STATE_DEPLOY_KEY: ${{ secrets.STATE_DEPLOY_KEY }}
+        run: |
+          if [ -z "$STATE_DEPLOY_KEY" ]; then
+            echo "没有 STATE_DEPLOY_KEY，沿用 GITHUB_TOKEN 推送"
+            exit 0
+          fi
+          mkdir -p ~/.ssh
+          printf '%s\n' "$STATE_DEPLOY_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -t ed25519 github.com >> ~/.ssh/known_hosts 2>/dev/null
+          git remote set-url origin "git@github.com:${GITHUB_REPOSITORY}.git"
+          echo "已改用部署密钥推送"
+
       - name: 提交状态（下次只报新增）+ 仪表盘
         # ⚠ 必须 always()：故障判定报红时本步骤原本被跳过 → data/health.json 里
         # 「连续失败次数 + reported」永远存不下来 → 下一次运行又从旧计数+1 再红一次，
@@ -142,6 +161,6 @@ jobs:
           if git push; then
             echo "✓ 状态已提交回仓库"
           else
-            echo "::error::推送状态失败。多半是仓库把 GITHUB_TOKEN 设成了只读：Settings → Actions → General → Workflow permissions → 选 Read and write permissions"
+            echo "::error::推送状态失败。查两处：① Settings → Actions → General → Workflow permissions 要为 Read and write；② 若开了 main 保护规则，Secret STATE_DEPLOY_KEY 必须与规则白名单里的部署密钥配对"
             exit 1
           fi

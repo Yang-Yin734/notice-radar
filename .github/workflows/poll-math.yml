@@ -80,6 +80,22 @@ jobs:
       - name: 重建通知归档仪表盘（GitHub Pages）
         run: node src/cli.ts dashboard
 
+      - name: 配置状态推送密钥
+        # 同 poll.yml：main 受规则集保护，定时提交用部署密钥推送（白名单成员）。
+        env:
+          STATE_DEPLOY_KEY: ${{ secrets.STATE_DEPLOY_KEY }}
+        run: |
+          if [ -z "$STATE_DEPLOY_KEY" ]; then
+            echo "没有 STATE_DEPLOY_KEY，沿用 GITHUB_TOKEN 推送"
+            exit 0
+          fi
+          mkdir -p ~/.ssh
+          printf '%s\n' "$STATE_DEPLOY_KEY" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+          ssh-keyscan -t ed25519 github.com >> ~/.ssh/known_hosts 2>/dev/null
+          git remote set-url origin "git@github.com:${GITHUB_REPOSITORY}.git"
+          echo "已改用部署密钥推送"
+
       - name: 提交状态（下次只报新增）+ 仪表盘
         run: |
           git config user.name "notice-radar-bot"
@@ -102,6 +118,6 @@ jobs:
           if git push; then
             echo "✓ 状态已提交回仓库"
           else
-            echo "::error::推送状态失败。多半是仓库把 GITHUB_TOKEN 设成了只读：Settings → Actions → General → Workflow permissions → 选 Read and write permissions"
+            echo "::error::推送状态失败。查两处：① Settings → Actions → General → Workflow permissions 要为 Read and write；② 若开了 main 保护规则，Secret STATE_DEPLOY_KEY 必须与规则白名单里的部署密钥配对"
             exit 1
           fi
