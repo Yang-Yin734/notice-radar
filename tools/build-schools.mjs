@@ -260,6 +260,9 @@ function build() {
     );
     written.push({ id, name: schoolName, file, total: items.length, units: units.length });
 
+    // 最新一条的日期：给人看的清单里要有"这所学校还在动"的证据
+    const latest = items.reduce((m, it) => (it.date && it.date > m ? it.date : m), '');
+
     activeEntries.push({
       ...meta,
       id,
@@ -268,6 +271,7 @@ function build() {
       file,
       units: units.map((u) => ({ id: u.id, name: u.name, count: u.count })),
       total: items.length,
+      latest,
       updatedAt: data.generatedAt,
     });
   }
@@ -322,10 +326,46 @@ function build() {
   const wroteIndex = previous !== cmp(full);
   if (wroteIndex) fs.writeFileSync(indexFile, `${JSON.stringify(full, null, 1)}\n`);
 
-  return { schools: full.schools, activeEntries, counts, wroteIndex };
+  // ---- 给人看的接入清单（README / 网页都能引它，省得手写表格总会过期） ----
+  const mdFile = path.join(repo, 'docs', 'schools.md');
+  const sorted = [...activeEntries].sort((a, b) => b.total - a.total || a.name.localeCompare(b.name, 'zh'));
+  const rows = sorted.map((s) => {
+    const where = [s.province, s.city].filter(Boolean).join(' · ') || '—';
+    const units = s.units.map((u) => u.name).join('、') || '—';
+    return `| ${s.name} | ${where} | ${s.units.length} | ${s.total} | ${s.latest || '—'} | ${units} |`;
+  });
+  const md = [
+    '# 已接入的学校',
+    '',
+    '> 本文件由 `tools/build-schools.mjs` 自动生成，数据来自 `docs/dashboard-data.json`；**不要手工编辑**。',
+    '',
+    `全国名单共 **${counts.total}** 所高校（本科 ${counts.bachelor} / 专科 ${counts.vocational} / 成人 ${counts.adult}），`,
+    `其中 **${counts.active}** 所已接入，**${counts.pending}** 所待接入；重点建设校（双一流 ∪ 人工挑选）**${counts.featured}** 所。`,
+    '',
+    '「栏目」是该学校配置里抓取的学院/栏目数，「通知」是归档里该学校的条目数。',
+    '除电子科技大学外，新接入的学校都是 `collectOnly`（只抓不推）：条目会进归档、仪表盘和按校数据，',
+    '但**不推送、不进日报**；确认抓稳后把预设里的 `collectOnly: true` 删掉就开始推送。',
+    '',
+    '| 学校 | 省市 | 栏目 | 通知 | 最新一条 | 学院 / 栏目明细 |',
+    '|---|---|---:|---:|---|---|',
+    ...rows,
+    '',
+    '想加自己的学校：见 [add-your-school.md](add-your-school.md)；批量探选择器用 `node tools/probe-batch.mjs`。',
+    '',
+  ].join('\n');
+  let mdPrevious = '';
+  try {
+    mdPrevious = fs.readFileSync(mdFile, 'utf8');
+  } catch {
+    mdPrevious = '';
+  }
+  const wroteMarkdown = mdPrevious !== md;
+  if (wroteMarkdown) fs.writeFileSync(mdFile, md);
+
+  return { schools: full.schools, activeEntries, counts, wroteIndex, wroteMarkdown };
 }
 
-const { activeEntries, counts, wroteIndex } = build();
+const { activeEntries, counts, wroteIndex, wroteMarkdown } = build();
 const stat = fs.statSync(path.join(outDir, 'index.json'));
 console.log(
   `✓ docs/data/schools/index.json（${counts.total} 所：已接入 ${counts.active}、` +

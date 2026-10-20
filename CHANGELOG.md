@@ -2,6 +2,27 @@
 
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## v0.11.4 — 2026-10-20
+
+### 协作与仓库治理：改动只能经你审批进入 `main`
+
+- `main` 加规则集 `protect-main`：必须走 PR、**至少 1 个批准且必须来自 CODEOWNERS**（即仓库所有者）、
+  新推送作废旧批准、所有讨论解决、`test` 检查通过；禁止强推、禁止删除分支。
+  新增 [`.github/CODEOWNERS`](.github/CODEOWNERS) 与 [docs/collaboration.md](docs/collaboration.md)。
+- 共同开发者两种模式都支持：拿到 **Write** 权限后从分支提 PR，或者 **fork** 后提 PR——合并按钮只有所有者能按。
+- 机器人（定时抓取）改用**部署密钥**推送：规则一开，原来用 `GITHUB_TOKEN` 的 `chore(state)` 提交会被
+  `GH013: Changes must be made through a pull request` 挡下（实测复现）。现在 `poll` / `poll-math` /
+  `notify-test` 在推送前切到 `ssh.github.com:443` + 白名单里的 `state-bot` 部署密钥，改完实测 `poll` 绿、
+  状态提交照常落库。顺带删掉了废弃的 `SERVERCHAN_KEY` Secret。
+
+### 文档：接入清单自动生成，不再手写表格
+
+- 新增 `docs/schools.md`，由 `tools/build-schools.mjs` 每轮抓取后重建：19 所已接入学校的
+  栏目数、通知数、**最新一条日期**、每个学院/栏目的条数；与 3167 所的目录统计放在一起。
+  内容不变时**不重写**（避免每 10 分钟一个提交）。
+- README 顶部新增「现在能做什么」一览（抓取 / 适配器 / 降噪 / 推送 / 归档 / 网页 / 安卓 / 体检 / 告警 / 零服务器 / 适配器市场），
+  版本徽章改成动态读 `package.json`，不再每次发版手动改。
+
 ## v0.11.3 — 2026-10-20
 
 ### 体验：一次点击就生效，别再等"刷新"

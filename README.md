@@ -10,7 +10,7 @@
 [![android-apk](https://github.com/Yang-Yin734/notice-radar/actions/workflows/android.yml/badge.svg)](https://github.com/Yang-Yin734/notice-radar/actions/workflows/android.yml)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![node](https://img.shields.io/badge/node-%3E%3D22.18-339933.svg)](package.json)
-[![version](https://img.shields.io/badge/version-v0.11.2-4d6bfe.svg)](CHANGELOG.md)
+[![version](https://img.shields.io/github/package-json/v/Yang-Yin734/notice-radar?label=version&color=4d6bfe)](CHANGELOG.md)
 
 ### 📲 [**下载 Android 安装包（APK）**](https://github.com/Yang-Yin734/notice-radar/releases/download/android-latest/notice-radar.apk)
 
@@ -42,6 +42,23 @@
 >   （密钥生成见 [`tools/make-android-keystore.mjs`](tools/make-android-keystore.mjs)）
 
 ---
+
+## 现在能做什么
+
+| 能力 | 怎么用 |
+|---|---|
+| **多校抓取** | `config/schools/<学校>.yaml` 一份预设一个学校；全国目录里 **19 所已接入**（见 [docs/schools.md](docs/schools.md)）、3167 所可查 |
+| **通用适配器 + 选择器覆盖** | 大部分站点只写 `item`/`title`/`date` 三个选择器；博达、瑞数站、日期在链接里（`dateFromLink`）都有现成写法 |
+| **浏览器渲染兜底** | 部署机器人挑战的学院站用 `requiresBrowser: true`，云端 `xvfb` + 真窗口每天跑一次 |
+| **三层降噪** | 源级关键词白/黑名单 → 事件级去重 → 用户画像过滤；同一件事的多次转发只留一条 |
+| **分档推送** | `立即` / 日报 / 静音三档；推送通道 `webhook`、`email`、`stdout`（默认只开 stdout，不配就只落盘） |
+| **归档与检索** | `data/history.json` 按时间倒序，网页/应用里可搜关键词、按来源筛、收藏、标记已读 |
+| **网页版（PWA）** | <https://yang-yin734.github.io/notice-radar/>：深浅色一键切换、首屏秒开、可添加到主屏幕、离线可看已加载内容 |
+| **Android 原生应用** | Kotlin + Compose，数据打包在 APK 内，打开零网络；选学校/学院、收藏、推送设置全在本地 |
+| **抓取成功率体检** | `radr rate`：逐校给出「正常 / 无条目 / 失败 / 跳过」与合计成功率，`--min` 可当 CI 门槛 |
+| **健康告警 + 看门狗** | 连续失败才报红（跨境抖动不刷邮件）；`pages-watch` 每 6 小时探测线上站点，掉线即红 |
+| **零服务器部署** | GitHub Actions 定时抓取与构建、Pages 承载网页版、Release 分发 APK；fork 后改配置即可自用 |
+| **适配器市场** | `config/schools/registry.json` 登记维护者与验证日期，`radr schools` 查看 |
 
 ## 解决什么问题
 
@@ -249,6 +266,7 @@ radr rate --min=0.8                # 低于 80% 就以退出码 1 结束（给 C
 | 电子科技大学 | 数学科学学院·学生工作 | `html-list` + 浏览器 | ✅ 云端每天 08:00 + 本机兜底 |
 
 想加自己学校？看 **[docs/add-your-school.md](docs/add-your-school.md)** —— 大多数站点只要写一段 YAML。
+**全部 19 所已接入学校的栏目数、通知数、最新一条日期**见 [docs/schools.md](docs/schools.md)（每轮抓取自动重建，不会过期）。
 
 > **新接入的学校默认「只抓不推」**：预设里写一行 `collectOnly: true`，条目就只进归档、仪表盘与按校数据
 > （网页版/应用的选校里能看到这所学校及其通知），但不推送、不进日报、抓失败也不告警；
