@@ -757,6 +757,12 @@ radr test-notify --channel=email    # 只测某一条（webhook/email/stdout）
 > WxPusher / 企业微信在 v0.10.4 移除；**Server酱在 v0.11.0 移除**——项目中不再有任何第三方推送服务。
 > 配置里再写这些类型会被校验**明确挡下**并提示改用什么（静默忽略会让人以为"配好了却收不到"）。
 
+## 一起开发：改动怎么进 `main`
+
+`main` 是受保护分支：共同开发者用 **Write** 权限在自己的分支上开发、开 PR，**合并必须由所有者审批**
+（至少 1 个来自 CODEOWNERS 的批准 + `test` 检查绿 + 讨论全部解决）。定时抓取机器人的状态提交走白名单。
+完整流程、分支命名、发版与回滚约定见 [docs/collaboration.md](docs/collaboration.md)。
+
 ## 许可
 
 [MIT](LICENSE)
