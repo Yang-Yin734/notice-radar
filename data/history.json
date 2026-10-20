@@ -1,7 +1,19 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-20T00:47:59.593Z",
+  "updatedAt": "2026-10-20T03:18:42.679Z",
   "items": [
+    {
+      "id": "3bfdeced0e7279c9",
+      "sourceId": "jiaowu-tzgg",
+      "sourceName": "教务部·通知公告",
+      "school": "nwpu",
+      "title": "关于2027年西北工业大学“量子技术”挑战赛校赛报名的通知",
+      "url": "https://jiaowu.nwpu.edu.cn/info/1164/30488.htm",
+      "date": "2026-10-20",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-20T03:18:42.679Z"
+    },
     {
       "id": "5505bc75be053b6d",
       "sourceId": "jwc-tzgg",
