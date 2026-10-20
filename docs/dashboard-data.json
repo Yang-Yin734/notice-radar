@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-20T11:39:44.238Z",
-  "total": 243,
+  "generatedAt": "2026-10-20T12:01:41.703Z",
+  "total": 244,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
@@ -13,6 +13,11 @@
       "count": 23
     },
     {
+      "sourceId": "ugs-tzgg",
+      "sourceName": "本科生院·通知公告",
+      "count": 17
+    },
+    {
       "sourceId": "aao-tzgg",
       "sourceName": "教务处·通知公告",
       "count": 17
@@ -21,11 +26,6 @@
       "sourceId": "jiaowu-tzgg",
       "sourceName": "教务部·通知公告",
       "count": 17
-    },
-    {
-      "sourceId": "ugs-tzgg",
-      "sourceName": "本科生院·通知公告",
-      "count": 16
     },
     {
       "sourceId": "math-jwgg",
@@ -79,6 +79,18 @@
     }
   ],
   "items": [
+    {
+      "id": "64ba4e5af4d8c240",
+      "sourceId": "ugs-tzgg",
+      "sourceName": "本科生院·通知公告",
+      "school": "hust",
+      "title": "华中科技大学2026年第十九届全国大学生创新年会作品推荐名单公示",
+      "url": "https://ugs.hust.edu.cn/info/1142/7651.htm",
+      "date": "2026-10-20",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-20T12:00:45.481Z"
+    },
     {
       "id": "7c00004961c905d0",
       "sourceId": "aao-tzgg",
