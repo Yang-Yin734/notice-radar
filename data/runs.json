@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-21T10:26:44.778Z",
+  "updatedAt": "2026-10-21T10:57:47.395Z",
   "sources": {
     "uestc:jwc-important": [
       "fail",
@@ -135,7 +135,6 @@
       "ok"
     ],
     "ecnu:bksy-tzgg": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -154,10 +153,10 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "hnu:jwc-tzgg": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -176,10 +175,10 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "hust:ugs-tzgg": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -198,7 +197,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "jiangnan:jwc-tzgg": [
       "ok",
@@ -478,6 +478,21 @@
       "ok"
     ],
     "uestc:math-xsgz": [
+      "ok"
+    ],
+    "zzu:jwc-xwkd": [
+      "ok"
+    ],
+    "zzu:gs-gg": [
+      "ok"
+    ],
+    "zzu:gs-xw": [
+      "ok"
+    ],
+    "zzu:rsc-tzgg": [
+      "ok"
+    ],
+    "zzu:news": [
       "ok"
     ]
   }
