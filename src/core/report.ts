@@ -44,7 +44,8 @@ export function renderMarkdown(results: SourceResult[], fresh: Notice[], options
   for (const r of ok) {
     const items = bySource.get(r.sourceId) ?? [];
     if (items.length === 0) continue;
-    lines.push(`## ${r.sourceName}（${items.length} 条新）`);
+    const cat = items[0]?.category;
+    lines.push(`## ${cat ? `[${cat}] ` : ''}${r.sourceName}（${items.length} 条新）`);
     lines.push('');
     for (const n of items.slice(0, maxPerSource)) {
       const date = n.date ?? '日期未知';

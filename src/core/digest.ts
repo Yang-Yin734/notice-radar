@@ -188,7 +188,8 @@ export function renderDigestMarkdown(digest: Digest, options: DigestRenderOption
   }
 
   for (const g of digest.groups) {
-    lines.push(`## ${g.sourceName}（${g.total} 条）`);
+    const cat = g.items[0]?.category;
+    lines.push(`## ${cat ? `[${cat}] ` : ''}${g.sourceName}（${g.total} 条）`);
     lines.push('');
     for (const n of g.items) {
       const tag = n.tag ? `\`${n.tag}\` ` : '';
@@ -227,7 +228,8 @@ export function renderDigestText(digest: Digest, options: DigestRenderOptions = 
     }
     lines.push('');
     for (const g of digest.groups) {
-      lines.push(`【${g.sourceName}】${g.total} 条`);
+      const cat = g.items[0]?.category;
+      lines.push(`【${cat ? `${cat}·` : ''}${g.sourceName}】${g.total} 条`);
       for (const n of g.items) {
         const tag = n.tag ? `[${n.tag}] ` : '';
         const due = renderDeadline(extractDeadline(n.title));

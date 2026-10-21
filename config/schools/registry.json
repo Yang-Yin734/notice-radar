@@ -12,9 +12,14 @@
       "id": "uestc",
       "name": "电子科技大学",
       "city": "成都",
-      "presets": ["config/schools/uestc.yaml", "config/schools/uestc-math.yaml"],
+      "presets": [
+        "config/schools/uestc.yaml",
+        "config/schools/uestc-math.yaml"
+      ],
       "sources": 7,
-      "maintainers": ["Yang-Yin734"],
+      "maintainers": [
+        "Yang-Yin734"
+      ],
       "status": "verified",
       "lastVerified": "2026-10-01",
       "notes": "教务处/新闻网/研究生院走普通 HTTP（每 20 分钟）；数学科学学院是瑞数 WAF，需要 --allow-browser，云端用 Xvfb 每天一次"
@@ -23,9 +28,13 @@
       "id": "swufe",
       "name": "西南财经大学",
       "city": "成都",
-      "presets": ["config/schools/swufe.yaml"],
+      "presets": [
+        "config/schools/swufe.yaml"
+      ],
       "sources": 1,
-      "maintainers": ["Yang-Yin734"],
+      "maintainers": [
+        "Yang-Yin734"
+      ],
       "status": "verified",
       "lastVerified": "2026-10-03",
       "notes": "全国名单扩到 3167 所后接入的第二所学校。教务处通知公告是普通列表页（标题完整、日期可解）；当前 collectOnly=true（只采集不通知），确认抓稳后再摘掉"
@@ -34,9 +43,13 @@
       "id": "xidian",
       "name": "西安电子科技大学",
       "city": "西安",
-      "presets": ["config/schools/xidian.yaml"],
+      "presets": [
+        "config/schools/xidian.yaml"
+      ],
       "sources": 1,
-      "maintainers": ["Yang-Yin734"],
+      "maintainers": [
+        "Yang-Yin734"
+      ],
       "status": "verified",
       "lastVerified": "2026-10-03",
       "notes": "教务处通知公告。**必须用 `.list li` 而不是裸 `ul li`** —— 后者会把左侧导航（教务管理系统等 11 条无日期菜单）当通知；标题取 a@title。collectOnly=true"
@@ -45,9 +58,13 @@
       "id": "hust",
       "name": "华中科技大学",
       "city": "武汉",
-      "presets": ["config/schools/hust.yaml"],
+      "presets": [
+        "config/schools/hust.yaml"
+      ],
       "sources": 1,
-      "maintainers": ["Yang-Yin734"],
+      "maintainers": [
+        "Yang-Yin734"
+      ],
       "status": "verified",
       "lastVerified": "2026-10-03",
       "notes": "本科生院通知公告。标题必须取 **h2**（<a> 里还塞了隐藏的正文摘要 div.zhai，取 a 文本会得到 100+ 字的标题）；日期在 span.fr。站点自己对超长标题会截断（实测 20 条里 1 条）。collectOnly=true"
@@ -56,9 +73,13 @@
       "id": "sysu",
       "name": "中山大学",
       "city": "广州",
-      "presets": ["config/schools/sysu.yaml"],
+      "presets": [
+        "config/schools/sysu.yaml"
+      ],
       "sources": 1,
-      "maintainers": ["Yang-Yin734"],
+      "maintainers": [
+        "Yang-Yin734"
+      ],
       "status": "verified",
       "lastVerified": "2026-10-03",
       "notes": "教务部通知通告（Drupal 站）。日期取 time 的 datetime 属性；通知多以公众号文章发布，链接指向 mp.weixin.qq.com。collectOnly=true"
@@ -67,9 +88,13 @@
       "id": "tju",
       "name": "天津大学",
       "city": "天津",
-      "presets": ["config/schools/tju.yaml"],
+      "presets": [
+        "config/schools/tju.yaml"
+      ],
       "sources": 1,
-      "maintainers": ["Yang-Yin734"],
+      "maintainers": [
+        "Yang-Yin734"
+      ],
       "status": "verified",
       "lastVerified": "2026-10-03",
       "notes": "本科生院通知公告。标题取 **h2**（取 a 文本会带上正文摘要）；通知多以公众号文章发布。collectOnly=true"
@@ -78,9 +103,13 @@
       "id": "jiangnan",
       "name": "江南大学",
       "city": "无锡",
-      "presets": ["config/schools/jiangnan.yaml"],
+      "presets": [
+        "config/schools/jiangnan.yaml"
+      ],
       "sources": 1,
-      "maintainers": ["Yang-Yin734"],
+      "maintainers": [
+        "Yang-Yin734"
+      ],
       "status": "verified",
       "lastVerified": "2026-10-03",
       "notes": "教务处通知公告。标题取 a@title（完整标题），日期取 span。collectOnly=true"
@@ -89,9 +118,13 @@
       "id": "xjtu",
       "name": "西安交通大学",
       "city": "西安",
-      "presets": ["config/schools/xjtu.yaml"],
+      "presets": [
+        "config/schools/xjtu.yaml"
+      ],
       "sources": 1,
-      "maintainers": ["Yang-Yin734"],
+      "maintainers": [
+        "Yang-Yin734"
+      ],
       "status": "verified",
       "lastVerified": "2026-10-03",
       "notes": "教务处教学通知（jxxx/jxtz2.htm）。标题自带 [培养方案]/[考试安排] 分类前缀，保留原样；日期取 span。collectOnly=true"
@@ -100,9 +133,13 @@
       "id": "nwpu",
       "name": "西北工业大学",
       "city": "西安",
-      "presets": ["config/schools/nwpu.yaml"],
+      "presets": [
+        "config/schools/nwpu.yaml"
+      ],
       "sources": 1,
-      "maintainers": ["Yang-Yin734"],
+      "maintainers": [
+        "Yang-Yin734"
+      ],
       "status": "verified",
       "lastVerified": "2026-10-04",
       "notes": "教务部通知公告（jxxx1/tzgg.htm）。竞赛选拔/报名/公示为主；标题取 a，日期取 span。collectOnly=true"
@@ -111,9 +148,13 @@
       "id": "nju",
       "name": "南京大学",
       "city": "南京",
-      "presets": ["config/schools/nju.yaml"],
+      "presets": [
+        "config/schools/nju.yaml"
+      ],
       "sources": 1,
-      "maintainers": ["Yang-Yin734"],
+      "maintainers": [
+        "Yang-Yin734"
+      ],
       "status": "verified",
       "lastVerified": "2026-10-04",
       "notes": "本科生院公告通知。**容器必须用 `.news_list li`**（宽松的 `.list li` 会把侧栏快捷入口当通知，还会误判成「没有日期」——日期在 span.news_meta）。collectOnly=true"
@@ -122,9 +163,13 @@
       "id": "ouc",
       "name": "中国海洋大学",
       "city": "青岛",
-      "presets": ["config/schools/ouc.yaml"],
+      "presets": [
+        "config/schools/ouc.yaml"
+      ],
       "sources": 1,
-      "maintainers": ["Yang-Yin734"],
+      "maintainers": [
+        "Yang-Yin734"
+      ],
       "status": "verified",
       "lastVerified": "2026-10-04",
       "notes": "教务处通知公告（博达 CMS）。日期类名是 `Article_PublishDate`（不是常见的 span.date），所以自动探测一开始报「这页没有日期」。collectOnly=true"
@@ -133,9 +178,13 @@
       "id": "xmu",
       "name": "厦门大学",
       "city": "厦门",
-      "presets": ["config/schools/xmu.yaml"],
+      "presets": [
+        "config/schools/xmu.yaml"
+      ],
       "sources": 1,
-      "maintainers": ["Yang-Yin734"],
+      "maintainers": [
+        "Yang-Yin734"
+      ],
       "status": "verified",
       "lastVerified": "2026-10-04",
       "notes": "教务处通知公告（jwc.xmu.edu.cn/tzgg.htm）。教务处首页没有「通知公告」导航链接（导航是 JS 驱动的），直接给列表页地址最快。collectOnly=true"
@@ -144,9 +193,13 @@
       "id": "nankai",
       "name": "南开大学",
       "city": "天津",
-      "presets": ["config/schools/nankai.yaml"],
+      "presets": [
+        "config/schools/nankai.yaml"
+      ],
       "sources": 1,
-      "maintainers": ["Yang-Yin734"],
+      "maintainers": [
+        "Yang-Yin734"
+      ],
       "status": "verified",
       "lastVerified": "2026-10-04",
       "notes": "教务处通知公告（博达 CMS）。日期被拆成「日 / 年月」两块，页面上没法解析 —— 用 dateFromLink 从链接 /2026/0930/ 里取。collectOnly=true"
@@ -155,20 +208,28 @@
       "id": "zzu",
       "name": "郑州大学",
       "city": "郑州",
-      "presets": ["config/schools/zzu.yaml"],
-      "sources": 1,
-      "maintainers": ["Yang-Yin734"],
+      "presets": [
+        "config/schools/zzu.yaml"
+      ],
+      "sources": 6,
+      "maintainers": [
+        "Yang-Yin734"
+      ],
       "status": "verified",
-      "lastVerified": "2026-10-04",
-      "notes": "教务部通知公告。标题必须取 **h3**（取 a 的文本会把日期并进标题）；日期取 span。collectOnly=true"
+      "lastVerified": "2026-10-21",
+      "notes": "教务部（通知公告 / 新闻快递）、研究生院（公告 / 新闻）、人事部通知公告、新闻网综合，共 6 个源，全部 collectOnly=true、按 category 分为 教务 / 研究生 / 人事 / 综合。教务与新闻快递的标题必须取 **h3**（取 a 的文本会把日期并进标题）；研究生院的 baseUrl 必须写列表页地址（href 是 ../info/...）；研究生院列表要加 :has(span.right) 排除导航菜单。就业网（JS 注入）、图书馆（校外超时）、学生处/团委（无独立子域）暂不可接。"
     },
     {
       "id": "ecnu",
       "name": "华东师范大学",
       "city": "上海",
-      "presets": ["config/schools/ecnu.yaml"],
+      "presets": [
+        "config/schools/ecnu.yaml"
+      ],
       "sources": 1,
-      "maintainers": ["Yang-Yin734"],
+      "maintainers": [
+        "Yang-Yin734"
+      ],
       "status": "verified",
       "lastVerified": "2026-10-04",
       "notes": "本科生院通知公告（博达模板）。标题取 `.news_title`、日期取 `.news_date`（不是常见的 span.date）；条目常指向校内其它站点。collectOnly=true"
@@ -177,9 +238,13 @@
       "id": "bnu",
       "name": "北京师范大学",
       "city": "北京",
-      "presets": ["config/schools/bnu.yaml"],
+      "presets": [
+        "config/schools/bnu.yaml"
+      ],
       "sources": 1,
-      "maintainers": ["Yang-Yin734"],
+      "maintainers": [
+        "Yang-Yin734"
+      ],
       "status": "verified",
       "lastVerified": "2026-10-04",
       "notes": "教务部通知公告。日期取 **.text-muted** —— 页面里 span 太多，笼统取 span 会把标题本身当日期（自动探测当时只认出 5/20 条）。collectOnly=true"
@@ -188,9 +253,13 @@
       "id": "hnu",
       "name": "湖南大学",
       "city": "长沙",
-      "presets": ["config/schools/hnu.yaml"],
+      "presets": [
+        "config/schools/hnu.yaml"
+      ],
       "sources": 1,
-      "maintainers": ["Yang-Yin734"],
+      "maintainers": [
+        "Yang-Yin734"
+      ],
       "status": "verified",
       "lastVerified": "2026-10-04",
       "notes": "教务处通知公告。容器必须用 **.list1_part li**（裸 ul li 在这页会命中 75 个导航/页脚项），标题取 a@title（取 a 文本会把日期并进标题）、日期取 .list1_d。collectOnly=true"
@@ -199,9 +268,13 @@
       "id": "njau",
       "name": "南京农业大学",
       "city": "南京",
-      "presets": ["config/schools/njau.yaml"],
+      "presets": [
+        "config/schools/njau.yaml"
+      ],
       "sources": 1,
-      "maintainers": ["Yang-Yin734"],
+      "maintainers": [
+        "Yang-Yin734"
+      ],
       "status": "verified",
       "lastVerified": "2026-10-04",
       "notes": "教务处通知公告（博达模板）。日期在 **.news_meta**（与南京大学同一模板家族）——笼统取 span 会把标题当日期。collectOnly=true"
@@ -210,9 +283,13 @@
       "id": "shufe",
       "name": "上海财经大学",
       "city": "上海",
-      "presets": ["config/schools/shufe.yaml"],
+      "presets": [
+        "config/schools/shufe.yaml"
+      ],
       "sources": 1,
-      "maintainers": ["Yang-Yin734"],
+      "maintainers": [
+        "Yang-Yin734"
+      ],
       "status": "verified",
       "lastVerified": "2026-10-04",
       "notes": "教务处通知公告（博达 CMS，与中国海洋大学同一套模板）。日期类名是专有的 `Article_PublishDate`。collectOnly=true"
