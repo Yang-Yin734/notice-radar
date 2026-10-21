@@ -43,7 +43,21 @@ export interface FetchOptions {
   retries?: number;
   retryDelayMs?: number;
   userAgent?: string;
+  /**
+   * 单个响应体的字节上限（默认 8 MiB）。
+   *
+   * 为什么需要：列表页正常也就几十 KB，但站点可能被挂马、被塞了一个巨大的
+   * 内联 base64 资源，或者干脆返回一个超大的错误页 —— 直接 `arrayBuffer()`
+   * 会把整坨读进内存，在 128MB 的 CI runner 或 512MB 的函数实例上就是 OOM。
+   * 超过上限直接中断下载并抛错，不重试（重试还是一样大）。
+   */
+  maxBytes?: number;
 }
+
+/** 不该重试的错误（例如「响应体过大」）——重试只会再浪费一次流量。 */
+export class FatalFetchError extends Error {}
+
+export const DEFAULT_MAX_BYTES = 8 * 1024 * 1024;
 
 export interface FetchResult {
   html: string;
@@ -72,6 +86,30 @@ export function decodeBody(buf: Buffer, charset: string): string {
 
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
+/**
+ * 流式读响应体，边读边计数，超上限立刻中断。
+ *
+ * 不用 `res.arrayBuffer()` 是因为它没有中间态：要么全读进内存，要么失败。
+ * 一个 200MB 的错误页在 OOM 之前不会给任何机会。
+ */
+async function readCapped(res: Response, maxBytes: number): Promise<Buffer> {
+  if (!res.body) return Buffer.from(await res.arrayBuffer());
+  const reader = res.body.getReader();
+  const chunks: Uint8Array[] = [];
+  let total = 0;
+  for (;;) {
+    const { done, value } = await reader.read();
+    if (done) break;
+    total += value.byteLength;
+    if (total > maxBytes) {
+      await reader.cancel().catch(() => {});
+      throw new FatalFetchError(`响应体超过上限 ${maxBytes} 字节，已中断下载（已读 ${total} 字节）`);
+    }
+    chunks.push(value);
+  }
+  return Buffer.concat(chunks);
+}
+
 export async function fetchHtml(url: string, options: FetchOptions = {}): Promise<FetchResult> {
   preferIPv4First();
   const {
@@ -79,6 +117,7 @@ export async function fetchHtml(url: string, options: FetchOptions = {}): Promis
     retries = 2,
     retryDelayMs = 800,
     userAgent = DEFAULT_UA,
+    maxBytes = DEFAULT_MAX_BYTES,
   } = options;
   let lastError: Error = new Error('未知错误');
 
@@ -93,7 +132,14 @@ export async function fetchHtml(url: string, options: FetchOptions = {}): Promis
         redirect: 'follow',
       });
       clearTimeout(timer);
-      const buf = Buffer.from(await res.arrayBuffer());
+
+      // 有些站点会老实报 content-length：先看这个，能省掉整条下载
+      const declared = Number(res.headers.get('content-length') ?? '');
+      if (Number.isFinite(declared) && declared > maxBytes) {
+        throw new FatalFetchError(`响应体声明 ${declared} 字节，超过上限 ${maxBytes}，未开始下载`);
+      }
+
+      const buf = await readCapped(res, maxBytes);
       const charset = sniffCharset(buf);
 
       // 5xx 值得重试；4xx 是明确的拒绝，重试只会更糟
@@ -107,6 +153,8 @@ export async function fetchHtml(url: string, options: FetchOptions = {}): Promis
       return { html: decodeBody(buf, charset), status: res.status, bytes: buf.length, tookMs: Date.now() - t0, charset };
     } catch (e) {
       lastError = e as Error;
+      // 响应体过大是确定性结果，重试只会再浪费一次流量
+      if (e instanceof FatalFetchError) throw e;
       if (attempt < retries) await sleep(retryDelayMs * (attempt + 1));
     }
   }

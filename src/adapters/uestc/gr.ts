@@ -44,6 +44,7 @@ export const grAdapter: Adapter = {
         url,
         date,
         tag: null,
+        category: source.category ?? null,
       });
     });
 

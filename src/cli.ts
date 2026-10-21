@@ -509,12 +509,16 @@ function cmdTiers(flags: Flags): number {
   console.log('');
   console.log(`  ⚡ 立刻推（命中急事关键词）：${split.urgent.length} 条`);
   for (const n of split.urgent.slice(0, 40)) {
-    console.log(`      ${explainTier(n, cfg.push).replace('命中关键词', '')} ${n.sourceName}：${n.title.slice(0, 44)}`);
+    console.log(
+      `      ${explainTier(n, cfg.push).replace('命中关键词', '')} ${n.category ? `[${n.category}] ` : ''}${n.sourceName}：${n.title.slice(0, 44)}`,
+    );
   }
   if (split.urgent.length > 40) console.log(`      …另 ${split.urgent.length - 40} 条`);
   console.log('');
   console.log(`  📋 进日报（每天早 8:00 汇总）：${split.digest.length} 条`);
-  for (const n of split.digest.slice(0, 15)) console.log(`      ${n.sourceName}：${n.title.slice(0, 44)}`);
+  for (const n of split.digest.slice(0, 15)) {
+    console.log(`      ${n.category ? `[${n.category}] ` : ''}${n.sourceName}：${n.title.slice(0, 44)}`);
+  }
   if (split.digest.length > 15) console.log(`      …另 ${split.digest.length - 15} 条`);
   console.log('');
   console.log(`  🔇 静音：${split.mute.length} 条`);

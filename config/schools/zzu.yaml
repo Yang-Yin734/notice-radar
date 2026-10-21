@@ -1,22 +1,102 @@
-# 郑州大学（zzu）—— 全国名单里第十四所接入的学校。
+# 郑州大学（zzu）预设 —— 全国名单里第十四所接入的学校。
 #
-# 状态：**只采集不通知**（collectOnly: true）。
+# 状态：**只采集不通知**（每个源都 `collectOnly: true`）。
+#   → 条目照常进归档、仪表盘和 docs/schools/ 的按校数据文件，
+#     但不进即时推送、不进日报、也不发抓取故障告警。
+#   → 你如果是郑大的学生、想让这些通知真正推到手机上：
+#     把下面每个源的 `collectOnly: true` 删掉，再把 notify 配上就行。
 #
-# 站点结构：教务部「通知公告」列表页，条目是
-#   <li><a href="../info/1125/5405.htm" class="flex wl">
-#     <h3 class="l1 txt1">关于举办…的通知</h3><span>2026-09-30</span></a></li>
-# 关键点：标题必须取 **h3** —— 取 a 的文本会把日期一起并进标题。
+# 站点结构（2026-10 实测，以下全部当前可达）：
+#
+#   1) 教务部 www5.zzu.edu.cn/jwc/
+#      `<li><a href="../info/1124/5322.htm"><h3>标题</h3><span>2026-07-24</span></a></li>`
+#      关键点：标题必须取 **h3** —— 取 a 的文本会把日期一起并进标题。
+#
+#   2) 人事部 www5.zzu.edu.cn/rsc/
+#      `<li class="list_guild"><a title="标题" href="...">…</a>&nbsp;<span>2026-10-20</span></li>`
+#      列表项带 `title` 属性，比取文本更干净（不会夹带空白）。
+#
+#   3) 研究生院 gs.zzu.edu.cn/
+#      `<li><span class="right">[2026-10-21]</span><a href="../info/1071/13910.htm">标题</a></li>`
+#      坑：href 是 `../info/...`，相对**当前列表页**而不是域名根 ——
+#      baseUrl 必须写列表页地址，否则会解析成 https://gs.zzu.edu.cn/info/... 而 404。
+#
+#   4) 新闻网 news.zzu.edu.cn/
+#      `<li><span>2026-10-21</span><a href="http://www.zzu.edu.cn/info/1217/89214.htm" title="标题">…</a></li>`
+#      详情页其实挂在主站 www.zzu.edu.cn 下，链接是绝对地址，直接可用。
+#
+# 接不进来的（都试过，不是没找）：
+#   · 就业创业服务网 job.zzu.edu.cn/news/index/tag/tzgg —— 列表由 JS 异步注入
+#     （section#content9672 初始是 loading.gif），静态 HTML 里没有条目，需要浏览器渲染。
+#   · 图书馆 lib.zzu.edu.cn —— 校外访问超时。
+#   · 学生处 / 团委 / 科研院 —— 没有独立子域（xsc、tw、kyc 等常见域名全部不解析）；
+#     校内门户 www5 下也只有 jwc、rsc 两个目录对外开放。
+#
+# 关键词只做子串匹配（大小写不敏感），exclude 优先级高于 include。
+
 school: zzu
 name: 郑州大学
 
+notify:
+  - type: stdout
+
+push:
+  digestRest: true
+  urgent:
+    # 选课 / 考试类
+    - 选课
+    - 退课
+    - 补选
+    - 重修
+    - 缓考
+    - 补考
+    - 考试
+    - 调课
+    - 停课
+    - 四六级
+    - 成绩
+    # 评奖 / 推免类
+    - 推免
+    - 保研
+    - 免试
+    - 奖学金
+    - 国奖
+    - 助学金
+    - 评优
+    # 带时间窗的办理类
+    - 报名截止
+    - 报名时间
+    - 截止
+    - 缴费
+    - 选导师
+    - 开题
+    # 学籍 / 毕业类
+    - 学籍
+    - 答辩
+    - 学位
+    - 开学
+    - 报到
+    - 注册
+  mute: []
+
+alerts:
+  failureNotify: true
+  failureStreak: 3
+  weatherStreak: 12
+  throttleHours: 12
+  silenceDays: 14
+  warmupDays: 3
+
 sources:
+  # ───────── 教务 ─────────
   - id: jwc-tzgg
     name: 教务部·通知公告
     url: https://www5.zzu.edu.cn/jwc/index/tzgg.htm
     adapter: html-list
     baseUrl: https://www5.zzu.edu.cn/jwc/index/tzgg.htm
+    category: 教务
     collectOnly: true
-    note: 竞赛、国创计划、选课一类通知；标题取 h3（取 a 文本会带上日期），日期取 span
+    note: 竞赛、国创计划、选课、考试一类通知；标题取 h3（取 a 文本会带上日期），日期取 span
     selectors:
       item: .list li
       title: h3
@@ -45,11 +125,159 @@ sources:
       - 转专业
       - 竞赛
       - 国创
+      - 大创
+      - 微专业
+      - 培养方案
     exclude:
       - 招聘
       - 招标
       - 采购
       - 中标
       - 成交
+      - 校友
+      - 捐赠
+
+  - id: jwc-xwkd
+    name: 教务部·新闻快递
+    url: https://www5.zzu.edu.cn/jwc/index/xwkd.htm
+    adapter: html-list
+    baseUrl: https://www5.zzu.edu.cn/jwc/index/xwkd.htm
+    category: 教务
+    collectOnly: true
+    note: 教学改革、教学竞赛一类的部门动态，抢时间的少，主要给「学校最近在忙什么」留个底
+    selectors:
+      item: .list li
+      title: h3
+      link: a@href
+      date: span
+    include: []
+    exclude:
+      - 招标
+      - 采购
+      - 中标
+
+  # ───────── 研究生 ─────────
+  - id: gs-gg
+    name: 研究生院·公告
+    url: https://gs.zzu.edu.cn/index/yjsygg.htm
+    adapter: html-list
+    baseUrl: https://gs.zzu.edu.cn/index/yjsygg.htm
+    category: 研究生
+    collectOnly: true
+    note: 研究生院层面的公告（学籍、培养、学位、导师、讲坛）；本科生的教务通知不在这里
+    selectors:
+      # 必须带 :has(span.right) —— 页面上还有一整列导航菜单的 `<li>`（本站主页/我院概况/机构设置…），
+      # 只写 `li` 会把它们当成通知抓进来（实测会多出 16 条无日期的假条目）。
+      item: li:has(span.right)
+      title: a
+      link: a@href
+      date: span.right
+    include:
+      - 学位
+      - 答辩
+      - 开题
+      - 中期
+      - 培养
+      - 学籍
+      - 注册
+      - 考试
+      - 成绩
+      - 选课
+      - 补考
+      - 推免
+      - 保研
+      - 夏令营
+      - 招生
+      - 奖学金
+      - 助学金
+      - 评奖
+      - 评优
+      - 导师
+      - 论文
+      - 毕业
+      - 报名
+      - 公示
+      - 名单
+      - 讲坛
+      - 讲座
+    exclude:
+      - 先进单位和个人
+      - 表彰大会
+
+  - id: gs-xw
+    name: 研究生院·新闻
+    url: https://gs.zzu.edu.cn/index/yjsyxw.htm
+    adapter: html-list
+    baseUrl: https://gs.zzu.edu.cn/index/yjsyxw.htm
+    category: 研究生
+    collectOnly: true
+    note: 研究生院的工作动态新闻，几乎都是「开过什么会」，不抢时间
+    selectors:
+      item: li:has(span.right)
+      title: a
+      link: a@href
+      date: span.right
+    include: []
+    exclude:
+      - 表彰大会
+
+  # ───────── 人事 ─────────
+  - id: rsc-tzgg
+    name: 人事部·通知公告
+    url: https://www5.zzu.edu.cn/rsc/xwgg1/tzgg.htm
+    adapter: html-list
+    baseUrl: https://www5.zzu.edu.cn/rsc/xwgg1/tzgg.htm
+    category: 人事
+    collectOnly: true
+    note: 职称评审、岗位聘用、招聘公示为主 —— 对学生价值低，但能反映学校用人节奏；靠 exclude 挡掉招聘噪音
+    selectors:
+      item: li.list_guild
+      title: a@title
+      link: a@href
+      date: span
+    include: []
+    exclude:
+      - 公开招聘
+      - 拟聘用
+      - 招聘
+      - 职称
+      - 岗位聘用
+      - 工勤技能
+      - 资格复审
+      - 面试
+      - 体检
+      - 考察对象
+
+  # ───────── 综合 ─────────
+  - id: news
+    name: 新闻网·综合
+    url: https://news.zzu.edu.cn/
+    adapter: html-list
+    baseUrl: https://news.zzu.edu.cn/
+    category: 综合
+    collectOnly: true
+    note: 主站新闻聚合页，详情页挂在 www.zzu.edu.cn/info/ 下；讲座论坛、放假安排常从这里出
+    selectors:
+      item: .news-list li
+      title: a@title
+      link: a@href
+      date: span
+    include:
+      - 讲座
+      - 报告
+      - 讲坛
+      - 论坛
+      - 学术
+      - 竞赛
+      - 放假
+      - 校历
+      - 开学
+      - 招生
+      - 通知
+    exclude:
+      - 揭牌
+      - 来访
+      - 座谈
+      - 喜报
       - 校友
       - 捐赠

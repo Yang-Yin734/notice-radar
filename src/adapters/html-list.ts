@@ -44,7 +44,17 @@ export const htmlListAdapter: Adapter = {
       const id = makeId(source.id, title, date);
       if (seen.has(id)) return;
       seen.add(id);
-      out.push({ id, sourceId: source.id, sourceName: source.name, school, title, url, date, tag });
+      out.push({
+        id,
+        sourceId: source.id,
+        sourceName: source.name,
+        school,
+        title,
+        url,
+        date,
+        tag,
+        category: source.category ?? null,
+      });
     });
 
     return out;
