@@ -1,0 +1,18 @@
+# 模板：由 deploy/install.sh 直接写入（无需替换变量）
+# /etc/systemd/system/notice-radar-math.timer
+[Unit]
+Description=notice-radar 定时抓取学院通知（每 4 小时）
+
+[Timer]
+# 每 4 小时一次 = 每天 6 次。
+# 为什么不更密：学院站点部署机器人挑战就是为了挡爬虫。我们只是用真实浏览器看公开页面，
+# 但"能跑多快"和"跑多快算有分寸"是两件事 —— 这条线是项目立场，不是成本问题。
+# 想更密就改这一行，但要清楚自己在干什么：OnCalendar=*-*-* 00/1:00:00
+OnCalendar=*-*-* 00/4:00:00
+AccuracySec=5min
+# 学院源一天只有几条新通知，但错过一轮就少一整天的覆盖 → 停机后补跑一次
+Persistent=true
+Unit=notice-radar-math.service
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,16 @@
+# 模板：由 deploy/install.sh 替换 @POLL_MINUTES@ 后写入
+# /etc/systemd/system/notice-radar-poll.timer
+[Unit]
+Description=notice-radar 定时抓取（每 @POLL_MINUTES@ 分钟）
+
+[Timer]
+# 开机 2 分钟后先跑一轮，之后每 @POLL_MINUTES@ 分钟一轮
+OnBootSec=2min
+OnUnitActiveSec=@POLL_MINUTES@min
+AccuracySec=30s
+# 刻意不加 Persistent：抓取是幂等的（状态只在成功时写，成功那轮会补全列表），
+# 停机期间错过的那几轮没有补跑的意义，只会集中打一波请求。
+Unit=notice-radar-poll.service
+
+[Install]
+WantedBy=timers.target

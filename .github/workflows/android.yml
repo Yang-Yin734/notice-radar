@@ -189,6 +189,47 @@ jobs:
           echo "::error::多次重试仍无法上传 APK"
           exit 1
 
+      - name: 同步 APK 到国内对象存储（可选）
+        # 国内学生直连 GitHub Release 经常只有几十 KB/s。把同一份 APK 推到阿里云 OSS，
+        # 就能给一个国内直连地址（应用内的下载提示可以换成它）。
+        # 没配 OSS_* secrets 就打印一行"跳过"；配错了也只 warning —— 绝不影响 APK 发布。
+        continue-on-error: true
+        env:
+          OSS_ENDPOINT: ${{ secrets.OSS_ENDPOINT }}
+          OSS_BUCKET: ${{ secrets.OSS_BUCKET }}
+          OSS_AK_ID: ${{ secrets.OSS_AK_ID }}
+          OSS_AK_SECRET: ${{ secrets.OSS_AK_SECRET }}
+          OSS_APK_PATH: ${{ secrets.OSS_APK_PATH }}
+        run: |
+          if [ -z "${OSS_BUCKET}" ] || [ -z "${OSS_AK_ID}" ] || [ -z "${OSS_AK_SECRET}" ]; then
+            echo "未配置 OSS_BUCKET / OSS_AK_ID / OSS_AK_SECRET，跳过国内镜像同步"
+            exit 0
+          fi
+          if [ -z "${OSS_ENDPOINT}" ]; then
+            echo "::warning::配了 AK 但没配 OSS_ENDPOINT（例 oss-cn-chengdu.aliyuncs.com），跳过"
+            exit 0
+          fi
+          curl -fsSL https://gosspublic.alicdn.com/ossutil/1.7.19/ossutil64 -o /tmp/ossutil \
+            || { echo "::warning::下载 ossutil 失败，跳过国内镜像"; exit 0; }
+          chmod +x /tmp/ossutil
+          /tmp/ossutil config -e "$OSS_ENDPOINT" -i "$OSS_AK_ID" -k "$OSS_AK_SECRET" >/dev/null
+          KEY="${OSS_APK_PATH:-notice-radar/notice-radar.apk}"
+          # Content-Type 必须显式给：安卓浏览器按它判断"点了能不能直接装"
+          # Cache-Control 给 10 分钟：APK 每次构建都换 versionCode，但文件名固定，缓存太久会下到旧包
+          /tmp/ossutil cp notice-radar.apk "oss://${OSS_BUCKET}/${KEY}" -f \
+            --meta "Content-Type:application/vnd.android.package-archive#Cache-Control:public, max-age=600" \
+            || { echo "::warning::上传 OSS 失败（检查 RAM 权限是不是只有 PutObject）"; exit 0; }
+          URL="https://${OSS_BUCKET}.${OSS_ENDPOINT#https://}/${KEY}"
+          echo "国内下载地址：$URL"
+          {
+            echo "### 国内镜像（阿里云 OSS）"
+            echo ""
+            echo "| 渠道 | 地址 |"
+            echo "|---|---|"
+            echo "| OSS 直连（国内快） | <$URL> |"
+            echo "| GitHub Release | <https://github.com/${{ github.repository }}/releases/download/android-latest/notice-radar.apk> |"
+          } >> "$GITHUB_STEP_SUMMARY"
+
       - name: 失败摘要（发成提交评论，便于在拿不到 Actions 日志的网络里排查）
         if: failure()
         env:

@@ -1,0 +1,22 @@
+# 模板：由 deploy/install.sh 替换 @APP_DIR@ / @DATA_DIR@ / @APP_USER@ 后写入
+# /etc/systemd/system/notice-radar-poll.service
+[Unit]
+Description=notice-radar 抓取（@APP_DIR@）
+Documentation=file://@APP_DIR@/deploy/README.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=@APP_USER@
+WorkingDirectory=@APP_DIR@
+Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+Environment=APP_DIR=@APP_DIR@
+Environment=DATA_DIR=@DATA_DIR@
+ExecStart=/bin/bash @APP_DIR@/deploy/poll.sh
+# 单个源卡住也不会无限挂着：oneshot 超时会被强制结束（下一轮照常开始）
+TimeoutStartSec=20min
+# 抓取是后台活，别跟你的交互式操抢 CPU / 磁盘
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
