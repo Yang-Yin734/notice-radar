@@ -57,6 +57,6 @@ Tests run against **recorded real HTML fixtures**, so a site redesign tells you 
 
 ## Scope and ethics
 
-No login-required pages, no CAPTCHA/WAF bypass, no personal data collection, no server, no telemetry. Public pages only, one request at a time with a delay, `robots.txt` respected. Not affiliated with any university.
+No login-required pages, no CAPTCHA/WAF bypass, no personal data collection, no server, no telemetry. Public pages only, one request at a time with a delay. **You are responsible for checking each target site's `robots.txt` and terms of use** — this project does not parse or enforce them. Not affiliated with any university.
 
 MIT licensed.

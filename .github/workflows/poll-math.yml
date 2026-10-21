@@ -26,7 +26,10 @@ on:
   workflow_dispatch:
 
 concurrency:
-  group: poll-math
+  # 与 poll.yml 共用同一个 group：两个 workflow 都要 merge -X ours 后 push
+  # data/ 和 docs/，分组不同就是真并发、互相覆盖对方刚抓到的条目。
+  # 同 group + cancel-in-progress: false 的语义是「排队等待」，正是这里要的。
+  group: poll
   cancel-in-progress: false
 
 permissions:
