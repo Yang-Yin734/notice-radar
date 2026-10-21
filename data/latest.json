@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-20T03:38:39.072Z",
+  "generatedAt": "2026-10-21T10:26:11.947Z",
   "results": [
     {
       "sourceId": "jwc-important",
@@ -10,7 +10,7 @@
       "error": null,
       "status": 200,
       "bytes": 28693,
-      "tookMs": 2214,
+      "tookMs": 1728,
       "items": [
         {
           "id": "393edb8d41cfee20",
@@ -173,7 +173,7 @@
       "error": null,
       "status": 200,
       "bytes": 31444,
-      "tookMs": 316,
+      "tookMs": 320,
       "items": [
         {
           "id": "bac78f0f2b47a3e0",
@@ -335,9 +335,29 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 99117,
-      "tookMs": 4455,
+      "bytes": 98883,
+      "tookMs": 2138,
       "items": [
+        {
+          "id": "ebb9d673762816db",
+          "sourceId": "news-notice",
+          "sourceName": "新闻网·公告",
+          "school": "uestc",
+          "title": "成电讲坛 | 齐爱云：小舞台，大乾坤",
+          "url": "https://news.uestc.edu.cn/info/1016/44602.htm",
+          "date": "2026-10-21",
+          "tag": "文化"
+        },
+        {
+          "id": "3ad65e1a205db13a",
+          "sourceId": "news-notice",
+          "sourceName": "新闻网·公告",
+          "school": "uestc",
+          "title": "电子科技大学2027届系列双选会报名公告",
+          "url": "https://news.uestc.edu.cn/info/1017/44580.htm",
+          "date": "2026-10-21",
+          "tag": "公告"
+        },
         {
           "id": "b7b925e6aa2f51b0",
           "sourceId": "news-notice",
@@ -357,26 +377,6 @@
           "url": "https://news.uestc.edu.cn/info/1015/44525.htm",
           "date": "2026-10-20",
           "tag": "学术"
-        },
-        {
-          "id": "f6da40c1cdb52108",
-          "sourceId": "news-notice",
-          "sourceName": "新闻网·公告",
-          "school": "uestc",
-          "title": "学者论坛：光子莫尔晶格中光波的局域和输运",
-          "url": "https://news.uestc.edu.cn/info/1015/44438.htm",
-          "date": "2026-10-16",
-          "tag": "学术"
-        },
-        {
-          "id": "89cb654d7df50b59",
-          "sourceId": "news-notice",
-          "sourceName": "新闻网·公告",
-          "school": "uestc",
-          "title": "赛事预告 | 第十八届“成电杯”新生辩论赛初赛启动！",
-          "url": "https://news.uestc.edu.cn/info/1016/44503.htm",
-          "date": "2026-10-16",
-          "tag": "文化"
         }
       ]
     },
@@ -388,9 +388,29 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 99140,
-      "tookMs": 786,
+      "bytes": 98842,
+      "tookMs": 755,
       "items": [
+        {
+          "id": "b6dcd2ba3ef1803e",
+          "sourceId": "news-academic",
+          "sourceName": "新闻网·学术",
+          "school": "uestc",
+          "title": "成电讲坛 | 齐爱云：小舞台，大乾坤",
+          "url": "https://news.uestc.edu.cn/info/1016/44602.htm",
+          "date": "2026-10-21",
+          "tag": "文化"
+        },
+        {
+          "id": "28192506ced3c992",
+          "sourceId": "news-academic",
+          "sourceName": "新闻网·学术",
+          "school": "uestc",
+          "title": "电子科技大学2027届系列双选会报名公告",
+          "url": "https://news.uestc.edu.cn/info/1017/44580.htm",
+          "date": "2026-10-21",
+          "tag": "公告"
+        },
         {
           "id": "46e737dd9295243c",
           "sourceId": "news-academic",
@@ -410,26 +430,6 @@
           "url": "https://news.uestc.edu.cn/info/1015/44525.htm",
           "date": "2026-10-20",
           "tag": "学术"
-        },
-        {
-          "id": "2128d9b881a21a50",
-          "sourceId": "news-academic",
-          "sourceName": "新闻网·学术",
-          "school": "uestc",
-          "title": "学者论坛：光子莫尔晶格中光波的局域和输运",
-          "url": "https://news.uestc.edu.cn/info/1015/44438.htm",
-          "date": "2026-10-16",
-          "tag": "学术"
-        },
-        {
-          "id": "0e8092ba39d7db44",
-          "sourceId": "news-academic",
-          "sourceName": "新闻网·学术",
-          "school": "uestc",
-          "title": "赛事预告 | 第十八届“成电杯”新生辩论赛初赛启动！",
-          "url": "https://news.uestc.edu.cn/info/1016/44503.htm",
-          "date": "2026-10-16",
-          "tag": "文化"
         }
       ]
     },
@@ -441,8 +441,8 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 34656,
-      "tookMs": 1356,
+      "bytes": 34603,
+      "tookMs": 1752,
       "items": [
         {
           "id": "17a7e48dfd439818",
@@ -675,30 +675,28 @@
   ],
   "fresh": [
     {
-      "id": "b7b925e6aa2f51b0",
+      "id": "ebb9d673762816db",
       "sourceId": "news-notice",
       "sourceName": "新闻网·公告",
       "school": "uestc",
-      "title": "名师讲堂：Small Droplets, Big Chemistry: Reactivity at Water and Organic Interfaces",
-      "url": "https://news.uestc.edu.cn/info/1015/44526.htm",
-      "date": "2026-10-20",
-      "tag": "学术",
+      "title": "成电讲坛 | 齐爱云：小舞台，大乾坤",
+      "url": "https://news.uestc.edu.cn/info/1016/44602.htm",
+      "date": "2026-10-21",
+      "tag": "文化",
       "alsoIn": [
         "新闻网·学术"
       ]
     },
     {
-      "id": "452f5b63ea5a469c",
+      "id": "3ad65e1a205db13a",
       "sourceId": "news-notice",
       "sourceName": "新闻网·公告",
       "school": "uestc",
-      "title": "学者论坛：复杂体系量子物态超快调控和探测",
-      "url": "https://news.uestc.edu.cn/info/1015/44525.htm",
-      "date": "2026-10-20",
-      "tag": "学术",
-      "alsoIn": [
-        "新闻网·学术"
-      ]
+      "title": "电子科技大学2027届系列双选会报名公告",
+      "url": "https://news.uestc.edu.cn/info/1017/44580.htm",
+      "date": "2026-10-21",
+      "tag": "公告",
+      "alsoIn": []
     }
   ]
 }

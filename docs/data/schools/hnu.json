@@ -3,13 +3,13 @@
  "name": "湖南大学",
  "province": "湖南省",
  "city": "长沙市",
- "generatedAt": "2026-10-21T10:07:20.025Z",
- "total": 6,
+ "generatedAt": "2026-10-21T10:26:55.912Z",
+ "total": 7,
  "bySource": [
   {
    "sourceId": "jwc-tzgg",
    "sourceName": "教务处·通知公告",
-   "count": 6
+   "count": 7
   }
  ],
  "units": [
@@ -19,10 +19,23 @@
    "sources": [
     "教务处·通知公告"
    ],
-   "count": 6
+   "count": 7
   }
  ],
  "items": [
+  {
+   "id": "a76a386d324d57cd",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "hnu",
+   "title": "关于做好2027届本科毕业论文（设计）工作的通知",
+   "url": "https://jwc.hnu.edu.cn/info/1021/14830.htm",
+   "date": "2026-10-19",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-21T10:26:18.771Z",
+   "unit": "教务处"
+  },
   {
    "id": "770e5d79f0e279ce",
    "sourceId": "jwc-tzgg",

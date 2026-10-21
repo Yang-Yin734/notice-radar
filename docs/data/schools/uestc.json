@@ -3,18 +3,18 @@
  "name": "电子科技大学",
  "province": "四川省",
  "city": "成都市",
- "generatedAt": "2026-10-21T10:07:20.025Z",
- "total": 60,
+ "generatedAt": "2026-10-21T10:26:55.912Z",
+ "total": 62,
  "bySource": [
+  {
+   "sourceId": "news-notice",
+   "sourceName": "新闻网·公告",
+   "count": 15
+  },
   {
    "sourceId": "math-jwgg",
    "sourceName": "数学科学学院·教务公告",
    "count": 17
-  },
-  {
-   "sourceId": "news-notice",
-   "sourceName": "新闻网·公告",
-   "count": 13
   },
   {
    "sourceId": "math-xsgz",
@@ -63,7 +63,7 @@
     "新闻网·公告",
     "新闻网·学术"
    ],
-   "count": 15
+   "count": 17
   },
   {
    "id": "研究生院",
@@ -73,6 +73,34 @@
   }
  ],
  "items": [
+  {
+   "id": "ebb9d673762816db",
+   "sourceId": "news-notice",
+   "sourceName": "新闻网·公告",
+   "school": "uestc",
+   "title": "成电讲坛 | 齐爱云：小舞台，大乾坤",
+   "url": "https://news.uestc.edu.cn/info/1016/44602.htm",
+   "date": "2026-10-21",
+   "tag": "文化",
+   "alsoIn": [
+    "新闻网·学术"
+   ],
+   "firstSeenAt": "2026-10-21T10:26:11.949Z",
+   "unit": "新闻网"
+  },
+  {
+   "id": "3ad65e1a205db13a",
+   "sourceId": "news-notice",
+   "sourceName": "新闻网·公告",
+   "school": "uestc",
+   "title": "电子科技大学2027届系列双选会报名公告",
+   "url": "https://news.uestc.edu.cn/info/1017/44580.htm",
+   "date": "2026-10-21",
+   "tag": "公告",
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-21T10:26:11.949Z",
+   "unit": "新闻网"
+  },
   {
    "id": "ee41da2273505155",
    "sourceId": "math-jwgg",

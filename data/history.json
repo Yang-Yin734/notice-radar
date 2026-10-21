@@ -1,7 +1,33 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-21T08:52:31.850Z",
+  "updatedAt": "2026-10-21T10:26:18.771Z",
   "items": [
+    {
+      "id": "ebb9d673762816db",
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
+      "school": "uestc",
+      "title": "成电讲坛 | 齐爱云：小舞台，大乾坤",
+      "url": "https://news.uestc.edu.cn/info/1016/44602.htm",
+      "date": "2026-10-21",
+      "tag": "文化",
+      "alsoIn": [
+        "新闻网·学术"
+      ],
+      "firstSeenAt": "2026-10-21T10:26:11.949Z"
+    },
+    {
+      "id": "3ad65e1a205db13a",
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
+      "school": "uestc",
+      "title": "电子科技大学2027届系列双选会报名公告",
+      "url": "https://news.uestc.edu.cn/info/1017/44580.htm",
+      "date": "2026-10-21",
+      "tag": "公告",
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-21T10:26:11.949Z"
+    },
     {
       "id": "fe23dd0dc7f067e0",
       "sourceId": "jwb-tzgg",
@@ -173,6 +199,18 @@
       "tag": null,
       "alsoIn": [],
       "firstSeenAt": "2026-10-20T03:18:42.679Z"
+    },
+    {
+      "id": "a76a386d324d57cd",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "hnu",
+      "title": "关于做好2027届本科毕业论文（设计）工作的通知",
+      "url": "https://jwc.hnu.edu.cn/info/1021/14830.htm",
+      "date": "2026-10-19",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-21T10:26:18.771Z"
     },
     {
       "id": "5505bc75be053b6d",
