@@ -9,7 +9,7 @@ import { renderHtml } from './core/browser.ts';
 import { getAdapter, listAdapters } from './adapters/index.ts';
 import { evaluate } from './core/filter.ts';
 import { loadState, markSeen, saveState, splitNew, dedupeAcrossSources } from './core/dedupe.ts';
-import { appendHistory, countBySource, loadHistory, renderStats, saveHistory, summarize } from './core/history.ts';
+import { appendHistory, countBySource, loadHistory, loadScopedHistory, renderStats, saveHistory, summarize } from './core/history.ts';
 import { dropLegacyKeys, loadRuns, ratesForSchool, recordRun, saveRuns, scopedKey, summarizeRuns } from './core/runs.ts';
 import { renderDashboard } from './dashboard.ts';
 import { rateOfRows, renderDoctor, renderJson, renderMarkdown, renderRateReport, summarizeRate } from './core/report.ts';
@@ -352,7 +352,19 @@ async function cmdTestNotify(flags: Flags): Promise<number> {
 /** 通知频次统计：读归档，输出总览 + 来源/标签/周/星期分布。 */
 function cmdStats(flags: Flags): number {
   const historyFile = path.join(path.dirname(flags.state), 'history.json');
-  const history = loadHistory(historyFile);
+
+  // 只统计「会通知」的条目：归档里同时存着 collectOnly 学校（只采集不通知）
+  // 的数据，那是给仪表盘按校视图用的，不该出现在"我的雷达"统计里。
+  let scopedSources: SourceConfig[] = [];
+  let name = '通知雷达';
+  try {
+    const cfg = loadCfg(flags);
+    name = cfg.name;
+    scopedSources = mergeSources(cfg.sources, loadAllSchoolSources());
+  } catch {
+    /* 配置坏了也不该影响看统计：退回全量 */
+  }
+  const history = loadScopedHistory(historyFile, scopedSources);
   const stats = summarize(history);
 
   if (flags.json) {
@@ -361,12 +373,6 @@ function cmdStats(flags: Flags): number {
     console.log(`▸ 统计 JSON 已写入 ${flags.json}`);
   }
 
-  let name = '通知雷达';
-  try {
-    name = loadCfg(flags).name;
-  } catch {
-    /* 配置坏了也不该影响看统计 */
-  }
   console.log(renderStats(stats, name));
   if (stats.total === 0) console.log('\n  （归档还是空的：跑一次 `radr run` 就会开始积累）');
   return 0;
@@ -467,7 +473,9 @@ async function cmdDigest(flags: Flags): Promise<number> {
 function cmdTiers(flags: Flags): number {
   const cfg = loadCfg(flags);
   const historyFile = path.join(path.dirname(flags.state), 'history.json');
-  const history = loadHistory(historyFile);
+  // 同 cmdStats：collectOnly 学校（只采集不通知）的条目仍留在归档里，
+  // 但不该参与「我的关键词表会怎么分档」这个诊断。
+  const history = loadScopedHistory(historyFile, mergeSources(cfg.sources, loadAllSchoolSources()));
   const days = flags.days ?? 14;
   const since = Date.now() - days * 24 * 60 * 60 * 1000;
   const recent = history.items.filter((n) => Date.parse(n.firstSeenAt ?? '') >= since);
@@ -521,8 +529,11 @@ async function cmdHealth(flags: Flags): Promise<number> {
   const cfg = loadCfg(flags);
   const historyFile = path.join(path.dirname(flags.state), 'history.json');
   const history = loadHistory(historyFile);
-  // 同样要用所有学校预设：只采集不通知的源不算"长期静默"
-  const healthSources = mergeSources(loadAllSchoolSources(), cfg.sources);
+  // 同样要用所有学校预设：只采集不通知的源不算"长期静默"。
+  // 顺序按「本地配置优先」——sourceId 只在单份配置内唯一（jwc-tzgg 这类 id
+  // 出现在 9 所学校的预设里），反过来的话 health 显示的 sourceName/url
+  // 可能来自别的学校。
+  const healthSources = mergeSources(cfg.sources, loadAllSchoolSources());
   const silence = detectSilence(
     history,
     healthSources.filter((s) => !s.collectOnly),
@@ -828,7 +839,15 @@ async function cmdRun(flags: Flags): Promise<number> {
   return okCount === 0 ? 1 : 0;
 }
 
-/** 把历史归档渲染成静态仪表盘（给 GitHub Pages 用）。 */
+/**
+ * 把历史归档渲染成静态仪表盘（给 GitHub Pages 用）。
+ *
+ * 这里**故意**用 `loadHistory()` 全量，而不是 `loadScopedHistory()`：
+ * 仪表盘是聚合站首页（访问者可能是任何一所接入学校的学生），按校视图
+ * 由 `tools/build-schools.mjs` 生成到 docs/schools/ 下。过滤掉 collectOnly
+ * 的学校会让那些"只采集不通知"的数据白抓。诊断命令（stats/tiers）才需要
+ * 按当前配置收敛，两者的口径不同是设计意图，不是漏调用。
+ */
 function cmdDashboard(flags: Flags): number {
   const historyFile = path.join(path.dirname(flags.state), 'history.json');
   const outFile = flags.out ?? path.join('docs', 'index.html');

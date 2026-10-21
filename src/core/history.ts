@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import type { Notice } from '../types.ts';
+import { notifiable } from './tiers.ts';
 
 /**
  * 历史归档：state.json 只记"见过哪些 ID"（为了去重），不保存内容。
@@ -39,6 +40,25 @@ export function loadHistory(file: string = DEFAULT_HISTORY_FILE): History {
   } catch {
     return emptyHistory();
   }
+}
+
+/**
+ * 读归档，只保留「会通知」的条目。
+ *
+ * 为什么要下沉到读取层：2026-10 的评审发现 `stats` / `tiers` 两个诊断命令
+ * 直接用 `loadHistory()` 拿全量，结果云端归档里 19 所学校（绝大多数是
+ * collectOnly 的「只采集不通知」学校）混在一起，用户跑 `radr tiers`
+ * 会看到别的学校的通知，误以为关键词表配错了。
+ *
+ * 刻意**不**套在 `dashboard` 上：仪表盘是聚合一站，全量是设计意图
+ * （按校视图在 docs/schools/ 下，由 tools/build-schools.mjs 生成）。
+ */
+export function loadScopedHistory(
+  file: string = DEFAULT_HISTORY_FILE,
+  sources: { id: string; collectOnly?: boolean }[] = [],
+): History {
+  const history = loadHistory(file);
+  return { ...history, items: notifiable(history.items, sources) };
 }
 
 export function saveHistory(history: History, file: string = DEFAULT_HISTORY_FILE): void {
