@@ -1,7 +1,55 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-21T07:34:47.453Z",
+  "updatedAt": "2026-10-21T08:18:04.705Z",
   "items": [
+    {
+      "id": "dd7076fb47a26935",
+      "sourceId": "jwc-jxtz",
+      "sourceName": "教务处·教学通知",
+      "school": "xjtu",
+      "title": "[考试安排]关于2026年秋季体质健康标准测试的通知",
+      "url": "https://jwc.xjtu.edu.cn/info/1171/10574.htm",
+      "date": "2026-10-21",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-21T08:18:04.705Z"
+    },
+    {
+      "id": "33ff919564758969",
+      "sourceId": "aao-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "njau",
+      "title": "省教改专项|公示-2026年江苏省高校“人工智能通识教育教学改革研究”专项课题申报公示",
+      "url": "https://aao.njau.edu.cn/info/1141/7014.htm",
+      "date": "2026-10-21",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-21T08:17:37.021Z"
+    },
+    {
+      "id": "297d8d133043cd13",
+      "sourceId": "bksy-tzgg",
+      "sourceName": "本科生院·通知公告",
+      "school": "ecnu",
+      "title": "关于2026年秋季学期本科生成绩及学分认定的通知",
+      "url": "https://bksy.ecnu.edu.cn/04/a6/c40503a787622/page.htm",
+      "date": "2026-10-21",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-21T08:17:14.020Z"
+    },
+    {
+      "id": "1d6112778db5abd3",
+      "sourceId": "bksy-tzgg",
+      "sourceName": "本科生院·通知公告",
+      "school": "ecnu",
+      "title": "关于启动2027年寒假境外交流项目（第二批）的报名通知",
+      "url": "http://www.jiaoliu.ecnu.edu.cn/06/24/c11184a788004/page.htm",
+      "date": "2026-10-21",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-21T08:17:14.020Z"
+    },
     {
       "id": "f56a70c5090dfc32",
       "sourceId": "jwc-jxtz",
@@ -1293,6 +1341,18 @@
       "tag": "学术",
       "alsoIn": [],
       "firstSeenAt": "2026-09-28T12:00:56.521Z"
+    },
+    {
+      "id": "3e64b180146c2289",
+      "sourceId": "bksy-tzgg",
+      "sourceName": "本科生院·通知公告",
+      "school": "ecnu",
+      "title": "关于启动2027年寒假境外交流项目（第二批）的报名通知",
+      "url": "http://www.jiaoliu.ecnu.edu.cn/ea/f2/c11184a781042/page.htm",
+      "date": "2026-09-23",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-21T08:17:14.020Z"
     },
     {
       "id": "391a54ea5e6076ad",

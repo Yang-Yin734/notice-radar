@@ -3,13 +3,13 @@
  "name": "华东师范大学",
  "province": "上海市",
  "city": "",
- "generatedAt": "2026-10-21T07:34:54.723Z",
- "total": 10,
+ "generatedAt": "2026-10-21T08:18:11.812Z",
+ "total": 13,
  "bySource": [
   {
    "sourceId": "bksy-tzgg",
    "sourceName": "本科生院·通知公告",
-   "count": 10
+   "count": 13
   }
  ],
  "units": [
@@ -19,10 +19,36 @@
    "sources": [
     "本科生院·通知公告"
    ],
-   "count": 10
+   "count": 13
   }
  ],
  "items": [
+  {
+   "id": "297d8d133043cd13",
+   "sourceId": "bksy-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "school": "ecnu",
+   "title": "关于2026年秋季学期本科生成绩及学分认定的通知",
+   "url": "https://bksy.ecnu.edu.cn/04/a6/c40503a787622/page.htm",
+   "date": "2026-10-21",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-21T08:17:14.020Z",
+   "unit": "本科生院"
+  },
+  {
+   "id": "1d6112778db5abd3",
+   "sourceId": "bksy-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "school": "ecnu",
+   "title": "关于启动2027年寒假境外交流项目（第二批）的报名通知",
+   "url": "http://www.jiaoliu.ecnu.edu.cn/06/24/c11184a788004/page.htm",
+   "date": "2026-10-21",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-21T08:17:14.020Z",
+   "unit": "本科生院"
+  },
   {
    "id": "d8c669a26846367f",
    "sourceId": "bksy-tzgg",
@@ -86,6 +112,19 @@
    "tag": null,
    "alsoIn": [],
    "firstSeenAt": "2026-10-04T06:59:36.935Z",
+   "unit": "本科生院"
+  },
+  {
+   "id": "3e64b180146c2289",
+   "sourceId": "bksy-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "school": "ecnu",
+   "title": "关于启动2027年寒假境外交流项目（第二批）的报名通知",
+   "url": "http://www.jiaoliu.ecnu.edu.cn/ea/f2/c11184a781042/page.htm",
+   "date": "2026-09-23",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-21T08:17:14.020Z",
    "unit": "本科生院"
   },
   {

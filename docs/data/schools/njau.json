@@ -3,13 +3,13 @@
  "name": "南京农业大学",
  "province": "江苏省",
  "city": "南京市",
- "generatedAt": "2026-10-21T07:34:54.723Z",
- "total": 17,
+ "generatedAt": "2026-10-21T08:18:11.812Z",
+ "total": 18,
  "bySource": [
   {
    "sourceId": "aao-tzgg",
    "sourceName": "教务处·通知公告",
-   "count": 17
+   "count": 18
   }
  ],
  "units": [
@@ -19,10 +19,23 @@
    "sources": [
     "教务处·通知公告"
    ],
-   "count": 17
+   "count": 18
   }
  ],
  "items": [
+  {
+   "id": "33ff919564758969",
+   "sourceId": "aao-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "njau",
+   "title": "省教改专项|公示-2026年江苏省高校“人工智能通识教育教学改革研究”专项课题申报公示",
+   "url": "https://aao.njau.edu.cn/info/1141/7014.htm",
+   "date": "2026-10-21",
+   "tag": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-21T08:17:37.021Z",
+   "unit": "教务处"
+  },
   {
    "id": "7c00004961c905d0",
    "sourceId": "aao-tzgg",
