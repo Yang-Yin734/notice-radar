@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-21T06:09:35.192Z",
-  "total": 246,
+  "generatedAt": "2026-10-21T06:36:06.233Z",
+  "total": 247,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
@@ -48,13 +48,13 @@
       "count": 11
     },
     {
-      "sourceId": "math-xsgz",
-      "sourceName": "数学科学学院·学生工作",
-      "count": 10
-    },
-    {
       "sourceId": "jw-ggtz",
       "sourceName": "本科生院·公告通知",
+      "count": 11
+    },
+    {
+      "sourceId": "math-xsgz",
+      "sourceName": "数学科学学院·学生工作",
       "count": 10
     },
     {
@@ -538,6 +538,18 @@
       "tag": null,
       "alsoIn": [],
       "firstSeenAt": "2026-10-13T01:01:50.608Z"
+    },
+    {
+      "id": "ff115226f1c58587",
+      "sourceId": "jw-ggtz",
+      "sourceName": "本科生院·公告通知",
+      "school": "nju",
+      "title": "关于开展2026级普通全日制本科生学信网学籍信息自查的通知（10月21日新增港澳台生源数据）",
+      "url": "https://jw.nju.edu.cn/e8/24/c26263a845860/page.htm",
+      "date": "2026-10-12",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-21T06:35:25.551Z"
     },
     {
       "id": "6e0f3ffb1bc24f88",
