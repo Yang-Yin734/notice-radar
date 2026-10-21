@@ -1,0 +1,57 @@
+edition: 3.0.0
+name: notice-radar
+access: default
+
+vars:
+  region: cn-beijing
+  functionName: notice-radar-poll
+
+resources:
+  notice-radar-poll:
+    component: fc3
+    props:
+      region: ${vars.region}
+      functionName: ${vars.functionName}
+      description: 校园通知雷达 · 每 5 分钟抓一次，状态存 OSS
+      runtime: nodejs20
+      code: ./code
+      handler: index.handler
+      memorySize: 512
+      timeout: 300
+      # 同一时刻只跑一个实例，避免两轮并发重复推送（函数里还有一把 OSS 锁兜底）。
+      instanceConcurrency: 1
+      # 抓取要访问学校官网，必须能出公网。
+      internetAccess: true
+      environmentVariables:
+        OSS_BUCKET: notice-radar-data
+        OSS_REGION: oss-cn-beijing
+        # 密钥不进仓库：部署前在当前 shell 导出这两个环境变量，s 会在部署时替换。
+        # PowerShell: $env:OSS_AK_ID=...; $env:OSS_AK_SECRET=...
+        OSS_AK_ID: "${env('OSS_AK_ID')}"
+        OSS_AK_SECRET: "${env('OSS_AK_SECRET')}"
+        # 同地域走内网 endpoint，不产生外网流量费
+        OSS_INTERNAL: 'true'
+        OSS_STATE_KEY: notice-radar/state.json
+        OSS_LATEST_KEY: notice-radar/latest.json
+        OSS_LOCK_KEY: notice-radar/lock.json
+        RADR_CONFIG: config/schools/uestc.yaml
+        RADR_DELAY: '1200'
+        RADR_ALLOW_BROWSER: 'false'
+        RADR_NO_NOTIFY: 'false'
+        # 推送渠道留空 = 只抓取不推送（结果照样进 OSS 的 state/latest）。
+        # 要开推送：去 FC 控制台 → 该函数 → 配置 → 环境变量，新增
+        #   NOTICE_RADAR_WEBHOOK = https://…（企业微信/飞书/钉钉/自建 HTTP）
+        # 或 SMTP_URL + MAIL_TO + MAIL_FROM，保存即生效，不必重新部署。
+        # 不要写在这份文件里再提交 —— webhook URL 带 token，属于凭据。
+        NOTICE_RADAR_WEBHOOK: ''
+        SMTP_URL: ''
+        MAIL_TO: ''
+        MAIL_FROM: ''
+      triggers:
+        - triggerName: every-5-minutes
+          triggerType: timer
+          triggerConfig:
+            # 6 段式：秒 分 时 日 月 周
+            cronExpression: '0 */5 * * * *'
+            enable: true
+            payload: '{}'

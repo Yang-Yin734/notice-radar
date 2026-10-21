@@ -364,6 +364,28 @@ Start-ScheduledTask -TaskName notice-radar-local
 powershell -File tools\install-local-task.ps1 -Uninstall
 ```
 
+**Linux / 国内云服务器一键装（systemd + Xvfb）**：
+
+```bash
+sudo bash deploy/install.sh          # 装 Node、Chrome、Xvfb，建 radar 用户，装两个 systemd timer
+sudo -u radar bash deploy/verify.sh  # 体检：成功率 ≥90% 才算这台机器合格
+```
+
+装完是「系统用户 `radar` + 状态放在 `/var/lib/notice-radar`（仓库外，不碰 git）」，
+主源每 5 分钟一轮、学院源每 4 小时一轮（挂 Xvfb 跑真 Chrome）。
+**完整步骤、阿里云学生券该买什么、切流与回滚**见 [deploy/README.md](deploy/README.md)。
+
+**函数计算（Serverless，0 元、24 小时、不占本机）**：
+
+```bash
+npm run build && node deploy/fc/build.mjs   # 生成代码包 deploy/fc/code/
+s deploy                                    # 阿里云函数计算（需 @serverless-devs/s）
+```
+
+状态存 OSS、定时触发器每 5 分钟一轮，长期落在函数计算的免费额度内，因此**不需要续费**。
+学院那两个瑞数 JS 挑战源仍交给 GitHub Actions 的 xvfb 跑（FC 没有浏览器）。
+**前置准备（OSS 桶 / RAM Key）、环境变量、成本表与排错**见 [deploy/fc/README.md](deploy/fc/README.md)。
+
 > ⚠️ **别和云端同时跑**：两边各记一份"已见"状态，同一条通知会推两次。
 > 本机接管后请直接禁用 poll / poll-math 工作流。
 >

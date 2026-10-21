@@ -1,0 +1,11 @@
+{
+  "name": "notice-radar-fc",
+  "version": "1.0.0",
+  "private": true,
+  "description": "阿里云函数计算（FC）部署壳：定时跑一次 radr，状态放 OSS",
+  "type": "module",
+  "main": "index.js",
+  "dependencies": {
+    "ali-oss": "^6.21.0"
+  }
+}

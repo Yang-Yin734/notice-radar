@@ -1,0 +1,20 @@
+# 模板：由 deploy/install.sh 替换 @APP_DIR@ / @DATA_DIR@ / @APP_USER@ 后写入
+# /etc/systemd/system/notice-radar-math.service
+[Unit]
+Description=notice-radar 抓取学院通知（Xvfb + 真 Chrome）
+Documentation=file://@APP_DIR@/deploy/README.md
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=@APP_USER@
+WorkingDirectory=@APP_DIR@
+Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+Environment=APP_DIR=@APP_DIR@
+Environment=DATA_DIR=@DATA_DIR@
+ExecStart=/bin/bash @APP_DIR@/deploy/poll-math.sh
+TimeoutStartSec=15min
+Nice=10
+IOSchedulingClass=best-effort
+IOSchedulingPriority=7
