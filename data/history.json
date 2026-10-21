@@ -1,7 +1,19 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-20T12:33:45.825Z",
+  "updatedAt": "2026-10-21T02:22:37.463Z",
   "items": [
+    {
+      "id": "cb365d3c6cebf2bc",
+      "sourceId": "jwb-tzgg",
+      "sourceName": "教务部·通知公告",
+      "school": "bnu",
+      "title": "【实践教学】 关于举办2026中国青科教育智能体创新设计大赛的通知",
+      "url": "https://mp.weixin.qq.com/s/7PnF2hMXldwsXbZI4YFVtw",
+      "date": "2026-10-21",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-21T02:22:37.463Z"
+    },
     {
       "id": "ee41da2273505155",
       "sourceId": "math-jwgg",
