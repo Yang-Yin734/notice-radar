@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-21T08:18:11.812Z",
-  "total": 253,
+  "generatedAt": "2026-10-21T09:30:43.705Z",
+  "total": 254,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
@@ -10,7 +10,7 @@
     {
       "sourceId": "jwb-tzgg",
       "sourceName": "教务部·通知公告",
-      "count": 24
+      "count": 25
     },
     {
       "sourceId": "aao-tzgg",
@@ -79,6 +79,18 @@
     }
   ],
   "items": [
+    {
+      "id": "fe23dd0dc7f067e0",
+      "sourceId": "jwb-tzgg",
+      "sourceName": "教务部·通知公告",
+      "school": "bnu",
+      "title": "【学业管理】 关于2026～2027学年第一学期北京校区学士学位外语考试（英语）的通知",
+      "url": "https://jwb.bnu.edu.cn/pygc/xygl/jxap/25996a9d410d44499832a8aef421762f.htm",
+      "date": "2026-10-21",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-21T08:52:31.850Z"
+    },
     {
       "id": "dd7076fb47a26935",
       "sourceId": "jwc-jxtz",
