@@ -1,7 +1,19 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-21T06:35:25.551Z",
+  "updatedAt": "2026-10-21T07:34:47.453Z",
   "items": [
+    {
+      "id": "f56a70c5090dfc32",
+      "sourceId": "jwc-jxtz",
+      "sourceName": "教务处·教学通知",
+      "school": "xjtu",
+      "title": "[课程建设]关于首批陕西省普通本科高校精品教学资源平台公开发布拟推荐名单的公示",
+      "url": "https://jwc.xjtu.edu.cn/content.jsp?urltype=news.NewsContentUrl&wbtreeid=1175&wbnewsid=10573",
+      "date": "2026-10-21",
+      "tag": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-21T07:34:47.453Z"
+    },
     {
       "id": "cb365d3c6cebf2bc",
       "sourceId": "jwb-tzgg",
