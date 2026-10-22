@@ -1,9 +1,8 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-22T12:38:42.759Z",
+  "updatedAt": "2026-10-22T13:30:46.737Z",
   "sources": {
     "uestc:jwc-important": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -20,12 +19,12 @@
       "ok",
       "fail",
       "ok",
+      "fail",
       "fail",
       "fail",
       "fail"
     ],
     "uestc:jwc-student": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -42,12 +41,12 @@
       "ok",
       "fail",
       "ok",
+      "fail",
       "fail",
       "fail",
       "fail"
     ],
     "uestc:news-notice": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -63,13 +62,13 @@
       "ok",
       "fail",
       "ok",
+      "fail",
       "fail",
       "fail",
       "fail",
       "fail"
     ],
     "uestc:news-academic": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -85,13 +84,13 @@
       "ok",
       "fail",
       "ok",
+      "fail",
       "fail",
       "fail",
       "fail",
       "fail"
     ],
     "uestc:gr-notice": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -107,13 +106,13 @@
       "ok",
       "fail",
       "ok",
+      "fail",
       "fail",
       "fail",
       "fail",
       "fail"
     ],
     "bnu:jwb-tzgg": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -132,7 +131,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "ecnu:bksy-tzgg": [
       "fail",
@@ -245,7 +245,6 @@
       "fail"
     ],
     "njau:aao-tzgg": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -264,7 +263,8 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "nju:jw-ggtz": [
       "ok",
