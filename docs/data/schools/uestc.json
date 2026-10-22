@@ -3,13 +3,13 @@
  "name": "电子科技大学",
  "province": "四川省",
  "city": "成都市",
- "generatedAt": "2026-10-22T05:03:07.036Z",
- "total": 62,
+ "generatedAt": "2026-10-22T05:25:16.558Z",
+ "total": 63,
  "bySource": [
   {
    "sourceId": "news-notice",
    "sourceName": "新闻网·公告",
-   "count": 15
+   "count": 16
   },
   {
    "sourceId": "math-jwgg",
@@ -63,7 +63,7 @@
     "新闻网·公告",
     "新闻网·学术"
    ],
-   "count": 17
+   "count": 18
   },
   {
    "id": "研究生院",
@@ -73,6 +73,22 @@
   }
  ],
  "items": [
+  {
+   "id": "75b340d8e5573b55",
+   "sourceId": "news-notice",
+   "sourceName": "新闻网·公告",
+   "school": "uestc",
+   "title": "学者论坛：先进电池基础科学与关键技术挑战",
+   "url": "https://news.uestc.edu.cn/info/1015/44631.htm",
+   "date": "2026-10-22",
+   "tag": "学术",
+   "category": null,
+   "alsoIn": [
+    "新闻网·学术"
+   ],
+   "firstSeenAt": "2026-10-22T05:24:11.979Z",
+   "unit": "新闻网"
+  },
   {
    "id": "ebb9d673762816db",
    "sourceId": "news-notice",

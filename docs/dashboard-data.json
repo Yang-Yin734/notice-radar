@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-22T05:03:07.036Z",
-  "total": 336,
+  "generatedAt": "2026-10-22T05:25:16.558Z",
+  "total": 337,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
@@ -45,7 +45,7 @@
     {
       "sourceId": "news-notice",
       "sourceName": "新闻网·公告",
-      "count": 15
+      "count": 16
     },
     {
       "sourceId": "jwc-xwkd",
@@ -104,6 +104,21 @@
     }
   ],
   "items": [
+    {
+      "id": "75b340d8e5573b55",
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
+      "school": "uestc",
+      "title": "学者论坛：先进电池基础科学与关键技术挑战",
+      "url": "https://news.uestc.edu.cn/info/1015/44631.htm",
+      "date": "2026-10-22",
+      "tag": "学术",
+      "category": null,
+      "alsoIn": [
+        "新闻网·学术"
+      ],
+      "firstSeenAt": "2026-10-22T05:24:11.979Z"
+    },
     {
       "id": "167003b260aed3c6",
       "sourceId": "jwb-tzgg",
