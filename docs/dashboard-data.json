@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-22T03:11:55.804Z",
-  "total": 335,
+  "generatedAt": "2026-10-22T03:37:58.657Z",
+  "total": 336,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
@@ -15,7 +15,7 @@
     {
       "sourceId": "jwb-tzgg",
       "sourceName": "教务部·通知公告",
-      "count": 26
+      "count": 27
     },
     {
       "sourceId": "gs-gg",
@@ -104,6 +104,19 @@
     }
   ],
   "items": [
+    {
+      "id": "167003b260aed3c6",
+      "sourceId": "jwb-tzgg",
+      "sourceName": "教务部·通知公告",
+      "school": "bnu",
+      "title": "【实践教学】 关于举办2026年全国大学生计算机系统能力大赛智能计算创新设计赛（先导杯）北京师范大学校内赛的通知",
+      "url": "https://mp.weixin.qq.com/s/BqJPUeKqNp1CmqefNSfCqw",
+      "date": "2026-10-22",
+      "tag": null,
+      "category": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-22T03:36:47.799Z"
+    },
     {
       "id": "c873062262075a31",
       "sourceId": "jwc-tzgg",
