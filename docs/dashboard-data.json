@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-22T00:23:47.172Z",
-  "total": 332,
+  "generatedAt": "2026-10-22T00:40:41.138Z",
+  "total": 333,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
@@ -95,7 +95,7 @@
     {
       "sourceId": "news",
       "sourceName": "新闻网·综合",
-      "count": 2
+      "count": 3
     },
     {
       "sourceId": "news-academic",
@@ -104,6 +104,19 @@
     }
   ],
   "items": [
+    {
+      "id": "c52affea96bd0f7b",
+      "sourceId": "news",
+      "sourceName": "新闻网·综合",
+      "school": "zzu",
+      "title": "郑州大学举行2026级国际学生开学典礼",
+      "url": "http://www.zzu.edu.cn/info/1217/89216.htm",
+      "date": "2026-10-21",
+      "tag": null,
+      "category": "综合",
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-22T00:40:40.801Z"
+    },
     {
       "id": "e0f9e4a4e0f3646d",
       "sourceId": "gs-gg",
