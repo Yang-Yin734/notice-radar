@@ -1,7 +1,33 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-22T00:40:40.801Z",
+  "updatedAt": "2026-10-22T03:10:50.991Z",
   "items": [
+    {
+      "id": "c873062262075a31",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "nankai",
+      "title": "关于2026年天津市大中小学“故事思政”微课展示活动拟推荐名单的公示",
+      "url": "https://jwc.nankai.edu.cn/2026/1022/c35436a604933/page.htm",
+      "date": "2026-10-22",
+      "tag": null,
+      "category": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-22T03:10:50.991Z"
+    },
+    {
+      "id": "0a3d5e91a8e482d5",
+      "sourceId": "jwb-tzgg",
+      "sourceName": "教务部·通知公告",
+      "school": "bnu",
+      "title": "【学业管理】 关于开展2026～2027学年第一学期申报及授予学士学位(成人高等教育)工作的通知",
+      "url": "https://jwb.bnu.edu.cn/pygc/xygl/jxap/56f4a560e7724a29b8ac1adab09a4d9d.htm",
+      "date": "2026-10-22",
+      "tag": null,
+      "category": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-22T03:10:31.037Z"
+    },
     {
       "id": "c52affea96bd0f7b",
       "sourceId": "news",

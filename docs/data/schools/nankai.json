@@ -3,13 +3,13 @@
  "name": "南开大学",
  "province": "天津市",
  "city": "",
- "generatedAt": "2026-10-22T02:05:01.480Z",
- "total": 7,
+ "generatedAt": "2026-10-22T03:11:55.804Z",
+ "total": 8,
  "bySource": [
   {
    "sourceId": "jwc-tzgg",
    "sourceName": "教务处·通知公告",
-   "count": 7
+   "count": 8
   }
  ],
  "units": [
@@ -19,10 +19,24 @@
    "sources": [
     "教务处·通知公告"
    ],
-   "count": 7
+   "count": 8
   }
  ],
  "items": [
+  {
+   "id": "c873062262075a31",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "nankai",
+   "title": "关于2026年天津市大中小学“故事思政”微课展示活动拟推荐名单的公示",
+   "url": "https://jwc.nankai.edu.cn/2026/1022/c35436a604933/page.htm",
+   "date": "2026-10-22",
+   "tag": null,
+   "category": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-22T03:10:50.991Z",
+   "unit": "教务处"
+  },
   {
    "id": "987a0fc1c588ec54",
    "sourceId": "jwc-tzgg",

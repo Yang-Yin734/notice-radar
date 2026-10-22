@@ -3,13 +3,13 @@
  "name": "北京师范大学",
  "province": "北京市",
  "city": "",
- "generatedAt": "2026-10-22T02:05:01.480Z",
- "total": 22,
+ "generatedAt": "2026-10-22T03:11:55.804Z",
+ "total": 23,
  "bySource": [
   {
    "sourceId": "jwb-tzgg",
    "sourceName": "教务部·通知公告",
-   "count": 22
+   "count": 23
   }
  ],
  "units": [
@@ -19,10 +19,24 @@
    "sources": [
     "教务部·通知公告"
    ],
-   "count": 22
+   "count": 23
   }
  ],
  "items": [
+  {
+   "id": "0a3d5e91a8e482d5",
+   "sourceId": "jwb-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "bnu",
+   "title": "【学业管理】 关于开展2026～2027学年第一学期申报及授予学士学位(成人高等教育)工作的通知",
+   "url": "https://jwb.bnu.edu.cn/pygc/xygl/jxap/56f4a560e7724a29b8ac1adab09a4d9d.htm",
+   "date": "2026-10-22",
+   "tag": null,
+   "category": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-22T03:10:31.037Z",
+   "unit": "教务部"
+  },
   {
    "id": "fe23dd0dc7f067e0",
    "sourceId": "jwb-tzgg",
