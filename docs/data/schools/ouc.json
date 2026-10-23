@@ -3,13 +3,13 @@
  "name": "中国海洋大学",
  "province": "山东省",
  "city": "青岛市",
- "generatedAt": "2026-10-23T10:03:48.650Z",
- "total": 9,
+ "generatedAt": "2026-10-23T10:25:02.577Z",
+ "total": 10,
  "bySource": [
   {
    "sourceId": "jwc-tzgg",
    "sourceName": "教务处·通知公告",
-   "count": 9
+   "count": 10
   }
  ],
  "units": [
@@ -19,10 +19,24 @@
    "sources": [
     "教务处·通知公告"
    ],
-   "count": 9
+   "count": 10
   }
  ],
  "items": [
+  {
+   "id": "4f9d3544eef09a3f",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "ouc",
+   "title": "关于启动2027届本科毕业论文（设计）工作的通知",
+   "url": "https://jwc.ouc.edu.cn/2026/1023/c6517a540119/page.htm",
+   "date": "2026-10-23",
+   "tag": null,
+   "category": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-23T10:24:28.151Z",
+   "unit": "教务处"
+  },
   {
    "id": "5505bc75be053b6d",
    "sourceId": "jwc-tzgg",

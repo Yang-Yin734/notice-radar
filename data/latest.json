@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-22T05:24:11.976Z",
+  "generatedAt": "2026-10-23T10:24:06.888Z",
   "results": [
     {
       "sourceId": "jwc-important",
@@ -10,7 +10,7 @@
       "error": null,
       "status": 200,
       "bytes": 28693,
-      "tookMs": 1920,
+      "tookMs": 2071,
       "items": [
         {
           "id": "393edb8d41cfee20",
@@ -188,7 +188,7 @@
       "error": null,
       "status": 200,
       "bytes": 31444,
-      "tookMs": 313,
+      "tookMs": 305,
       "items": [
         {
           "id": "bac78f0f2b47a3e0",
@@ -365,9 +365,20 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 98754,
-      "tookMs": 2111,
+      "bytes": 98829,
+      "tookMs": 1862,
       "items": [
+        {
+          "id": "5140215c1a2db1cf",
+          "sourceId": "news-notice",
+          "sourceName": "新闻网·公告",
+          "school": "uestc",
+          "title": "「人文×科技」思想者论坛第四十一期讲座预告",
+          "url": "https://news.uestc.edu.cn/info/1015/44679.htm",
+          "date": "2026-10-23",
+          "tag": "学术",
+          "category": null
+        },
         {
           "id": "75b340d8e5573b55",
           "sourceId": "news-notice",
@@ -400,17 +411,6 @@
           "date": "2026-10-21",
           "tag": "文化",
           "category": null
-        },
-        {
-          "id": "3ad65e1a205db13a",
-          "sourceId": "news-notice",
-          "sourceName": "新闻网·公告",
-          "school": "uestc",
-          "title": "电子科技大学2027届系列双选会报名公告",
-          "url": "https://news.uestc.edu.cn/info/1017/44580.htm",
-          "date": "2026-10-21",
-          "tag": "公告",
-          "category": null
         }
       ]
     },
@@ -422,9 +422,20 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 98754,
-      "tookMs": 520,
+      "bytes": 98825,
+      "tookMs": 508,
       "items": [
+        {
+          "id": "027257e3afe7fb4c",
+          "sourceId": "news-academic",
+          "sourceName": "新闻网·学术",
+          "school": "uestc",
+          "title": "「人文×科技」思想者论坛第四十一期讲座预告",
+          "url": "https://news.uestc.edu.cn/info/1015/44679.htm",
+          "date": "2026-10-23",
+          "tag": "学术",
+          "category": null
+        },
         {
           "id": "88c361014afa17a7",
           "sourceId": "news-academic",
@@ -457,17 +468,6 @@
           "date": "2026-10-21",
           "tag": "文化",
           "category": null
-        },
-        {
-          "id": "28192506ced3c992",
-          "sourceId": "news-academic",
-          "sourceName": "新闻网·学术",
-          "school": "uestc",
-          "title": "电子科技大学2027届系列双选会报名公告",
-          "url": "https://news.uestc.edu.cn/info/1017/44580.htm",
-          "date": "2026-10-21",
-          "tag": "公告",
-          "category": null
         }
       ]
     },
@@ -479,8 +479,8 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 34651,
-      "tookMs": 2780,
+      "bytes": 34638,
+      "tookMs": 1012,
       "items": [
         {
           "id": "17a7e48dfd439818",
@@ -733,13 +733,13 @@
   ],
   "fresh": [
     {
-      "id": "75b340d8e5573b55",
+      "id": "5140215c1a2db1cf",
       "sourceId": "news-notice",
       "sourceName": "新闻网·公告",
       "school": "uestc",
-      "title": "学者论坛：先进电池基础科学与关键技术挑战",
-      "url": "https://news.uestc.edu.cn/info/1015/44631.htm",
-      "date": "2026-10-22",
+      "title": "「人文×科技」思想者论坛第四十一期讲座预告",
+      "url": "https://news.uestc.edu.cn/info/1015/44679.htm",
+      "date": "2026-10-23",
       "tag": "学术",
       "category": null,
       "alsoIn": [

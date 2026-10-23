@@ -3,13 +3,13 @@
  "name": "电子科技大学",
  "province": "四川省",
  "city": "成都市",
- "generatedAt": "2026-10-23T10:03:48.650Z",
- "total": 63,
+ "generatedAt": "2026-10-23T10:25:02.577Z",
+ "total": 64,
  "bySource": [
   {
    "sourceId": "news-notice",
    "sourceName": "新闻网·公告",
-   "count": 16
+   "count": 17
   },
   {
    "sourceId": "math-jwgg",
@@ -48,20 +48,20 @@
    "count": 27
   },
   {
-   "id": "教务处",
-   "name": "教务处",
-   "sources": [
-    "教务处·学生事务公告",
-    "教务处·重要公告"
-   ],
-   "count": 18
-  },
-  {
    "id": "新闻网",
    "name": "新闻网",
    "sources": [
     "新闻网·公告",
     "新闻网·学术"
+   ],
+   "count": 19
+  },
+  {
+   "id": "教务处",
+   "name": "教务处",
+   "sources": [
+    "教务处·学生事务公告",
+    "教务处·重要公告"
    ],
    "count": 18
   },
@@ -73,6 +73,22 @@
   }
  ],
  "items": [
+  {
+   "id": "5140215c1a2db1cf",
+   "sourceId": "news-notice",
+   "sourceName": "新闻网·公告",
+   "school": "uestc",
+   "title": "「人文×科技」思想者论坛第四十一期讲座预告",
+   "url": "https://news.uestc.edu.cn/info/1015/44679.htm",
+   "date": "2026-10-23",
+   "tag": "学术",
+   "category": null,
+   "alsoIn": [
+    "新闻网·学术"
+   ],
+   "firstSeenAt": "2026-10-23T10:24:06.892Z",
+   "unit": "新闻网"
+  },
   {
    "id": "75b340d8e5573b55",
    "sourceId": "news-notice",

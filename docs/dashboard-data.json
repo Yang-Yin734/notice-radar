@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-10-23T10:03:48.650Z",
-  "total": 345,
+  "generatedAt": "2026-10-23T10:25:02.577Z",
+  "total": 347,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
       "sourceName": "教务处·通知公告",
-      "count": 82
+      "count": 83
     },
     {
       "sourceId": "gs-xw",
@@ -33,6 +33,11 @@
       "count": 18
     },
     {
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
+      "count": 17
+    },
+    {
       "sourceId": "math-jwgg",
       "sourceName": "数学科学学院·教务公告",
       "count": 17
@@ -41,11 +46,6 @@
       "sourceId": "ugs-tzgg",
       "sourceName": "本科生院·通知公告",
       "count": 17
-    },
-    {
-      "sourceId": "news-notice",
-      "sourceName": "新闻网·公告",
-      "count": 16
     },
     {
       "sourceId": "jwc-xwkd",
@@ -104,6 +104,34 @@
     }
   ],
   "items": [
+    {
+      "id": "4f9d3544eef09a3f",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "ouc",
+      "title": "关于启动2027届本科毕业论文（设计）工作的通知",
+      "url": "https://jwc.ouc.edu.cn/2026/1023/c6517a540119/page.htm",
+      "date": "2026-10-23",
+      "tag": null,
+      "category": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-23T10:24:28.151Z"
+    },
+    {
+      "id": "5140215c1a2db1cf",
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
+      "school": "uestc",
+      "title": "「人文×科技」思想者论坛第四十一期讲座预告",
+      "url": "https://news.uestc.edu.cn/info/1015/44679.htm",
+      "date": "2026-10-23",
+      "tag": "学术",
+      "category": null,
+      "alsoIn": [
+        "新闻网·学术"
+      ],
+      "firstSeenAt": "2026-10-23T10:24:06.892Z"
+    },
     {
       "id": "8247c84f41db4b3a",
       "sourceId": "jiaowu-tzgg",
