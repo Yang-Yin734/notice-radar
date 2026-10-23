@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-23T00:25:33.456Z",
-  "total": 341,
+  "generatedAt": "2026-10-23T00:49:47.954Z",
+  "total": 344,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
@@ -83,6 +83,11 @@
       "count": 9
     },
     {
+      "sourceId": "news",
+      "sourceName": "新闻网·综合",
+      "count": 6
+    },
+    {
       "sourceId": "oaa-tzgg",
       "sourceName": "本科生院·通知公告",
       "count": 4
@@ -93,17 +98,51 @@
       "count": 4
     },
     {
-      "sourceId": "news",
-      "sourceName": "新闻网·综合",
-      "count": 3
-    },
-    {
       "sourceId": "news-academic",
       "sourceName": "新闻网·学术",
       "count": 2
     }
   ],
   "items": [
+    {
+      "id": "8e347df85ff8d99e",
+      "sourceId": "news",
+      "sourceName": "新闻网·综合",
+      "school": "zzu",
+      "title": "郑州大学哲学学院举行2026级新生开学典礼暨“哲学大讲堂”报告会",
+      "url": "http://www.zzu.edu.cn/info/1217/89235.htm",
+      "date": "2026-10-23",
+      "tag": null,
+      "category": "综合",
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-23T00:49:47.624Z"
+    },
+    {
+      "id": "da6d24beb04ef8d2",
+      "sourceId": "news",
+      "sourceName": "新闻网·综合",
+      "school": "zzu",
+      "title": "郑州大学举办哈维·洛迪什院士大师班开班仪式暨“嵩阳大讲堂”学术报告会",
+      "url": "http://www.zzu.edu.cn/info/1217/89226.htm",
+      "date": "2026-10-22",
+      "tag": null,
+      "category": "综合",
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-23T00:49:47.624Z"
+    },
+    {
+      "id": "dd4d1aae53f092a1",
+      "sourceId": "news",
+      "sourceName": "新闻网·综合",
+      "school": "zzu",
+      "title": "郑州大学承办中国古文字研究会第二十六届学术年会",
+      "url": "http://www.zzu.edu.cn/info/1217/89222.htm",
+      "date": "2026-10-22",
+      "tag": null,
+      "category": "综合",
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-23T00:49:47.624Z"
+    },
     {
       "id": "3744aa21cc38eb2b",
       "sourceId": "jwc-tzgg",
