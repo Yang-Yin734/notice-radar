@@ -1,7 +1,20 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-23T00:49:47.624Z",
+  "updatedAt": "2026-10-23T09:25:45.198Z",
   "items": [
+    {
+      "id": "8247c84f41db4b3a",
+      "sourceId": "jiaowu-tzgg",
+      "sourceName": "教务部·通知公告",
+      "school": "nwpu",
+      "title": "关于2026年大学生新文科实践创新大赛西北工业大学校内选拔赛获奖结果的公示",
+      "url": "https://jiaowu.nwpu.edu.cn/info/1164/30508.htm",
+      "date": "2026-10-23",
+      "tag": null,
+      "category": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-23T09:25:45.198Z"
+    },
     {
       "id": "8e347df85ff8d99e",
       "sourceId": "news",
