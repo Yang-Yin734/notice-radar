@@ -1,10 +1,9 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-24T02:45:16.514Z",
+  "updatedAt": "2026-10-24T03:07:47.944Z",
   "sources": {
     "uestc:jwc-important": [
       "fail",
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -22,11 +21,11 @@
       "fail",
       "ok",
       "fail",
-      "fail"
+      "fail",
+      "ok"
     ],
     "uestc:jwc-student": [
       "fail",
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -44,11 +43,11 @@
       "fail",
       "ok",
       "fail",
-      "fail"
+      "fail",
+      "ok"
     ],
     "uestc:news-notice": [
       "fail",
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -66,11 +65,11 @@
       "fail",
       "ok",
       "fail",
-      "fail"
+      "fail",
+      "ok"
     ],
     "uestc:news-academic": [
       "fail",
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -88,11 +87,11 @@
       "fail",
       "ok",
       "fail",
-      "fail"
+      "fail",
+      "ok"
     ],
     "uestc:gr-notice": [
       "fail",
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -110,10 +109,10 @@
       "fail",
       "ok",
       "fail",
-      "fail"
+      "fail",
+      "ok"
     ],
     "bnu:jwb-tzgg": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -132,10 +131,10 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "ecnu:bksy-tzgg": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -154,7 +153,8 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "hnu:jwc-tzgg": [
       "fail",
@@ -179,7 +179,6 @@
       "fail"
     ],
     "hust:ugs-tzgg": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -198,7 +197,8 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "jiangnan:jwc-tzgg": [
       "ok",
@@ -267,7 +267,6 @@
       "ok"
     ],
     "nju:jw-ggtz": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -286,7 +285,8 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "nwpu:jiaowu-tzgg": [
       "fail",
@@ -311,7 +311,6 @@
       "ok"
     ],
     "ouc:jwc-tzgg": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -330,10 +329,10 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "shufe:jwc-tzgg": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -352,10 +351,10 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "swufe:jwc-tzgg": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -374,10 +373,10 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "sysu:jwb-tzgg": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -396,10 +395,10 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "tju:oaa-tzgg": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -418,7 +417,8 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "xidian:jwc-tzgg": [
       "ok",
@@ -484,7 +484,6 @@
       "ok"
     ],
     "zzu:gs-gg": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -503,10 +502,10 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "zzu:gs-xw": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -525,13 +524,13 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "zzu:rsc-tzgg": [
       "ok"
     ],
     "zzu:news": [
-      "ok",
       "fail",
       "ok",
       "fail",
@@ -550,7 +549,8 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ]
   }
 }
