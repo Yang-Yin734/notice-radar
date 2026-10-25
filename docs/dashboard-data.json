@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-25T01:32:36.534Z",
-  "total": 349,
+  "generatedAt": "2026-10-25T01:59:17.456Z",
+  "total": 350,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
@@ -85,7 +85,7 @@
     {
       "sourceId": "news",
       "sourceName": "新闻网·综合",
-      "count": 7
+      "count": 8
     },
     {
       "sourceId": "oaa-tzgg",
@@ -104,6 +104,19 @@
     }
   ],
   "items": [
+    {
+      "id": "8acc51d81ae779b3",
+      "sourceId": "news",
+      "sourceName": "新闻网·综合",
+      "school": "zzu",
+      "title": "《河南日报》：中国共产党河南省第十二次代表大会关于中共河南省第十一届委员会报告的决议",
+      "url": "http://www.zzu.edu.cn/info/1217/89258.htm",
+      "date": "2026-10-25",
+      "tag": null,
+      "category": "综合",
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-25T01:59:17.199Z"
+    },
     {
       "id": "bf696d97cf9c7189",
       "sourceId": "news",
