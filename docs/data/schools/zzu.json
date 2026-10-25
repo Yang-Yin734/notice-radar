@@ -3,13 +3,13 @@
  "name": "郑州大学",
  "province": "河南省",
  "city": "郑州市",
- "generatedAt": "2026-10-25T00:05:59.738Z",
- "total": 88,
+ "generatedAt": "2026-10-25T00:54:25.927Z",
+ "total": 89,
  "bySource": [
   {
    "sourceId": "news",
    "sourceName": "新闻网·综合",
-   "count": 6
+   "count": 7
   },
   {
    "sourceId": "gs-gg",
@@ -70,10 +70,24 @@
    "sources": [
     "新闻网·综合"
    ],
-   "count": 6
+   "count": 7
   }
  ],
  "items": [
+  {
+   "id": "bf696d97cf9c7189",
+   "sourceId": "news",
+   "sourceName": "新闻网·综合",
+   "school": "zzu",
+   "title": "郑州大学承办第十一届全国掺杂纳米材料发光性质学术会议",
+   "url": "http://www.zzu.edu.cn/info/1217/89251.htm",
+   "date": "2026-10-24",
+   "tag": null,
+   "category": "综合",
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-25T00:54:25.647Z",
+   "unit": "新闻网"
+  },
   {
    "id": "8e347df85ff8d99e",
    "sourceId": "news",
