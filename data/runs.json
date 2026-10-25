@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-25T13:28:40.564Z",
+  "updatedAt": "2026-10-25T13:59:00.567Z",
   "sources": {
     "uestc:jwc-important": [
       "fail",
@@ -47,7 +47,6 @@
       "ok"
     ],
     "uestc:news-notice": [
-      "ok",
       "fail",
       "fail",
       "ok",
@@ -66,7 +65,8 @@
       "fail",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "uestc:news-academic": [
       "fail",
@@ -201,7 +201,6 @@
       "ok"
     ],
     "jiangnan:jwc-tzgg": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -220,7 +219,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "nankai:jwc-tzgg": [
       "fail",
@@ -399,7 +399,6 @@
       "ok"
     ],
     "tju:oaa-tzgg": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -418,7 +417,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "xidian:jwc-tzgg": [
       "fail",
