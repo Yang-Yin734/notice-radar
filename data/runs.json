@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-25T05:22:31.456Z",
+  "updatedAt": "2026-10-25T05:57:19.970Z",
   "sources": {
     "uestc:jwc-important": [
       "ok",
@@ -448,7 +448,6 @@
       "ok"
     ],
     "xmu:jwc-tzgg": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -467,7 +466,8 @@
       "ok",
       "fail",
       "ok",
-      "fail"
+      "fail",
+      "ok"
     ],
     "zzu:jwc-tzgg": [
       "ok",
