@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-26T09:13:54.385Z",
+  "updatedAt": "2026-10-26T10:03:12.204Z",
   "sources": {
     "uestc:jwc-important": [
       "fail",
@@ -135,28 +135,6 @@
       "ok"
     ],
     "ecnu:bksy-tzgg": [
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok",
-      "fail",
-      "ok"
-    ],
-    "hnu:jwc-tzgg": [
       "ok",
       "fail",
       "ok",
@@ -177,6 +155,28 @@
       "fail",
       "ok",
       "fail"
+    ],
+    "hnu:jwc-tzgg": [
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok",
+      "fail",
+      "ok"
     ],
     "hust:ugs-tzgg": [
       "fail",
@@ -377,7 +377,6 @@
       "ok"
     ],
     "sysu:jwb-tzgg": [
-      "fail",
       "ok",
       "fail",
       "ok",
@@ -396,7 +395,8 @@
       "fail",
       "ok",
       "fail",
-      "ok"
+      "ok",
+      "fail"
     ],
     "tju:oaa-tzgg": [
       "fail",

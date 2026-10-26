@@ -3,18 +3,18 @@
  "name": "郑州大学",
  "province": "河南省",
  "city": "郑州市",
- "generatedAt": "2026-10-26T09:13:54.588Z",
- "total": 92,
+ "generatedAt": "2026-10-26T10:03:40.155Z",
+ "total": 93,
  "bySource": [
+  {
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务部·通知公告",
+   "count": 11
+  },
   {
    "sourceId": "gs-xw",
    "sourceName": "研究生院·新闻",
    "count": 29
-  },
-  {
-   "sourceId": "jwc-tzgg",
-   "sourceName": "教务部·通知公告",
-   "count": 10
   },
   {
    "sourceId": "news",
@@ -54,7 +54,7 @@
     "教务部·通知公告",
     "教务部·新闻快递"
    ],
-   "count": 25
+   "count": 26
   },
   {
    "id": "人事部",
@@ -74,6 +74,20 @@
   }
  ],
  "items": [
+  {
+   "id": "e8c15cfc196ef4da",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "zzu",
+   "title": "关于2026年度郑州大学“101计划”核心课程和教材建设项目第二批拟立项名单的公示",
+   "url": "https://www5.zzu.edu.cn/jwc/info/1125/5424.htm",
+   "date": "2026-10-26",
+   "tag": null,
+   "category": "教务",
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-26T10:03:39.900Z",
+   "unit": "教务部"
+  },
   {
    "id": "ad19aaf22a1c69cd",
    "sourceId": "gs-xw",

@@ -1,7 +1,20 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-26T05:15:06.267Z",
+  "updatedAt": "2026-10-26T10:03:39.900Z",
   "items": [
+    {
+      "id": "e8c15cfc196ef4da",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务部·通知公告",
+      "school": "zzu",
+      "title": "关于2026年度郑州大学“101计划”核心课程和教材建设项目第二批拟立项名单的公示",
+      "url": "https://www5.zzu.edu.cn/jwc/info/1125/5424.htm",
+      "date": "2026-10-26",
+      "tag": null,
+      "category": "教务",
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-26T10:03:39.900Z"
+    },
     {
       "id": "ad19aaf22a1c69cd",
       "sourceId": "gs-xw",
