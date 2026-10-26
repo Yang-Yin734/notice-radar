@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-10-26T02:20:05.350Z",
-  "total": 350,
+  "generatedAt": "2026-10-26T02:42:49.650Z",
+  "total": 351,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
-      "sourceName": "教务处·通知公告",
-      "count": 83
+      "sourceName": "教务部·通知公告",
+      "count": 84
     },
     {
       "sourceId": "gs-xw",
@@ -104,6 +104,19 @@
     }
   ],
   "items": [
+    {
+      "id": "bab1fe651d773716",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务部·通知公告",
+      "school": "zzu",
+      "title": "郑州大学关于开展2027年新增辅修学士学位、双学士学位、联合培养学士学位申报工作的通知",
+      "url": "https://www5.zzu.edu.cn/jwc/info/1125/5421.htm",
+      "date": "2026-10-26",
+      "tag": null,
+      "category": "教务",
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-26T02:42:49.401Z"
+    },
     {
       "id": "8acc51d81ae779b3",
       "sourceId": "news",

@@ -3,9 +3,14 @@
  "name": "郑州大学",
  "province": "河南省",
  "city": "郑州市",
- "generatedAt": "2026-10-26T02:20:05.350Z",
- "total": 90,
+ "generatedAt": "2026-10-26T02:42:49.650Z",
+ "total": 91,
  "bySource": [
+  {
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务部·通知公告",
+   "count": 10
+  },
   {
    "sourceId": "news",
    "sourceName": "新闻网·综合",
@@ -19,11 +24,6 @@
   {
    "sourceId": "rsc-tzgg",
    "sourceName": "人事部·通知公告",
-   "count": 9
-  },
-  {
-   "sourceId": "jwc-tzgg",
-   "sourceName": "教务部·通知公告",
    "count": 9
   },
   {
@@ -54,7 +54,7 @@
     "教务部·通知公告",
     "教务部·新闻快递"
    ],
-   "count": 24
+   "count": 25
   },
   {
    "id": "人事部",
@@ -74,6 +74,20 @@
   }
  ],
  "items": [
+  {
+   "id": "bab1fe651d773716",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "zzu",
+   "title": "郑州大学关于开展2027年新增辅修学士学位、双学士学位、联合培养学士学位申报工作的通知",
+   "url": "https://www5.zzu.edu.cn/jwc/info/1125/5421.htm",
+   "date": "2026-10-26",
+   "tag": null,
+   "category": "教务",
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-26T02:42:49.401Z",
+   "unit": "教务部"
+  },
   {
    "id": "8acc51d81ae779b3",
    "sourceId": "news",
