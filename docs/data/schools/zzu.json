@@ -3,9 +3,14 @@
  "name": "郑州大学",
  "province": "河南省",
  "city": "郑州市",
- "generatedAt": "2026-10-26T04:45:28.252Z",
- "total": 91,
+ "generatedAt": "2026-10-26T05:15:06.534Z",
+ "total": 92,
  "bySource": [
+  {
+   "sourceId": "gs-xw",
+   "sourceName": "研究生院·新闻",
+   "count": 29
+  },
   {
    "sourceId": "jwc-tzgg",
    "sourceName": "教务部·通知公告",
@@ -30,11 +35,6 @@
    "sourceId": "jwc-xwkd",
    "sourceName": "教务部·新闻快递",
    "count": 15
-  },
-  {
-   "sourceId": "gs-xw",
-   "sourceName": "研究生院·新闻",
-   "count": 28
   }
  ],
  "units": [
@@ -42,10 +42,10 @@
    "id": "研究生院",
    "name": "研究生院",
    "sources": [
-    "研究生院·公告",
-    "研究生院·新闻"
+    "研究生院·新闻",
+    "研究生院·公告"
    ],
-   "count": 49
+   "count": 50
   },
   {
    "id": "教务部",
@@ -74,6 +74,20 @@
   }
  ],
  "items": [
+  {
+   "id": "ad19aaf22a1c69cd",
+   "sourceId": "gs-xw",
+   "sourceName": "研究生院·新闻",
+   "school": "zzu",
+   "title": "郑州大学42名博士生入选2026年中国科协青年科技人才培育工程博士生专项...",
+   "url": "https://gs.zzu.edu.cn/info/1072/13914.htm",
+   "date": "2026-10-26",
+   "tag": null,
+   "category": "研究生",
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-26T05:15:06.267Z",
+   "unit": "研究生院"
+  },
   {
    "id": "bab1fe651d773716",
    "sourceId": "jwc-tzgg",

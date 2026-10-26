@@ -1,7 +1,33 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-26T02:42:49.401Z",
+  "updatedAt": "2026-10-26T05:15:06.267Z",
   "items": [
+    {
+      "id": "ad19aaf22a1c69cd",
+      "sourceId": "gs-xw",
+      "sourceName": "研究生院·新闻",
+      "school": "zzu",
+      "title": "郑州大学42名博士生入选2026年中国科协青年科技人才培育工程博士生专项...",
+      "url": "https://gs.zzu.edu.cn/info/1072/13914.htm",
+      "date": "2026-10-26",
+      "tag": null,
+      "category": "研究生",
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-26T05:15:06.267Z"
+    },
+    {
+      "id": "e1b31c8da217426d",
+      "sourceId": "ugs-tzgg",
+      "sourceName": "本科生院·通知公告",
+      "school": "hust",
+      "title": "华中科技大学2026年教学研究项目（思政课课程与教材建设专项）立项名单公示",
+      "url": "https://ugs.hust.edu.cn/info/1142/7671.htm",
+      "date": "2026-10-26",
+      "tag": null,
+      "category": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-26T05:14:15.917Z"
+    },
     {
       "id": "bab1fe651d773716",
       "sourceId": "jwc-tzgg",
