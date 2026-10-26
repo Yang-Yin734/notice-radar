@@ -3,13 +3,13 @@
  "name": "厦门大学",
  "province": "福建省",
  "city": "厦门市",
- "generatedAt": "2026-10-26T18:32:45.095Z",
- "total": 12,
+ "generatedAt": "2026-10-26T19:23:28.994Z",
+ "total": 13,
  "bySource": [
   {
    "sourceId": "jwc-tzgg",
    "sourceName": "教务处·通知公告",
-   "count": 12
+   "count": 13
   }
  ],
  "units": [
@@ -19,10 +19,24 @@
    "sources": [
     "教务处·通知公告"
    ],
-   "count": 12
+   "count": 13
   }
  ],
  "items": [
+  {
+   "id": "a21ad384efcbe0d6",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "xmu",
+   "title": "关于组织2026级本科新生开展学籍信息核对工作的通知",
+   "url": "https://jwc.xmu.edu.cn/info/1911/69962.htm",
+   "date": "2026-10-26",
+   "tag": null,
+   "category": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-26T19:23:13.322Z",
+   "unit": "教务处"
+  },
   {
    "id": "c294a2303fad660b",
    "sourceId": "jwc-tzgg",

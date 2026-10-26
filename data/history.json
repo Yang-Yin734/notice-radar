@@ -1,7 +1,20 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-26T10:03:39.900Z",
+  "updatedAt": "2026-10-26T19:23:13.322Z",
   "items": [
+    {
+      "id": "a21ad384efcbe0d6",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "xmu",
+      "title": "关于组织2026级本科新生开展学籍信息核对工作的通知",
+      "url": "https://jwc.xmu.edu.cn/info/1911/69962.htm",
+      "date": "2026-10-26",
+      "tag": null,
+      "category": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-26T19:23:13.322Z"
+    },
     {
       "id": "e8c15cfc196ef4da",
       "sourceId": "jwc-tzgg",
