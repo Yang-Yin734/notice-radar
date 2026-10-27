@@ -3,9 +3,14 @@
  "name": "电子科技大学",
  "province": "四川省",
  "city": "成都市",
- "generatedAt": "2026-10-27T06:57:04.737Z",
- "total": 66,
+ "generatedAt": "2026-10-27T07:35:05.940Z",
+ "total": 67,
  "bySource": [
+  {
+   "sourceId": "news-notice",
+   "sourceName": "新闻网·公告",
+   "count": 18
+  },
   {
    "sourceId": "jwc-student",
    "sourceName": "教务处·学生事务公告",
@@ -15,11 +20,6 @@
    "sourceId": "math-xsgz",
    "sourceName": "数学科学学院·学生工作",
    "count": 11
-  },
-  {
-   "sourceId": "news-notice",
-   "sourceName": "新闻网·公告",
-   "count": 17
   },
   {
    "sourceId": "math-jwgg",
@@ -48,20 +48,20 @@
    "count": 28
   },
   {
-   "id": "教务处",
-   "name": "教务处",
-   "sources": [
-    "教务处·学生事务公告",
-    "教务处·重要公告"
-   ],
-   "count": 19
-  },
-  {
    "id": "新闻网",
    "name": "新闻网",
    "sources": [
     "新闻网·公告",
     "新闻网·学术"
+   ],
+   "count": 20
+  },
+  {
+   "id": "教务处",
+   "name": "教务处",
+   "sources": [
+    "教务处·学生事务公告",
+    "教务处·重要公告"
    ],
    "count": 19
   },
@@ -73,6 +73,22 @@
   }
  ],
  "items": [
+  {
+   "id": "d02eae716f43489a",
+   "sourceId": "news-notice",
+   "sourceName": "新闻网·公告",
+   "school": "uestc",
+   "title": "名师讲堂：天问一号科学研究进展",
+   "url": "https://news.uestc.edu.cn/info/1015/44768.htm",
+   "date": "2026-10-27",
+   "tag": "学术",
+   "category": null,
+   "alsoIn": [
+    "新闻网·学术"
+   ],
+   "firstSeenAt": "2026-10-27T07:33:15.252Z",
+   "unit": "新闻网"
+  },
   {
    "id": "c26b8e3621b09b8c",
    "sourceId": "jwc-student",

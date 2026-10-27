@@ -1,7 +1,22 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-27T06:11:50.087Z",
+  "updatedAt": "2026-10-27T07:33:15.252Z",
   "items": [
+    {
+      "id": "d02eae716f43489a",
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
+      "school": "uestc",
+      "title": "名师讲堂：天问一号科学研究进展",
+      "url": "https://news.uestc.edu.cn/info/1015/44768.htm",
+      "date": "2026-10-27",
+      "tag": "学术",
+      "category": null,
+      "alsoIn": [
+        "新闻网·学术"
+      ],
+      "firstSeenAt": "2026-10-27T07:33:15.252Z"
+    },
     {
       "id": "ecc5a19e8f582394",
       "sourceId": "jiaowu-tzgg",
