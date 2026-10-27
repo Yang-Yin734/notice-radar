@@ -39,7 +39,7 @@ test('体验：切深浅色时 class、color-scheme、theme-color 三样一起�
   const html = render();
   assert.match(html, /<meta name="theme-color" id="theme-color"/, 'theme-color 要有 id 才改得到');
   assert.match(html, /function paintTheme\(/, '统一走 paintTheme()');
-  assert.match(html, /setAttribute\('content', dark \? '#12161f' : '#eef1f6'\)/, '手机状态栏颜色跟着变');
+  assert.match(html, /setAttribute\('content', dark \? '#151311' : '#FBFAF7'\)/, '手机状态栏颜色跟着变');
   assert.match(html, /html\.style\.colorScheme = dark \? 'dark' : 'light'/, 'color-scheme 跟着变');
   assert.match(html, /aria-pressed/, '按钮要能读出当前状态（读屏用户）');
   // 跟随系统时要跟着系统切换，不能等刷新

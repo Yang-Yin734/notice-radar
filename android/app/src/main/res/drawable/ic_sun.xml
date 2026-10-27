@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 浅色：太阳（圆 + 4 条正辐 + 4 条斜辐） -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:pathData="M12,8.1a3.9,3.9 0 1 0 0,7.8 3.9,3.9 0 0 0 0,-7.8z"
+        android:strokeColor="#FF000000"
+        android:strokeWidth="1.6"
+        android:strokeLineJoin="round"
+        android:fillColor="#00000000" />
+    <path
+        android:pathData="M12,2.6v2.2 M12,19.2v2.2 M2.6,12h2.2 M19.2,12h2.2 M5.5,5.5l1.6,1.6 M16.9,16.9l1.6,1.6 M18.5,5.5l-1.6,1.6 M7.1,16.9l-1.6,1.6"
+        android:strokeColor="#FF000000"
+        android:strokeWidth="1.6"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000" />
+</vector>

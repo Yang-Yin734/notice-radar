@@ -28,3 +28,18 @@ keystore.txt
 
 # `radr rate --json=...` 的临时报告：体检结论写进 CHANGELOG，不必提交
 data/rate.json
+
+# Android 本地构建产物（Gradle 缓存 + build/ 共 60MB+，CI 里自己会重建）
+android/.gradle/
+android/app/build/
+android/local.properties
+
+# 视频抽帧素材（45MB，只用于对照界面手感，不是项目资产）
+docs/_video-40417/
+
+# 探测残留与本地截图证据
+.tmp-schools/
+preview/
+
+# 本地工作笔记（发布清单、信息源调研等，不入库）
+notes/

@@ -2,16 +2,22 @@ package io.github.yangyin734.noticeradar
 
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -21,14 +27,19 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -45,12 +56,30 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import io.github.yangyin734.noticeradar.ui.AppColors
+import io.github.yangyin734.noticeradar.ui.AppTypography
+import io.github.yangyin734.noticeradar.ui.DarkScheme
+import io.github.yangyin734.noticeradar.ui.Hairline
+import io.github.yangyin734.noticeradar.ui.LightScheme
+import io.github.yangyin734.noticeradar.ui.Shape
+import io.github.yangyin734.noticeradar.ui.Space
+import io.github.yangyin734.noticeradar.ui.Type
+import io.github.yangyin734.noticeradar.ui.tagColor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -60,38 +89,9 @@ import java.util.Date
 import java.util.Locale
 
 // ---------------------------------------------------------------- 主题
-
-private val LightColors = lightColorScheme(
-    primary = Color(0xFF1C7ED6),
-    onPrimary = Color.White,
-    background = Color(0xFFF1F5FA),
-    onBackground = Color(0xFF1F2A3D),
-    surface = Color(0xFFFFFFFF),
-    onSurface = Color(0xFF1F2A3D),
-    surfaceVariant = Color(0xFFE9ECF1),
-    onSurfaceVariant = Color(0xFF6B7280),
-)
-
-private val DarkColors = darkColorScheme(
-    primary = Color(0xFF4DABF7),
-    onPrimary = Color(0xFF0B2033),
-    background = Color(0xFF12161F),
-    onBackground = Color(0xFFE9ECEF),
-    surface = Color(0xFF1B212C),
-    onSurface = Color(0xFFE9ECEF),
-    surfaceVariant = Color(0xFF2A313D),
-    onSurfaceVariant = Color(0xFF9AA4B2),
-)
-
-private fun tagColor(tag: String?): Color = when {
-    tag == null -> Color(0xFF6B7280)
-    tag.contains("考试") || tag.contains("补考") || tag.contains("缓考") -> Color(0xFFE8590C)
-    tag.contains("教管") || tag.contains("教学") -> Color(0xFF1C7ED6)
-    tag.contains("学生事务") -> Color(0xFF2F9E44)
-    tag.contains("实践") -> Color(0xFF7048E8)
-    tag.contains("学术") || tag.contains("讲座") -> Color(0xFF0B7285)
-    else -> Color(0xFF6B7280)
-}
+//
+// 色板 / 字阶 / 圆角 / 间距 / 图标全部迁到 ui/Tokens.kt（设计令牌），这里不再定义任何色值。
+// 改 UI 前先读那个文件顶部的硬规则：1 个强调色、5 级字阶、3 个圆角、0 阴影只看描边。
 
 // ---------------------------------------------------------------- 根界面
 
@@ -212,20 +212,50 @@ fun NoticeRadarApp(store: Store) {
 
     val dark = darkOverride ?: isSystemInDarkTheme()
 
-    MaterialTheme(colorScheme = if (dark) DarkColors else LightColors) {
+    MaterialTheme(
+        colorScheme = if (dark) DarkScheme else LightScheme,
+        typography = AppTypography,
+    ) {
         Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
             Scaffold(
                 containerColor = MaterialTheme.colorScheme.background,
                 bottomBar = {
-                    NavigationBar(containerColor = MaterialTheme.colorScheme.surface) {
-                        val tabs = listOf("📋 通知", "⭐ 收藏", "📊 统计", "⚙️ 设置")
-                        tabs.forEachIndexed { index, label ->
+                    // 底栏与页面同色、只用一条细线隔开：纸的页脚不会自带一块灰色。
+                    Column(Modifier.background(AppColors.bg)) {
+                        Box(Modifier.fillMaxWidth().height(Hairline).background(AppColors.line))
+                        NavigationBar(
+                            containerColor = AppColors.bg,
+                            tonalElevation = 0.dp,
+                        ) {
+                        // 图标必须是矢量而不是 emoji：不同 ROM 的 emoji 字形完全不同，
+                        // 而且"找不到图标就先塞个 emoji"本身就是没做过设计的标志。
+                        val tabs = listOf(
+                            "通知" to R.drawable.ic_notice,
+                            "收藏" to R.drawable.ic_star_outline,
+                            "统计" to R.drawable.ic_chart,
+                            "设置" to R.drawable.ic_settings,
+                        )
+                        tabs.forEachIndexed { index, (label, iconRes) ->
                             NavigationBarItem(
                                 selected = tab == index,
                                 onClick = { tab = index; sourceFilter = null },
-                                icon = { Text(label.substringBefore(" "), fontSize = 16.sp) },
-                                label = { Text(label.substringAfter(" "), fontSize = 11.sp) },
+                                icon = {
+                                    Icon(
+                                        painter = painterResource(iconRes),
+                                        contentDescription = null,
+                                        modifier = Modifier.size(22.dp),
+                                    )
+                                },
+                                label = { Text(label, style = Type.micro) },
+                                colors = NavigationBarItemDefaults.colors(
+                                    selectedIconColor = AppColors.accent,
+                                    selectedTextColor = AppColors.accent,
+                                    indicatorColor = Color.Transparent,
+                                    unselectedIconColor = AppColors.muted,
+                                    unselectedTextColor = AppColors.muted,
+                                ),
                             )
+                        }
                         }
                     }
                 },
@@ -355,12 +385,13 @@ fun NoticeRadarApp(store: Store) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
                     Text(
                         text = msg,
-                        color = MaterialTheme.colorScheme.surface,
-                        fontSize = 13.sp,
+                        style = Type.label,
+                        color = AppColors.paper,
                         modifier = Modifier
                             .padding(bottom = 96.dp)
-                            .background(MaterialTheme.colorScheme.onSurface, RoundedCornerShape(20.dp))
-                            .padding(horizontal = 16.dp, vertical = 9.dp),
+                            .clip(Shape.control)
+                            .background(AppColors.ink)
+                            .padding(horizontal = Space.item, vertical = Space.s),
                     )
                 }
             }
@@ -368,35 +399,36 @@ fun NoticeRadarApp(store: Store) {
     }
 }
 
-/** 打开应用就告诉用户有新版本（以前只有进"设置"才看得到，等于没提示）。 */
+/**
+ * 打开应用就告诉用户有新版本（以前只有进"设置"才看得到，等于没提示）。
+ *
+ * 不用整块主色铺底：顶部一条主色底的通知带就够显眼，铺满会盖住"这是通知应用"的第一印象。
+ */
 @Composable
 private fun UpdateBanner(version: String, apkUrl: String, onDismiss: () -> Unit) {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 8.dp)
-            .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(12.dp))
-            .padding(horizontal = 12.dp, vertical = 8.dp),
+            .padding(horizontal = Space.page, vertical = Space.s)
+            .clip(Shape.card)
+            .background(AppColors.accentSoft)
+            .padding(start = Space.m, end = Space.xs, top = 10.dp, bottom = 10.dp),
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Column(Modifier.weight(1f)) {
-                Text(
-                    "发现新版本 v$version",
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onPrimary,
-                )
-                Text(
-                    "应用内直接下载安装，收藏与已读不会丢",
-                    fontSize = 11.sp,
-                    color = MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.85f),
-                )
+                Text("发现新版本 v$version", style = Type.label, color = AppColors.accent)
+                Text("应用内下载安装，收藏与已读不会丢", style = Type.micro, color = AppColors.ink2)
             }
-            TextButton(onClick = onDismiss) {
-                Text("✕", fontSize = 13.sp, color = MaterialTheme.colorScheme.onPrimary)
+            IconButton(onClick = onDismiss, modifier = Modifier.size(34.dp)) {
+                Icon(
+                    painter = painterResource(R.drawable.ic_close),
+                    contentDescription = "关闭",
+                    modifier = Modifier.size(16.dp),
+                    tint = AppColors.ink2,
+                )
             }
         }
-        InAppUpdateRow(version = version, apkUrl = apkUrl, onPrimary = true)
+        InAppUpdateRow(version = version, apkUrl = apkUrl, onPrimary = false)
     }
 }
 
@@ -406,30 +438,34 @@ private fun UpdateBanner(version: String, apkUrl: String, onDismiss: () -> Unit)
  */
 @Composable
 private fun FirstRunHint(onPickSchool: () -> Unit, onDismiss: () -> Unit) {
+    // 一条横向提示带：不用灰底方块，靠上下两条细线把它和内容分开，像公告栏上的临时通知
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 6.dp)
-            .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(12.dp))
-            .padding(start = 12.dp, end = 4.dp, top = 8.dp, bottom = 8.dp),
+            .padding(horizontal = Space.page)
+            .padding(top = Space.s, bottom = Space.xs)
+            .clip(Shape.card)
+            .background(AppColors.sunken)
+            .padding(start = Space.m, end = Space.xs, top = 10.dp, bottom = 10.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(Modifier.weight(1f)) {
+            Text("先选你的学校", style = Type.label, color = AppColors.ink)
+            Spacer(Modifier.height(2.dp))
             Text(
-                "先选你的学校",
-                fontSize = 13.5.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = MaterialTheme.colorScheme.onSurface,
-            )
-            Text(
-                "现在显示的是电子科技大学的通知；国内已接入 19 所，选完只显示你们学校的。",
-                fontSize = 11.5.sp,
-                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                "当前是电子科技大学；选完只显示你们学校的通知。",
+                style = Type.micro,
+                color = AppColors.muted,
             )
         }
-        TextButton(onClick = onPickSchool) { Text("去选", fontSize = 13.sp) }
-        TextButton(onClick = onDismiss) {
-            Text("✕", fontSize = 12.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        TextButton(onClick = onPickSchool) { Text("去选", style = Type.label, color = AppColors.accent) }
+        IconButton(onClick = onDismiss, modifier = Modifier.size(32.dp)) {
+            Icon(
+                painter = painterResource(R.drawable.ic_close),
+                contentDescription = "关闭提示",
+                modifier = Modifier.size(14.dp),
+                tint = AppColors.muted,
+            )
         }
     }
 }
@@ -486,20 +522,20 @@ private fun InAppUpdateRow(version: String, apkUrl: String, onPrimary: Boolean =
                     busy -> "下载中…"
                     else -> "应用内更新"
                 },
-                fontSize = 13.sp,
+                style = Type.label,
             )
         }
-        Spacer(Modifier.width(8.dp))
+        Spacer(Modifier.width(Space.s))
         TextButton(onClick = { openUrl(context, apkUrl) }) {
-            Text("浏览器打开", fontSize = 12.5.sp, color = if (onPrimary) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.primary)
+            Text("浏览器打开", style = Type.label, color = if (onPrimary) MaterialTheme.colorScheme.onPrimary else AppColors.accent)
         }
     }
     hint?.let {
-        Text(it, fontSize = 11.sp, color = subColor)
+        Text(it, style = Type.micro, color = subColor)
     }
     Text(
-        "如果下载慢：GitHub 在国内时快时慢，可稍后重试或用「浏览器打开」",
-        fontSize = 10.5.sp,
+        "下载慢多半是 GitHub 线路问题，可稍后重试或改用「浏览器打开」",
+        style = Type.micro,
         color = subColor,
     )
 }
@@ -514,19 +550,36 @@ private fun AppHeader(
     onRefresh: () -> Unit,
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = 14.dp, vertical = 10.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(start = Space.page, end = Space.xs, top = 10.dp, bottom = 6.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        Text(title, fontSize = 17.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)
-        Spacer(Modifier.width(8.dp))
-        Text(subtitle, fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-        Spacer(Modifier.weight(1f))
-        // 与网页版一致：顶栏一个按钮，点一下就切深浅色（不再是设置里的开关）
-        TextButton(onClick = onToggleTheme) {
-            Text(if (dark) "☀" else "☾", fontSize = 17.sp)
+        // 标题与计数分两行：挤在一行时右侧两个按钮会把标题挤成"工具软件"的排版
+        Column(modifier = Modifier.weight(1f)) {
+            Text(title, style = Type.title, color = AppColors.ink)
+            Spacer(Modifier.height(2.dp))
+            Text(
+                if (refreshing) "正在刷新…" else subtitle,
+                style = Type.micro,
+                color = AppColors.muted,
+            )
         }
-        TextButton(onClick = onRefresh, enabled = !refreshing) {
-            Text(if (refreshing) "刷新中…" else "刷新", fontSize = 13.sp)
+        IconButton(onClick = onToggleTheme, modifier = Modifier.size(40.dp)) {
+            Icon(
+                painter = painterResource(if (dark) R.drawable.ic_sun else R.drawable.ic_moon),
+                contentDescription = if (dark) "切换到浅色" else "切换到深色",
+                modifier = Modifier.size(20.dp),
+                tint = AppColors.ink2,
+            )
+        }
+        IconButton(onClick = onRefresh, enabled = !refreshing, modifier = Modifier.size(40.dp)) {
+            Icon(
+                painter = painterResource(R.drawable.ic_refresh),
+                contentDescription = "刷新",
+                modifier = Modifier.size(20.dp),
+                tint = if (refreshing) AppColors.muted else AppColors.ink2,
+            )
         }
     }
 }
@@ -571,70 +624,113 @@ private fun NoticeList(
     }
 
     Column(modifier = Modifier.fillMaxSize()) {
-        OutlinedTextField(
+        // 搜索框去掉 Material 的圆角描边框：报纸的检索入口就是「一行字 + 一条下划线」
+        BasicTextField(
             value = query,
             onValueChange = onQueryChange,
             singleLine = true,
-            placeholder = { Text("搜索标题，例如：退课 / 四六级 / 推免", fontSize = 13.sp) },
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp),
+            textStyle = Type.body.copy(color = AppColors.ink),
+            cursorBrush = SolidColor(AppColors.accent),
+            modifier = Modifier.fillMaxWidth().padding(horizontal = Space.page, vertical = Space.s),
+            decorationBox = { inner ->
+                Column {
+                    Box(contentAlignment = Alignment.CenterStart) {
+                        if (query.isEmpty()) {
+                            Text(
+                                "搜索标题，例如：退课 / 四六级 / 推免",
+                                style = Type.body,
+                                color = AppColors.muted,
+                                maxLines = 1,
+                                overflow = TextOverflow.Ellipsis,
+                            )
+                        }
+                        inner()
+                    }
+                    Spacer(Modifier.height(Space.s))
+                    Box(Modifier.fillMaxWidth().height(Hairline).background(AppColors.line))
+                }
+            },
         )
 
         if (!favOnly) {
-            Row(
-                modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState())
-                    .padding(horizontal = 12.dp, vertical = 8.dp),
-                horizontalArrangement = Arrangement.spacedBy(7.dp),
-            ) {
-                FilterChip(text = "全部 ${all.size}", active = sourceFilter == null) { onSourceFilter(null) }
-                sources.forEach { s ->
-                    FilterChip(text = "${s.sourceName} ${s.count}", active = sourceFilter == s.sourceId) {
-                        onSourceFilter(s.sourceId)
+            // 来源切换是"换一页报纸"，不是给列表打标签：下划线 tab + 通栏细线，不用药丸
+            Column(Modifier.fillMaxWidth()) {
+                Row(
+                    modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState())
+                        .padding(start = Space.page, end = Space.page),
+                    horizontalArrangement = Arrangement.spacedBy(Space.page),
+                ) {
+                    NavTab(text = "全部", count = all.size, active = sourceFilter == null) { onSourceFilter(null) }
+                    sources.forEach { s ->
+                        NavTab(text = s.sourceName, count = s.count, active = sourceFilter == s.sourceId) {
+                            onSourceFilter(s.sourceId)
+                        }
                     }
                 }
+                Box(Modifier.fillMaxWidth().height(Hairline).background(AppColors.line))
             }
         }
 
         if (rows.isEmpty()) {
             Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                Text(
-                    when {
-                        // 选过学校但一个学院都没勾：这是产品要求的默认状态，必须说清楚去哪儿勾
-                        schoolId.isNotEmpty() && units.isEmpty() ->
-                            "请选择你关心的学院：设置 → 学校 / 学院 → 勾选后这里就会显示该学院的通知。"
-                        favOnly -> "还没有收藏，点通知卡片右下角的 ☆"
-                        else -> "没有匹配的通知"
-                    },
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    fontSize = 14.sp,
-                    modifier = Modifier.padding(horizontal = 24.dp),
-                )
+                // 空态 = 一句话说清状态 + 一句话说清下一步。以前把 40 字的操作指引用正文塞进来，
+                // 等于把说明书当成了界面。
+                Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                    Text(
+                        when {
+                            schoolId.isNotEmpty() && units.isEmpty() -> "还没勾选学院"
+                            favOnly -> "收藏夹是空的"
+                            else -> "没有匹配的通知"
+                        },
+                        style = Type.body,
+                        color = AppColors.ink2,
+                    )
+                    Spacer(Modifier.height(6.dp))
+                    Text(
+                        when {
+                            schoolId.isNotEmpty() && units.isEmpty() -> "在「设置 · 学校 / 学院」里勾选你关心的学院"
+                            favOnly -> "在通知卡片右上角点星标就能收藏"
+                            else -> "换个关键词，或清掉来源筛选"
+                        },
+                        style = Type.micro,
+                        color = AppColors.muted,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(horizontal = 32.dp),
+                    )
+                }
             }
             return
         }
 
         LazyColumn(
             modifier = Modifier.fillMaxSize(),
-            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            contentPadding = PaddingValues(start = Space.page, end = Space.page, top = 2.dp, bottom = Space.group),
+            // 条目之间靠横线分隔，不靠留白 + 卡片：留白是卡片时代的呼吸，横线才是列表的分隔
+            verticalArrangement = Arrangement.Top,
         ) {
             rows.forEach { row ->
                 when (row) {
                     is Entry.Day -> item(key = "day-${row.date}") {
-                        Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(top = 6.dp)) {
-                            Text(row.date, fontSize = 12.5.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                            Spacer(Modifier.width(8.dp))
-                            Text(
-                                "${row.count} 条",
-                                fontSize = 11.sp,
-                                color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier
-                                    .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(20.dp))
-                                    .padding(horizontal = 8.dp, vertical = 1.dp),
-                            )
+                        // 日期是这一页的骨架：左边日期、右边条数、下面一条通栏细线。不加底色、不加药丸。
+                        Column(Modifier.padding(top = Space.group)) {
+                            Row(
+                                verticalAlignment = Alignment.CenterVertically,
+                                modifier = Modifier.fillMaxWidth().padding(bottom = 7.dp),
+                            ) {
+                                Text(
+                                    dayLabel(row.date),
+                                    style = Type.label,
+                                    fontWeight = FontWeight.SemiBold,
+                                    color = AppColors.ink,
+                                )
+                                Spacer(Modifier.weight(1f))
+                                Text("${row.count} 条", style = Type.micro, color = AppColors.muted)
+                            }
+                            Box(Modifier.fillMaxWidth().height(Hairline).background(AppColors.line))
                         }
                     }
                     is Entry.Item -> item(key = row.notice.id) {
-                        NoticeCard(
+                        NoticeRow(
                             notice = row.notice,
                             isRead = row.notice.id in read,
                             isFav = row.notice.id in fav,
@@ -650,81 +746,150 @@ private fun NoticeList(
 
 @Composable
 private fun FilterChip(text: String, active: Boolean, onClick: () -> Unit) {
+    // 筛选是"过滤条件"不是"主操作"：选中态用墨色细描边 + 文字加粗，不用整块深色药丸抢走注意力
     Text(
         text = text,
-        fontSize = 12.5.sp,
-        color = if (active) MaterialTheme.colorScheme.surface else MaterialTheme.colorScheme.onSurfaceVariant,
+        style = Type.micro.copy(fontWeight = if (active) FontWeight.SemiBold else FontWeight.Normal),
+        color = if (active) AppColors.ink else AppColors.muted,
         maxLines = 1,
         overflow = TextOverflow.Ellipsis,
         modifier = Modifier
-            .background(
-                if (active) MaterialTheme.colorScheme.onBackground else MaterialTheme.colorScheme.surface,
-                RoundedCornerShape(20.dp),
+            .clip(Shape.control)
+            .border(
+                Hairline,
+                if (active) AppColors.ink else AppColors.line,
+                Shape.control,
             )
             .clickable { onClick() }
-            .padding(horizontal = 12.dp, vertical = 7.dp),
+            .padding(horizontal = 10.dp, vertical = 6.dp),
     )
 }
 
+/**
+ * 通知条目 = 时间轴上的行，不是卡片。
+ *
+ * 改版前每条是圆角卡片 + 描边，一屏 8 条就是 8 个独立"盒子"，读起来像在刷商品列表。
+ * 现在左侧一条细线串起当天的条目、条目之间用横线断开、未读用线上的圆点标记，
+ * 同一条通知的视觉重量从"一个容器"降到"一行字"。
+ */
 @Composable
-private fun NoticeCard(notice: Notice, isRead: Boolean, isFav: Boolean, onOpen: () -> Unit, onToggleFav: () -> Unit) {
-    Card(
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        shape = RoundedCornerShape(14.dp),
-        modifier = Modifier.fillMaxWidth(),
-    ) {
-        Row(modifier = Modifier.fillMaxWidth()) {
-            // 未读左侧色条
-            Box(
-                modifier = Modifier
-                    .width(3.dp)
-                    .height(56.dp)
-                    .padding(top = 10.dp)
-                    .background(if (isRead) Color.Transparent else MaterialTheme.colorScheme.primary),
-            )
+private fun NoticeRow(notice: Notice, isRead: Boolean, isFav: Boolean, onOpen: () -> Unit, onToggleFav: () -> Unit) {
+    Column(Modifier.fillMaxWidth()) {
+        Row(modifier = Modifier.fillMaxWidth().height(IntrinsicSize.Min)) {
+            // 轴区：竖线通高，相邻条目首尾相接 → 整列连起来是一条连续的时间轴
+            Box(Modifier.width(14.dp).fillMaxHeight()) {
+                Box(Modifier.align(Alignment.Center).fillMaxHeight().width(1.dp).background(AppColors.line))
+                // 未读 = 实心朱红；已读 = 底色填充 + 细描边的空心点（直接画空心圈会露出里面的竖线）
+                val dot = Modifier.align(Alignment.TopCenter).padding(top = 10.dp).size(5.dp)
+                if (isRead) {
+                    Box(dot.background(AppColors.bg, CircleShape).border(Hairline, AppColors.muted, CircleShape))
+                } else {
+                    Box(dot.background(AppColors.accent, CircleShape))
+                }
+            }
             Column(
                 modifier = Modifier
                     .weight(1f)
                     .clickable { onOpen() }
-                    .padding(start = 10.dp, top = 11.dp, bottom = 11.dp),
+                    .padding(start = Space.s, end = Space.xs, top = 7.dp, bottom = 13.dp),
             ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        notice.sourceName,
-                        fontSize = 11.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
-                }
-                Spacer(Modifier.height(5.dp))
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    notice.tag?.let { tag ->
-                        Text(
-                            tag,
-                            fontSize = 11.sp,
-                            color = Color.White,
-                            modifier = Modifier
-                                .background(tagColor(tag), RoundedCornerShape(5.dp))
-                                .padding(horizontal = 6.dp, vertical = 1.dp),
-                        )
-                        Spacer(Modifier.width(6.dp))
-                    }
-                    Text(
-                        notice.title,
-                        fontSize = 14.5.sp,
-                        lineHeight = 21.sp,
-                        color = if (isRead) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurface,
-                        maxLines = 3,
-                        overflow = TextOverflow.Ellipsis,
-                    )
+                Text(
+                    notice.sourceName,
+                    style = Type.micro,
+                    color = AppColors.muted,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                Spacer(Modifier.height(4.dp))
+                Text(
+                    notice.title,
+                    style = Type.body,
+                    fontWeight = if (isRead) FontWeight.Normal else FontWeight.Medium,
+                    color = if (isRead) AppColors.ink2 else AppColors.ink,
+                    maxLines = 3,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                notice.tag?.let { tag ->
+                    Spacer(Modifier.height(7.dp))
+                    TagLabel(tag)
                 }
             }
-            TextButton(onClick = onToggleFav, modifier = Modifier.padding(end = 2.dp)) {
-                Text(if (isFav) "★" else "☆", fontSize = 20.sp, color = if (isFav) Color(0xFFF59F00) else MaterialTheme.colorScheme.onSurfaceVariant)
+            // 收藏用矢量星，不用 ★/☆ 字符：字符星在不同 ROM 里字重和基线都不一样
+            IconButton(
+                onClick = onToggleFav,
+                modifier = Modifier.padding(top = 1.dp, end = 2.dp).size(32.dp),
+            ) {
+                Icon(
+                    painter = painterResource(if (isFav) R.drawable.ic_star else R.drawable.ic_star_outline),
+                    contentDescription = if (isFav) "取消收藏" else "收藏",
+                    modifier = Modifier.size(16.dp),
+                    tint = if (isFav) AppColors.accent else AppColors.muted,
+                )
             }
         }
+        // 行分隔线从内容起点缩进：缩进 14dp 就是轴区宽度，线不穿过时间轴
+        Box(Modifier.padding(start = 14.dp).fillMaxWidth().height(Hairline).background(AppColors.line))
     }
+}
+
+/** 来源 tab：文字 + 计数 + 2dp 下划线，选中态只换字重和墨色，不铺底色。 */
+@Composable
+private fun NavTab(text: String, count: Int, active: Boolean, onClick: () -> Unit) {
+    val underline = if (active) AppColors.ink else Color.Transparent
+    // 下划线用 drawBehind 画，不用 fillMaxWidth 的 Box：横向滚动的 Row 给子项的宽度约束是无限，
+    // fillMaxWidth 遇到无限约束会退化成 0 宽，下划线会静默消失（第一版就是这么没的）。
+    Column(
+        modifier = Modifier
+            .clickable { onClick() }
+            .padding(top = Space.s)
+            .drawBehind {
+                if (underline.alpha > 0f) {
+                    val h = 2.dp.toPx()
+                    drawRect(
+                        color = underline,
+                        topLeft = Offset(0f, size.height - h),
+                        size = Size(size.width, h),
+                    )
+                }
+            },
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = text,
+                style = Type.label.copy(fontWeight = if (active) FontWeight.SemiBold else FontWeight.Normal),
+                color = if (active) AppColors.ink else AppColors.muted,
+                maxLines = 1,
+            )
+            Spacer(Modifier.width(5.dp))
+            Text("$count", style = Type.micro, color = AppColors.muted, maxLines = 1)
+        }
+        Spacer(Modifier.height(Space.s))
+    }
+}
+
+/** "2026-10-20" → "10 月 20 日 · 周二"。解析失败就原样返回（"日期未知" 这类占位不会崩）。 */
+private fun dayLabel(date: String): String = try {
+    val day = java.text.SimpleDateFormat("yyyy-MM-dd", java.util.Locale.CHINA).parse(date)
+    if (day == null) date else java.text.SimpleDateFormat("M 月 d 日 · EEE", java.util.Locale.CHINA).format(day)
+} catch (e: Exception) {
+    date
+}
+
+/** 标签只描边不铺底色。改版前是 6 个高饱和色块铺满，一屏 8 张卡就有 8 块彩色。 */
+@Composable
+private fun TagLabel(tag: String) {
+    val color = tagColor(tag)
+    Text(
+        text = tag,
+        style = Type.micro.copy(fontWeight = FontWeight.Medium),
+        color = color,
+        maxLines = 1,
+        overflow = TextOverflow.Ellipsis,
+        modifier = Modifier
+            .border(Hairline, color.copy(alpha = 0.5f), Shape.tag)
+            .padding(horizontal = 6.dp, vertical = 2.dp),
+    )
 }
 
 // ---------------------------------------------------------------- 统计
@@ -761,47 +926,62 @@ private fun StatsScreen(snapshot: Snapshot?) {
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
+        contentPadding = PaddingValues(horizontal = Space.page, vertical = Space.m),
+        verticalArrangement = Arrangement.spacedBy(Space.group),
     ) {
         item {
-            SettingsCard(title = "总览") {
-                Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        StatBox("${items.size}", "累计归档", Modifier.weight(1f))
-                        StatBox("$recent7", "最近 7 天", Modifier.weight(1f))
+            // 数字领读：六个关键数字 + 竖线分隔。报纸的数据版从不把数字装进彩色方块
+            Column {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    StatBox("${items.size}", "累计归档", Modifier.weight(1f))
+                    VDivider()
+                    StatBox("$recent7", "最近 7 天", Modifier.weight(1f))
+                    VDivider()
+                    StatBox("$recent30", "最近 30 天", Modifier.weight(1f))
+                }
+                Spacer(Modifier.height(Space.m))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    StatBox("${perDay.size}", "有新增的天数", Modifier.weight(1f))
+                    VDivider()
+                    StatBox(busiest?.let { "${it.value}" } ?: "0", "单日最多", Modifier.weight(1f))
+                    VDivider()
+                    StatBox("${snapshot?.bySource?.size ?: 0}", "覆盖来源", Modifier.weight(1f))
+                }
+                val foot = buildString {
+                    busiest?.let { append("单日最多是 ${dayLabel(it.key)}，${it.value} 条") }
+                    snapshot?.generatedAt?.takeIf { it.isNotEmpty() }?.let {
+                        if (isNotEmpty()) append("　·　")
+                        append("数据生成于 ${it.replace("T", " ").take(16)}")
                     }
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        StatBox("$recent30", "最近 30 天", Modifier.weight(1f))
-                        StatBox("${perDay.size} 天", "有新增的天数", Modifier.weight(1f))
-                    }
-                    Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        StatBox(busiest?.let { "${it.value}" } ?: "0", busiest?.let { "单日最多（${it.key}）" } ?: "单日最多", Modifier.weight(1f))
-                        StatBox("${snapshot?.bySource?.size ?: 0}", "覆盖来源", Modifier.weight(1f))
-                    }
+                }
+                if (foot.isNotEmpty()) {
+                    Spacer(Modifier.height(Space.s))
+                    Text(foot, style = Type.micro, color = AppColors.muted)
                 }
             }
         }
         item {
-            SettingsCard(title = "最近 14 天发现量") {
-                BarRow(labels = trend.map { it.first.takeLast(2) }, values = trend.map { it.second })
-            }
+            SectionTitle("最近 14 天发现量", "朱红为今天")
+            BarRow(
+                labels = trend.map { it.first.takeLast(2) },
+                values = trend.map { it.second },
+                highlightIndex = trend.lastIndex,
+            )
         }
         item {
-            SettingsCard(title = "按来源") {
-                BarList(snapshot?.bySource?.map { it.sourceName to it.count } ?: emptyList())
-            }
+            SectionTitle("按来源", "${snapshot?.bySource?.size ?: 0} 个")
+            BarList(snapshot?.bySource?.map { it.sourceName to it.count } ?: emptyList())
         }
         item {
-            SettingsCard(title = "按标签") {
-                BarList(tags.map { it.first to it.second })
-            }
+            SectionTitle("按标签", "${tags.size} 类")
+            BarList(tags.map { it.first to it.second }, tagColored = true)
         }
         item {
-            SettingsCard(title = "星期分布（学校习惯哪天发通知）") {
-                val names = listOf("日", "一", "二", "三", "四", "五", "六")
-                BarRow(labels = names, values = weekdays)
-            }
+            val names = listOf("日", "一", "二", "三", "四", "五", "六")
+            // 今天落在星期轴的哪一格：与 weekdays 的 Calendar.DAY_OF_WEEK - 1 同一套下标
+            val todayIdx = remember { Calendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1 }
+            SectionTitle("星期分布", "今天是周${names[todayIdx]}")
+            BarRow(labels = names, values = weekdays, highlightIndex = todayIdx)
         }
     }
 }
@@ -815,81 +995,117 @@ private fun parseTime(iso: String): Long = try {
     0L
 }
 
+/** 栏目名 + 通栏细线：统计页的骨架，比卡片更像"报刊的一个版块"。 */
+@Composable
+private fun SectionTitle(title: String, note: String? = null) {
+    Column(Modifier.fillMaxWidth().padding(bottom = Space.m)) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(title, style = Type.label, fontWeight = FontWeight.SemiBold, color = AppColors.ink)
+            Spacer(Modifier.weight(1f))
+            if (note != null) Text(note, style = Type.micro, color = AppColors.muted, maxLines = 1)
+        }
+        Spacer(Modifier.height(6.dp))
+        Box(Modifier.fillMaxWidth().height(Hairline).background(AppColors.line))
+    }
+}
+
+/** 数字之间的竖线：代替色块分隔 */
+@Composable
+private fun VDivider() {
+    Box(Modifier.padding(horizontal = Space.m).width(Hairline).height(32.dp).background(AppColors.line))
+}
+
 @Composable
 private fun StatBox(value: String, label: String, modifier: Modifier = Modifier) {
-    Column(
-        modifier = modifier
-            .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(10.dp))
-            .padding(horizontal = 12.dp, vertical = 10.dp),
-    ) {
-        Text(value, fontSize = 19.sp, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onSurface)
-        Spacer(Modifier.height(2.dp))
-        Text(label, fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, maxLines = 1, overflow = TextOverflow.Ellipsis)
+    // 数字给到 display 级、说明压到 micro：读统计页时最先要的是数字本身
+    Column(modifier = modifier) {
+        Text(
+            value,
+            style = Type.display,
+            color = AppColors.ink,
+            maxLines = 1,
+            overflow = TextOverflow.Ellipsis,
+        )
+        Text(label, style = Type.micro, color = AppColors.muted, maxLines = 1, overflow = TextOverflow.Ellipsis)
     }
 }
 
 @Composable
-private fun BarRow(labels: List<String>, values: List<Int>) {
+private fun BarRow(labels: List<String>, values: List<Int>, highlightIndex: Int? = null) {
     val max = (values.maxOrNull() ?: 1).coerceAtLeast(1)
-    Row(
-        modifier = Modifier.fillMaxWidth().height(96.dp),
-        verticalAlignment = Alignment.Bottom,
-        horizontalArrangement = Arrangement.spacedBy(4.dp),
-    ) {
-        labels.forEachIndexed { i, label ->
-            val v = values.getOrElse(i) { 0 }
-            Column(
-                modifier = Modifier.weight(1f),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Bottom,
-            ) {
+    Column {
+        Row(
+            modifier = Modifier.fillMaxWidth().height(64.dp),
+            verticalAlignment = Alignment.Bottom,
+            horizontalArrangement = Arrangement.spacedBy(3.dp),
+        ) {
+            labels.forEachIndexed { i, _ ->
+                val v = values.getOrElse(i) { 0 }
+                val mark = highlightIndex == i
                 Box(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height((72 * (v.toFloat() / max)).coerceAtLeast(2f).dp)
-                        .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(topStart = 4.dp, topEnd = 4.dp)),
+                        .weight(1f)
+                        .height((64f * v / max).coerceAtLeast(if (v > 0) 2f else 0f).dp)
+                        // 直角、墨色：圆角柱状图是"仪表盘"，直角柱状图是"统计表"
+                        .background(if (mark) AppColors.accent else AppColors.ink2.copy(alpha = 0.7f)),
                 )
-                Spacer(Modifier.height(4.dp))
-                Text(label, fontSize = 10.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
+        }
+        Box(Modifier.fillMaxWidth().height(1.dp).background(AppColors.line))
+        Spacer(Modifier.height(5.dp))
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(3.dp)) {
+            labels.forEachIndexed { i, label ->
+                Text(
+                    label,
+                    style = Type.micro,
+                    color = if (highlightIndex == i) AppColors.accent else AppColors.muted,
+                    textAlign = TextAlign.Center,
+                    maxLines = 1,
+                    modifier = Modifier.weight(1f),
+                )
             }
         }
     }
 }
 
 @Composable
-private fun BarList(rows: List<Pair<String, Int>>) {
+private fun BarList(rows: List<Pair<String, Int>>, tagColored: Boolean = false) {
     if (rows.isEmpty()) {
-        Text("还没有数据", fontSize = 13.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+        Text("还没有数据", style = Type.micro, color = AppColors.muted)
         return
     }
     val max = (rows.maxOfOrNull { it.second } ?: 1).coerceAtLeast(1)
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(verticalArrangement = Arrangement.spacedBy(9.dp)) {
         rows.forEach { (name, count) ->
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
                     name,
-                    fontSize = 12.5.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    style = Type.micro,
+                    color = AppColors.ink2,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
-                    modifier = Modifier.width(120.dp),
+                    modifier = Modifier.width(92.dp),
                 )
-                Spacer(Modifier.width(8.dp))
+                Spacer(Modifier.width(Space.s))
+                // 底槽压到极淡：它是参照刻度，不是进度条的"未完成部分"
                 Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(9.dp)
-                        .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(20.dp)),
+                    modifier = Modifier.weight(1f).height(3.dp).background(AppColors.line.copy(alpha = 0.45f)),
                 ) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth(count.toFloat() / max)
-                            .height(9.dp)
-                            .background(MaterialTheme.colorScheme.primary, RoundedCornerShape(20.dp)),
+                            .height(3.dp)
+                            .background(if (tagColored) tagColor(name) else AppColors.ink2.copy(alpha = 0.75f)),
                     )
                 }
-                Spacer(Modifier.width(8.dp))
-                Text("$count", fontSize = 12.5.sp, color = MaterialTheme.colorScheme.onSurface)
+                Spacer(Modifier.width(Space.s))
+                Text(
+                    "$count",
+                    style = Type.micro,
+                    color = AppColors.muted,
+                    textAlign = TextAlign.End,
+                    modifier = Modifier.width(34.dp),
+                )
             }
         }
     }
@@ -902,19 +1118,60 @@ private fun openUrl(context: android.content.Context, url: String) {
     runCatching { context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(url))) }
 }
 
+/**
+ * 设置页的一"节"：栏目名（小字、拉开字距）+ 通栏细线 + 内容。
+ * 不加卡片外框 —— 设置页是"书的目录页"，四块浮起的白卡是最典型的模板味。
+ */
 @Composable
-private fun SettingsCard(title: String, content: @Composable () -> Unit) {
-    Card(
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        shape = RoundedCornerShape(14.dp),
-        modifier = Modifier.fillMaxWidth(),
-    ) {
-        Column(modifier = Modifier.padding(14.dp)) {
-            Text(title, fontSize = 12.5.sp, color = MaterialTheme.colorScheme.onSurfaceVariant, fontWeight = FontWeight.SemiBold)
-            Spacer(Modifier.height(10.dp))
-            content()
-        }
+private fun SettingsSection(title: String, content: @Composable ColumnScope.() -> Unit) {
+    Column(Modifier.fillMaxWidth()) {
+        Text(
+            title,
+            style = Type.micro.copy(fontWeight = FontWeight.Medium, letterSpacing = 0.06.em),
+            color = AppColors.muted,
+        )
+        Spacer(Modifier.height(6.dp))
+        Box(Modifier.fillMaxWidth().height(Hairline).background(AppColors.line))
+        Spacer(Modifier.height(Space.s))
+        content()
     }
+}
+
+/** 主操作：细墨框 + 墨字。实心色块留给"整个界面只能有一个"的动作。 */
+@Composable
+private fun ActionButton(
+    text: String,
+    enabled: Boolean = true,
+    primary: Boolean = false,
+    onClick: () -> Unit,
+) {
+    Text(
+        text,
+        style = Type.label.copy(fontWeight = if (primary) FontWeight.SemiBold else FontWeight.Normal),
+        color = if (!enabled) AppColors.muted else if (primary) AppColors.ink else AppColors.ink2,
+        modifier = Modifier
+            .clip(Shape.control)
+            .border(Hairline, if (primary) AppColors.ink else AppColors.line, Shape.control)
+            .clickable(enabled = enabled) { onClick() }
+            .padding(horizontal = 14.dp, vertical = 7.dp),
+    )
+}
+
+/** 次操作：文字 + 下划线。纸上的链接就是这样，没有按钮壳。
+ *  注意：这里不能用 Box(fillMaxWidth) 画下划线 —— 在 Row 里它会吃掉全部剩余宽度，
+ *  把后面的兄弟挤到屏幕外（真机上"清除收藏"整个消失）。用 TextDecoration 最稳。 */
+@Composable
+private fun TextLink(text: String, onClick: () -> Unit) {
+    Text(
+        text,
+        style = Type.label,
+        color = AppColors.ink2,
+        textDecoration = TextDecoration.Underline,
+        modifier = Modifier
+            .clip(Shape.control)
+            .clickable { onClick() }
+            .padding(vertical = 7.dp, horizontal = 2.dp),
+    )
 }
 
 // ---------------------------------------------------------------- 学校 / 学院选择
@@ -939,61 +1196,70 @@ private fun unitRows(units: List<SchoolUnit>, maxWidth: Int = 300): List<List<Sc
     return rows
 }
 
-/** 学校目录里的一行：校名 + 层次 + 省份城市 + 已接入/待接入（待接入只解释，不假装能切） */
+/** 学校目录里的一行：左墨线标记选中，校名 + 层次 + 省市 + 已接入/待接入。 */
 @Composable
 private fun SchoolOptionRow(school: SchoolInfo, selected: Boolean, onClick: () -> Unit) {
-    Column(
+    Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(
-                if (selected) MaterialTheme.colorScheme.surfaceVariant else Color.Transparent,
-                RoundedCornerShape(10.dp),
-            )
+            .background(if (selected) AppColors.sunken else Color.Transparent)
             .clickable { onClick() }
-            .padding(horizontal = 10.dp, vertical = 8.dp),
+            .padding(horizontal = 6.dp, vertical = 7.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Text(
-                school.name,
-                fontSize = 13.5.sp,
-                fontWeight = FontWeight.SemiBold,
-                color = if (school.active) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurfaceVariant,
-            )
-            // 官方标签（双一流 / 民办）—— 比"层次"更值得第一眼看到
-            school.tag?.let { t ->
-                Spacer(Modifier.width(6.dp))
+        // 选中用朱红竖线，不用整块圆角底 —— 目录里"点了哪个"应该像划了一道记号
+        Box(Modifier.width(2.dp).height(30.dp).background(if (selected) AppColors.accent else Color.Transparent))
+        Spacer(Modifier.width(8.dp))
+        Column(Modifier.weight(1f)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(
-                    t,
-                    fontSize = 10.5.sp,
-                    color = if (t == "双一流") Color(0xFF2F6FED) else MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier
-                        .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(20.dp))
-                        .padding(horizontal = 6.dp, vertical = 1.dp),
+                    school.name,
+                    style = Type.label.copy(fontWeight = FontWeight.SemiBold),
+                    color = if (school.active) AppColors.ink else AppColors.muted,
+                    maxLines = 1,
+                    overflow = TextOverflow.Ellipsis,
+                )
+                // 官方标签（双一流 / 民办）—— 比"层次"更值得第一眼看到
+                school.tag?.let { t ->
+                    Spacer(Modifier.width(6.dp))
+                    Text(
+                        t,
+                        style = Type.micro,
+                        color = AppColors.ink2,
+                        maxLines = 1,
+                        modifier = Modifier
+                            .clip(Shape.tag)
+                            .border(Hairline, AppColors.line, Shape.tag)
+                            .padding(horizontal = 5.dp, vertical = 1.dp),
+                    )
+                }
+                // 本科是默认预期，只有专科/成人这种"和你以为的不一样"才标出来
+                if (school.level.isNotEmpty() && school.level != "本科") {
+                    Spacer(Modifier.width(6.dp))
+                    Text(
+                        school.level,
+                        style = Type.micro,
+                        color = AppColors.muted,
+                        maxLines = 1,
+                        modifier = Modifier
+                            .clip(Shape.tag)
+                            .border(Hairline, AppColors.line, Shape.tag)
+                            .padding(horizontal = 5.dp, vertical = 1.dp),
+                    )
+                }
+            }
+            Spacer(Modifier.height(2.dp))
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                if (school.where.isNotEmpty()) {
+                    Text(school.where, style = Type.micro, color = AppColors.muted, maxLines = 1)
+                    Spacer(Modifier.width(8.dp))
+                }
+                Text(
+                    if (school.active) "已接入" + (if (school.total > 0) " · ${school.total} 条" else "") else "待接入",
+                    style = Type.micro,
+                    color = if (school.active) AppColors.ink2 else AppColors.muted,
                 )
             }
-            // 本科是默认预期，只有专科/成人这种"和你以为的不一样"才标出来
-            if (school.level.isNotEmpty() && school.level != "本科") {
-                Spacer(Modifier.width(6.dp))
-                Text(
-                    school.level,
-                    fontSize = 10.5.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier
-                        .background(MaterialTheme.colorScheme.surfaceVariant, RoundedCornerShape(20.dp))
-                        .padding(horizontal = 6.dp, vertical = 1.dp),
-                )
-            }
-        }
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            if (school.where.isNotEmpty()) {
-                Text(school.where, fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                Spacer(Modifier.width(8.dp))
-            }
-            Text(
-                if (school.active) "已接入" + (if (school.total > 0) " · ${school.total} 条" else "") else "待接入",
-                fontSize = 11.sp,
-                color = if (school.active) Color(0xFF2F9E44) else MaterialTheme.colorScheme.onSurfaceVariant,
-            )
         }
     }
 }
@@ -1029,39 +1295,42 @@ private fun SchoolPickerCard(
     // 学院面板优先跟着"待确认的学校"；没有待确认的就跟着当前学校（老用户也能补勾学院）
     val viewing = pending ?: schoolIndex?.firstOrNull { it.id == schoolId }
 
-    SettingsCard(title = "学校 / 学院") {
-        Column {
+    SettingsSection("学校 / 学院") {
+        // 展开选校面板时高度会突变上百 dp，animateContentSize 让它是"掀开"而不是"跳一下"
+        Column(Modifier.animateContentSize(animationSpec = tween(180))) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
                     Text(
-                        if (schoolId.isEmpty()) {
-                            "未选择（正在显示默认学校）"
-                        } else {
-                            "当前：$schoolName" + (if (units.isEmpty()) "（还没勾选学院）" else "（已选 ${units.size} 个学院）")
-                        },
-                        fontSize = 14.sp,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        // 没进设置选过也已经在用了（默认学校），别显示成"未选择"让人以为没生效
+                        if (schoolName.isNotEmpty()) schoolName else "未选择学校",
+                        style = Type.body,
+                        color = AppColors.ink,
                     )
-                    Spacer(Modifier.height(2.dp))
+                    Spacer(Modifier.height(3.dp))
                     Text(
-                        "切换后列表只显示该校数据；学院默认全不选（勾了才显示）",
-                        fontSize = 11.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        when {
+                            schoolId.isEmpty() && units.isEmpty() -> "默认学校 · 还没勾选学院"
+                            schoolId.isEmpty() -> "默认学校 · 已选 ${units.size} 个学院"
+                            units.isEmpty() -> "还没勾选学院 · 现在显示该校全部通知"
+                            else -> "已选 ${units.size} 个学院 · 切换后只显示该校数据"
+                        },
+                        style = Type.micro,
+                        color = AppColors.muted,
                     )
                 }
-                TextButton(onClick = {
+                ActionButton(if (open) "收起" else "选择") {
                     open = !open
                     if (open) onNeedIndex()
-                }) { Text(if (open) "收起" else "选择", fontSize = 13.sp) }
+                }
             }
 
             if (open) {
-                Spacer(Modifier.height(8.dp))
+                Spacer(Modifier.height(Space.m))
                 OutlinedTextField(
                     value = query,
                     onValueChange = { query = it },
                     singleLine = true,
-                    placeholder = { Text("搜索学校：校名 / 省份 / 城市（如 成都、电子科技）", fontSize = 13.sp) },
+                    placeholder = { Text("搜索学校：校名 / 省份 / 城市（如 成都、电子科技）", style = Type.label, color = AppColors.muted) },
                     modifier = Modifier.fillMaxWidth(),
                 )
                 Spacer(Modifier.height(6.dp))
@@ -1070,8 +1339,8 @@ private fun SchoolPickerCard(
                 if (list == null) {
                     Text(
                         if (indexLoading) "正在取学校目录…" else "学校目录取不到（镜像/网络问题），稍后再试",
-                        fontSize = 12.5.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = Type.label,
+                        color = AppColors.muted,
                     )
                 } else {
                     // 命中数要报给用户（名单有 3167 所），所以先取全量再截断显示
@@ -1082,15 +1351,15 @@ private fun SchoolPickerCard(
                         } else {
                             "匹配 ${matched.size} 所" + if (matched.size > 40) "（只显示前 40 所，继续输入可缩小范围）" else ""
                         },
-                        fontSize = 11.5.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = Type.micro,
+                        color = AppColors.muted,
                     )
                     val hit = matched.take(40)
                     if (hit.isEmpty()) {
                         Text(
                             "没找到匹配的学校。可试试校名、省份或城市（例如 成都、电子科技）",
-                            fontSize = 12.5.sp,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            style = Type.label,
+                            color = AppColors.muted,
                         )
                     }
                     hit.forEach { s ->
@@ -1115,16 +1384,15 @@ private fun SchoolPickerCard(
 
                 viewing?.let { s ->
                     if (s.units.isNotEmpty()) {
-                        Spacer(Modifier.height(10.dp))
+                        Spacer(Modifier.height(Space.m))
                         Text(
                             "${s.name} · 学院 / 栏目",
-                            fontSize = 12.5.sp,
-                            fontWeight = FontWeight.SemiBold,
-                            color = MaterialTheme.colorScheme.onSurface,
+                            style = Type.label.copy(fontWeight = FontWeight.SemiBold),
+                            color = AppColors.ink,
                         )
                         Spacer(Modifier.height(2.dp))
-                        Text("默认全不选，勾选你关心的（可多选）", fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                        Spacer(Modifier.height(6.dp))
+                        Text("默认全不选，勾选你关心的（可多选）", style = Type.micro, color = AppColors.muted)
+                        Spacer(Modifier.height(8.dp))
                         unitRows(s.units).forEach { row ->
                             Row(
                                 modifier = Modifier
@@ -1144,46 +1412,41 @@ private fun SchoolPickerCard(
                             }
                         }
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            TextButton(onClick = { onUnitsChange(s.units.map { it.name }.toSet()) }) {
-                                Text("全选", fontSize = 12.5.sp)
-                            }
-                            TextButton(onClick = { onUnitsChange(emptySet()) }) {
-                                Text("全不选", fontSize = 12.5.sp)
-                            }
+                            TextLink("全选") { onUnitsChange(s.units.map { it.name }.toSet()) }
+                            Spacer(Modifier.width(Space.m))
+                            TextLink("全不选") { onUnitsChange(emptySet()) }
                         }
                     } else if (s.active) {
                         Spacer(Modifier.height(8.dp))
                         Text(
                             "这所学校没有学院/栏目数据，选中后直接显示该校全部通知。",
-                            fontSize = 11.5.sp,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            style = Type.micro,
+                            color = AppColors.muted,
                         )
                     }
                 }
 
                 note?.let {
-                    Spacer(Modifier.height(4.dp))
-                    Text(it, fontSize = 11.5.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    Spacer(Modifier.height(6.dp))
+                    Text(it, style = Type.micro, color = AppColors.muted)
                 }
 
                 // 还没接入的学校：让需求一键变成 issue（校名已预填），别让用户干看着
                 requestFor?.let { s ->
-                    TextButton(onClick = { openUrl(context, requestIssueUrl(s.name)) }) {
-                        Text("申请接入这所学校 ›", fontSize = 12.5.sp)
-                    }
+                    Spacer(Modifier.height(4.dp))
+                    TextLink("申请接入这所学校") { openUrl(context, requestIssueUrl(s.name)) }
+                    Spacer(Modifier.height(4.dp))
                     Text(
                         "接入方法见仓库 docs/add-your-school.md —— 大多数站点一段 YAML 就行",
-                        fontSize = 11.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        style = Type.micro,
+                        color = AppColors.muted,
                     )
                 }
 
                 val ready = pending
                 if (ready != null && ready.active) {
-                    Spacer(Modifier.height(8.dp))
-                    Button(onClick = { asking = true }, modifier = Modifier.fillMaxWidth()) {
-                        Text("确认切换到「${ready.name}」", fontSize = 13.sp)
-                    }
+                    Spacer(Modifier.height(Space.m))
+                    ActionButton("确认切换到「${ready.name}」", primary = true) { asking = true }
                 }
             }
         }
@@ -1194,14 +1457,14 @@ private fun SchoolPickerCard(
     if (asking && target != null) {
         AlertDialog(
             onDismissRequest = { asking = false },
-            title = { Text("切换到「${target.name}」？", fontSize = 15.sp) },
+            title = { Text("切换到「${target.name}」？", style = Type.body, fontWeight = FontWeight.SemiBold, color = AppColors.ink) },
             text = {
                 val unitText = if (units.isEmpty()) {
                     "（还没勾选学院，列表会提示你先勾选）"
                 } else {
                     "（已选 ${units.size} 个学院：${units.joinToString("、")}）"
                 }
-                Text("将立即刷新为该学校的通知" + unitText, fontSize = 13.sp)
+                Text("将立即刷新为该学校的通知" + unitText, style = Type.label, color = AppColors.ink2)
             },
             confirmButton = {
                 TextButton(onClick = {
@@ -1242,13 +1505,13 @@ private fun SettingsScreen(
     val context = LocalContext.current
 
     var remoteVersion by remember { mutableStateOf<String?>(null) }
-    var versionHint by remember { mutableStateOf("点右侧按钮检查线上版本") }
+    var versionHint by remember { mutableStateOf("还没检查过") }
     var busy by remember { mutableStateOf(false) }
 
     LazyColumn(
         modifier = Modifier.fillMaxSize(),
-        contentPadding = PaddingValues(horizontal = 12.dp, vertical = 6.dp),
-        verticalArrangement = Arrangement.spacedBy(10.dp),
+        contentPadding = PaddingValues(horizontal = Space.page, vertical = Space.m),
+        verticalArrangement = Arrangement.spacedBy(Space.group),
     ) {
         // 学校 / 学院（选校功能；放在最前面，因为"看哪所学校"决定了下面一切）
         item {
@@ -1266,96 +1529,93 @@ private fun SettingsScreen(
 
         // 应用更新
         item {
-            SettingsCard(title = "应用更新") {
-                Column {
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Column(Modifier.weight(1f)) {
-                            Text("当前版本 v${store.appVersion()}", fontSize = 14.sp, color = MaterialTheme.colorScheme.onSurface)
-                            Spacer(Modifier.height(2.dp))
-                            Text(versionHint, fontSize = 11.sp, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            SettingsSection("应用更新") {
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Column(Modifier.weight(1f)) {
+                        Text("当前版本 v${store.appVersion()}", style = Type.body, color = AppColors.ink)
+                        Spacer(Modifier.height(3.dp))
+                        Text(versionHint, style = Type.micro, color = AppColors.muted)
+                    }
+                    ActionButton("检查更新", enabled = !busy) {
+                        scope.launch {
+                            busy = true
+                            versionHint = "检查中…"
+                            val remote = withContext(Dispatchers.IO) { store.remoteVersion() }
+                            busy = false
+                            remoteVersion = remote
+                            versionHint = when {
+                                remote == null -> "连不上版本服务器（离线也能正常用）"
+                                // 必须按数字比较：字符串比较会把 0.10.3 当成比 0.8.0 旧（老 bug）
+                                compareVersions(remote, store.appVersion()) > 0 -> "发现新版本 v$remote"
+                                else -> "已是最新（检查时间 ${SimpleDateFormat("HH:mm:ss", Locale.US).format(Date())}）"
+                            }
                         }
-                        TextButton(
-                            enabled = !busy,
-                            onClick = {
-                                scope.launch {
-                                    busy = true
-                                    versionHint = "检查中…"
-                                    val remote = withContext(Dispatchers.IO) { store.remoteVersion() }
-                                    busy = false
-                                    remoteVersion = remote
-                                    versionHint = when {
-                                        remote == null -> "连不上版本服务器（离线也能正常用）"
-                                        // 必须按数字比较：字符串比较会把 0.10.3 当成比 0.8.0 旧（老 bug）
-                                        compareVersions(remote, store.appVersion()) > 0 -> "发现新版本 v$remote"
-                                        else -> "已是最新（检查时间 ${SimpleDateFormat("HH:mm:ss", Locale.US).format(Date())}）"
-                                    }
-                                }
-                            },
-                        ) { Text("检查更新", fontSize = 13.sp) }
                     }
-                    val remote = remoteVersion
-                    if (remote != null && compareVersions(remote, store.appVersion()) > 0) {
-                        Spacer(Modifier.height(8.dp))
-                        InAppUpdateRow(version = remote, apkUrl = store.apkUrl())
-                    }
+                }
+                val remote = remoteVersion
+                if (remote != null && compareVersions(remote, store.appVersion()) > 0) {
+                    Spacer(Modifier.height(Space.m))
+                    InAppUpdateRow(version = remote, apkUrl = store.apkUrl())
                 }
             }
         }
 
         // 数据
         item {
-            SettingsCard(title = "通知数据") {
-                Column {
+            SettingsSection("通知数据") {
+                Row(verticalAlignment = Alignment.Bottom) {
+                    Text("${snapshot?.items?.size ?: 0}", style = Type.display, color = AppColors.ink)
+                    Spacer(Modifier.width(6.dp))
                     Text(
-                        "${snapshot?.items?.size ?: 0} 条 · 数据时间 ${snapshot?.generatedAt?.replace("T", " ")?.take(16) ?: "-"} UTC",
-                        fontSize = 12.5.sp,
-                        color = MaterialTheme.colorScheme.onSurface,
+                        "条 · 数据时间 ${snapshot?.generatedAt?.replace("T", " ")?.take(16) ?: "-"} UTC",
+                        style = Type.micro,
+                        color = AppColors.muted,
+                        modifier = Modifier.padding(bottom = 6.dp),
                     )
-                    Spacer(Modifier.height(2.dp))
-                    Text(
-                        if (schoolId.isNotEmpty()) {
-                            "来源：$schoolName 的学校数据 · ${store.schoolSource().ifEmpty { "本机缓存" }}（打开应用不联网，联网时按镜像自动刷新）"
-                        } else {
-                            "来源：${store.dataSource}（打开应用不联网，联网时按镜像自动刷新）"
-                        },
-                        fontSize = 11.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
-                    Spacer(Modifier.height(10.dp))
-                    Row {
-                        Button(onClick = onRefreshData, enabled = !busy) { Text("立即刷新", fontSize = 13.sp) }
-                        Spacer(Modifier.width(10.dp))
-                        TextButton(onClick = onClearRead) { Text("清除已读", fontSize = 13.sp) }
-                        TextButton(onClick = onClearFav) { Text("清除收藏", fontSize = 13.sp) }
-                    }
+                }
+                Spacer(Modifier.height(4.dp))
+                Text(
+                    if (schoolId.isNotEmpty()) {
+                        "来源：$schoolName 的学校数据 · ${store.schoolSource().ifEmpty { "本机缓存" }}（打开应用不联网，联网时按镜像自动刷新）"
+                    } else {
+                        "来源：${store.dataSource}（打开应用不联网，联网时按镜像自动刷新）"
+                    },
+                    style = Type.micro,
+                    color = AppColors.muted,
+                )
+                Spacer(Modifier.height(Space.m))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    ActionButton("立即刷新", enabled = !busy, primary = true) { onRefreshData() }
+                    Spacer(Modifier.width(Space.m))
+                    TextLink("清除已读") { onClearRead() }
+                    Spacer(Modifier.width(Space.m))
+                    TextLink("清除收藏") { onClearFav() }
                 }
             }
         }
 
         // 关于（注意：应用内不出现"安装到手机"的引导，那是给网页版访客看的）
         item {
-            SettingsCard(title = "关于") {
-                Column {
-                    Text(
-                        "这是 Android 原生应用：界面与当前数据都打包在应用内，打开不需要联网，也不会跳浏览器。",
-                        fontSize = 12.5.sp,
-                        color = MaterialTheme.colorScheme.onSurface,
-                        lineHeight = 19.sp,
-                    )
-                    Spacer(Modifier.height(8.dp))
-                    Text(
-                        "数据由 notice-radar 定时抓取（只抓公开页面、不登录、不存个人信息），" +
-                            "站点结构变更可能导致漏抓，请以学校官网原文为准。",
-                        fontSize = 11.5.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        lineHeight = 18.sp,
-                    )
-                    Spacer(Modifier.height(8.dp))
-                    TextButton(onClick = {
-                        runCatching {
-                            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/$REPO_SLUG")))
-                        }
-                    }) { Text("打开项目主页", fontSize = 13.sp) }
+            SettingsSection("关于") {
+                Text(
+                    "这是 Android 原生应用：界面与当前数据都打包在应用内，打开不需要联网，也不会跳浏览器。",
+                    style = Type.label,
+                    color = AppColors.ink2,
+                    lineHeight = 20.sp,
+                )
+                Spacer(Modifier.height(Space.s))
+                Text(
+                    "数据由 notice-radar 定时抓取（只抓公开页面、不登录、不存个人信息），" +
+                        "站点结构变更可能导致漏抓，请以学校官网原文为准。",
+                    style = Type.micro,
+                    color = AppColors.muted,
+                    lineHeight = 18.sp,
+                )
+                Spacer(Modifier.height(Space.s))
+                TextLink("打开项目主页") {
+                    runCatching {
+                        context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/$REPO_SLUG")))
+                    }
                 }
             }
         }

@@ -78,7 +78,7 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>${escapeHtml(title)}</title>
 <meta name="description" content="高校官网通知的自动归档与检索：notice-radar 定时抓取，手机上可添加到主屏幕当应用用。">
-<meta name="theme-color" id="theme-color" content="#1f2a3d">
+<meta name="theme-color" id="theme-color" content="#FBFAF7">
 <meta name="color-scheme" content="light dark">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="${escapeHtml(title)}">
@@ -99,31 +99,48 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
   })();
 </script>
 <style>
+  /* 色板与 Android 端 ui/Tokens.kt 同源：纸感底色 + 朱红点缀，深浅两套。
+     --bar 是 --sunken 的旧别名，历史样式里还在用，保留避免大改。 */
   :root {
-    --bg:#eef1f6; --card:#fff; --ink:#1f2a3d; --muted:#868e96; --line:#e9ecf1;
-    --accent:#1c7ed6; --bar:#f1f3f5;
+    --bg:#FBFAF7; --card:#FFFFFF; --sunken:#F2EDE5; --ink:#1A1A1A; --ink2:#3F3F3F;
+    --muted:#6E6A63; --line:#E7E2D8; --accent:#B23A2E; --bar:#F2EDE5;
+    --tag-exam:#A63D2F; --tag-teach:#2F5D7C; --tag-student:#3F6B4A;
+    --tag-practice:#5E5680; --tag-academic:#2F6F6B; --tag-other:#6E6A63;
   }
   @media (prefers-color-scheme: dark) {
-    :root { --bg:#12161f; --card:#1b212c; --ink:#e9ecef; --muted:#909aa6; --line:#2a313d; --accent:#4dabf7; --bar:#2a313d; }
+    :root { --bg:#151311; --card:#1D1A17; --sunken:#231F1B; --ink:#EDE9E2; --ink2:#C9C4BA;
+      --muted:#9A948A; --line:#2C2822; --accent:#D9614F; --bar:#231F1B;
+      --tag-exam:#D97A6B; --tag-teach:#7BA7C4; --tag-student:#7FB08C;
+      --tag-practice:#9C93BE; --tag-academic:#6FB3AE; --tag-other:#9A948A; }
   }
-  html.dark { --bg:#12161f; --card:#1b212c; --ink:#e9ecef; --muted:#909aa6; --line:#2a313d; --accent:#4dabf7; --bar:#2a313d; }
-  html.light { --bg:#eef1f6; --card:#fff; --ink:#1f2a3d; --muted:#868e96; --line:#e9ecf1; --accent:#1c7ed6; --bar:#f1f3f5; }
+  html.dark { --bg:#151311; --card:#1D1A17; --sunken:#231F1B; --ink:#EDE9E2; --ink2:#C9C4BA;
+    --muted:#9A948A; --line:#2C2822; --accent:#D9614F; --bar:#231F1B;
+    --tag-exam:#D97A6B; --tag-teach:#7BA7C4; --tag-student:#7FB08C;
+    --tag-practice:#9C93BE; --tag-academic:#6FB3AE; --tag-other:#9A948A; }
+  html.light { --bg:#FBFAF7; --card:#FFFFFF; --sunken:#F2EDE5; --ink:#1A1A1A; --ink2:#3F3F3F;
+    --muted:#6E6A63; --line:#E7E2D8; --accent:#B23A2E; --bar:#F2EDE5;
+    --tag-exam:#A63D2F; --tag-teach:#2F5D7C; --tag-student:#3F6B4A;
+    --tag-practice:#5E5680; --tag-academic:#2F6F6B; --tag-other:#6E6A63; }
 
   * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
   html, body { max-width:100%; overflow-x:hidden; }
   body { margin:0; background:var(--bg); color:var(--ink);
-    font-family:"Microsoft YaHei","PingFang SC","Segoe UI",system-ui,sans-serif;
+    /* 系统 UI 字体优先：Windows/macOS/Android 各用平台自带字体，
+       以前 "Microsoft YaHei" 打头会让整站无论在哪台机器都长得像办公软件 */
+    font-family:system-ui,-apple-system,"PingFang SC","Noto Sans SC","Microsoft YaHei",sans-serif;
+    -webkit-font-smoothing:antialiased;
     padding-bottom:calc(66px + env(safe-area-inset-bottom)); }
 
   .topbar { position:sticky; top:0; z-index:20; display:flex; align-items:center; gap:9px;
     padding:calc(10px + env(safe-area-inset-top)) 14px 10px;
     background:var(--card); border-bottom:1px solid var(--line); }
-  .brand { font-weight:700; font-size:16px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; }
-  .pill { font-size:11.5px; color:var(--muted); background:var(--bar); padding:3px 9px; border-radius:999px;
+  .brand { font-weight:700; font-size:17px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; min-width:0; }
+  .pill { font-size:11px; color:var(--muted); background:var(--bar); padding:3px 9px; border-radius:999px;
     white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .grow { flex:1 1 auto; min-width:0; }
   .iconbtn { border:1px solid var(--line); background:var(--card); color:var(--ink); white-space:nowrap;
-    border-radius:10px; padding:7px 11px; font-size:13px; cursor:pointer; }
+    border-radius:10px; padding:7px 11px; font-size:13px; cursor:pointer;
+    display:inline-flex; align-items:center; justify-content:center; gap:5px; }
   .iconbtn:active { transform:scale(.97); }
   /* 窄屏顶栏放不下时收起统计药丸（未读数在标签栏也有），保证品牌与按钮不折行 */
   @media (max-width:440px) { .pill { display:none; } }
@@ -133,15 +150,15 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
 
   /* 安装横幅：只在 Android 上出现，可关掉（选择记在本机） */
   .installbanner { display:flex; align-items:center; gap:10px; margin-bottom:10px; padding:11px 13px;
-    border-radius:14px; background:linear-gradient(135deg,#2b3a55,#1f2a3d); color:#fff; }
+    border-radius:10px; background:var(--card); border:1px solid var(--line); color:var(--ink); }
   .installbanner[hidden] { display:none; }
   .installbanner .ib-text { flex:1; min-width:0; display:flex; flex-direction:column; gap:2px; }
   .installbanner .ib-text b { font-size:14px; }
-  .installbanner .ib-text span { font-size:11.5px; opacity:.72; }
-  .ib-close { border:none; background:transparent; color:#fff; opacity:.6; font-size:14px; cursor:pointer; padding:6px; }
-  .btn { display:inline-block; text-decoration:none; border:none; cursor:pointer; font-size:13.5px;
+  .installbanner .ib-text span { font-size:11px; color:var(--muted); }
+  .ib-close { border:none; background:transparent; color:var(--muted); font-size:14px; cursor:pointer; padding:6px; }
+  .btn { display:inline-block; text-decoration:none; border:none; cursor:pointer; font-size:13px;
     padding:9px 16px; border-radius:10px; white-space:nowrap; }
-  .btn.primary { background:#4dabf7; color:#0b2033; font-weight:600; }
+  .btn.primary { background:var(--accent); color:#fff; font-weight:600; }
   .btn.big { display:block; text-align:center; font-size:15px; padding:14px; margin:12px 0 8px; }
 
   .controls { display:flex; gap:8px; margin-bottom:10px; min-width:0; }
@@ -149,74 +166,82 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
   #q { flex:1; min-width:0; padding:11px 13px; border:1px solid var(--line); border-radius:12px; font-size:15px;
     background:var(--card); color:var(--ink); }
   #q:focus { outline:2px solid var(--accent); outline-offset:-1px; border-color:var(--accent); }
-  .chips { display:flex; gap:7px; overflow-x:auto; padding:2px 0 10px; }
+  .chips { display:flex; gap:16px; overflow-x:auto; padding:2px 1px 0;
+    border-bottom:1px solid var(--line); margin-bottom:10px; }
   .chips::-webkit-scrollbar { display:none; }
-  .chip { flex:0 0 auto; border:1px solid var(--line); background:var(--card); color:var(--muted);
-    border-radius:999px; padding:7px 13px; font-size:13px; cursor:pointer; white-space:nowrap; }
-  .chip.active { background:var(--ink); border-color:var(--ink); color:var(--card); }
-  .chip b { font-weight:400; opacity:.65; }
+  /* 来源筛选从"实心黑药丸"改成下划线式文字标签：状态靠下划线表达，不需要每颗都画一个框 */
+  .chip { flex:0 0 auto; border:none; background:transparent; color:var(--muted);
+    border-radius:0; padding:7px 1px 9px; font-size:13px; cursor:pointer; white-space:nowrap;
+    border-bottom:2px solid transparent; margin-bottom:-1px; }
+  .chip.active { color:var(--ink); border-bottom-color:var(--accent); font-weight:600; }
+  .chip b { font-weight:400; opacity:.6; margin-left:4px; font-variant-numeric:tabular-nums; }
 
   section.group h2 { font-size:13px; margin:16px 2px 8px; color:var(--muted); font-weight:600;
     display:flex; align-items:center; gap:8px; }
   section.group h2 .n { font-size:11px; background:var(--bar); padding:1px 8px; border-radius:999px; }
   .list { display:grid; gap:8px; }
 
-  .item { background:var(--card); border-radius:14px; padding:12px 13px; position:relative; min-width:0;
-    box-shadow:0 3px 10px rgba(16,24,40,.05); display:flex; flex-direction:column; gap:6px; }
-  .item.unread::before { content:""; position:absolute; left:0; top:12px; bottom:12px; width:3px;
-    border-radius:0 3px 3px 0; background:var(--accent); }
+  /* 卡片：去掉 box-shadow 改 1px 描边 —— 阴影叠在浅底上会糊出一圈"浮起感"，书页不该浮起来 */
+  .item { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:12px 13px;
+    position:relative; min-width:0; display:flex; flex-direction:column; gap:6px; }
+  .item.unread::before { content:""; position:absolute; left:-1px; top:10px; bottom:10px; width:2px;
+    border-radius:0 2px 2px 0; background:var(--accent); }
   .item.read { opacity:.7; }
-  .meta { display:flex; align-items:center; gap:8px; font-size:11.5px; color:var(--muted); padding-right:34px; min-width:0; }
+  .meta { display:flex; align-items:center; gap:8px; font-size:11px; color:var(--muted); padding-right:34px; min-width:0; }
   .meta .from { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; }
   .title { color:var(--ink); text-decoration:none; font-size:15px; line-height:1.5; padding-right:34px;
     overflow-wrap:anywhere; }
-  .tag { display:inline-block; font-size:11.5px; padding:1px 7px; margin-right:6px; border-radius:5px; color:#fff; background:var(--c); }
-  .star { position:absolute; right:6px; bottom:6px; border:none; background:transparent; font-size:19px;
-    line-height:1; cursor:pointer; opacity:.3; padding:8px; }
-  .star.on { opacity:1; }
+  /* 标签：白字压彩色块太吵，改成同色描边 + 同色文字，一行里有五个也不打架 */
+  .tag { display:inline-block; font-size:11px; line-height:1.5; padding:0 5px; margin-right:6px;
+    border-radius:4px; color:var(--c); border:1px solid var(--c); background:transparent; }
+  .star { position:absolute; right:4px; bottom:4px; border:none; background:transparent; color:var(--muted);
+    cursor:pointer; opacity:.55; padding:6px; display:flex; }
+  .star svg { width:17px; height:17px; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linejoin:round; }
+  .star.on { opacity:1; color:var(--accent); }
+  .star.on svg { fill:currentColor; }
 
-  .card { background:var(--card); border-radius:14px; padding:16px; box-shadow:0 3px 10px rgba(16,24,40,.05); }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:16px; }
   .card h3 { margin:0 0 12px; font-size:13px; color:var(--muted); font-weight:600; }
   .card + .card { margin-top:12px; }
   .trend { display:flex; align-items:flex-end; gap:5px; height:80px; }
   .trend .bar { flex:1; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; height:100%; }
-  .trend .bar span { width:100%; background:linear-gradient(180deg,#4dabf7,var(--accent)); border-radius:4px 4px 0 0; min-height:2px; }
+  .trend .bar span { width:100%; background:var(--accent); opacity:.88; border-radius:2px 2px 0 0; min-height:2px; }
   .trend .bar em { font-style:normal; font-size:10px; color:var(--muted); margin-top:4px; }
   .src { display:flex; align-items:center; gap:10px; margin:7px 0; font-size:13px; }
   .src-name { flex:0 0 44%; color:var(--muted); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; }
   .src-bar { flex:1; background:var(--bar); border-radius:999px; height:9px; overflow:hidden; }
-  .src-bar i { display:block; height:100%; background:linear-gradient(90deg,#74c0fc,var(--accent)); }
+  .src-bar i { display:block; height:100%; background:var(--ink2); }
   .src b { flex:0 0 30px; text-align:right; font-variant-numeric:tabular-nums; }
-  .about p { font-size:13.5px; line-height:1.85; color:var(--muted); margin:0 0 10px; }
+  .about p { font-size:13px; line-height:1.85; color:var(--muted); margin:0 0 10px; }
   .about a { color:var(--accent); }
-  .kbd { background:var(--bar); border-radius:6px; padding:1px 7px; font-size:12.5px; color:var(--ink); }
-  .empty { text-align:center; color:var(--muted); font-size:13.5px; padding:34px 10px; }
+  .kbd { background:var(--bar); border-radius:6px; padding:1px 7px; font-size:13px; color:var(--ink); }
+  .empty { text-align:center; color:var(--muted); font-size:13px; padding:34px 10px; }
 
   /* 设置页 */
   .card h3 { margin:0 0 10px; }
   .view > .card { margin-bottom:12px; }
   .row { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
   .row-main { flex:1; min-width:0; display:flex; flex-direction:column; gap:3px; }
-  .row-main b { font-size:14.5px; }
-  .row-main span { font-size:11.5px; color:var(--muted); }
-  .hint { font-size:12.5px; color:var(--muted); line-height:1.75; margin:8px 0 0; }
+  .row-main b { font-size:15px; }
+  .row-main span { font-size:11px; color:var(--muted); }
+  .hint { font-size:13px; color:var(--muted); line-height:1.75; margin:8px 0 0; }
   .hint a { color:var(--accent); }
   .btn.ghost { background:transparent; border:1px solid var(--line); color:var(--ink); }
   .setup { margin-top:12px; }
   .setup summary { font-size:13px; color:var(--accent); cursor:pointer; }
   .setup input { flex:1; min-width:150px; padding:9px 12px; border:1px solid var(--line); border-radius:10px;
-    font-size:13.5px; background:var(--bg); color:var(--ink); }
+    font-size:13px; background:var(--bg); color:var(--ink); }
   .switch { flex:0 0 auto; width:52px; height:30px; border-radius:999px; border:1px solid var(--line);
     background:var(--bar); position:relative; cursor:pointer; transition:background .18s; padding:0; }
   .switch i { position:absolute; top:3px; left:3px; width:22px; height:22px; border-radius:50%;
     background:#fff; box-shadow:0 1px 3px rgba(0,0,0,.25); transition:left .18s; }
-  .switch.on { background:var(--ok,#2f9e44); border-color:transparent; }
+  .switch.on { background:var(--accent); border-color:transparent; }
   .switch.on i { left:26px; }
   .switch:disabled { opacity:.45; cursor:not-allowed; }
   .stats-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
   .stats-grid > div { background:var(--bar); border-radius:10px; padding:10px 12px; }
-  .stats-grid b { display:block; font-size:20px; line-height:1.3; }
-  .stats-grid span { font-size:11.5px; color:var(--muted); }
+  .stats-grid b { display:block; font-size:24px; line-height:1.25; font-variant-numeric:tabular-nums; }
+  .stats-grid span { font-size:11px; color:var(--muted); }
   @media (min-width:600px) { .stats-grid { grid-template-columns:repeat(3,1fr); } }
 
   .tabbar { position:fixed; left:0; right:0; bottom:0; z-index:30; display:flex;
@@ -232,7 +257,7 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
   .tabbar .badge { font-size:10px; background:var(--accent); color:#fff; border-radius:999px; padding:0 5px; }
 
   .toast { position:fixed; left:50%; transform:translateX(-50%); bottom:calc(80px + env(safe-area-inset-bottom));
-    background:var(--ink); color:var(--card); font-size:13px; padding:9px 15px; border-radius:999px;
+    background:var(--ink); color:var(--bg); font-size:13px; padding:9px 15px; border-radius:8px;
     opacity:0; pointer-events:none; transition:opacity .25s; z-index:40; }
   .toast.show { opacity:.95; }
 
@@ -262,7 +287,7 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
   .item:active, .chip:active { transform: scale(.994); }
   .iconbtn:active, .tabbar button:active, .btn:active { transform: scale(.94); }
   .tips { display:flex; flex-wrap:wrap; align-items:center; gap:4px 8px; margin:0 0 10px;
-    font-size:12.5px; line-height:1.7; color:var(--muted); }
+    font-size:13px; line-height:1.7; color:var(--muted); }
   .tips b { color:var(--ink); font-weight:600; }
   .tips code { background:var(--bar); border-radius:6px; padding:1px 6px; font-size:12px; color:var(--ink); }
   .tips .sep { opacity:.5; }
@@ -296,7 +321,7 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
       <span class="sep">·</span>
       <span>点上面按钮按来源筛</span>
       <span class="sep">·</span>
-      <span>点 ☆ 收藏，设置里只看已接入的学校</span>
+      <span>点星标收藏，设置里只看已接入的学校</span>
       <button id="tips-close" type="button">知道了</button>
     </div>
     <div id="list"></div>
@@ -424,14 +449,22 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
     return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]; }); }
   function host(url) { try { return new URL(url).host; } catch (e) { return ''; } }
+  // 内联 SVG 替代 ★☆☀☾：字形图标在不同平台字体下胖瘦不一，矢量图在任何系统都一样
+  var ICON = {
+    star: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.6l2.6 5.27 5.82.85-4.21 4.1.99 5.79L12 16.88l-5.2 2.73.99-5.79-4.21-4.1 5.82-.85z"/></svg>',
+    sun: '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.8v2.2M12 19v2.2M4.2 12H2M22 12h-2.2M6.6 6.6L5 5M19 19l-1.6-1.6M17.4 6.6L19 5M5 19l1.6-1.6"/></svg>',
+    moon: '<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.3A8.5 8.5 0 1 1 9.7 3.5a7 7 0 0 0 10.8 10.8z"/></svg>'
+  };
   function tagColor(tag) {
-    if (!tag) return '#495057';
-    if (/考试|补考|缓考/.test(tag)) return '#e8590c';
-    if (/教管|教学/.test(tag)) return '#1c7ed6';
-    if (/学生事务/.test(tag)) return '#2f9e44';
-    if (/实践/.test(tag)) return '#7048e8';
-    if (/学术|讲座/.test(tag)) return '#0b7285';
-    return '#495057';
+    // 与 Android 端 ui/Tokens.kt 的 tagColor 同一套语义色。
+    // 返回 CSS 变量而不是硬编码色值，深浅主题下自动跟着变。
+    if (!tag) return 'var(--tag-other)';
+    if (/考试|补考|缓考/.test(tag)) return 'var(--tag-exam)';
+    if (/教管|教学/.test(tag)) return 'var(--tag-teach)';
+    if (/学生事务/.test(tag)) return 'var(--tag-student)';
+    if (/实践/.test(tag)) return 'var(--tag-practice)';
+    if (/学术|讲座/.test(tag)) return 'var(--tag-academic)';
+    return 'var(--tag-other)';
   }
   function toast(msg) {
     var el = document.getElementById('toast');
@@ -480,7 +513,7 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
       box.innerHTML = '<div class="empty">' + (needUnits
         ? '请选择你关心的学院：设置 → 学校 / 学院 → 勾选后这里就会显示该学院的通知。'
         : (state.filter === 'fav'
-          ? '还没有收藏。点通知卡片右下角的 ☆ 收藏。' : '没有匹配的通知。')) + '</div>';
+          ? '还没有收藏。点通知卡片右下角的星标。' : '没有匹配的通知。')) + '</div>';
       return;
     }
     var groups = new Map();
@@ -498,7 +531,7 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
           '<div class="meta"><span class="from">' + esc(it.sourceName) + '</span><span>' + esc(host(it.url)) + '</span></div>' +
           '<a class="title" href="' + esc(it.url) + '" target="_blank" rel="noreferrer" data-open="' + esc(it.id) + '">' +
             (it.tag ? '<span class="tag" style="--c:' + tagColor(it.tag) + '">' + esc(it.tag) + '</span>' : '') + esc(it.title) + '</a>' +
-          '<button class="star' + (isFav ? ' on' : '') + '" data-fav="' + esc(it.id) + '" aria-label="收藏">' + (isFav ? '★' : '☆') + '</button>' +
+          '<button class="star' + (isFav ? ' on' : '') + '" data-fav="' + esc(it.id) + '" aria-label="收藏">' + ICON.star + '</button>' +
         '</article>';
       });
       html += '</div></section>';
@@ -630,8 +663,8 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
       var on = !state.fav.has(id);
       if (on) state.fav.add(id); else state.fav.delete(id);
       lsWrite(KEY_FAV, Array.from(state.fav));
+      // 图标本身不变，实心/空心由 .on 的 CSS 切换，这里不碰 innerHTML（省一次重排）
       fav.classList.toggle('on', on);
-      fav.textContent = on ? '★' : '☆';
       fav.setAttribute('aria-pressed', on ? 'true' : 'false');
       // 例外：正在看"收藏"页时取消收藏，卡片必须立刻消失，这时才重建
       if (state.filter === 'fav' && !on) renderList();
@@ -673,10 +706,10 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     if (mode) html.classList.add(mode);
     html.style.colorScheme = dark ? 'dark' : 'light';
     var meta = document.getElementById('theme-color');
-    if (meta) meta.setAttribute('content', dark ? '#12161f' : '#eef1f6');
+    if (meta) meta.setAttribute('content', dark ? '#151311' : '#FBFAF7');
     var btn = document.getElementById('theme');
     if (btn) {
-      btn.textContent = dark ? '☀' : '☾';
+      btn.innerHTML = dark ? ICON.sun : ICON.moon;
       btn.title = dark ? '切到浅色' : '切到深色';
       btn.setAttribute('aria-label', btn.title);
       btn.setAttribute('aria-pressed', dark ? 'true' : 'false');
@@ -741,8 +774,8 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
   }
   function chipStyle(on) {
     return 'margin:4px 6px 0 0;padding:6px 10px;border-radius:999px;font-size:12px;cursor:pointer;' +
-      'border:1px solid ' + (on ? 'var(--accent,#2f6fed)' : 'var(--line,#8884)') + ';' +
-      'background:' + (on ? 'var(--accent,#2f6fed)' : 'transparent') + ';' +
+      'border:1px solid ' + (on ? 'var(--accent,#B23A2E)' : 'var(--line,#8884)') + ';' +
+      'background:' + (on ? 'var(--accent,#B23A2E)' : 'transparent') + ';' +
       'color:' + (on ? '#fff' : 'inherit') + ';';
   }
   function renderUnitChips(school) {
@@ -815,7 +848,7 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
       var tags = s.tags || [];
       // 双一流是官方标签，最有用；民办次之（两者不会同时出现）
       var badge = tags.indexOf('双一流') >= 0
-        ? '<span style="color:#2f6fed">双一流</span> '
+        ? '<span style="color:var(--accent)">双一流</span> '
         : tags.indexOf('民办') >= 0
           ? '<span style="opacity:.7">民办</span> '
           : '';
@@ -825,7 +858,7 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
         'background:transparent;opacity:' + (active ? '1' : '.75') + ';cursor:pointer;color:inherit">' +
         '<b>' + esc(s.name) + '</b> ' + badge + level + '<span style="opacity:.7">' + esc(where) + '</span> ' +
         (active
-          ? '<span style="color:#2f9e44">已接入' + (s.total ? ' · ' + s.total + ' 条' : '') + '</span>'
+          ? '<span style="color:var(--tag-student)">已接入' + (s.total ? ' · ' + s.total + ' 条' : '') + '</span>'
           : '<span style="opacity:.7">待接入</span>') +
         '</button>';
     }).join('');
