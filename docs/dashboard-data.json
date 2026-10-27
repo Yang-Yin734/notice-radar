@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-27T02:10:18.183Z",
-  "total": 356,
+  "generatedAt": "2026-10-27T02:30:32.146Z",
+  "total": 358,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
@@ -10,7 +10,7 @@
     {
       "sourceId": "gs-xw",
       "sourceName": "研究生院·新闻",
-      "count": 29
+      "count": 30
     },
     {
       "sourceId": "jwb-tzgg",
@@ -48,14 +48,14 @@
       "count": 17
     },
     {
-      "sourceId": "jwc-xwkd",
-      "sourceName": "教务部·新闻快递",
+      "sourceId": "jwc-student",
+      "sourceName": "教务处·学生事务公告",
       "count": 15
     },
     {
-      "sourceId": "jwc-student",
-      "sourceName": "教务处·学生事务公告",
-      "count": 14
+      "sourceId": "jwc-xwkd",
+      "sourceName": "教务部·新闻快递",
+      "count": 15
     },
     {
       "sourceId": "jwc-jxtz",
@@ -104,6 +104,32 @@
     }
   ],
   "items": [
+    {
+      "id": "44770780e82979b8",
+      "sourceId": "gs-xw",
+      "sourceName": "研究生院·新闻",
+      "school": "zzu",
+      "title": "研究生院党支部赴洛阳开展主题党日活动",
+      "url": "https://gs.zzu.edu.cn/info/1072/13918.htm",
+      "date": "2026-10-27",
+      "tag": null,
+      "category": "研究生",
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-27T02:30:31.822Z"
+    },
+    {
+      "id": "c26b8e3621b09b8c",
+      "sourceId": "jwc-student",
+      "sourceName": "教务处·学生事务公告",
+      "school": "uestc",
+      "title": "关于2026-2027-1学期中期退课及补选课的通知",
+      "url": "https://www.jwc.uestc.edu.cn/info/bdb4e566f0f911713c517e78245f3501",
+      "date": "2026-10-26",
+      "tag": "教管",
+      "category": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-27T02:29:10.034Z"
+    },
     {
       "id": "72fefb2171499c87",
       "sourceId": "jwc-tzgg",

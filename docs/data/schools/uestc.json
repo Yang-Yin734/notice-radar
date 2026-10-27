@@ -3,9 +3,14 @@
  "name": "电子科技大学",
  "province": "四川省",
  "city": "成都市",
- "generatedAt": "2026-10-27T02:10:18.183Z",
- "total": 65,
+ "generatedAt": "2026-10-27T02:30:32.146Z",
+ "total": 66,
  "bySource": [
+  {
+   "sourceId": "jwc-student",
+   "sourceName": "教务处·学生事务公告",
+   "count": 15
+  },
   {
    "sourceId": "math-xsgz",
    "sourceName": "数学科学学院·学生工作",
@@ -20,11 +25,6 @@
    "sourceId": "math-jwgg",
    "sourceName": "数学科学学院·教务公告",
    "count": 17
-  },
-  {
-   "sourceId": "jwc-student",
-   "sourceName": "教务处·学生事务公告",
-   "count": 14
   },
   {
    "sourceId": "news-academic",
@@ -48,6 +48,15 @@
    "count": 28
   },
   {
+   "id": "教务处",
+   "name": "教务处",
+   "sources": [
+    "教务处·学生事务公告",
+    "教务处·重要公告"
+   ],
+   "count": 19
+  },
+  {
    "id": "新闻网",
    "name": "新闻网",
    "sources": [
@@ -57,15 +66,6 @@
    "count": 19
   },
   {
-   "id": "教务处",
-   "name": "教务处",
-   "sources": [
-    "教务处·学生事务公告",
-    "教务处·重要公告"
-   ],
-   "count": 18
-  },
-  {
    "id": "研究生院",
    "name": "研究生院",
    "sources": [],
@@ -73,6 +73,20 @@
   }
  ],
  "items": [
+  {
+   "id": "c26b8e3621b09b8c",
+   "sourceId": "jwc-student",
+   "sourceName": "教务处·学生事务公告",
+   "school": "uestc",
+   "title": "关于2026-2027-1学期中期退课及补选课的通知",
+   "url": "https://www.jwc.uestc.edu.cn/info/bdb4e566f0f911713c517e78245f3501",
+   "date": "2026-10-26",
+   "tag": "教管",
+   "category": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-27T02:29:10.034Z",
+   "unit": "教务处"
+  },
   {
    "id": "0fa60a4d9ed18955",
    "sourceId": "math-xsgz",

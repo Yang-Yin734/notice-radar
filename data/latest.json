@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-23T10:24:06.888Z",
+  "generatedAt": "2026-10-27T02:29:10.032Z",
   "results": [
     {
       "sourceId": "jwc-important",
@@ -10,7 +10,7 @@
       "error": null,
       "status": 200,
       "bytes": 28693,
-      "tookMs": 2071,
+      "tookMs": 1948,
       "items": [
         {
           "id": "393edb8d41cfee20",
@@ -187,9 +187,20 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 31444,
-      "tookMs": 305,
+      "bytes": 31454,
+      "tookMs": 318,
       "items": [
+        {
+          "id": "c26b8e3621b09b8c",
+          "sourceId": "jwc-student",
+          "sourceName": "教务处·学生事务公告",
+          "school": "uestc",
+          "title": "关于2026-2027-1学期中期退课及补选课的通知",
+          "url": "https://www.jwc.uestc.edu.cn/info/bdb4e566f0f911713c517e78245f3501",
+          "date": "2026-10-26",
+          "tag": "教管",
+          "category": null
+        },
         {
           "id": "bac78f0f2b47a3e0",
           "sourceId": "jwc-student",
@@ -343,17 +354,6 @@
           "date": "2026-02-26",
           "tag": "学生事务公告",
           "category": null
-        },
-        {
-          "id": "fa4fd9559a3c408e",
-          "sourceId": "jwc-student",
-          "sourceName": "教务处·学生事务公告",
-          "school": "uestc",
-          "title": "关于大面积课程开学缓补考安排的通知",
-          "url": "https://www.jwc.uestc.edu.cn/info/30d196608fe3a20ae08ada0b22a573a4",
-          "date": "2026-01-20",
-          "tag": "考试",
-          "category": null
         }
       ]
     },
@@ -365,8 +365,8 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 98829,
-      "tookMs": 1862,
+      "bytes": 98838,
+      "tookMs": 1982,
       "items": [
         {
           "id": "5140215c1a2db1cf",
@@ -422,8 +422,8 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 98825,
-      "tookMs": 508,
+      "bytes": 98901,
+      "tookMs": 528,
       "items": [
         {
           "id": "027257e3afe7fb4c",
@@ -479,8 +479,8 @@
       "ok": true,
       "error": null,
       "status": 200,
-      "bytes": 34638,
-      "tookMs": 1012,
+      "bytes": 34646,
+      "tookMs": 1943,
       "items": [
         {
           "id": "17a7e48dfd439818",
@@ -733,18 +733,16 @@
   ],
   "fresh": [
     {
-      "id": "5140215c1a2db1cf",
-      "sourceId": "news-notice",
-      "sourceName": "新闻网·公告",
+      "id": "c26b8e3621b09b8c",
+      "sourceId": "jwc-student",
+      "sourceName": "教务处·学生事务公告",
       "school": "uestc",
-      "title": "「人文×科技」思想者论坛第四十一期讲座预告",
-      "url": "https://news.uestc.edu.cn/info/1015/44679.htm",
-      "date": "2026-10-23",
-      "tag": "学术",
+      "title": "关于2026-2027-1学期中期退课及补选课的通知",
+      "url": "https://www.jwc.uestc.edu.cn/info/bdb4e566f0f911713c517e78245f3501",
+      "date": "2026-10-26",
+      "tag": "教管",
       "category": null,
-      "alsoIn": [
-        "新闻网·学术"
-      ]
+      "alsoIn": []
     }
   ]
 }
