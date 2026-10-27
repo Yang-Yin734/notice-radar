@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-10-27T02:30:32.146Z",
-  "total": 358,
+  "generatedAt": "2026-10-27T03:08:22.739Z",
+  "total": 359,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
       "sourceName": "教务处·通知公告",
-      "count": 87
+      "count": 88
     },
     {
       "sourceId": "gs-xw",
@@ -104,6 +104,19 @@
     }
   ],
   "items": [
+    {
+      "id": "816c74e0fdeddb81",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "ouc",
+      "title": "关于公布2026年秋季学期转换院系、班级学习拟通过学生名单的通知",
+      "url": "https://jwc.ouc.edu.cn/2026/1027/c6517a540363/page.htm",
+      "date": "2026-10-27",
+      "tag": null,
+      "category": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-27T03:07:42.651Z"
+    },
     {
       "id": "44770780e82979b8",
       "sourceId": "gs-xw",

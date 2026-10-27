@@ -3,13 +3,13 @@
  "name": "中国海洋大学",
  "province": "山东省",
  "city": "青岛市",
- "generatedAt": "2026-10-27T02:30:32.146Z",
- "total": 10,
+ "generatedAt": "2026-10-27T03:08:22.739Z",
+ "total": 11,
  "bySource": [
   {
    "sourceId": "jwc-tzgg",
    "sourceName": "教务处·通知公告",
-   "count": 10
+   "count": 11
   }
  ],
  "units": [
@@ -19,10 +19,24 @@
    "sources": [
     "教务处·通知公告"
    ],
-   "count": 10
+   "count": 11
   }
  ],
  "items": [
+  {
+   "id": "816c74e0fdeddb81",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "ouc",
+   "title": "关于公布2026年秋季学期转换院系、班级学习拟通过学生名单的通知",
+   "url": "https://jwc.ouc.edu.cn/2026/1027/c6517a540363/page.htm",
+   "date": "2026-10-27",
+   "tag": null,
+   "category": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-27T03:07:42.651Z",
+   "unit": "教务处"
+  },
   {
    "id": "4f9d3544eef09a3f",
    "sourceId": "jwc-tzgg",
