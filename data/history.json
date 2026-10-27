@@ -1,7 +1,35 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-27T07:33:15.252Z",
+  "updatedAt": "2026-10-27T09:04:27.997Z",
   "items": [
+    {
+      "id": "0bfb1ea879619db9",
+      "sourceId": "jw-ggtz",
+      "sourceName": "本科生院·公告通知",
+      "school": "nju",
+      "title": "关于公示2026年江苏省高等教育学会专项课题立项申报工作拟推荐名单的通知",
+      "url": "https://jw.nju.edu.cn/ed/7e/c26263a847230/page.htm",
+      "date": "2026-10-27",
+      "tag": null,
+      "category": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-27T09:04:27.997Z"
+    },
+    {
+      "id": "792e9e777093174a",
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
+      "school": "uestc",
+      "title": "成电讲坛 | 全国先进工作者、全国五一劳动奖章获得者张晓东：弘扬劳模精神发展新质生产力",
+      "url": "https://news.uestc.edu.cn/info/1016/44773.htm",
+      "date": "2026-10-27",
+      "tag": "文化",
+      "category": null,
+      "alsoIn": [
+        "新闻网·学术"
+      ],
+      "firstSeenAt": "2026-10-27T09:03:56.044Z"
+    },
     {
       "id": "d02eae716f43489a",
       "sourceId": "news-notice",

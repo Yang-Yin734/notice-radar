@@ -3,13 +3,13 @@
  "name": "电子科技大学",
  "province": "四川省",
  "city": "成都市",
- "generatedAt": "2026-10-27T08:31:46.209Z",
- "total": 67,
+ "generatedAt": "2026-10-27T09:05:28.496Z",
+ "total": 68,
  "bySource": [
   {
    "sourceId": "news-notice",
    "sourceName": "新闻网·公告",
-   "count": 18
+   "count": 19
   },
   {
    "sourceId": "jwc-student",
@@ -54,7 +54,7 @@
     "新闻网·公告",
     "新闻网·学术"
    ],
-   "count": 20
+   "count": 21
   },
   {
    "id": "教务处",
@@ -73,6 +73,22 @@
   }
  ],
  "items": [
+  {
+   "id": "792e9e777093174a",
+   "sourceId": "news-notice",
+   "sourceName": "新闻网·公告",
+   "school": "uestc",
+   "title": "成电讲坛 | 全国先进工作者、全国五一劳动奖章获得者张晓东：弘扬劳模精神发展新质生产力",
+   "url": "https://news.uestc.edu.cn/info/1016/44773.htm",
+   "date": "2026-10-27",
+   "tag": "文化",
+   "category": null,
+   "alsoIn": [
+    "新闻网·学术"
+   ],
+   "firstSeenAt": "2026-10-27T09:03:56.044Z",
+   "unit": "新闻网"
+  },
   {
    "id": "d02eae716f43489a",
    "sourceId": "news-notice",

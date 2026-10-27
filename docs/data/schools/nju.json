@@ -3,13 +3,13 @@
  "name": "南京大学",
  "province": "江苏省",
  "city": "南京市",
- "generatedAt": "2026-10-27T08:31:46.209Z",
- "total": 11,
+ "generatedAt": "2026-10-27T09:05:28.496Z",
+ "total": 12,
  "bySource": [
   {
    "sourceId": "jw-ggtz",
    "sourceName": "本科生院·公告通知",
-   "count": 11
+   "count": 12
   }
  ],
  "units": [
@@ -19,10 +19,24 @@
    "sources": [
     "本科生院·公告通知"
    ],
-   "count": 11
+   "count": 12
   }
  ],
  "items": [
+  {
+   "id": "0bfb1ea879619db9",
+   "sourceId": "jw-ggtz",
+   "sourceName": "本科生院·公告通知",
+   "school": "nju",
+   "title": "关于公示2026年江苏省高等教育学会专项课题立项申报工作拟推荐名单的通知",
+   "url": "https://jw.nju.edu.cn/ed/7e/c26263a847230/page.htm",
+   "date": "2026-10-27",
+   "tag": null,
+   "category": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-27T09:04:27.997Z",
+   "unit": "本科生院"
+  },
   {
    "id": "373f249c7b506d5c",
    "sourceId": "jw-ggtz",
