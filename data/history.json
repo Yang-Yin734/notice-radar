@@ -1,7 +1,20 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-27T03:07:42.651Z",
+  "updatedAt": "2026-10-27T06:11:50.087Z",
   "items": [
+    {
+      "id": "ecc5a19e8f582394",
+      "sourceId": "jiaowu-tzgg",
+      "sourceName": "教务部·通知公告",
+      "school": "nwpu",
+      "title": "关于西北工业大学2026年“外研社国才杯”“理解当代中国”全国大学生外语能力大赛英语组国际传播综合能力赛项、笔译赛校赛获奖名单的公示",
+      "url": "https://jiaowu.nwpu.edu.cn/info/1164/30548.htm",
+      "date": "2026-10-27",
+      "tag": null,
+      "category": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-27T06:11:50.087Z"
+    },
     {
       "id": "816c74e0fdeddb81",
       "sourceId": "jwc-tzgg",
