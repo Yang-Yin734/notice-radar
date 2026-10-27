@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-10-27T00:27:53.521Z",
-  "total": 355,
+  "generatedAt": "2026-10-27T01:18:33.098Z",
+  "total": 356,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
       "sourceName": "教务处·通知公告",
-      "count": 86
+      "count": 87
     },
     {
       "sourceId": "gs-xw",
@@ -104,6 +104,19 @@
     }
   ],
   "items": [
+    {
+      "id": "72fefb2171499c87",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "xmu",
+      "title": "2026年基础学科人才国际化培养项目本科插班生推荐人选公示",
+      "url": "https://jwc.xmu.edu.cn/info/1911/69942.htm",
+      "date": "2026-10-26",
+      "tag": null,
+      "category": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-27T01:18:17.501Z"
+    },
     {
       "id": "a21ad384efcbe0d6",
       "sourceId": "jwc-tzgg",
