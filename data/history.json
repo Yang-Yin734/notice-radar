@@ -1,7 +1,20 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-27T09:04:27.997Z",
+  "updatedAt": "2026-10-28T04:42:54.789Z",
   "items": [
+    {
+      "id": "2e9e1e2e8ac183bb",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务部·通知公告",
+      "school": "zzu",
+      "title": "关于举办2026年郑州大学“奇安信杯”网络空间安全竞赛的通知",
+      "url": "https://www5.zzu.edu.cn/jwc/info/1125/5431.htm",
+      "date": "2026-10-28",
+      "tag": null,
+      "category": "教务",
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-28T04:42:54.789Z"
+    },
     {
       "id": "0bfb1ea879619db9",
       "sourceId": "jw-ggtz",

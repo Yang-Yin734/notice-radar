@@ -3,18 +3,18 @@
  "name": "郑州大学",
  "province": "河南省",
  "city": "郑州市",
- "generatedAt": "2026-10-28T00:08:09.414Z",
- "total": 94,
+ "generatedAt": "2026-10-28T04:42:55.043Z",
+ "total": 95,
  "bySource": [
+  {
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务部·通知公告",
+   "count": 12
+  },
   {
    "sourceId": "gs-xw",
    "sourceName": "研究生院·新闻",
    "count": 30
-  },
-  {
-   "sourceId": "jwc-tzgg",
-   "sourceName": "教务部·通知公告",
-   "count": 11
   },
   {
    "sourceId": "news",
@@ -54,7 +54,7 @@
     "教务部·通知公告",
     "教务部·新闻快递"
    ],
-   "count": 26
+   "count": 27
   },
   {
    "id": "人事部",
@@ -74,6 +74,20 @@
   }
  ],
  "items": [
+  {
+   "id": "2e9e1e2e8ac183bb",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "zzu",
+   "title": "关于举办2026年郑州大学“奇安信杯”网络空间安全竞赛的通知",
+   "url": "https://www5.zzu.edu.cn/jwc/info/1125/5431.htm",
+   "date": "2026-10-28",
+   "tag": null,
+   "category": "教务",
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-28T04:42:54.789Z",
+   "unit": "教务部"
+  },
   {
    "id": "44770780e82979b8",
    "sourceId": "gs-xw",
