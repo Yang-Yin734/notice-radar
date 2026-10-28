@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- 深色模式下的窗口底色（默认值来自 values/colors.xml） -->
-    <color name="appBackground">#FF12161F</color>
-    <color name="appSurface">#FF1B212C</color>
+    <!-- 深色模式下的窗口底色（默认值来自 values/colors.xml）。
+         暖黑 #151311，与 ui/Tokens.kt 的 Night.background 一致；不再是蓝黑 #12161F。 -->
+    <color name="appBackground">#FF151311</color>
+    <color name="appSurface">#FF1D1A17</color>
 </resources>

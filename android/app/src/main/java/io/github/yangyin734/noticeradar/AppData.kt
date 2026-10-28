@@ -7,6 +7,15 @@ import java.io.BufferedReader
 import java.net.HttpURLConnection
 import java.net.URL
 
+/**
+ * org.json 的 optString 在字段为 JSON null 时返回字符串 "null"（不是空串），
+ * 所以 ifEmpty { null } 拦不住它 —— 列表上会真的多出一个写着 null 的标签，
+ * 学校目录里 file="null" 甚至会让 isNullOrEmpty 判定通过、以为这所学校能抓。
+ * 凡是从 JSON 取可空字符串都走这里。
+ */
+private fun JSONObject.optText(key: String): String? =
+    optString(key).takeIf { it.isNotEmpty() && it != "null" }
+
 /** 一条通知。字段与网页版 dashboard-data.json 对齐（unit 只在按校数据里出现）。 */
 data class Notice(
     val id: String,
@@ -96,7 +105,7 @@ fun parseSchoolIndex(json: String): List<SchoolInfo> {
                 if (name.isEmpty()) null else SchoolUnit(name = name, count = u.optInt("count", 0))
             }
             val tagsArr = o.optJSONArray("tags") ?: JSONArray()
-            val tags = (0 until tagsArr.length()).mapNotNull { j -> tagsArr.optString(j).ifEmpty { null } }
+            val tags = (0 until tagsArr.length()).mapNotNull { j -> tagsArr.optString(j).takeIf { it.isNotEmpty() && it != "null" } }
             SchoolInfo(
                 id = id,
                 name = o.optString("name"),
@@ -110,7 +119,7 @@ fun parseSchoolIndex(json: String): List<SchoolInfo> {
                 featured = o.optBoolean("featured"),
                 tags = tags,
                 status = o.optString("status"),
-                file = o.optString("file").ifEmpty { null },
+                file = o.optText("file"),
                 units = units,
                 total = o.optInt("total", 0),
             )
@@ -162,7 +171,7 @@ fun parseSchoolPayload(json: String): Pair<Int, List<String>>? {
         val items = root.optJSONArray("items") ?: return null
         val unitsArr = root.optJSONArray("units") ?: JSONArray()
         val units = (0 until unitsArr.length()).mapNotNull { i ->
-            unitsArr.optJSONObject(i)?.optString("name")?.ifEmpty { null }
+            unitsArr.optJSONObject(i)?.optString("name")?.takeIf { it.isNotEmpty() && it != "null" }
         }
         items.length() to units
     } catch (e: Exception) {
@@ -228,11 +237,11 @@ object Json {
                     title = n.optString("title"),
                     url = n.optString("url"),
                     date = n.optString("date"),
-                    tag = n.optString("tag").ifEmpty { null },
+                    tag = n.optText("tag"),
                     sourceId = n.optString("sourceId"),
                     sourceName = n.optString("sourceName"),
                     firstSeenAt = n.optString("firstSeenAt"),
-                    unit = n.optString("unit").ifEmpty { null },
+                    unit = n.optText("unit"),
                 )
             }
             if (items.isEmpty()) {
