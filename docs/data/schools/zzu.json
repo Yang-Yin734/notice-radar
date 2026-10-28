@@ -3,8 +3,8 @@
  "name": "郑州大学",
  "province": "河南省",
  "city": "郑州市",
- "generatedAt": "2026-10-28T17:02:25.277Z",
- "total": 95,
+ "generatedAt": "2026-10-28T21:31:25.384Z",
+ "total": 96,
  "bySource": [
   {
    "sourceId": "jwc-tzgg",
@@ -12,14 +12,14 @@
    "count": 12
   },
   {
+   "sourceId": "news",
+   "sourceName": "新闻网·综合",
+   "count": 9
+  },
+  {
    "sourceId": "gs-xw",
    "sourceName": "研究生院·新闻",
    "count": 30
-  },
-  {
-   "sourceId": "news",
-   "sourceName": "新闻网·综合",
-   "count": 8
   },
   {
    "sourceId": "gs-gg",
@@ -70,7 +70,7 @@
    "sources": [
     "新闻网·综合"
    ],
-   "count": 8
+   "count": 9
   }
  ],
  "items": [
@@ -87,6 +87,20 @@
    "alsoIn": [],
    "firstSeenAt": "2026-10-28T04:42:54.789Z",
    "unit": "教务部"
+  },
+  {
+   "id": "d91c85923d9c6e51",
+   "sourceId": "news",
+   "sourceName": "新闻网·综合",
+   "school": "zzu",
+   "title": "第二届新时代艺术学（书法）博士国际学术会议与展览暨郑州大学书法学院建院十周年系列活动举行",
+   "url": "http://www.zzu.edu.cn/info/1217/89272.htm",
+   "date": "2026-10-27",
+   "tag": null,
+   "category": "综合",
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-28T21:31:25.131Z",
+   "unit": "新闻网"
   },
   {
    "id": "44770780e82979b8",

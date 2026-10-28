@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-10-28T10:59:22.598Z",
+ "generatedAt": "2026-10-28T21:31:25.384Z",
  "source": "教育部《全国高等学校名单》（config/schools/directory.tsv，见 config/schools/README.md）",
  "note": "status=active 表示真抓过、能出通知；pending 只是目录条目，选中会提示尚未接入。接入方法见 docs/add-your-school.md",
  "counts": {
@@ -14180,10 +14180,10 @@
     {
      "id": "新闻网",
      "name": "新闻网",
-     "count": 8
+     "count": 9
     }
    ],
-   "total": 95
+   "total": 96
   },
   {
    "id": "hpu",
@@ -21767,7 +21767,7 @@
     {
      "id": "新闻网",
      "name": "新闻网",
-     "count": 21
+     "count": 24
     },
     {
      "id": "教务处",
@@ -21780,7 +21780,7 @@
      "count": 0
     }
    ],
-   "total": 68
+   "total": 71
   },
   {
    "id": "swpu",
