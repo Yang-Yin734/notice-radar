@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-28T05:01:19.387Z",
-  "total": 364,
+  "generatedAt": "2026-10-28T10:59:22.598Z",
+  "total": 365,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
@@ -15,7 +15,7 @@
     {
       "sourceId": "jwb-tzgg",
       "sourceName": "教务部·通知公告",
-      "count": 27
+      "count": 28
     },
     {
       "sourceId": "gs-gg",
@@ -104,6 +104,19 @@
     }
   ],
   "items": [
+    {
+      "id": "c1d362f38c4e4d18",
+      "sourceId": "jwb-tzgg",
+      "sourceName": "教务部·通知公告",
+      "school": "bnu",
+      "title": "【实践教学】 关于组织参加第二届北京市大学生“人工智能+”创新大赛的通知",
+      "url": "https://jwb.bnu.edu.cn/pygc/sjjx/xkjs/a8f2e5fd23a644b48ba12f3fc3a5f4cf.htm",
+      "date": "2026-10-28",
+      "tag": null,
+      "category": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-28T10:57:42.265Z"
+    },
     {
       "id": "2e9e1e2e8ac183bb",
       "sourceId": "jwc-tzgg",

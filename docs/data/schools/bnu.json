@@ -3,13 +3,13 @@
  "name": "北京师范大学",
  "province": "北京市",
  "city": "",
- "generatedAt": "2026-10-28T04:42:55.043Z",
- "total": 24,
+ "generatedAt": "2026-10-28T10:59:22.598Z",
+ "total": 25,
  "bySource": [
   {
    "sourceId": "jwb-tzgg",
    "sourceName": "教务部·通知公告",
-   "count": 24
+   "count": 25
   }
  ],
  "units": [
@@ -19,10 +19,24 @@
    "sources": [
     "教务部·通知公告"
    ],
-   "count": 24
+   "count": 25
   }
  ],
  "items": [
+  {
+   "id": "c1d362f38c4e4d18",
+   "sourceId": "jwb-tzgg",
+   "sourceName": "教务部·通知公告",
+   "school": "bnu",
+   "title": "【实践教学】 关于组织参加第二届北京市大学生“人工智能+”创新大赛的通知",
+   "url": "https://jwb.bnu.edu.cn/pygc/sjjx/xkjs/a8f2e5fd23a644b48ba12f3fc3a5f4cf.htm",
+   "date": "2026-10-28",
+   "tag": null,
+   "category": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-28T10:57:42.265Z",
+   "unit": "教务部"
+  },
   {
    "id": "167003b260aed3c6",
    "sourceId": "jwb-tzgg",
