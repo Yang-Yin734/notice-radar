@@ -251,10 +251,14 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
   .tabbar button { flex:1; border:none; background:transparent; color:var(--muted); font-size:12px;
     padding:9px 2px 10px; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:3px;
     white-space:nowrap; }
-  .tabbar button .dot { width:5px; height:5px; border-radius:50%; background:transparent; }
+  /* 底栏图标与 Android 端 res/drawable/ic_notice|ic_star_outline|ic_chart|ic_settings 同路径、
+     同笔触（24 视框 / 1.6 描边 / 圆头圆角）。原先 5px 小圆点只是占位，看不出这一栏在讲什么 */
+  .tabbar button .tab-icon { width:20px; height:20px; fill:none; stroke:currentColor; stroke-width:1.6;
+    stroke-linecap:round; stroke-linejoin:round; }
   .tabbar button.active { color:var(--accent); }
-  .tabbar button.active .dot { background:var(--accent); }
-  .tabbar .badge { font-size:10px; background:var(--accent); color:#fff; border-radius:999px; padding:0 5px; }
+  .tab-icon-wrap { position:relative; display:inline-flex; }
+  .tabbar .badge { font-size:10px; background:var(--accent); color:#fff; border-radius:999px; padding:0 5px;
+    position:absolute; top:-5px; left:calc(100% - 5px); line-height:1.5; }
 
   .toast { position:fixed; left:50%; transform:translateX(-50%); bottom:calc(80px + env(safe-area-inset-bottom));
     background:var(--ink); color:var(--bg); font-size:13px; padding:9px 15px; border-radius:8px;
@@ -273,7 +277,8 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
       border:1px solid var(--line); border-radius:999px; overflow:hidden;
       padding-bottom:0; box-shadow:0 8px 24px rgba(16,24,40,.16); }
     .tabbar button { padding:9px 22px; flex-direction:row; gap:8px; }
-    .tabbar button .dot { display:none; }
+    /* 宽屏改成横排后，未读数回到文字后面内联，不再浮在图标角上 */
+    .tabbar .badge { position:static; left:auto; top:auto; margin-left:2px; }
     .toast { bottom:96px; }
   }
 
@@ -415,10 +420,10 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
 </main>
 
 <nav class="tabbar" id="tabbar">
-  <button data-view="list" data-filter="all" class="active"><span class="dot"></span>通知 <span class="badge" id="badge-unread" hidden></span></button>
-  <button data-view="list" data-filter="fav"><span class="dot"></span>收藏 <span class="badge" id="badge-fav" hidden></span></button>
-  <button data-view="stats"><span class="dot"></span>统计</button>
-  <button data-view="settings"><span class="dot"></span>设置</button>
+  <button data-view="list" data-filter="all" class="active"><span class="tab-icon-wrap"><svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2a5.4 5.4 0 0 0-5.4 5.4v3.1l-1.5 2.7h13.8l-1.5-2.7V8.6A5.4 5.4 0 0 0 12 3.2z"/><path d="M9.9 17.6a2.2 2.2 0 0 0 4.2 0"/></svg><span class="badge" id="badge-unread" hidden></span></span>通知</button>
+  <button data-view="list" data-filter="fav"><span class="tab-icon-wrap"><svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.8l2.55 5.17 5.7.83-4.12 4.02.97 5.68L12 16.82l-5.1 2.68.97-5.68L3.75 9.8l5.7-.83z"/></svg><span class="badge" id="badge-fav" hidden></span></span>收藏</button>
+  <button data-view="stats"><svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20h16"/><path d="M7.6 19.4V11.2"/><path d="M12 19.4V5"/><path d="M16.4 19.4v-5.6"/></svg>统计</button>
+  <button data-view="settings"><svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 8h3.4"/><path d="M11.6 8H20"/><circle cx="9.5" cy="8" r="1.7"/><path d="M4 16h8.4"/><path d="M16.6 16H20"/><circle cx="14.5" cy="16" r="1.7"/></svg>设置</button>
 </nav>
 
 <div class="toast" id="toast"></div>

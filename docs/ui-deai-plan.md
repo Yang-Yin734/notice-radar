@@ -434,6 +434,23 @@ WCAG 对比度实测（Python 计算，非估算）：正文 `ink/bg` 浅 16.67:
 
 验证（Edge headless + 像素统计，非目测）：浅色主色 `#FFFFFF` 65.1% / `#FBFAF7` 22.1% / 描边 `#E7E2D8` 2.0%；深色 `#1D1A17` 65.1% / `#151311`。`--dump-dom` 实测 257 条里 38 个标签全部命中正确变量（学术 15→`--tag-academic`、教管 9→`--tag-teach`、考试 6→`--tag-exam`、学生事务 2→`--tag-student`、实践 1→`--tag-practice`、其余 5→`--tag-other`），258 个收藏按钮与 261 个 SVG 全部就位。`npm test` 通过。
 
+### B+ 底栏图标（2026-10-28，已完成）
+
+网页版保留卡片流（宽屏下卡片比时间轴好读），只把底栏那四个 5px 小圆点换成与 Android 端**同路径同笔触**的图标：
+
+| 位置 | 图标 | 来源 |
+|---|---|---|
+| 通知 | 铃铛 | `ic_notice.xml` |
+| 收藏 | 空心星 | `ic_star_outline.xml` |
+| 统计 | 三柱 + 基线 | `ic_chart.xml` |
+| 设置 | 两条推子 | `ic_settings.xml` |
+
+实现：HTML 内联 `<svg class="tab-icon" viewBox="0 0 24 24">`（不经 JS，首屏即有），CSS 统一 `width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap/linejoin:round`，选中态靠 `color:var(--accent)` 自动变色，不再需要 `.active .dot{background}` 那种补丁。未读数徽标用 `position:absolute` 浮在图标右上角；宽屏横排时回到文字后内联。
+
+验证（`--dump-dom` 读实测布局 + 像素分组，非目测）：4 个按钮 `getBoundingClientRect` 均分 122px、每个 `svg` 实测 `20x20`；底栏像素按列聚合得到 4 组，中心 73/188/314/440，浅色与深色一致。
+
+**踩到的坑（值得记）**：Edge `--headless=old --window-size=430,932` 的实际视口是 **504**（浏览器最小窗口宽度），`--screenshot` 却按 430 裁图 —— 结果第 4 个按钮在画面外，差点误判成"图标没渲染"。以后截图取证必须先用 `--dump-dom` 读一次 `innerWidth` 确认视口，或直接给 `--window-size` 不小于 504。另：深色主题要用 `preferredColorScheme=0`，`=2` 不生效（两张图会完全一样）。
+
 ### 还没做（下一档，非必须）
 
 - 列表仍是一次性铺 257 张卡片（已有 `content-visibility:auto` 兜住），可上虚拟滚动。
