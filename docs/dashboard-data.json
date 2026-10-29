@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-29T04:23:08.939Z",
-  "total": 370,
+  "generatedAt": "2026-10-29T07:23:54.340Z",
+  "total": 373,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
@@ -18,9 +18,19 @@
       "count": 28
     },
     {
+      "sourceId": "jiaowu-tzgg",
+      "sourceName": "教务部·通知公告",
+      "count": 21
+    },
+    {
       "sourceId": "gs-gg",
       "sourceName": "研究生院·公告",
       "count": 21
+    },
+    {
+      "sourceId": "aao-tzgg",
+      "sourceName": "教务处·通知公告",
+      "count": 19
     },
     {
       "sourceId": "news-notice",
@@ -28,18 +38,8 @@
       "count": 19
     },
     {
-      "sourceId": "jiaowu-tzgg",
-      "sourceName": "教务部·通知公告",
-      "count": 19
-    },
-    {
       "sourceId": "ugs-tzgg",
       "sourceName": "本科生院·通知公告",
-      "count": 18
-    },
-    {
-      "sourceId": "aao-tzgg",
-      "sourceName": "教务处·通知公告",
       "count": 18
     },
     {
@@ -104,6 +104,45 @@
     }
   ],
   "items": [
+    {
+      "id": "4a908afc38e91381",
+      "sourceId": "jiaowu-tzgg",
+      "sourceName": "教务部·通知公告",
+      "school": "nwpu",
+      "title": "关于2027届本科毕业生图像采集的通知",
+      "url": "https://jiaowu.nwpu.edu.cn/info/1164/30588.htm",
+      "date": "2026-10-29",
+      "tag": null,
+      "category": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-29T07:22:50.092Z"
+    },
+    {
+      "id": "90b200c349484def",
+      "sourceId": "jiaowu-tzgg",
+      "sourceName": "教务部·通知公告",
+      "school": "nwpu",
+      "title": "关于举办西北工业大学第六届教师教学创新竞赛的通知",
+      "url": "https://jiaowu.nwpu.edu.cn/info/1164/30568.htm",
+      "date": "2026-10-29",
+      "tag": null,
+      "category": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-29T07:22:50.092Z"
+    },
+    {
+      "id": "fc8cd49f0c95013b",
+      "sourceId": "aao-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "njau",
+      "title": "关于开展2026-2027-1学期期中考试工作的通知",
+      "url": "https://aao.njau.edu.cn/info/1101/7020.htm",
+      "date": "2026-10-29",
+      "tag": null,
+      "category": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-29T07:22:43.248Z"
+    },
     {
       "id": "0585ac4cd3ec1593",
       "sourceId": "news",

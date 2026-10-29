@@ -3,13 +3,13 @@
  "name": "南京农业大学",
  "province": "江苏省",
  "city": "南京市",
- "generatedAt": "2026-10-29T01:13:09.336Z",
- "total": 18,
+ "generatedAt": "2026-10-29T07:23:54.340Z",
+ "total": 19,
  "bySource": [
   {
    "sourceId": "aao-tzgg",
    "sourceName": "教务处·通知公告",
-   "count": 18
+   "count": 19
   }
  ],
  "units": [
@@ -19,10 +19,24 @@
    "sources": [
     "教务处·通知公告"
    ],
-   "count": 18
+   "count": 19
   }
  ],
  "items": [
+  {
+   "id": "fc8cd49f0c95013b",
+   "sourceId": "aao-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "njau",
+   "title": "关于开展2026-2027-1学期期中考试工作的通知",
+   "url": "https://aao.njau.edu.cn/info/1101/7020.htm",
+   "date": "2026-10-29",
+   "tag": null,
+   "category": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-29T07:22:43.248Z",
+   "unit": "教务处"
+  },
   {
    "id": "33ff919564758969",
    "sourceId": "aao-tzgg",
