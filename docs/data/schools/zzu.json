@@ -3,18 +3,18 @@
  "name": "郑州大学",
  "province": "河南省",
  "city": "郑州市",
- "generatedAt": "2026-10-28T21:31:25.384Z",
- "total": 96,
+ "generatedAt": "2026-10-29T01:13:09.336Z",
+ "total": 97,
  "bySource": [
+  {
+   "sourceId": "news",
+   "sourceName": "新闻网·综合",
+   "count": 10
+  },
   {
    "sourceId": "jwc-tzgg",
    "sourceName": "教务部·通知公告",
    "count": 12
-  },
-  {
-   "sourceId": "news",
-   "sourceName": "新闻网·综合",
-   "count": 9
   },
   {
    "sourceId": "gs-xw",
@@ -57,23 +57,37 @@
    "count": 27
   },
   {
+   "id": "新闻网",
+   "name": "新闻网",
+   "sources": [
+    "新闻网·综合"
+   ],
+   "count": 10
+  },
+  {
    "id": "人事部",
    "name": "人事部",
    "sources": [
     "人事部·通知公告"
    ],
    "count": 9
-  },
-  {
-   "id": "新闻网",
-   "name": "新闻网",
-   "sources": [
-    "新闻网·综合"
-   ],
-   "count": 9
   }
  ],
  "items": [
+  {
+   "id": "0585ac4cd3ec1593",
+   "sourceId": "news",
+   "sourceName": "新闻网·综合",
+   "school": "zzu",
+   "title": "郑州大学联合湖北消防救援机动总队举行践行训词精神先进典型事迹报告会",
+   "url": "http://www.zzu.edu.cn/info/1217/89269.htm",
+   "date": "2026-10-28",
+   "tag": null,
+   "category": "综合",
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-29T01:13:09.010Z",
+   "unit": "新闻网"
+  },
   {
    "id": "2e9e1e2e8ac183bb",
    "sourceId": "jwc-tzgg",
