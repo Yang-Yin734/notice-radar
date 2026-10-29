@@ -3,13 +3,13 @@
  "name": "南开大学",
  "province": "天津市",
  "city": "",
- "generatedAt": "2026-10-29T07:23:54.340Z",
- "total": 8,
+ "generatedAt": "2026-10-29T14:27:48.419Z",
+ "total": 10,
  "bySource": [
   {
    "sourceId": "jwc-tzgg",
    "sourceName": "教务处·通知公告",
-   "count": 8
+   "count": 10
   }
  ],
  "units": [
@@ -19,10 +19,24 @@
    "sources": [
     "教务处·通知公告"
    ],
-   "count": 8
+   "count": 10
   }
  ],
  "items": [
+  {
+   "id": "6bbf3e4435394088",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "nankai",
+   "title": "关于做好2027年度本科毕业论文（设计）管理工作和校级优秀本科毕业论文（设计）评选工作的通知",
+   "url": "https://jwc.nankai.edu.cn/2026/1029/c35436a605480/page.htm",
+   "date": "2026-10-29",
+   "tag": null,
+   "category": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-29T14:27:02.211Z",
+   "unit": "教务处"
+  },
   {
    "id": "c873062262075a31",
    "sourceId": "jwc-tzgg",
@@ -126,6 +140,20 @@
    "tag": null,
    "alsoIn": [],
    "firstSeenAt": "2026-10-04T06:43:29.510Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "71539938e16442d4",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "nankai",
+   "title": "南开大学2026-2027学年第一学期本科生选课通知",
+   "url": "https://jwc.nankai.edu.cn/2026/0817/c35436a601256/page.htm",
+   "date": "2026-08-17",
+   "tag": null,
+   "category": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-29T14:27:02.211Z",
    "unit": "教务处"
   }
  ]

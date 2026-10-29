@@ -3,18 +3,18 @@
  "name": "电子科技大学",
  "province": "四川省",
  "city": "成都市",
- "generatedAt": "2026-10-29T07:23:54.340Z",
- "total": 71,
+ "generatedAt": "2026-10-29T14:27:48.419Z",
+ "total": 73,
  "bySource": [
+  {
+   "sourceId": "news-notice",
+   "sourceName": "新闻网·公告",
+   "count": 21
+  },
   {
    "sourceId": "news-academic",
    "sourceName": "新闻网·学术",
    "count": 5
-  },
-  {
-   "sourceId": "news-notice",
-   "sourceName": "新闻网·公告",
-   "count": 19
   },
   {
    "sourceId": "jwc-student",
@@ -51,10 +51,10 @@
    "id": "新闻网",
    "name": "新闻网",
    "sources": [
-    "新闻网·学术",
-    "新闻网·公告"
+    "新闻网·公告",
+    "新闻网·学术"
    ],
-   "count": 24
+   "count": 26
   },
   {
    "id": "教务处",
@@ -73,6 +73,38 @@
   }
  ],
  "items": [
+  {
+   "id": "80d4d9c0dda6ba62",
+   "sourceId": "news-notice",
+   "sourceName": "新闻网·公告",
+   "school": "uestc",
+   "title": "成电讲坛 | 美国工程院院士、图灵奖得主Jack Dongarra:HPC in Transition 变革中的高性能计算",
+   "url": "https://news.uestc.edu.cn/info/1016/44826.htm",
+   "date": "2026-10-28",
+   "tag": "文化",
+   "category": null,
+   "alsoIn": [
+    "新闻网·学术"
+   ],
+   "firstSeenAt": "2026-10-29T14:26:48.177Z",
+   "unit": "新闻网"
+  },
+  {
+   "id": "fda8c8fc3d435262",
+   "sourceId": "news-notice",
+   "sourceName": "新闻网·公告",
+   "school": "uestc",
+   "title": "成电讲坛 | 中国科学院院士潘永信 ：行星科学与人类文明",
+   "url": "https://news.uestc.edu.cn/info/1016/44829.htm",
+   "date": "2026-10-28",
+   "tag": "文化",
+   "category": null,
+   "alsoIn": [
+    "新闻网·学术"
+   ],
+   "firstSeenAt": "2026-10-29T14:26:48.177Z",
+   "unit": "新闻网"
+  },
   {
    "id": "dfec7da4fa0d1fee",
    "sourceId": "news-academic",

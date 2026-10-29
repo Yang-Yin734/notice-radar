@@ -3,13 +3,13 @@
  "name": "南京大学",
  "province": "江苏省",
  "city": "南京市",
- "generatedAt": "2026-10-29T07:23:54.340Z",
- "total": 12,
+ "generatedAt": "2026-10-29T14:27:48.419Z",
+ "total": 14,
  "bySource": [
   {
    "sourceId": "jw-ggtz",
    "sourceName": "本科生院·公告通知",
-   "count": 12
+   "count": 14
   }
  ],
  "units": [
@@ -19,10 +19,38 @@
    "sources": [
     "本科生院·公告通知"
    ],
-   "count": 12
+   "count": 14
   }
  ],
  "items": [
+  {
+   "id": "1e37bd10ef471cb3",
+   "sourceId": "jw-ggtz",
+   "sourceName": "本科生院·公告通知",
+   "school": "nju",
+   "title": "【期中考试】2026-2027学年第一学期数学期中考试安排",
+   "url": "https://jw.nju.edu.cn/ee/4a/c26263a847434/page.htm",
+   "date": "2026-10-29",
+   "tag": null,
+   "category": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-29T14:27:07.404Z",
+   "unit": "本科生院"
+  },
+  {
+   "id": "a9e2a6d59cb83ba9",
+   "sourceId": "jw-ggtz",
+   "sourceName": "本科生院·公告通知",
+   "school": "nju",
+   "title": "2026年11月25日、12月2日、12月4日普通话水平测试网络报名通知",
+   "url": "https://jw.nju.edu.cn/ee/42/c26263a847426/page.htm",
+   "date": "2026-10-29",
+   "tag": null,
+   "category": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-29T14:27:07.404Z",
+   "unit": "本科生院"
+  },
   {
    "id": "0bfb1ea879619db9",
    "sourceId": "jw-ggtz",

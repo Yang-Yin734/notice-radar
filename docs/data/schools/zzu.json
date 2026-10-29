@@ -3,13 +3,13 @@
  "name": "郑州大学",
  "province": "河南省",
  "city": "郑州市",
- "generatedAt": "2026-10-29T07:23:54.340Z",
- "total": 97,
+ "generatedAt": "2026-10-29T14:27:48.419Z",
+ "total": 98,
  "bySource": [
   {
    "sourceId": "news",
    "sourceName": "新闻网·综合",
-   "count": 10
+   "count": 11
   },
   {
    "sourceId": "jwc-tzgg",
@@ -62,7 +62,7 @@
    "sources": [
     "新闻网·综合"
    ],
-   "count": 10
+   "count": 11
   },
   {
    "id": "人事部",
@@ -74,6 +74,20 @@
   }
  ],
  "items": [
+  {
+   "id": "316e00ae4c3f5c48",
+   "sourceId": "news",
+   "sourceName": "新闻网·综合",
+   "school": "zzu",
+   "title": "徐明亮为研究生骨干培训班作专题辅导报告",
+   "url": "http://www.zzu.edu.cn/info/1217/89294.htm",
+   "date": "2026-10-29",
+   "tag": null,
+   "category": "综合",
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-29T14:27:48.099Z",
+   "unit": "新闻网"
+  },
   {
    "id": "0585ac4cd3ec1593",
    "sourceId": "news",

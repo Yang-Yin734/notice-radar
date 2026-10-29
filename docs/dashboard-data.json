@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-10-29T07:23:54.340Z",
-  "total": 373,
+  "generatedAt": "2026-10-29T14:27:48.419Z",
+  "total": 380,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
-      "sourceName": "教务部·通知公告",
-      "count": 89
+      "sourceName": "教务处·通知公告",
+      "count": 91
     },
     {
       "sourceId": "gs-xw",
@@ -23,6 +23,11 @@
       "count": 21
     },
     {
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
+      "count": 21
+    },
+    {
       "sourceId": "gs-gg",
       "sourceName": "研究生院·公告",
       "count": 21
@@ -30,11 +35,6 @@
     {
       "sourceId": "aao-tzgg",
       "sourceName": "教务处·通知公告",
-      "count": 19
-    },
-    {
-      "sourceId": "news-notice",
-      "sourceName": "新闻网·公告",
       "count": 19
     },
     {
@@ -58,6 +58,11 @@
       "count": 15
     },
     {
+      "sourceId": "jw-ggtz",
+      "sourceName": "本科生院·公告通知",
+      "count": 14
+    },
+    {
       "sourceId": "jwc-jxtz",
       "sourceName": "教务处·教学通知",
       "count": 13
@@ -68,19 +73,14 @@
       "count": 13
     },
     {
-      "sourceId": "jw-ggtz",
-      "sourceName": "本科生院·公告通知",
-      "count": 12
+      "sourceId": "news",
+      "sourceName": "新闻网·综合",
+      "count": 11
     },
     {
       "sourceId": "math-xsgz",
       "sourceName": "数学科学学院·学生工作",
       "count": 11
-    },
-    {
-      "sourceId": "news",
-      "sourceName": "新闻网·综合",
-      "count": 10
     },
     {
       "sourceId": "rsc-tzgg",
@@ -104,6 +104,58 @@
     }
   ],
   "items": [
+    {
+      "id": "316e00ae4c3f5c48",
+      "sourceId": "news",
+      "sourceName": "新闻网·综合",
+      "school": "zzu",
+      "title": "徐明亮为研究生骨干培训班作专题辅导报告",
+      "url": "http://www.zzu.edu.cn/info/1217/89294.htm",
+      "date": "2026-10-29",
+      "tag": null,
+      "category": "综合",
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-29T14:27:48.099Z"
+    },
+    {
+      "id": "1e37bd10ef471cb3",
+      "sourceId": "jw-ggtz",
+      "sourceName": "本科生院·公告通知",
+      "school": "nju",
+      "title": "【期中考试】2026-2027学年第一学期数学期中考试安排",
+      "url": "https://jw.nju.edu.cn/ee/4a/c26263a847434/page.htm",
+      "date": "2026-10-29",
+      "tag": null,
+      "category": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-29T14:27:07.404Z"
+    },
+    {
+      "id": "a9e2a6d59cb83ba9",
+      "sourceId": "jw-ggtz",
+      "sourceName": "本科生院·公告通知",
+      "school": "nju",
+      "title": "2026年11月25日、12月2日、12月4日普通话水平测试网络报名通知",
+      "url": "https://jw.nju.edu.cn/ee/42/c26263a847426/page.htm",
+      "date": "2026-10-29",
+      "tag": null,
+      "category": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-29T14:27:07.404Z"
+    },
+    {
+      "id": "6bbf3e4435394088",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "nankai",
+      "title": "关于做好2027年度本科毕业论文（设计）管理工作和校级优秀本科毕业论文（设计）评选工作的通知",
+      "url": "https://jwc.nankai.edu.cn/2026/1029/c35436a605480/page.htm",
+      "date": "2026-10-29",
+      "tag": null,
+      "category": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-29T14:27:02.211Z"
+    },
     {
       "id": "4a908afc38e91381",
       "sourceId": "jiaowu-tzgg",
@@ -142,6 +194,36 @@
       "category": null,
       "alsoIn": [],
       "firstSeenAt": "2026-10-29T07:22:43.248Z"
+    },
+    {
+      "id": "80d4d9c0dda6ba62",
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
+      "school": "uestc",
+      "title": "成电讲坛 | 美国工程院院士、图灵奖得主Jack Dongarra:HPC in Transition 变革中的高性能计算",
+      "url": "https://news.uestc.edu.cn/info/1016/44826.htm",
+      "date": "2026-10-28",
+      "tag": "文化",
+      "category": null,
+      "alsoIn": [
+        "新闻网·学术"
+      ],
+      "firstSeenAt": "2026-10-29T14:26:48.177Z"
+    },
+    {
+      "id": "fda8c8fc3d435262",
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
+      "school": "uestc",
+      "title": "成电讲坛 | 中国科学院院士潘永信 ：行星科学与人类文明",
+      "url": "https://news.uestc.edu.cn/info/1016/44829.htm",
+      "date": "2026-10-28",
+      "tag": "文化",
+      "category": null,
+      "alsoIn": [
+        "新闻网·学术"
+      ],
+      "firstSeenAt": "2026-10-29T14:26:48.177Z"
     },
     {
       "id": "0585ac4cd3ec1593",
@@ -3427,6 +3509,19 @@
       "tag": null,
       "alsoIn": [],
       "firstSeenAt": "2026-10-04T07:10:30.627Z"
+    },
+    {
+      "id": "71539938e16442d4",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "nankai",
+      "title": "南开大学2026-2027学年第一学期本科生选课通知",
+      "url": "https://jwc.nankai.edu.cn/2026/0817/c35436a601256/page.htm",
+      "date": "2026-08-17",
+      "tag": null,
+      "category": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-29T14:27:02.211Z"
     },
     {
       "id": "c4469aa3b19321b1",
