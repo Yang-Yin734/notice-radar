@@ -1,7 +1,33 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-30T04:23:02.688Z",
+  "updatedAt": "2026-10-30T09:55:07.304Z",
   "items": [
+    {
+      "id": "4b70ba412bfe8b42",
+      "sourceId": "jwc-jxtz",
+      "sourceName": "教务处·教学通知",
+      "school": "xjtu",
+      "title": "[实践教学]关于2026年度“人工智能+”虚拟仿真实验教学项目推荐结果的公示",
+      "url": "https://jwc.xjtu.edu.cn/info/1179/10611.htm",
+      "date": "2026-10-30",
+      "tag": null,
+      "category": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-30T09:55:07.304Z"
+    },
+    {
+      "id": "426a3c4fa823df3c",
+      "sourceId": "jiaowu-tzgg",
+      "sourceName": "教务部·通知公告",
+      "school": "nwpu",
+      "title": "关于第七届西北工业大学大学生数学竞赛获奖结果的公示",
+      "url": "https://jiaowu.nwpu.edu.cn/info/1164/30608.htm",
+      "date": "2026-10-30",
+      "tag": null,
+      "category": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-30T09:54:37.739Z"
+    },
     {
       "id": "4871fa7bbee63a1b",
       "sourceId": "math-jwgg",
