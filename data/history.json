@@ -1,7 +1,33 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-29T14:27:48.099Z",
+  "updatedAt": "2026-10-30T04:23:02.688Z",
   "items": [
+    {
+      "id": "4871fa7bbee63a1b",
+      "sourceId": "math-jwgg",
+      "sourceName": "数学科学学院·教务公告",
+      "school": "uestc",
+      "title": "关于2026-2027-1学期举办“线性代数与空间解析几何疑难分析讲座（一）”的通知",
+      "url": "https://www.math.uestc.edu.cn/info/1043/10334.htm",
+      "date": "2026-10-30",
+      "tag": null,
+      "category": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-30T04:23:02.688Z"
+    },
+    {
+      "id": "09ce7def745f2fc2",
+      "sourceId": "math-xsgz",
+      "sourceName": "数学科学学院·学生工作",
+      "school": "uestc",
+      "title": "关于共青团电子科技大学第十五次代表大会数学科学学院代表候选人初步人选的公示",
+      "url": "https://www.math.uestc.edu.cn/info/1044/10332.htm",
+      "date": "2026-10-30",
+      "tag": null,
+      "category": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-30T04:23:02.688Z"
+    },
     {
       "id": "316e00ae4c3f5c48",
       "sourceId": "news",

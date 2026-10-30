@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-30T03:08:44.471Z",
-  "total": 380,
+  "generatedAt": "2026-10-30T04:23:03.007Z",
+  "total": 382,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
@@ -38,14 +38,14 @@
       "count": 19
     },
     {
-      "sourceId": "ugs-tzgg",
-      "sourceName": "本科生院·通知公告",
+      "sourceId": "math-jwgg",
+      "sourceName": "数学科学学院·教务公告",
       "count": 18
     },
     {
-      "sourceId": "math-jwgg",
-      "sourceName": "数学科学学院·教务公告",
-      "count": 17
+      "sourceId": "ugs-tzgg",
+      "sourceName": "本科生院·通知公告",
+      "count": 18
     },
     {
       "sourceId": "jwc-student",
@@ -73,13 +73,13 @@
       "count": 13
     },
     {
-      "sourceId": "news",
-      "sourceName": "新闻网·综合",
-      "count": 11
-    },
-    {
       "sourceId": "math-xsgz",
       "sourceName": "数学科学学院·学生工作",
+      "count": 12
+    },
+    {
+      "sourceId": "news",
+      "sourceName": "新闻网·综合",
       "count": 11
     },
     {
@@ -104,6 +104,32 @@
     }
   ],
   "items": [
+    {
+      "id": "4871fa7bbee63a1b",
+      "sourceId": "math-jwgg",
+      "sourceName": "数学科学学院·教务公告",
+      "school": "uestc",
+      "title": "关于2026-2027-1学期举办“线性代数与空间解析几何疑难分析讲座（一）”的通知",
+      "url": "https://www.math.uestc.edu.cn/info/1043/10334.htm",
+      "date": "2026-10-30",
+      "tag": null,
+      "category": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-30T04:23:02.688Z"
+    },
+    {
+      "id": "09ce7def745f2fc2",
+      "sourceId": "math-xsgz",
+      "sourceName": "数学科学学院·学生工作",
+      "school": "uestc",
+      "title": "关于共青团电子科技大学第十五次代表大会数学科学学院代表候选人初步人选的公示",
+      "url": "https://www.math.uestc.edu.cn/info/1044/10332.htm",
+      "date": "2026-10-30",
+      "tag": null,
+      "category": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-30T04:23:02.688Z"
+    },
     {
       "id": "316e00ae4c3f5c48",
       "sourceId": "news",
