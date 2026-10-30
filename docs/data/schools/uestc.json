@@ -3,9 +3,19 @@
  "name": "电子科技大学",
  "province": "四川省",
  "city": "成都市",
- "generatedAt": "2026-10-30T03:08:44.471Z",
- "total": 73,
+ "generatedAt": "2026-10-30T16:18:06.996Z",
+ "total": 75,
  "bySource": [
+  {
+   "sourceId": "math-jwgg",
+   "sourceName": "数学科学学院·教务公告",
+   "count": 18
+  },
+  {
+   "sourceId": "math-xsgz",
+   "sourceName": "数学科学学院·学生工作",
+   "count": 12
+  },
   {
    "sourceId": "news-notice",
    "sourceName": "新闻网·公告",
@@ -22,16 +32,6 @@
    "count": 15
   },
   {
-   "sourceId": "math-xsgz",
-   "sourceName": "数学科学学院·学生工作",
-   "count": 11
-  },
-  {
-   "sourceId": "math-jwgg",
-   "sourceName": "数学科学学院·教务公告",
-   "count": 17
-  },
-  {
    "sourceId": "jwc-important",
    "sourceName": "教务处·重要公告",
    "count": 4
@@ -42,10 +42,10 @@
    "id": "数学科学学院",
    "name": "数学科学学院",
    "sources": [
-    "数学科学学院·学生工作",
-    "数学科学学院·教务公告"
+    "数学科学学院·教务公告",
+    "数学科学学院·学生工作"
    ],
-   "count": 28
+   "count": 30
   },
   {
    "id": "新闻网",
@@ -73,6 +73,34 @@
   }
  ],
  "items": [
+  {
+   "id": "4871fa7bbee63a1b",
+   "sourceId": "math-jwgg",
+   "sourceName": "数学科学学院·教务公告",
+   "school": "uestc",
+   "title": "关于2026-2027-1学期举办“线性代数与空间解析几何疑难分析讲座（一）”的通知",
+   "url": "https://www.math.uestc.edu.cn/info/1043/10334.htm",
+   "date": "2026-10-30",
+   "tag": null,
+   "category": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-30T04:23:02.688Z",
+   "unit": "数学科学学院"
+  },
+  {
+   "id": "09ce7def745f2fc2",
+   "sourceId": "math-xsgz",
+   "sourceName": "数学科学学院·学生工作",
+   "school": "uestc",
+   "title": "关于共青团电子科技大学第十五次代表大会数学科学学院代表候选人初步人选的公示",
+   "url": "https://www.math.uestc.edu.cn/info/1044/10332.htm",
+   "date": "2026-10-30",
+   "tag": null,
+   "category": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-30T04:23:02.688Z",
+   "unit": "数学科学学院"
+  },
   {
    "id": "80d4d9c0dda6ba62",
    "sourceId": "news-notice",

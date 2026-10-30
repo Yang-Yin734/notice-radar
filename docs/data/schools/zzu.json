@@ -3,13 +3,13 @@
  "name": "郑州大学",
  "province": "河南省",
  "city": "郑州市",
- "generatedAt": "2026-10-30T03:08:44.471Z",
- "total": 98,
+ "generatedAt": "2026-10-30T16:18:06.996Z",
+ "total": 99,
  "bySource": [
   {
    "sourceId": "news",
    "sourceName": "新闻网·综合",
-   "count": 11
+   "count": 12
   },
   {
    "sourceId": "jwc-tzgg",
@@ -62,7 +62,7 @@
    "sources": [
     "新闻网·综合"
    ],
-   "count": 11
+   "count": 12
   },
   {
    "id": "人事部",
@@ -74,6 +74,20 @@
   }
  ],
  "items": [
+  {
+   "id": "02cbc024f57fc650",
+   "sourceId": "news",
+   "sourceName": "新闻网·综合",
+   "school": "zzu",
+   "title": "郑州大学承办第九届海峡两岸及港澳地区护理学术交流会",
+   "url": "http://www.zzu.edu.cn/info/1217/89292.htm",
+   "date": "2026-10-29",
+   "tag": null,
+   "category": "综合",
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-30T16:18:06.749Z",
+   "unit": "新闻网"
+  },
   {
    "id": "316e00ae4c3f5c48",
    "sourceId": "news",

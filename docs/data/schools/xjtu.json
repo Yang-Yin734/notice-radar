@@ -3,13 +3,13 @@
  "name": "西安交通大学",
  "province": "陕西省",
  "city": "西安市",
- "generatedAt": "2026-10-30T03:08:44.471Z",
- "total": 13,
+ "generatedAt": "2026-10-30T16:18:06.996Z",
+ "total": 14,
  "bySource": [
   {
    "sourceId": "jwc-jxtz",
    "sourceName": "教务处·教学通知",
-   "count": 13
+   "count": 14
   }
  ],
  "units": [
@@ -19,10 +19,24 @@
    "sources": [
     "教务处·教学通知"
    ],
-   "count": 13
+   "count": 14
   }
  ],
  "items": [
+  {
+   "id": "4b70ba412bfe8b42",
+   "sourceId": "jwc-jxtz",
+   "sourceName": "教务处·教学通知",
+   "school": "xjtu",
+   "title": "[实践教学]关于2026年度“人工智能+”虚拟仿真实验教学项目推荐结果的公示",
+   "url": "https://jwc.xjtu.edu.cn/info/1179/10611.htm",
+   "date": "2026-10-30",
+   "tag": null,
+   "category": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-30T09:55:07.304Z",
+   "unit": "教务处"
+  },
   {
    "id": "dd7076fb47a26935",
    "sourceId": "jwc-jxtz",

@@ -1,11 +1,11 @@
 {
-  "generatedAt": "2026-10-30T04:23:03.007Z",
-  "total": 382,
+  "generatedAt": "2026-10-30T16:18:06.996Z",
+  "total": 386,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
       "sourceName": "教务处·通知公告",
-      "count": 91
+      "count": 92
     },
     {
       "sourceId": "gs-xw",
@@ -20,7 +20,7 @@
     {
       "sourceId": "jiaowu-tzgg",
       "sourceName": "教务部·通知公告",
-      "count": 21
+      "count": 22
     },
     {
       "sourceId": "news-notice",
@@ -58,14 +58,14 @@
       "count": 15
     },
     {
-      "sourceId": "jw-ggtz",
-      "sourceName": "本科生院·公告通知",
+      "sourceId": "jwc-jxtz",
+      "sourceName": "教务处·教学通知",
       "count": 14
     },
     {
-      "sourceId": "jwc-jxtz",
-      "sourceName": "教务处·教学通知",
-      "count": 13
+      "sourceId": "jw-ggtz",
+      "sourceName": "本科生院·公告通知",
+      "count": 14
     },
     {
       "sourceId": "bksy-tzgg",
@@ -80,7 +80,7 @@
     {
       "sourceId": "news",
       "sourceName": "新闻网·综合",
-      "count": 11
+      "count": 12
     },
     {
       "sourceId": "rsc-tzgg",
@@ -104,6 +104,45 @@
     }
   ],
   "items": [
+    {
+      "id": "6d3978321685cdeb",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "nankai",
+      "title": "关于普通高等教育天津市级规划教材校内推荐教材的公示",
+      "url": "https://jwc.nankai.edu.cn/2026/1030/c35436a605539/page.htm",
+      "date": "2026-10-30",
+      "tag": null,
+      "category": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-30T16:17:13.241Z"
+    },
+    {
+      "id": "4b70ba412bfe8b42",
+      "sourceId": "jwc-jxtz",
+      "sourceName": "教务处·教学通知",
+      "school": "xjtu",
+      "title": "[实践教学]关于2026年度“人工智能+”虚拟仿真实验教学项目推荐结果的公示",
+      "url": "https://jwc.xjtu.edu.cn/info/1179/10611.htm",
+      "date": "2026-10-30",
+      "tag": null,
+      "category": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-30T09:55:07.304Z"
+    },
+    {
+      "id": "426a3c4fa823df3c",
+      "sourceId": "jiaowu-tzgg",
+      "sourceName": "教务部·通知公告",
+      "school": "nwpu",
+      "title": "关于第七届西北工业大学大学生数学竞赛获奖结果的公示",
+      "url": "https://jiaowu.nwpu.edu.cn/info/1164/30608.htm",
+      "date": "2026-10-30",
+      "tag": null,
+      "category": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-30T09:54:37.739Z"
+    },
     {
       "id": "4871fa7bbee63a1b",
       "sourceId": "math-jwgg",
@@ -129,6 +168,19 @@
       "category": null,
       "alsoIn": [],
       "firstSeenAt": "2026-10-30T04:23:02.688Z"
+    },
+    {
+      "id": "02cbc024f57fc650",
+      "sourceId": "news",
+      "sourceName": "新闻网·综合",
+      "school": "zzu",
+      "title": "郑州大学承办第九届海峡两岸及港澳地区护理学术交流会",
+      "url": "http://www.zzu.edu.cn/info/1217/89292.htm",
+      "date": "2026-10-29",
+      "tag": null,
+      "category": "综合",
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-30T16:18:06.749Z"
     },
     {
       "id": "316e00ae4c3f5c48",

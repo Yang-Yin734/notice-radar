@@ -3,13 +3,13 @@
  "name": "南开大学",
  "province": "天津市",
  "city": "",
- "generatedAt": "2026-10-30T03:08:44.471Z",
- "total": 10,
+ "generatedAt": "2026-10-30T16:18:06.996Z",
+ "total": 11,
  "bySource": [
   {
    "sourceId": "jwc-tzgg",
    "sourceName": "教务处·通知公告",
-   "count": 10
+   "count": 11
   }
  ],
  "units": [
@@ -19,10 +19,24 @@
    "sources": [
     "教务处·通知公告"
    ],
-   "count": 10
+   "count": 11
   }
  ],
  "items": [
+  {
+   "id": "6d3978321685cdeb",
+   "sourceId": "jwc-tzgg",
+   "sourceName": "教务处·通知公告",
+   "school": "nankai",
+   "title": "关于普通高等教育天津市级规划教材校内推荐教材的公示",
+   "url": "https://jwc.nankai.edu.cn/2026/1030/c35436a605539/page.htm",
+   "date": "2026-10-30",
+   "tag": null,
+   "category": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-30T16:17:13.241Z",
+   "unit": "教务处"
+  },
   {
    "id": "6bbf3e4435394088",
    "sourceId": "jwc-tzgg",

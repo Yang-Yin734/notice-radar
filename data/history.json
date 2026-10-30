@@ -1,7 +1,20 @@
 {
   "version": 1,
-  "updatedAt": "2026-10-30T09:55:07.304Z",
+  "updatedAt": "2026-10-30T16:18:06.749Z",
   "items": [
+    {
+      "id": "6d3978321685cdeb",
+      "sourceId": "jwc-tzgg",
+      "sourceName": "教务处·通知公告",
+      "school": "nankai",
+      "title": "关于普通高等教育天津市级规划教材校内推荐教材的公示",
+      "url": "https://jwc.nankai.edu.cn/2026/1030/c35436a605539/page.htm",
+      "date": "2026-10-30",
+      "tag": null,
+      "category": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-30T16:17:13.241Z"
+    },
     {
       "id": "4b70ba412bfe8b42",
       "sourceId": "jwc-jxtz",
@@ -53,6 +66,19 @@
       "category": null,
       "alsoIn": [],
       "firstSeenAt": "2026-10-30T04:23:02.688Z"
+    },
+    {
+      "id": "02cbc024f57fc650",
+      "sourceId": "news",
+      "sourceName": "新闻网·综合",
+      "school": "zzu",
+      "title": "郑州大学承办第九届海峡两岸及港澳地区护理学术交流会",
+      "url": "http://www.zzu.edu.cn/info/1217/89292.htm",
+      "date": "2026-10-29",
+      "tag": null,
+      "category": "综合",
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-30T16:18:06.749Z"
     },
     {
       "id": "316e00ae4c3f5c48",
