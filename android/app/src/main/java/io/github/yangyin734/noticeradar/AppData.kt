@@ -354,12 +354,29 @@ class Store(private val ctx: Context) {
 
     fun dataAt(): Long = prefs.getLong("dataAt", 0L)
 
-    /** 按镜像顺序拉数据，返回（快照, 来源标签）或 null（全失败）。 */
+    /**
+     * 按镜像顺序拉数据，返回（快照, 来源标签）或 null（全失败）。
+     *
+     * 「第一个能解析的就用」这条规则还不够 —— githack 虽然响应头写 `max-age=60`，
+     * 实测它的边缘缓存比声明的时间长（推了 0.15.1 之后 5 分钟仍返 0.15.0 的数据）。
+     * 所以这里加一道新鲜度判断：拿到的 `generatedAt` 若比本机已有的还旧，就继续试下一个镜像，
+     * 都试完仍不如本机就退回本机已有的那份 —— 宁可用缓存，也不要用更旧的数据覆盖。
+     */
     fun refresh(): Pair<Snapshot, String>? {
+        val knownAt = cached()?.generatedAt ?: bundled()?.generatedAt
+        var best: Triple<String, Snapshot, String>? = null
         for (url in DATA_URLS) {
             val raw = Net.get(bust(url)) ?: continue
             val snap = Json.parseSnapshot(raw) ?: continue
             val label = labelOf(url)
+            if (best == null || snap.generatedAt > best.second.generatedAt) best = Triple(raw, snap, label)
+            // 不比本机旧：这就是要的（绝大多数情况第一次就命中，不会真去试四个镜像）
+            if (knownAt == null || snap.generatedAt >= knownAt) {
+                cache(raw, label)
+                return snap to label
+            }
+        }
+        best?.let { (raw, snap, label) ->
             cache(raw, label)
             return snap to label
         }
