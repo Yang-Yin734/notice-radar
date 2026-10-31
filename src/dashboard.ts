@@ -84,8 +84,10 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
 <meta name="apple-mobile-web-app-title" content="${escapeHtml(title)}">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="icon-192.png">
-<link rel="icon" href="icon-192.png">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <script>
   // 首帧就把深浅色定下来（早于样式表与正文）：否则深色用户每次打开都先闪一下白。
   // 这段必须内联、必须放在 <style> 之前，不能用 defer。

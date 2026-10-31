@@ -5,4 +5,8 @@
          否则系统栏和内容之间会出现一条颜色不同的边（以前踩过的"底部白条"）。 -->
     <color name="appBackground">#FFFBFAF7</color>
     <color name="appSurface">#FFFFFFFF</color>
+
+    <!-- 应用图标底色：与 App 里未读点、下划线 tab 同一支朱红（Tokens.kt 的 Paper.accent）。
+         自适应图标用它当背景层，前景层 drawable/ic_launcher_foreground.xml 只画那张纸。 -->
+    <color name="ic_launcher_background">#FFB23A2E</color>
 </resources>

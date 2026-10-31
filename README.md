@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="docs/icon-192.png" width="88" height="88" alt="校园通知雷达">
+
 # 校园通知雷达 · notice-radar
 
 **把"没有 RSS、还被 WAF 挡着"的高校官网通知，变成可订阅、可关键词过滤、能推到手机的信息流。**
@@ -10,7 +12,7 @@
 [![android-apk](https://github.com/Yang-Yin734/notice-radar/actions/workflows/android.yml/badge.svg)](https://github.com/Yang-Yin734/notice-radar/actions/workflows/android.yml)
 [![license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![node](https://img.shields.io/badge/node-%3E%3D22.18-339933.svg)](package.json)
-[![version](https://img.shields.io/github/package-json/v/Yang-Yin734/notice-radar?label=version&color=4d6bfe)](CHANGELOG.md)
+[![version](https://img.shields.io/github/package-json/v/Yang-Yin734/notice-radar?label=version&color=B23A2E)](CHANGELOG.md)
 
 ### 📲 [**下载 Android 安装包（APK）**](https://github.com/Yang-Yin734/notice-radar/releases/download/android-latest/notice-radar.apk)
 
@@ -30,8 +32,11 @@
 > **APK 是纯原生应用**（Kotlin + Jetpack Compose 写的界面，不是网页壳）：
 > - 界面与数据都打包在 APK 内（`android/app/src/main/assets/data`，约 75 KB：通知 + 学校目录 + 已接入学校的数据），**打开零网络、断网可用**
 > - 没有 WebView、没有地址栏、不跳浏览器；外部链接才交给系统浏览器
-> - 打开时先读内置数据，联网时按镜像顺序刷新：**jsDelivr → Statically → githack → GitHub Pages**（垫底），
->   因为 `github.io` 在国内经常打不开；抓到的新数据存在本机
+> - 打开时先读内置数据，联网时按镜像顺序刷新：**githack → Statically → GitHub Pages → jsDelivr**（垫底），
+>   因为 `github.io` 在国内经常打不开；抓到的新数据存在本机。
+>   顺序是按**新鲜度**排的：githack 的 `max-age` 只有 60 秒，jsDelivr 对 `@main` 是 7 天/12 小时，
+>   排第一会让"检查更新"永远看到旧版本号（踩过这个坑，见 [CHANGELOG](CHANGELOG.md) v0.15.1）。
+>   版本号取**所有镜像里的最大者**，数据取**最新的那份** —— 单个 CDN 的缓存策略决定不了更新体系。
 >   （这只是**数据**的镜像；**外壳 HTML 仍然只有 `github.io` 一个来源**，站点本身出问题见
 >   [网页版打不开？](#网页版打不开最常见的原因pages-被停用)）
 > - **应用内不会出现"安装到手机"的引导**（那只对网页版访客有意义）；网页版才有那个横幅
@@ -52,6 +57,8 @@
 | **浏览器渲染兜底** | 部署机器人挑战的学院站用 `requiresBrowser: true`，云端 `xvfb` + 真窗口每天跑一次 |
 | **三层降噪** | 源级关键词白/黑名单 → 事件级去重 → 用户画像过滤；同一件事的多次转发只留一条 |
 | **分档推送** | `立即` / 日报 / 静音三档；推送通道 `webhook`、`email`、`stdout`（默认只开 stdout，不配就只落盘） |
+| **截止日期倒计时** | 办事类通知（选课/报名/缴费/注册…）自动从**正文**里抠出截止日期，网页与 App 显示「剩 N 天」，还能一键**按截止排序**分成「今天 / 明天 / 一周内 / 再往后」 |
+| **手机端真通知** | Android 应用接入 WorkManager + NotificationManager，每 30 分钟在后台比对一次，有新通知直接落系统通知栏（打开开关即可，不用装第三方） |
 | **归档与检索** | `data/history.json` 按时间倒序，网页/应用里可搜关键词、按来源筛、收藏、标记已读 |
 | **网页版（PWA）** | <https://yang-yin734.github.io/notice-radar/>：深浅色一键切换、首屏秒开、可添加到主屏幕、离线可看已加载内容 |
 | **Android 原生应用** | Kotlin + Compose，数据打包在 APK 内，打开零网络；选学校/学院、收藏、推送设置全在本地 |

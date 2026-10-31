@@ -2,6 +2,33 @@
 
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## v0.15.2 — 2026-10-31
+
+### 换掉那个"太简朴"的应用图标
+
+旧图标是 bubblewrap 时代的占位图（深蓝灰渐变块，3196 种颜色的杂色图），跟界面那套"公告栏的纸"毫无关系。
+新图标是一个**朱红底上贴着的通知单**：左侧一道朱红竖边（红头文件）、右上折角、四条墨线（标题粗、正文细），
+底色就是 App 里未读点和下划线 tab 用的那支 `#B23A2E`。
+
+- 几何与配色由 [`tools/make-icon.py`](tools/make-icon.py) 生成（PIL，4 倍超采样 + LANCZOS），
+  一次产出 Android 五档 mipmap、`ic_maskable`、以及网页的 favicon / apple-touch-icon / PWA maskable 图。
+  **矢量与 PNG 用同一套参数**：`drawable/ic_launcher_foreground.xml` 的 path 就是把脚本里的矩形换算成 pathData，
+  所以 Android 8.0+ 走矢量（任意缩放都锐），7.x 走 PNG，两边长得一样。
+- `mipmap-anydpi-v26/ic_launcher.xml` 从 Google 模板（白底 + 给 `ic_maskable` 加 8.5dp padding）改成标准自适应图标：
+  背景 `@color/ic_launcher_background` + 前景 `@drawable/ic_launcher_foreground`，内容全部落在 66×66 安全区内，
+  圆形/方形/水滴任何启动器形状都不会切到纸。
+- 网页侧：`favicon.ico`、`favicon-32.png`、`icon-192.png`、`icon-512.png`、`apple-touch-icon.png`、
+  `icon-maskable-512.png` 全部重做，`manifest.webmanifest` 的 `theme_color` / `background_color`
+  从旧的深蓝 `#1f2a3d` / 浅蓝 `#eef1f6` 改成 `#B23A2E` / `#FBFAF7`（最后两处旧配色残留），
+  maskable 单独出一张缩进安全区的图（原来让 `icon-512.png` 兼 `any maskable`，圆形启动器会裁掉纸角）。
+
+### 顺手把 README 补上落后于代码的部分
+
+- 顶部加图标，版本徽章换成本项目的朱红。
+- **修正镜像顺序**：README 里写的还是"jsDelivr 优先"，而 v0.15.1 之后是 githack 优先 ——
+  这行字本身就是那个 bug 的化石。
+- 能力表补上「截止日期倒计时」「手机端真通知」两行（v0.13 / v0.14 做的，README 一直没提）。
+
 ## v0.15.1 — 2026-10-31
 
 ### 修「检查更新」永远说「已是最新」—— 以及它背后的数据陈旧问题
