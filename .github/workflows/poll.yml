@@ -88,12 +88,13 @@ jobs:
           # 境内学校站点在境外 runner 上偶发整体不可达（跨境网络抖动，实测约每 3 次 1 次）。
           # 单源失败不影响退出码，只有全部源都失败才返回非零，所以重试放在这一层。
           # 6 次 + 逐步拉长间隔：尽量"抖过去"，让通知晚到一点而不是丢掉（状态没写，成功那轮会补发）。
-          # --timeout=15000：跨境链路常是"连上了但迟迟不回"，默认 40s 会让整轮撞上 15 分钟的 job 上限，
-          #   砍到 15s 让这种源快速失败进重试，而不是把后面所有源一起拖死。
+          # --timeout=25000：跨境链路常是"连上了但迟迟不回"。15s 会把"慢但能通"的源误杀
+          #   （fetch.ts 默认 40s，注释里就写着 20s 以下会显著抬高失败率），这里取 25s 折中：
+          #   整轮实测只有 95 秒左右，离 15 分钟的 job 上限很远，没必要压这么狠。
           # --concurrency=4：4 个 worker 并行领号，整轮耗时从"30 源 × 平均耗时"压到约 1/4；
           #   源之间仍保留 1500ms 间隔（首轮按 worker 序号错开），对学校站点保持客气。
           for attempt in 1 2 3 4 5 6; do
-            if node src/cli.ts run --json=data/latest.json --delay=1500 --timeout=15000 --concurrency=4; then
+            if node src/cli.ts run --json=data/latest.json --delay=1500 --timeout=25000 --concurrency=4; then
               echo "outcome=ok" >> "$GITHUB_OUTPUT"
               exit 0
             fi
@@ -111,6 +112,33 @@ jobs:
         if: steps.outlet.outputs.skip != 'yes'
         run: node tools/health.ts --outcome=${{ steps.fetch.outputs.outcome }}
 
+      - name: 补抓主链路失败的源
+        # 上一步只在「所有源都失败」时才返回非零，部分失败是沉默的 ——
+        # 而 runs.json 恰好逐源记着最近一轮是 ok 还是 fail。这里把主链路失败的源挑出来再抓一遍，
+        # 第二遍命中不同网络时机的概率不小，成本只有几秒。
+        if: steps.outlet.outputs.skip != 'yes'
+        run: |
+          ids=$(node -e "
+            const fs = require('fs');
+            try {
+              const r = JSON.parse(fs.readFileSync('data/runs.json', 'utf8'));
+              const out = [];
+              for (const [id, arr] of Object.entries(r.sources || {})) {
+                if (!id.startsWith('uestc:')) continue;
+                if (!Array.isArray(arr) || arr.length === 0) continue;
+                if (arr[arr.length - 1] === 'fail') out.push(id.split(':')[1]);
+              }
+              process.stdout.write(out.join(','));
+            } catch (e) { process.stdout.write(''); }
+          ")
+          if [ -z "$ids" ]; then
+            echo "▸ 主链路没有失败的源，无需补抓"
+            exit 0
+          fi
+          echo "▸ 补抓失败的源：$ids"
+          node src/cli.ts run --only="$ids" --delay=1500 --timeout=30000 --concurrency=2 || \
+            echo "::warning::补抓后仍有失败（$ids），下一轮再试"
+
       - name: 抓取其它学校（只采集不通知）
         # 全国名单里陆续接入的学校：各自的预设里都标了 collectOnly ——
         # 条目照常进归档、仪表盘与按校数据文件（docs/data/schools/<id>.json），
@@ -127,8 +155,17 @@ jobs:
               *uestc.yaml|*uestc-math.yaml) continue ;;   # 主链路已经抓过
             esac
             echo "▸ 其它学校：$cfg"
-            node src/cli.ts run --config="$cfg" --delay=1500 || \
-              echo "::warning::$cfg 抓取失败（collectOnly，不影响主链路）"
+            # 与主链路同一套容错：跨境慢源给 25s；并发压到 2 —— 单校通常只有 1 个源，
+            # 开太高只会让"学校之间的请求"挤在一条跨境链路上。
+            ok=no
+            for attempt in 1 2 3; do
+              if node src/cli.ts run --config="$cfg" --delay=1500 --timeout=25000 --concurrency=2; then
+                ok=yes
+                break
+              fi
+              [ "$attempt" -lt 3 ] && sleep $((attempt * 15))
+            done
+            [ "$ok" = no ] && echo "::warning::$cfg 抓取失败（collectOnly，不影响主链路）"
           done
 
       - name: 失败时打印体检表（便于定位）
