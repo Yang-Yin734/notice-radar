@@ -26,10 +26,11 @@ on:
   workflow_dispatch:
 
 concurrency:
-  # 与 poll.yml 共用同一个 group：两个 workflow 都要 merge -X ours 后 push
-  # data/ 和 docs/，分组不同就是真并发、互相覆盖对方刚抓到的条目。
-  # 同 group + cancel-in-progress: false 的语义是「排队等待」，正是这里要的。
-  group: poll
+  # 原先与 poll.yml 共用一个 group（靠"排队"避免两边同时 push data/ 打架）。
+  # 但 poll 改成 cancel-in-progress: true 之后，共用 group 意味着每 10 分钟的 poll
+  # 都会把这天唯一一轮的学院抓取顶掉 —— 学院源被 WAF 挡着，重跑要等明天。
+  # 所以拆成独立 group，push 冲突改用「重试 + 重新 merge」解决（下面「提交状态」步）。
+  group: poll-math
   cancel-in-progress: false
 
 permissions:
@@ -38,7 +39,7 @@ permissions:
 jobs:
   math:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 12
     steps:
       - uses: actions/checkout@v4
 
@@ -133,15 +134,26 @@ jobs:
             exit 0
           fi
           git commit -m "chore(state): math $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
-          # 先合并远端再推：docs 下是构建产物，冲突必须自动解决（-X ours），
-          # 绝不能让 <<<<<<< 这类冲突标记被提交上去（曾经这么坏过线上页面）
-          git fetch origin main
-          if ! git merge -X ours --no-edit origin/main; then
-            git merge --abort || true
-            echo "::error::与远端合并失败，本次不提交（下次运行会重试）"
-            exit 1
-          fi
-          if git push; then
+          # 与 poll.yml 并发时，两边的 push 会互相顶掉 —— 这里重试 3 次：
+          # 每次都重新 fetch + merge -X ours（docs 是构建产物，冲突必须自动解决，
+          # 绝不能让 <<<<<<< 被提交上去 —— 曾经这么坏过线上页面）。
+          pushed=no
+          for attempt in 1 2 3; do
+            git fetch origin main
+            if ! git merge -X ours --no-edit origin/main; then
+              git merge --abort || true
+              echo "::warning::第 ${attempt} 次合并远端失败，10 秒后重试"
+              sleep 10
+              continue
+            fi
+            if git push; then
+              pushed=yes
+              break
+            fi
+            echo "::warning::第 ${attempt} 次推送被拒（多半是 poll 抢先推了），10 秒后重试"
+            sleep 10
+          done
+          if [ "$pushed" = yes ]; then
             echo "✓ 状态已提交回仓库"
           else
             echo "::error::推送状态失败。查两处：① Settings → Actions → General → Workflow permissions 要为 Read and write；② 若开了 main 保护规则，Secret STATE_DEPLOY_KEY 必须与规则白名单里的部署密钥配对"

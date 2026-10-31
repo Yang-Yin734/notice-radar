@@ -28,8 +28,13 @@ on:
   workflow_dispatch:
 
 concurrency:
+  # cancel-in-progress: true —— 不是任性，是被卡住过。
+  # 实测出现过一轮 poll 停在 in_progress 十几分钟不结束，于是后面排队的
+  # workflow_dispatch 一直 pending（10 分钟没开始），整个调度被一轮僵住的 job 顶死。
+  # 抓取是幂等的（状态只在成功时写入、成功那轮会补抓全量列表），
+  # 所以宁可让新一轮顶掉旧的，也不要让"卡住"传染给后续每一轮。
   group: poll
-  cancel-in-progress: false
+  cancel-in-progress: true
 
 permissions:
   contents: write
@@ -37,8 +42,8 @@ permissions:
 jobs:
   poll:
     runs-on: ubuntu-latest
-    # 防止某个源卡住导致 job 一直挂着（默认上限是 6 小时，太宽松）
-    timeout-minutes: 15
+    # 与 cron 间隔对齐：一轮最多 10 分钟，超过就是卡住了，留着只会堵住下一轮。
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
 
@@ -225,15 +230,27 @@ jobs:
             exit 0
           fi
           git commit -m "chore(state): $(date -u +%Y-%m-%dT%H:%MZ) [skip ci]"
-          # 先合并远端再推：docs 下是构建产物，冲突必须自动解决（-X ours），
-          # 绝不能让 <<<<<<< 这类冲突标记被提交上去（曾经这么坏过线上页面）
-          git fetch origin main
-          if ! git merge -X ours --no-edit origin/main; then
-            git merge --abort || true
-            echo "::error::与远端合并失败，本次不提交（下次运行会重试）"
-            exit 1
-          fi
-          if git push; then
+          # 与 poll-math 并发时（两者已拆成独立 concurrency group）push 会互相顶掉，
+          # 所以重试 3 次：每次都重新 fetch + merge -X ours。
+          # docs 下是构建产物，冲突必须自动解决（-X ours），
+          # 绝不能让 <<<<<<< 这类冲突标记被提交上去（曾经这么坏过线上页面）。
+          pushed=no
+          for attempt in 1 2 3; do
+            git fetch origin main
+            if ! git merge -X ours --no-edit origin/main; then
+              git merge --abort || true
+              echo "::warning::第 ${attempt} 次合并远端失败，10 秒后重试"
+              sleep 10
+              continue
+            fi
+            if git push; then
+              pushed=yes
+              break
+            fi
+            echo "::warning::第 ${attempt} 次推送被拒，10 秒后重试"
+            sleep 10
+          done
+          if [ "$pushed" = yes ]; then
             echo "✓ 状态已提交回仓库"
           else
             echo "::error::推送状态失败。查两处：① Settings → Actions → General → Workflow permissions 要为 Read and write；② 若开了 main 保护规则，Secret STATE_DEPLOY_KEY 必须与规则白名单里的部署密钥配对"
