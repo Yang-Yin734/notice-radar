@@ -8,6 +8,8 @@ import { fetchHtml } from './core/fetch.ts';
 import { renderHtml } from './core/browser.ts';
 import { getAdapter, listAdapters } from './adapters/index.ts';
 import { evaluate } from './core/filter.ts';
+import { extractDeadline } from './core/deadline.ts';
+import { withDeadlines } from './core/detail.ts';
 import { loadState, markSeen, saveState, splitNew, dedupeAcrossSources } from './core/dedupe.ts';
 import { appendHistory, countBySource, loadHistory, loadScopedHistory, renderStats, saveHistory, summarize } from './core/history.ts';
 import { dropLegacyKeys, loadRuns, ratesForSchool, recordRun, saveRuns, scopedKey, summarizeRuns } from './core/runs.ts';
@@ -103,6 +105,13 @@ interface Flags {
   timeoutMs: number;
   /** 并发抓取的源数量；0/1 = 串行（默认，对学校站点最客气）。 */
   concurrency: number;
+  /**
+   * 关掉"抓详情页补截止日"这一步。
+   *
+   * 默认开着：标题里几乎从不写截止日（实测 386 条归档命中 0 条），正文里才有。
+   * 关掉的理由只有两个：离线调选择器时不想多发请求；或者站点开始对详情页限速。
+   */
+  noDetail: boolean;
   max: number;
   writeAlways: boolean;
   /** 允许用真浏览器渲染 requiresBrowser 的源（默认关，见 README 合规一节） */
@@ -152,6 +161,7 @@ function parseFlags(argv: string[]): Flags {
     delayMs: Number(get('delay') ?? 1200),
     timeoutMs: Number(get('timeout') ?? 0),
     concurrency: Number(get('concurrency') ?? 0),
+    noDetail: argv.includes('--no-detail'),
     max: Number(get('max') ?? 20),
     writeAlways: argv.includes('--write-always'),
     allowBrowser: argv.includes('--allow-browser'),
@@ -309,13 +319,18 @@ async function collectOne(cfg: RadarConfig, source: SourceConfig, flags: Flags):
   return { ...base, ok: true, status, bytes, tookMs: Date.now() - t0, items };
 }
 
-function filterItems(results: SourceResult[], cfg: RadarConfig): Notice[] {  const byId = new Map(cfg.sources.map((s) => [s.id, s]));
+function filterItems(results: SourceResult[], cfg: RadarConfig): Notice[] {
+  const byId = new Map(cfg.sources.map((s) => [s.id, s]));
   const kept: Notice[] = [];
   for (const r of results) {
     const source = byId.get(r.sourceId);
     if (!source) continue;
     for (const item of r.items) {
-      if (evaluate(item.title, source.include, source.exclude).pass) kept.push(item);
+      if (!evaluate(item.title, source.include, source.exclude).pass) continue;
+      // 截止日期在这里挂一次就够：之后归档、仪表盘、App 都直接读这个字段，
+      // 而"还剩几天"是相对量，展示时按当天现算（落库会隔天就过期）。
+      const deadline = extractDeadline(item.title);
+      kept.push(deadline ? { ...item, deadline: deadline.date } : item);
     }
   }
   return kept;
@@ -671,8 +686,22 @@ async function cmdRun(flags: Flags): Promise<number> {
   const matched = filterItems(results, cfg);
   // 先跨源去重（教务处同一条通知常挂两个栏目），再算新增；但状态里把命中的都记上，
   // 免得下次换个栏目又把同一条当新通知报一遍。
-  const filtered = dedupeAcrossSources(matched);
-  const fresh = splitNew(filtered, state);
+  const filtered0 = dedupeAcrossSources(matched);
+  // 截止日只在"新通知"这一小撮上抓（一轮通常 0-3 条）：标题里几乎没有截止日，
+  // 正文里才有 —— 实测 386 条归档按标题抽 0 条，按正文能命中办事型通知的一半。
+  const freshRaw = splitNew(filtered0, state);
+  const fresh = flags.noDetail
+    ? freshRaw
+    : await withDeadlines(freshRaw, {
+        limit: 12,
+        concurrency: 3,
+        timeoutMs: flags.timeoutMs > 0 ? flags.timeoutMs : 15000,
+      });
+  // 归档要的是"本轮命中的全部"，把刚抽到的截止日按 id 并回去，这样老条目也能补上
+  const dueById = new Map(fresh.filter((n) => n.deadline).map((n) => [n.id, n.deadline as string]));
+  const filtered = dueById.size
+    ? filtered0.map((n) => (dueById.has(n.id) ? { ...n, deadline: dueById.get(n.id) } : n))
+    : filtered0;
 
   for (const r of results) {
     const kept = filterItems([r], cfg).length;

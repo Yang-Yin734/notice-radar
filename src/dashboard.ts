@@ -194,6 +194,11 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
   /* 标签：白字压彩色块太吵，改成同色描边 + 同色文字，一行里有五个也不打架 */
   .tag { display:inline-block; font-size:11px; line-height:1.5; padding:0 5px; margin-right:6px;
     border-radius:4px; color:var(--c); border:1px solid var(--c); background:transparent; }
+  /* 截止日期角标：7 天内转强调色，过期的灰掉（只留 7 天缓冲，再久就不显示了） */
+  .due { margin-left:auto; font-size:11px; color:var(--muted); white-space:nowrap;
+    font-variant-numeric:tabular-nums; }
+  .due.urgent { color:var(--accent); font-weight:600; }
+  .due.over { opacity:.6; }
   .star { position:absolute; right:4px; bottom:4px; border:none; background:transparent; color:var(--muted);
     cursor:pointer; opacity:.55; padding:6px; display:flex; }
   .star svg { width:17px; height:17px; fill:none; stroke:currentColor; stroke-width:1.7; stroke-linejoin:round; }
@@ -454,6 +459,25 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
     return { '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]; }); }
   function host(url) { try { return new URL(url).host; } catch (e) { return ''; } }
+
+  // 当地时间一律按北京时间的自然日算，和 src/core/deadline.ts 保持一致：
+  // 学生在食堂想着"今天截止"，不该因为 UTC 差 8 小时变成"昨天"。
+  var BJ = 8 * 3600000, DAY = 86400000;
+  function daysLeftOf(it) {
+    if (!it.deadline) return null;
+    var t = Date.parse(it.deadline + 'T00:00:00Z');
+    if (!t) return null;
+    var today = Math.floor((Date.now() + BJ) / DAY);
+    return Math.floor((t + BJ) / DAY) - today;
+  }
+  function dueBadge(it) {
+    var d = daysLeftOf(it);
+    if (d === null) return '';
+    if (d < 0) return d >= -7 ? '<span class="due over">已过期 ' + (-d) + ' 天</span>' : '';
+    if (d > 60) return '';
+    var text = d === 0 ? '今天截止' : d === 1 ? '明天截止' : '剩 ' + d + ' 天';
+    return '<span class="due' + (d <= 7 ? ' urgent' : '') + '">' + text + '</span>';
+  }
   // 内联 SVG 替代 ★☆☀☾：字形图标在不同平台字体下胖瘦不一，矢量图在任何系统都一样
   var ICON = {
     star: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.6l2.6 5.27 5.82.85-4.21 4.1.99 5.79L12 16.88l-5.2 2.73.99-5.79-4.21-4.1 5.82-.85z"/></svg>',
@@ -533,7 +557,7 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
       list.forEach(function (it) {
         var isRead = state.read.has(it.id), isFav = state.fav.has(it.id);
         html += '<article class="item ' + (isRead ? 'read' : 'unread') + '">' +
-          '<div class="meta"><span class="from">' + esc(it.sourceName) + '</span><span>' + esc(host(it.url)) + '</span></div>' +
+          '<div class="meta"><span class="from">' + esc(it.sourceName) + '</span><span>' + esc(host(it.url)) + '</span>' + dueBadge(it) + '</div>' +
           '<a class="title" href="' + esc(it.url) + '" target="_blank" rel="noreferrer" data-open="' + esc(it.id) + '">' +
             (it.tag ? '<span class="tag" style="--c:' + tagColor(it.tag) + '">' + esc(it.tag) + '</span>' : '') + esc(it.title) + '</a>' +
           '<button class="star' + (isFav ? ' on' : '') + '" data-fav="' + esc(it.id) + '" aria-label="收藏">' + ICON.star + '</button>' +

@@ -27,6 +27,8 @@ data class Notice(
     val sourceName: String,
     val firstSeenAt: String,
     val unit: String? = null,
+    /** 截止日（YYYY-MM-DD），出现在正文里的办事型通知才有；老数据没有这个字段。 */
+    val deadline: String? = null,
 )
 
 data class SourceStat(val sourceId: String, val sourceName: String, val count: Int)
@@ -242,6 +244,7 @@ object Json {
                     sourceName = n.optString("sourceName"),
                     firstSeenAt = n.optString("firstSeenAt"),
                     unit = n.optText("unit"),
+                    deadline = n.optText("deadline"),
                 )
             }
             if (items.isEmpty()) {

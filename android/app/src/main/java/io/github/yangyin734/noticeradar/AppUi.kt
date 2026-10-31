@@ -793,13 +793,27 @@ private fun NoticeRow(notice: Notice, isRead: Boolean, isFav: Boolean, onOpen: (
                     .clickable { onOpen() }
                     .padding(start = Space.s, end = Space.xs, top = 7.dp, bottom = 13.dp),
             ) {
-                Text(
-                    notice.sourceName,
-                    style = Type.micro,
-                    color = AppColors.muted,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                )
+                // 来源名 + 右侧截止日角标：一行里"谁发的"和"什么时候截止"是最该同时看到的两个信息
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        notice.sourceName,
+                        style = Type.micro,
+                        color = AppColors.muted,
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis,
+                        modifier = Modifier.weight(1f, fill = false),
+                    )
+                    dueLabel(notice.deadline)?.let { (text, urgent) ->
+                        Spacer(Modifier.width(Space.s))
+                        Text(
+                            text,
+                            style = Type.micro,
+                            color = if (urgent) AppColors.accent else AppColors.muted,
+                            fontWeight = if (urgent) FontWeight.Medium else FontWeight.Normal,
+                            maxLines = 1,
+                        )
+                    }
+                }
                 Spacer(Modifier.height(4.dp))
                 Text(
                     notice.title,
@@ -993,6 +1007,39 @@ private fun parseTime(iso: String): Long = try {
     fmt.parse(iso)?.time ?: 0L
 } catch (e: Exception) {
     0L
+}
+
+/** 把 YYYY-MM-DD 换成北京时间当天 0 点的时间戳；解析不了返回 null。 */
+private fun ymdToMidnight(ymd: String): Long? = try {
+    val cal = Calendar.getInstance(java.util.TimeZone.getTimeZone("Asia/Shanghai"))
+    cal.clear()
+    cal.set(ymd.substring(0, 4).toInt(), ymd.substring(5, 7).toInt() - 1, ymd.substring(8, 10).toInt())
+    cal.timeInMillis
+} catch (e: Exception) {
+    null
+}
+
+/**
+ * 截止日 → 右侧角标。口径与网页端 dueBadge 一致：
+ * 两个月以外的不提，过期超过一周的也不再提（归档里那些早过期的通知不该继续吓人）。
+ */
+private fun dueLabel(deadline: String?): Pair<String, Boolean>? {
+    if (deadline.isNullOrBlank() || deadline.length < 10) return null
+    val target = ymdToMidnight(deadline) ?: return null
+    val now = Calendar.getInstance(java.util.TimeZone.getTimeZone("Asia/Shanghai"))
+    val today = Calendar.getInstance(java.util.TimeZone.getTimeZone("Asia/Shanghai")).apply {
+        clear()
+        set(now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH))
+    }.timeInMillis
+    val days = Math.round((target - today).toDouble() / 86_400_000.0).toInt()
+    return when {
+        days > 60 -> null
+        days < -7 -> null
+        days < 0 -> "已过期" to false
+        days == 0 -> "今天截止" to true
+        days == 1 -> "明天截止" to true
+        else -> "剩 $days 天" to (days <= 7)
+    }
 }
 
 /** 栏目名 + 通栏细线：统计页的骨架，比卡片更像"报刊的一个版块"。 */
