@@ -92,6 +92,17 @@ interface Flags {
   notify: boolean;
   json: string | null;
   delayMs: number;
+  /**
+   * 单请求超时（毫秒）；0 = 用 fetch.ts 的默认 40s。
+   *
+   * 存在的理由：GitHub runner 在海外，抓国内高校站点的真实表现是"有时通、有时整个
+   * 请求挂到超时"。40s 会让一个死源吃掉整轮预算（30 源 × 40s 早就撞上 workflow 的
+   * 15 分钟上限）。调小只是让失败更快暴露，不会让抓不到的源变得能抓到 —— 那是出口
+   * 位置的问题，不是超时的问题。
+   */
+  timeoutMs: number;
+  /** 并发抓取的源数量；0/1 = 串行（默认，对学校站点最客气）。 */
+  concurrency: number;
   max: number;
   writeAlways: boolean;
   /** 允许用真浏览器渲染 requiresBrowser 的源（默认关，见 README 合规一节） */
@@ -139,6 +150,8 @@ function parseFlags(argv: string[]): Flags {
     notify: !argv.includes('--no-notify'),
     json: get('json'),
     delayMs: Number(get('delay') ?? 1200),
+    timeoutMs: Number(get('timeout') ?? 0),
+    concurrency: Number(get('concurrency') ?? 0),
     max: Number(get('max') ?? 20),
     writeAlways: argv.includes('--write-always'),
     allowBrowser: argv.includes('--allow-browser'),
@@ -175,11 +188,35 @@ async function collect(cfg: RadarConfig, flags: Flags): Promise<SourceResult[]> 
     console.log(`▸ --only：只跑 ${sources.length} 个源（${sources.map((s) => s.id).join(', ')}）`);
   }
 
-  for (const [index, source] of sources.entries()) {
-    if (index > 0 && flags.delayMs > 0) await sleep(flags.delayMs); // 串行 + 间隔，别给学校站点添麻烦
-    results.push(await collectOne(cfg, source, flags));
+  // 默认串行，和以前一样对学校站点最客气。
+  const limit = Math.max(1, Math.min(flags.concurrency || 1, sources.length));
+  if (limit === 1) {
+    for (const [index, source] of sources.entries()) {
+      if (index > 0 && flags.delayMs > 0) await sleep(flags.delayMs); // 串行 + 间隔，别给学校站点添麻烦
+      results.push(await collectOne(cfg, source, flags));
+    }
+    return results;
   }
-  return results;
+
+  // 并发：N 个 worker 各自顺序领下一个源。
+  // 不用 Promise.all(sources.map(...))：那会瞬间对 30 个站点同时发包，既不礼貌、
+  // 也更容易一起撞上 WAF。worker 池能把瞬时压力压在 N 个以内。
+  // 领号的 `cursor++` 是同步的（JS 单线程），两个 worker 不会抢到同一个源。
+  console.log(`▸ 并发 ${limit} 个源（源间间隔 ${flags.delayMs}ms，单请求超时 ${flags.timeoutMs > 0 ? `${flags.timeoutMs}ms` : '默认 40s'}）`);
+  const slots = new Array<SourceResult>(sources.length);
+  let cursor = 0;
+  const worker = async (workerId: number) => {
+    // 首轮错开启动，避免 N 个请求落在同一毫秒
+    if (workerId > 0 && flags.delayMs > 0) await sleep(Math.round((flags.delayMs * workerId) / limit));
+    for (;;) {
+      const index = cursor++;
+      if (index >= sources.length) return;
+      if (index >= limit && flags.delayMs > 0) await sleep(flags.delayMs);
+      slots[index] = await collectOne(cfg, sources[index], flags);
+    }
+  };
+  await Promise.all(Array.from({ length: limit }, (_, i) => worker(i)));
+  return slots;
 }
 
 async function collectOne(cfg: RadarConfig, source: SourceConfig, flags: Flags): Promise<SourceResult> {
@@ -241,7 +278,7 @@ async function collectOne(cfg: RadarConfig, source: SourceConfig, flags: Flags):
         pageStatus = 200;
         pageBytes = res.html.length;
       } else {
-        const res = await fetchHtml(pageUrl);
+        const res = await fetchHtml(pageUrl, flags.timeoutMs > 0 ? { timeoutMs: flags.timeoutMs } : {});
         html = res.html;
         pageStatus = res.status;
         pageBytes = res.bytes;
@@ -821,11 +858,12 @@ async function cmdRun(flags: Flags): Promise<number> {
     // 同时归档到 history.json —— state 只记"见过哪些 ID"，历史才留下内容，供 Pages 仪表盘用
     const historyFile = path.join(path.dirname(flags.state), 'history.json');
     const history = loadHistory(historyFile);
-    const { added } = appendHistory(history, filtered);
+    const { added, merged } = appendHistory(history, filtered);
     saveHistory(history, historyFile);
 
     console.log(`\n▸ 状态已更新：${flags.state}（下次只报新增）`);
-    console.log(`▸ 历史归档：${historyFile}（本次新增 ${added} 条，累计 ${history.items.length} 条）`);
+    const mergedText = merged > 0 ? `，另有 ${merged} 条并进已有条目（同一件事挂在多个栏目）` : '';
+    console.log(`▸ 历史归档：${historyFile}（本次新增 ${added} 条${mergedText}，累计 ${history.items.length} 条）`);
   } else {
     console.log('\n▸ 没有新通知：不写状态文件（要强制写加 --write-always）');
   }
@@ -1019,7 +1057,10 @@ function usage(): void {
   console.log(`notice-radar v${VERSION} —— 把高校官网通知变成可订阅、可过滤的信息流
 
 用法：
-  radr run      [--config=路径] [--dry] [--no-notify] [--json=路径] [--delay=毫秒] [--max=条数] [--only=源id] [--write-always] [--allow-browser]
+  radr run      [--config=路径] [--dry] [--no-notify] [--json=路径] [--delay=毫秒] [--timeout=毫秒] [--concurrency=个数] [--max=条数] [--only=源id] [--write-always] [--allow-browser]
+                                                        --delay: 源之间歇多久（默认 1200ms，对学校站点客气）
+                                                        --timeout: 单请求超时（默认 40000ms；境外链路建议 15000）
+                                                        --concurrency: 同时抓几个源（默认 1 串行；4 大约快四倍）
   radr doctor   [--config=路径] [--only=源id] [--allow-browser]      体检：每个源能不能抓、解析出几条（含最近 N 次成功率）
   radr rate     [--config=路径] [--json=文件] [--min=0.8] [--delay=毫秒] [--allow-browser]
                                                        一次跑完全部学校预设，逐校统计抓取成功率（默认 20 所；--min 给 CI 当门槛）
