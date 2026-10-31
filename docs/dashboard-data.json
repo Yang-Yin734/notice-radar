@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-31T04:02:29.546Z",
-  "total": 386,
+  "generatedAt": "2026-10-31T05:40:30.466Z",
+  "total": 389,
   "bySource": [
     {
       "sourceId": "jwc-tzgg",
@@ -18,19 +18,24 @@
       "count": 28
     },
     {
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
+      "count": 22
+    },
+    {
       "sourceId": "jiaowu-tzgg",
       "sourceName": "教务部·通知公告",
       "count": 22
     },
     {
-      "sourceId": "news-notice",
-      "sourceName": "新闻网·公告",
-      "count": 21
-    },
-    {
       "sourceId": "gs-gg",
       "sourceName": "研究生院·公告",
       "count": 21
+    },
+    {
+      "sourceId": "ugs-tzgg",
+      "sourceName": "本科生院·通知公告",
+      "count": 20
     },
     {
       "sourceId": "aao-tzgg",
@@ -40,11 +45,6 @@
     {
       "sourceId": "math-jwgg",
       "sourceName": "数学科学学院·教务公告",
-      "count": 18
-    },
-    {
-      "sourceId": "ugs-tzgg",
-      "sourceName": "本科生院·通知公告",
       "count": 18
     },
     {
@@ -104,6 +104,34 @@
     }
   ],
   "items": [
+    {
+      "id": "3a2bef5b92863703",
+      "sourceId": "news-notice",
+      "sourceName": "新闻网·公告",
+      "school": "uestc",
+      "title": "「人文×科技」思想者讲坛第四十三期讲座预告",
+      "url": "https://news.uestc.edu.cn/info/1015/44916.htm",
+      "date": "2026-10-31",
+      "tag": "学术",
+      "category": null,
+      "alsoIn": [
+        "新闻网·学术"
+      ],
+      "firstSeenAt": "2026-10-31T05:39:15.380Z"
+    },
+    {
+      "id": "32052dd6c2d8a006",
+      "sourceId": "ugs-tzgg",
+      "sourceName": "本科生院·通知公告",
+      "school": "hust",
+      "title": "关于公布我校2026年教学研究项目（思政课课程与教材建设专项）立项名单的通知",
+      "url": "https://ugs.hust.edu.cn/info/1142/7689.htm",
+      "date": "2026-10-30",
+      "tag": null,
+      "category": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-31T05:39:27.133Z"
+    },
     {
       "id": "6d3978321685cdeb",
       "sourceId": "jwc-tzgg",
@@ -168,6 +196,19 @@
       "category": null,
       "alsoIn": [],
       "firstSeenAt": "2026-10-30T04:23:02.688Z"
+    },
+    {
+      "id": "a946685cac1daaa2",
+      "sourceId": "ugs-tzgg",
+      "sourceName": "本科生院·通知公告",
+      "school": "hust",
+      "title": "关于做好2026年下半年全国大学英语四、六级考试口试主校区考点考前工作的通知",
+      "url": "https://ugs.hust.edu.cn/info/1142/7688.htm",
+      "date": "2026-10-29",
+      "tag": null,
+      "category": null,
+      "alsoIn": [],
+      "firstSeenAt": "2026-10-31T05:39:27.133Z"
     },
     {
       "id": "02cbc024f57fc650",

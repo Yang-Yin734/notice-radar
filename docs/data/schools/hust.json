@@ -3,13 +3,13 @@
  "name": "华中科技大学",
  "province": "湖北省",
  "city": "武汉市",
- "generatedAt": "2026-10-31T00:25:49.597Z",
- "total": 18,
+ "generatedAt": "2026-10-31T05:40:30.466Z",
+ "total": 20,
  "bySource": [
   {
    "sourceId": "ugs-tzgg",
    "sourceName": "本科生院·通知公告",
-   "count": 18
+   "count": 20
   }
  ],
  "units": [
@@ -19,10 +19,38 @@
    "sources": [
     "本科生院·通知公告"
    ],
-   "count": 18
+   "count": 20
   }
  ],
  "items": [
+  {
+   "id": "32052dd6c2d8a006",
+   "sourceId": "ugs-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "school": "hust",
+   "title": "关于公布我校2026年教学研究项目（思政课课程与教材建设专项）立项名单的通知",
+   "url": "https://ugs.hust.edu.cn/info/1142/7689.htm",
+   "date": "2026-10-30",
+   "tag": null,
+   "category": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-31T05:39:27.133Z",
+   "unit": "本科生院"
+  },
+  {
+   "id": "a946685cac1daaa2",
+   "sourceId": "ugs-tzgg",
+   "sourceName": "本科生院·通知公告",
+   "school": "hust",
+   "title": "关于做好2026年下半年全国大学英语四、六级考试口试主校区考点考前工作的通知",
+   "url": "https://ugs.hust.edu.cn/info/1142/7688.htm",
+   "date": "2026-10-29",
+   "tag": null,
+   "category": null,
+   "alsoIn": [],
+   "firstSeenAt": "2026-10-31T05:39:27.133Z",
+   "unit": "本科生院"
+  },
   {
    "id": "e1b31c8da217426d",
    "sourceId": "ugs-tzgg",

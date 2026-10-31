@@ -3,9 +3,14 @@
  "name": "电子科技大学",
  "province": "四川省",
  "city": "成都市",
- "generatedAt": "2026-10-31T00:25:49.597Z",
- "total": 75,
+ "generatedAt": "2026-10-31T05:40:30.466Z",
+ "total": 76,
  "bySource": [
+  {
+   "sourceId": "news-notice",
+   "sourceName": "新闻网·公告",
+   "count": 22
+  },
   {
    "sourceId": "math-jwgg",
    "sourceName": "数学科学学院·教务公告",
@@ -15,11 +20,6 @@
    "sourceId": "math-xsgz",
    "sourceName": "数学科学学院·学生工作",
    "count": 12
-  },
-  {
-   "sourceId": "news-notice",
-   "sourceName": "新闻网·公告",
-   "count": 21
   },
   {
    "sourceId": "news-academic",
@@ -54,7 +54,7 @@
     "新闻网·公告",
     "新闻网·学术"
    ],
-   "count": 26
+   "count": 27
   },
   {
    "id": "教务处",
@@ -73,6 +73,22 @@
   }
  ],
  "items": [
+  {
+   "id": "3a2bef5b92863703",
+   "sourceId": "news-notice",
+   "sourceName": "新闻网·公告",
+   "school": "uestc",
+   "title": "「人文×科技」思想者讲坛第四十三期讲座预告",
+   "url": "https://news.uestc.edu.cn/info/1015/44916.htm",
+   "date": "2026-10-31",
+   "tag": "学术",
+   "category": null,
+   "alsoIn": [
+    "新闻网·学术"
+   ],
+   "firstSeenAt": "2026-10-31T05:39:15.380Z",
+   "unit": "新闻网"
+  },
   {
    "id": "4871fa7bbee63a1b",
    "sourceId": "math-jwgg",
