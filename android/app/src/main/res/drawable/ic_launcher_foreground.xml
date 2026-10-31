@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  自适应图标前景层：朱红底上的一张通知单。
-  背景色由 values/colors.xml 的 ic_launcher_background 提供，
-  所以这里只画纸（左缘从 x=25 起，露出左侧那道朱红竖边）、折角、四条墨线。
+  自适应图标前景层：墨黑底上的一张通知单。
+  背景色由 values/colors.xml 的 ic_launcher_background 提供（#1C1917 墨黑），
+  所以这里只画纸、纸的厚度、折角、三行墨线和那枚朱红小印。
   几何参数与 tools/make-icon.py 完全一致（108×108 设计网格），PNG 与矢量不会打架。
+
+  为什么只有三行墨线：48dp 下四条会有一条塌成一个像素，连成灰带。
+  为什么不画投影：深底上模糊投影几乎看不见，矢量里做模糊要么失真要么变重。
 -->
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="108dp"
@@ -11,27 +14,47 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- 纸：左上直角（贴住那道红边），右上切出 12×12 折角，其余三角圆角 -->
+    <!-- 纸的侧面：右下露出 2.6 单位厚的一圈，是"这是实物不是色块"的全部依据 -->
+    <path
+        android:fillColor="#C4B8A4"
+        android:pathData="M29.6,23.6 H73.6 L86.6,36.6 V86.6 A3,3 0 0 1 83.6,89.6 H29.6 A3,3 0 0 1 26.6,86.6 V26.6 A3,3 0 0 1 29.6,23.6 Z" />
+
+    <!-- 纸：右上切出 13×13 折角，其余三角圆角 -->
     <path
         android:fillColor="#FBFAF7"
-        android:pathData="M25,20 h44 l12,12 v51 a3,3 0 0 1 -3,3 h-50 a3,3 0 0 1 -3,-3 v-63 z" />
+        android:pathData="M27,21 H71 L84,34 V84 A3,3 0 0 1 81,87 H27 A3,3 0 0 1 24,84 V24 A3,3 0 0 1 27,21 Z" />
+
+    <!-- 顶边受光：一像素的亮线，交代光从上方来 -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.1"
+        android:strokeAlpha="0.84"
+        android:pathData="M27,21 L71,21" />
 
     <!-- 折角 -->
     <path
-        android:fillColor="#E0D6C4"
-        android:pathData="M69,20 L81,32 L69,32 Z" />
+        android:fillColor="#E2D8C6"
+        android:pathData="M71,21 L84,34 L71,34 Z" />
 
-    <!-- 墨线：第一行是标题（粗、长），后三行是正文（细、渐短） -->
+    <!-- 墨线：标题粗，正文渐短，只给"这里有字"的节奏 -->
     <path
         android:fillColor="#17150F"
-        android:pathData="M34,36 h40 v6 h-40 z" />
+        android:pathData="M32,44 h46 v6 h-46 z" />
     <path
         android:fillColor="#17150F"
-        android:pathData="M34,50 h30 v5 h-30 z" />
+        android:pathData="M32,57 h34 v4 h-34 z" />
     <path
         android:fillColor="#17150F"
-        android:pathData="M34,61 h36 v5 h-36 z" />
+        android:pathData="M32,67 h40 v4 h-40 z" />
+
+    <!-- 朱红小印：小尺寸下唯一清楚的重音 -->
     <path
-        android:fillColor="#17150F"
-        android:pathData="M34,72 h16 v5 h-16 z" />
+        android:fillColor="#BE4234"
+        android:pathData="M66,70 h10 a2,2 0 0 1 2,2 v10 a2,2 0 0 1 -2,2 h-10 a2,2 0 0 1 -2,-2 v-10 a2,2 0 0 1 2,-2 z" />
+    <path
+        android:fillColor="#FBFAF7"
+        android:pathData="M67.5,74.5 h7 v1.6 h-7 z" />
+    <path
+        android:fillColor="#FBFAF7"
+        android:pathData="M67.5,79 h7 v1.6 h-7 z" />
 </vector>

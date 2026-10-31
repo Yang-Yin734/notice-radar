@@ -2,6 +2,36 @@
 
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## v0.15.3 — 2026-10-31
+
+### 图标第二版：减到四个元素，换成深色
+
+v0.15.2 那个朱红版本被用户评为"太简朴"。重做之前先去查了图标设计的公认判据，三条都指向同一个结论 ——
+**问题不是要素不够，是要素太多、间隙被挤没了**：
+
+- [《7 Principles of Icon Design》](https://github.com/xitu/gold-miner/blob/master/TODO1/7-principles-of-icon-design.md)：
+  「过细和更多的笔触会使得 icon 更复杂，更难以阅读」；
+- [Closure / 暗示形状](https://github.com/Deibler/universal-design-principles/blob/main/plugins/perception-and-hierarchy-principles/skills/closure-implied-shapes/SKILL.md)：
+  「A logo that works at 200px and disintegrates at 24px. **Test at the actual sizes**」；
+- Android 自适应图标：108 画布 / 66 安全区，前景允许 bleed。
+
+旧版塞了七个元素（暗角、双层投影、折角明暗、红头两线、四条墨线、空心小印、纸描边），512px 各自动人，
+48px 挤在同一块 40×40 的纸上就是一团墨。**沿纸内一列数暗块的实测**：旧版 48px 得 `2/1/1/1`（四条线里三条塌成 1px，
+真机上会连成一道灰带），新版得 `2/2/2`（三行字行行分得开）。
+
+改动：
+
+- **元素从 7 降到 4**：纸、三行墨线、一枚实心朱印、纸的厚度。删掉红头双线、空心印内点、折角双色分层。
+- **用结构造层次，不靠堆细节**：右下露出 2.6 单位厚的纸侧面（投影在深底上看不见，但厚度看得见）、
+  顶边一条 1.1 单位的受光白线 —— 两条都在交代"这是一张实物纸"。
+- **底色改深墨黑 `#1C1917`**（App 深色模式那一族暖黑，不是冷灰蓝）：冷底配米白纸会显脏，
+  暖黑配纸才有"灯下的通告栏"。印改为亮一档的 `#BE4234`，在深底上是唯一清楚的重音。
+- 纸放大到 `(24,21,84,87)`、折角 13、三行墨线 `46×6 / 34×4 / 40×4` —— 与 `tools/make-icon.py`、
+  `drawable/ic_launcher_foreground.xml` 三者同参。矢量里省掉了投影（深底上模糊投影几乎看不出，做了反而脏）。
+
+`tools/icon-variants.py` 留作试验台，能一键生成"大纸 / 厚纸 / 旧版"三种方案在 512/144/96/72/48/24px 的对照图，
+下次改图标先在那儿出图、量完 48px 段数再改正式脚本。
+
 ## v0.15.2 — 2026-10-31
 
 ### 换掉那个"太简朴"的应用图标

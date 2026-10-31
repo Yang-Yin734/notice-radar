@@ -6,7 +6,8 @@
     <color name="appBackground">#FFFBFAF7</color>
     <color name="appSurface">#FFFFFFFF</color>
 
-    <!-- 应用图标底色：与 App 里未读点、下划线 tab 同一支朱红（Tokens.kt 的 Paper.accent）。
-         自适应图标用它当背景层，前景层 drawable/ic_launcher_foreground.xml 只画那张纸。 -->
-    <color name="ic_launcher_background">#FFB23A2E</color>
+    <!-- 应用图标底色：墨黑。取自 App 深色模式那一族暖黑（Tokens.kt 的 Night 系），
+         不是冷灰蓝 —— 冷底配米白纸会显脏。前景层 drawable/ic_launcher_foreground.xml
+         只画那张纸、三行墨线和一枚朱红小印。 -->
+    <color name="ic_launcher_background">#FF1C1917</color>
 </resources>

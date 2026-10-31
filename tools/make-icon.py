@@ -2,15 +2,17 @@
 
 设计说明
 --------
-应用是「把高校官网通知变成信息流」，界面走的是**公告栏/教务处的纸**这一路：
-暖白纸 + 墨黑字 + 朱红印章。图标沿用同一套色，不引入任何渐变、玻璃、3D —— 那些
-正是"AI 味"的来源。
+深墨黑底上贴着一张米白的通知单：左侧不留竖边，右上折一个角，纸上是三行
+粗细递减的墨线，右下压一枚朱红实心小印。纸的右下露出一圈侧面 —— 那点"厚度"
+是它看起来像实物而不是色块的全部原因。
 
-构图：一枚朱红底，上面贴着一张米白的通知单。
-  · 左侧一道朱红竖边 —— 红头文件 / 教务处的纸
-  · 右上角折角 —— "这是张纸"最省笔墨的符号，48dp 下仍然认得出
-  · 三条墨线 —— 标题粗、正文细，读得出"有内容"而不是空白
-  · 底色与 App 的未读点同色，所以它在桌面上是"一个红点"的记忆点
+配色取自 App 深色模式的暖黑（#151311 / #231F1B 一族），不是冷灰蓝：
+底 #1C1917、纸 #FBFAF7、印 #BE4234、折角背面 #E2D8C6。
+
+为什么是这套：见 docs/icon-design.md。三条硬约束 ——
+  · 元素之间的间隙必须够（Helena Zhang《7 Principles of Icon Design》）
+  · 任何方案要在 48dp 下看，不许只看 512px 就下结论
+  · 用"厚度/受光"这些结构性事实造层次，别靠往上堆细节
 
 为什么用 PIL 超采样而不是直接画：斜线（折角）与圆角在小尺寸下必须抗锯齿，
 4 倍超采样再 LANCZOS 缩下来，边缘比任何 drawable 都干净，且不依赖任何运行时。
@@ -18,24 +20,34 @@
 用法：
     python tools/make-icon.py
 """
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFilter
 import os
 import sys
 
-# 与 App 的令牌保持同值（Tokens.kt / dashboard.ts 里那套）
-RED = (178, 58, 46, 255)        # #B23A2E 砖红
-PAPER = (251, 250, 247, 255)    # #FBFAF7 纸
-FOLD = (224, 214, 196, 255)     # #E0D6C4 折角的背面
+# ---- 深色主题（与 Android 深色模式同一族暖黑）----
+BG = (28, 25, 23, 255)          # #1C1917 墨黑
+BG_DEEP = (18, 16, 14, 255)     # #12100E 四角
+PAPER = (251, 250, 247, 255)    # #FBFAF7
+FOLD = (226, 216, 198, 255)     # #E2D8C6 折角背面
+FOLD_EDGE = (176, 163, 142, 255)  # #B0A38E 折线
+THICK = (196, 184, 164, 255)    # #C4B8A4 纸的侧面
+RED_INK = (190, 66, 52, 255)    # #BE4234 朱印
 INK = (23, 21, 15, 255)         # #17150F 墨
+HILIGHT = (255, 255, 255, 215)
 
 SS = 4                          # 超采样倍数
 BASE = 108                      # 设计网格：与 VectorDrawable 的 viewport 一致
+CENTER = BASE / 2
+
+# 纸的四边 / 折角 / 三行墨线（x, y, 宽, 高）
+BOX = (24, 21, 84, 87)
+FOLD_SIZE = 13
+LINES = [(32, 44, 46, 6.0), (32, 57, 34, 4.0), (32, 67, 40, 4.0)]
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RES = os.path.join(ROOT, "android", "app", "src", "main", "res")
 DOCS = os.path.join(ROOT, "docs")
 
-# 各档位目录 → 边长（dp 1x = 48，Android 的 launcher icon 标准尺寸）
 SIZES = {
     "mipmap-mdpi": 48,
     "mipmap-hdpi": 72,
@@ -45,6 +57,42 @@ SIZES = {
 }
 
 
+def _radial(n):
+    """径向遮罩：中心 0、四角 255（手算，不用已弃用的 Image.radial_gradient）。"""
+    s = 72
+    small = Image.new("L", (s, s))
+    px = small.load()
+    c = (s - 1) / 2.0
+    for y in range(s):
+        for x in range(s):
+            d = (((x - c) ** 2 + (y - c) ** 2) ** 0.5) / (c * 1.4142)
+            px[x, y] = int(min(1.0, d) ** 2.6 * 255 * 0.5)
+    return small.resize((n, n), Image.BILINEAR)
+
+
+def background(n):
+    """墨黑底 + 极淡径向暗角：中心略亮，四角沉下去。"""
+    base = Image.new("RGBA", (n, n), BG)
+    deep = Image.new("RGBA", (n, n), BG_DEEP)
+    return Image.composite(deep, base, _radial(n))
+
+
+def poly(scale=1.0, dx=0.0, dy=0.0):
+    x0, y0, x1, y1 = BOX
+    r = 3.0 * scale
+    fold = FOLD_SIZE * scale
+
+    def T(x, y):
+        return (CENTER + (x - CENTER) * scale + dx, CENTER + (y - CENTER) * scale + dy)
+
+    x0, y0 = T(x0, y0)
+    x1, y1 = T(x1, y1)
+    return [
+        (x0 + r, y0), (x1 - fold, y0), (x1, y0 + fold),
+        (x1, y1 - r), (x1 - r, y1), (x0 + r, y1), (x0, y1 - r), (x0, y0 + r),
+    ]
+
+
 def draw_icon(scale_content=1.0):
     """在 108×108 网格上画一张图（超采样后返回 Image）。
 
@@ -52,85 +100,72 @@ def draw_icon(scale_content=1.0):
     以及 maskable 用图准备（圆/方裁切都不会切掉内容）。
     """
     n = BASE * SS
-    im = Image.new("RGBA", (n, n), RED)
+    im = background(n)
     d = ImageDraw.Draw(im)
+    s = scale_content
 
     def S(v):
         return v * SS
 
-    def pts(seq):
+    def P(seq):
         return [(S(x), S(y)) for x, y in seq]
 
-    # 内容整体缩放（绕中心）
     def T(x, y):
-        cx = cy = BASE / 2
-        return (cx + (x - cx) * scale_content, cy + (y - cy) * scale_content)
+        return (CENTER + (x - CENTER) * s, CENTER + (y - CENTER) * s)
 
-    # ---- 纸：右上角切一个 12×12 的斜角（折角），其余三角圆角 ----
-    # 占满自适应图标的安全方（66×66）：太小就只剩一块红底，看不出是张纸
-    px0, py0, px1, py1 = 19, 20, 81, 86
-    fold = 12
-    if scale_content != 1.0:
-        px0, py0 = T(px0, py0)
-        px1, py1 = T(px1, py1)
-        fold = fold * scale_content
-    paper = [
-        (px0 + 3, py0),
-        (px1 - fold, py0),
-        (px1, py0 + fold),
-        (px1, py1 - 3),
-        (px1 - 3, py1),
-        (px0 + 3, py1),
-        (px0, py1 - 3),
-        (px0, py0 + 3),
-    ]
-    d.polygon(pts(paper), fill=PAPER)
+    def rect(x, y, w, h, fill):
+        a, b = T(x, y), T(x + w, y + h)
+        d.rectangle([S(a[0]), S(a[1]), S(b[0]), S(b[1])], fill=fill)
 
-    # ---- 折角：三角形填背面色 ----
-    d.polygon(
-        pts([(px1 - fold, py0), (px1, py0 + fold), (px1 - fold, py0 + fold)]),
-        fill=FOLD,
-    )
+    # ---- 投影：模糊才有"贴上去"的意思，硬投影看着像第二张纸 ----
+    shadow = Image.new("RGBA", (n, n), (0, 0, 0, 0))
+    ImageDraw.Draw(shadow).polygon(P(poly(s, 0.8, 4.4 * s)), fill=(0, 0, 0, 165))
+    im.alpha_composite(shadow.filter(ImageFilter.GaussianBlur(2.4 * SS)))
 
-    # ---- 左侧朱红竖边（与底色同色，视觉上等于把纸"切"出一道红边）----
-    bar_x1 = 25
-    if scale_content != 1.0:
-        bar_x1 = T(bar_x1, 0)[0]
-    d.rectangle(
-        [S(px0) - SS, S(py0) - SS, S(bar_x1), S(py1) + SS],
-        fill=RED,
-    )
-    # 红边右缘与纸交界处补一条纸色细线，避免红压到圆角外的背景上看起来"缺一块"
-    d.rectangle(
-        [S(bar_x1) - SS, S(py0) - SS, S(bar_x1), S(py1) + SS],
-        fill=PAPER,
-    )
+    # ---- 纸的厚度：右下露一圈侧面，一个几何事实交代"这是实物" ----
+    d.polygon(P(poly(s, 2.6 * s, 2.6 * s)), fill=THICK)
 
-    # ---- 三条墨线：标题粗，正文细 ----
-    lines = [
-        (34, 36, 74, 6),
-        (34, 50, 64, 5),
-        (34, 61, 70, 5),
-        (34, 72, 50, 5),
-    ]
-    for x0, y0, x1, h in lines:
-        if scale_content != 1.0:
-            x0, y0 = T(x0, y0)
-            x1 = T(x1, 0)[0]
-            h = h * scale_content
-        d.rectangle([S(x0), S(y0), S(x1), S(y0 + h)], fill=INK)
+    body = poly(s)
+    d.polygon(P(body), fill=PAPER)
+
+    # 顶部受光边：最省笔墨的材质感
+    x0, y0, x1, y1 = BOX
+    a, b = T(x0 + 3, y0), T(x1 - FOLD_SIZE, y0)
+    d.line([(S(a[0]), S(a[1])), (S(b[0]), S(b[1]))],
+           fill=HILIGHT, width=max(1, int(1.1 * SS * s)))
+
+    # ---- 折角 ----
+    fold = FOLD_SIZE * s
+    fx, fy = T(x1 - FOLD_SIZE, y0)
+    ex, ey = T(x1, y0 + FOLD_SIZE)
+    bx, by = T(x1 - FOLD_SIZE, y0 + FOLD_SIZE)
+    d.polygon([(S(fx), S(fy)), (S(ex), S(ey)), (S(bx), S(by))], fill=FOLD)
+    d.line([(S(fx), S(fy)), (S(ex), S(ey))],
+           fill=FOLD_EDGE, width=max(1, int(0.9 * SS * s)))
+
+    # ---- 三行墨线：粗细与长短递减，只给"这里有字"的节奏 ----
+    for lx, ly, w, h in LINES:
+        rect(lx, ly, w, h, INK)
+
+    # ---- 朱红实心小印：小尺寸下唯一清楚的重音 ----
+    sx0, sy0 = T(64, 70)
+    sx1, sy1 = T(78, 84)
+    d.rounded_rectangle([S(sx0), S(sy0), S(sx1), S(sy1)],
+                        radius=int(2 * SS * s), fill=RED_INK)
+    for ly in (74.5, 79.0):
+        a, b = T(67.5, ly), T(74.5, ly + 1.6)
+        d.rectangle([S(a[0]), S(a[1]), S(b[0]), S(b[1])], fill=PAPER)
 
     return im
 
 
 def save_square(im, size, path, round_ratio=0.0):
-    """缩放保存。round_ratio>0 时把四角削圆（旧系统 launcher 用）。"""
+    """缩放保存。round_ratio>0 时把四角削圆。"""
     out = im.resize((size, size), Image.LANCZOS)
     if round_ratio > 0:
         mask = Image.new("L", (size * 4, size * 4), 0)
         ImageDraw.Draw(mask).rounded_rectangle(
-            [0, 0, size * 4 - 1, size * 4 - 1], radius=int(size * 4 * round_ratio),
-            fill=255,
+            [0, 0, size * 4 - 1, size * 4 - 1], radius=int(size * 4 * round_ratio), fill=255,
         )
         mask = mask.resize((size, size), Image.LANCZOS)
         out.putalpha(mask)
@@ -139,51 +174,58 @@ def save_square(im, size, path, round_ratio=0.0):
 
 
 def main():
-    full = draw_icon(1.0)          # 满幅（自适应图标前景/背景合成后的样子）
+    full = draw_icon(1.0)          # 满幅
     safe = draw_icon(0.72)         # 缩进安全区（maskable 用）
 
-    # --- Android mipmap ---
     for folder, size in SIZES.items():
         d = os.path.join(RES, folder)
         os.makedirs(d, exist_ok=True)
-        # ic_launcher.png：方块（旧系统直接用，不削角 —— 各家 launcher 自己裁）
         save_square(full, size, os.path.join(d, "ic_launcher.png"))
-        # ic_maskable.png：内容缩进安全区，四周留底色
         save_square(safe, size, os.path.join(d, "ic_maskable.png"))
         print(f"  {folder}/ic_launcher.png  {size}x{size}")
 
-    # --- 网页 / README 用的大图 ---
     os.makedirs(DOCS, exist_ok=True)
     save_square(full, 512, os.path.join(DOCS, "icon-512.png"))
     save_square(full, 192, os.path.join(DOCS, "icon-192.png"))
-    # maskable：PWA 的 Android 启动器会把它裁成圆形，内容必须缩进安全区
     save_square(safe, 512, os.path.join(DOCS, "icon-maskable-512.png"))
     save_square(full, 180, os.path.join(DOCS, "apple-touch-icon.png"))
     save_square(full, 32, os.path.join(DOCS, "favicon-32.png"))
-    print("  docs/icon-512.png / icon-192.png / apple-touch-icon.png / favicon-32.png")
+    print("  docs/icon-512.png / icon-192.png / icon-maskable-512.png / apple-touch-icon.png / favicon-32.png")
 
-    # --- favicon.ico（多尺寸塞进一个文件）---
     full.resize((64, 64), Image.LANCZOS).save(
-        os.path.join(DOCS, "favicon.ico"),
-        sizes=[(16, 16), (32, 32), (48, 48), (64, 64)],
+        os.path.join(DOCS, "favicon.ico"), sizes=[(16, 16), (32, 32), (48, 48), (64, 64)],
     )
     print("  docs/favicon.ico")
 
-    # --- 自检：底色真的是砖红、纸真的在 ---
-    # 直接在超采样原图上取样（缩放后 LANCZOS 会混入邻近像素，取到的不是纯色）
+    # ---- 自检：底色是墨黑系、纸在、印是朱红 ----
     px = full.load()
-    corner = px[2 * SS, 2 * SS]          # 左上角：纯底色
-    paper = px[70 * SS, 45 * SS]         # 纸面、两条墨线之间的空白
-    fold = px[73 * SS, 29 * SS]          # 折角三角内部（斜线左下方）
-    ink = px[50 * SS, 38 * SS]           # 第一条墨线
-    print(f"自检 角落={corner} 纸面={paper} 折角={fold} 墨线={ink}")
-    for name, got, want in (
-        ("角落", corner, RED),
-        ("纸面", paper, PAPER),
-        ("折角", fold, FOLD),
-        ("墨线", ink, INK),
-    ):
-        assert got[:3] == want[:3], f"{name}不是 {want[:3]}，实际 {got[:3]}"
+    corner = px[2 * SS, 2 * SS]
+    paper = px[40 * SS, 40 * SS]
+    seal = px[71 * SS, 77 * SS]
+    print(f"check corner={corner} paper={paper} seal={seal}")
+    lo = (BG_DEEP[0], BG_DEEP[1], BG_DEEP[2])
+    hi = (BG[0], BG[1], BG[2])
+    assert all(lo[i] <= corner[i] <= hi[i] for i in range(3)), f"corner not ink-black: {corner[:3]}"
+    assert paper[:3] == PAPER[:3], f"paper not #FBFAF7: {paper[:3]}"
+    assert seal[:3] == RED_INK[:3], f"seal not #BE4234: {seal[:3]}"
+
+    # ---- 48dp 可读性：沿纸内一列数暗块，三段墨线必须都在 ----
+    for size in (48, 96):
+        small = full.resize((size, size), Image.LANCZOS).convert("RGB")
+        p = small.load()
+        x = int(round(42 * size / BASE))
+        runs, cur = [], 0
+        for y in range(int(round(34 * size / BASE)), int(round(86 * size / BASE))):
+            r, g, b = p[x, y]
+            if r < 110 and g < 110 and b < 110:
+                cur += 1
+            elif cur:
+                runs.append(cur)
+                cur = 0
+        if cur:
+            runs.append(cur)
+        print(f"  {size}px lines={len(runs)} runs={runs}")
+        assert len(runs) == 3, f"at {size}px only {len(runs)} line(s) left"
     print("OK: icon generated")
 
 
