@@ -160,23 +160,16 @@ jobs:
               *uestc.yaml|*uestc-math.yaml) continue ;;   # 主链路已经抓过
             esac
             echo "▸ 其它学校：$cfg"
-            # 与主链路同一套容错：跨境慢源给 25s；并发压到 2 —— 单校通常只有 1 个源，
-            # 开太高只会让"学校之间的请求"挤在一条跨境链路上。
-            ok=no
-            # 只重试 2 次：实测同一出口对同一站点的可达性是稳定的 ——
-            # 通的一直通（郑大 6/6 全 200），不通的一直不通（厦门大学、西安电子连试 3 次都 fetch failed）。
-            # 多试只会把这一步从 2 分钟拖到 6 分钟，还把整轮的仪表盘重建一起等掉。
-            for attempt in 1 2; do
-              if node src/cli.ts run --config="$cfg" --delay=1500 --timeout=25000 --concurrency=2; then
-                ok=yes
-                break
-              fi
-              if [ "$attempt" -lt 2 ]; then
-                sleep 10
-              fi
-            done
-            if [ "$ok" = no ]; then
-              echo "::warning::$cfg 抓取失败（collectOnly，不影响主链路）"
+            # collectOnly 的源：单次、12s 超时、不重试。
+            #
+            # 依据是实测：同一 runner 出口对同一站点的可达性是**稳定属性** ——
+            # 郑大 6/6 全 200，厦门大学与西安电子连试 3 次全是 fetch failed。
+            # 所以重试买不到成功率，只买到时间：3 次重试 + 退避会把这一步
+            # 从 2 分钟拖到 6 分钟，整轮撞上 10 分钟 job 上限，然后被下一轮顶掉
+            # （cancel-in-progress: true）—— 结果是"每一轮都没跑完"。
+            # 12s 也够：这些源多是单页列表，快校 1–2 秒返回，慢校 12 秒放弃。
+            if ! node src/cli.ts run --config="$cfg" --delay=0 --timeout=12000 --concurrency=2; then
+              echo "::warning::$cfg 抓取失败（collectOnly，不影响主链路；下一轮还会再试）"
             fi
           done
 
