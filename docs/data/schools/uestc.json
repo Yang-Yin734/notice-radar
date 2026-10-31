@@ -3,8 +3,8 @@
  "name": "电子科技大学",
  "province": "四川省",
  "city": "成都市",
- "generatedAt": "2026-10-31T06:08:53.698Z",
- "total": 76,
+ "generatedAt": "2026-10-31T06:11:26.684Z",
+ "total": 87,
  "bySource": [
   {
    "sourceId": "news-notice",
@@ -29,15 +29,24 @@
   {
    "sourceId": "jwc-student",
    "sourceName": "教务处·学生事务公告",
-   "count": 15
+   "count": 23
   },
   {
    "sourceId": "jwc-important",
    "sourceName": "教务处·重要公告",
-   "count": 4
+   "count": 7
   }
  ],
  "units": [
+  {
+   "id": "教务处",
+   "name": "教务处",
+   "sources": [
+    "教务处·学生事务公告",
+    "教务处·重要公告"
+   ],
+   "count": 30
+  },
   {
    "id": "数学科学学院",
    "name": "数学科学学院",
@@ -55,15 +64,6 @@
     "新闻网·学术"
    ],
    "count": 27
-  },
-  {
-   "id": "教务处",
-   "name": "教务处",
-   "sources": [
-    "教务处·学生事务公告",
-    "教务处·重要公告"
-   ],
-   "count": 19
   },
   {
    "id": "研究生院",
@@ -176,6 +176,21 @@
    "alsoIn": [],
    "firstSeenAt": "2026-10-28T21:30:22.593Z",
    "unit": "新闻网"
+  },
+  {
+   "id": "328e0089106c7e9c",
+   "sourceId": "jwc-student",
+   "sourceName": "教务处·学生事务公告",
+   "school": "uestc",
+   "title": "“中国电子杯”第三届高校ICT产教融合创新大赛校赛晋级名单公示",
+   "url": "https://www.jwc.uestc.edu.cn/info/378542b70b82aaa16e476c2227752295",
+   "date": "2026-10-27",
+   "tag": "学生事务公告",
+   "category": null,
+   "alsoIn": [],
+   "tier": "digest",
+   "firstSeenAt": "2026-10-31T06:11:26.211Z",
+   "unit": "教务处"
   },
   {
    "id": "91fb6ecd1ad89ec8",
@@ -357,6 +372,21 @@
    "unit": "新闻网"
   },
   {
+   "id": "47687278cb4157b1",
+   "sourceId": "jwc-student",
+   "sourceName": "教务处·学生事务公告",
+   "school": "uestc",
+   "title": "2026年“外研社·国才杯”“理解当代中国” 全国大学生外语能力大赛电子科技大学选拔赛获奖名单公示",
+   "url": "https://www.jwc.uestc.edu.cn/info/1aaa383e96d553fca058b57acfd2a851",
+   "date": "2026-10-19",
+   "tag": "实践",
+   "category": null,
+   "alsoIn": [],
+   "tier": "digest",
+   "firstSeenAt": "2026-10-31T06:11:26.211Z",
+   "unit": "教务处"
+  },
+  {
    "id": "6121e05a7156c7b9",
    "sourceId": "math-xsgz",
    "sourceName": "数学科学学院·学生工作",
@@ -443,6 +473,23 @@
    "unit": "新闻网"
   },
   {
+   "id": "fc92c9d48bf91068",
+   "sourceId": "jwc-important",
+   "sourceName": "教务处·重要公告",
+   "school": "uestc",
+   "title": "2026 年“晨电智能杯”嵌入式设计竞赛高年级组具体实施安排",
+   "url": "https://www.jwc.uestc.edu.cn/info/057d582993f20743c3c1921a062a6986",
+   "date": "2026-10-14",
+   "tag": "实践",
+   "category": null,
+   "alsoIn": [
+    "教务处·学生事务公告"
+   ],
+   "tier": "digest",
+   "firstSeenAt": "2026-10-31T06:11:26.211Z",
+   "unit": "教务处"
+  },
+  {
    "id": "3e1b8fca50e8057f",
    "sourceId": "math-xsgz",
    "sourceName": "数学科学学院·学生工作",
@@ -469,6 +516,21 @@
    ],
    "firstSeenAt": "2026-10-14T01:56:23.438Z",
    "unit": "新闻网"
+  },
+  {
+   "id": "df0badd0a7514540",
+   "sourceId": "jwc-student",
+   "sourceName": "教务处·学生事务公告",
+   "school": "uestc",
+   "title": "关于2026级本科新生学籍自查的通知",
+   "url": "https://www.jwc.uestc.edu.cn/info/87c8fc98776d7397f5519b526ff9f1cc",
+   "date": "2026-10-13",
+   "tag": "学生事务公告",
+   "category": null,
+   "alsoIn": [],
+   "tier": "urgent",
+   "firstSeenAt": "2026-10-31T06:11:26.211Z",
+   "unit": "教务处"
   },
   {
    "id": "c327689e31415c90",
@@ -607,6 +669,21 @@
    "unit": "新闻网"
   },
   {
+   "id": "794d095d908efadf",
+   "sourceId": "jwc-student",
+   "sourceName": "教务处·学生事务公告",
+   "school": "uestc",
+   "title": "2026年电子科技大学大学生创新训练计划——韫慧奖励专项入围名单公示",
+   "url": "https://www.jwc.uestc.edu.cn/info/f2af6c15dc83ba0c19ad9c719cd75c83",
+   "date": "2026-09-23",
+   "tag": "实践",
+   "category": null,
+   "alsoIn": [],
+   "tier": "digest",
+   "firstSeenAt": "2026-10-31T06:11:26.211Z",
+   "unit": "教务处"
+  },
+  {
    "id": "6a460cf85bc22591",
    "sourceId": "news-notice",
    "sourceName": "新闻网·公告",
@@ -633,6 +710,36 @@
    "unit": "数学科学学院"
   },
   {
+   "id": "9dae6085e47bbec6",
+   "sourceId": "jwc-student",
+   "sourceName": "教务处·学生事务公告",
+   "school": "uestc",
+   "title": "第35届电子科技大学数学竞赛获奖名单公布",
+   "url": "https://www.jwc.uestc.edu.cn/info/86a3cff5a1dc8f270f749890f9c45a9c",
+   "date": "2026-09-18",
+   "tag": "学生事务公告",
+   "category": null,
+   "alsoIn": [],
+   "tier": "digest",
+   "firstSeenAt": "2026-10-31T06:11:26.211Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "128de2acd82dd891",
+   "sourceId": "jwc-student",
+   "sourceName": "教务处·学生事务公告",
+   "school": "uestc",
+   "title": "2023级“形势与政策”补考安排",
+   "url": "https://www.jwc.uestc.edu.cn/info/55d4b4539cd8725e040a5ca814549134",
+   "date": "2026-09-17",
+   "tag": "考试",
+   "category": null,
+   "alsoIn": [],
+   "tier": "urgent",
+   "firstSeenAt": "2026-10-31T06:11:26.211Z",
+   "unit": "教务处"
+  },
+  {
    "id": "e5e900ae1b07e121",
    "sourceId": "math-xsgz",
    "sourceName": "数学科学学院·学生工作",
@@ -644,6 +751,53 @@
    "alsoIn": [],
    "firstSeenAt": "2026-09-28T12:00:56.521Z",
    "unit": "数学科学学院"
+  },
+  {
+   "id": "4d227089e64930f4",
+   "sourceId": "jwc-student",
+   "sourceName": "教务处·学生事务公告",
+   "school": "uestc",
+   "title": "关于我校2026年下半年全国大学英语四、六级考试报名工作的通知",
+   "url": "https://www.jwc.uestc.edu.cn/info/c683a0d05a4f4f673f3414657464b8a2",
+   "date": "2026-09-16",
+   "tag": "考试",
+   "category": null,
+   "alsoIn": [],
+   "deadline": "2026-11-22",
+   "tier": "urgent",
+   "firstSeenAt": "2026-10-31T06:11:26.211Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "75193b01b63f8a9b",
+   "sourceId": "jwc-student",
+   "sourceName": "教务处·学生事务公告",
+   "school": "uestc",
+   "title": "关于第三届“中国电子杯”高校 ICT 产教融合创新大赛报名的通知",
+   "url": "https://www.jwc.uestc.edu.cn/info/608777928f0250657e44452d89ae8d5c",
+   "date": "2026-09-15",
+   "tag": "学生事务公告",
+   "category": null,
+   "alsoIn": [],
+   "deadline": "2026-10-15",
+   "tier": "digest",
+   "firstSeenAt": "2026-10-31T06:11:26.211Z",
+   "unit": "教务处"
+  },
+  {
+   "id": "93a90550ebebe3bb",
+   "sourceId": "jwc-important",
+   "sourceName": "教务处·重要公告",
+   "school": "uestc",
+   "title": "电子科技大学2026年秋季学期微专业招生简章",
+   "url": "https://www.jwc.uestc.edu.cn/info/aa67bb775823563d6133b9bd2a83b79e",
+   "date": "2026-09-10",
+   "tag": "学生事务公告",
+   "category": null,
+   "alsoIn": [],
+   "tier": "digest",
+   "firstSeenAt": "2026-10-31T06:11:26.211Z",
+   "unit": "教务处"
   },
   {
    "id": "c52fd4f6c243e1c6",
@@ -710,6 +864,21 @@
    "alsoIn": [],
    "firstSeenAt": "2026-09-28T12:00:56.521Z",
    "unit": "数学科学学院"
+  },
+  {
+   "id": "ff2ac69f088c3571",
+   "sourceId": "jwc-important",
+   "sourceName": "教务处·重要公告",
+   "school": "uestc",
+   "title": "关于做好推荐2027届优秀应届本科毕业生免试攻读研究生工作安排的通知",
+   "url": "https://www.jwc.uestc.edu.cn/info/d245fa4d677b2a36fc81ee013daead02",
+   "date": "2026-08-25",
+   "tag": "教师事务公告",
+   "category": null,
+   "alsoIn": [],
+   "tier": "digest",
+   "firstSeenAt": "2026-10-31T06:11:26.211Z",
+   "unit": "教务处"
   },
   {
    "id": "5c97fb7c21e12ef0",
