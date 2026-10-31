@@ -2,6 +2,38 @@
 
 本项目遵循 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## v0.15.1 — 2026-10-31
+
+### 修「检查更新」永远说「已是最新」—— 以及它背后的数据陈旧问题
+
+用户报「新版本在应用里检查更新并未推送」。查出来不是比较逻辑的问题，是**镜像缓存**：
+
+jsDelivr 对 `@main` 这种分支别名的响应头是
+`cache-control: public, max-age=604800, s-maxage=43200`（浏览器 7 天、CDN 12 小时）。
+实测 v0.15.0 发布 3 小时后，`https://cdn.jsdelivr.net/gh/Yang-Yin734/notice-radar@main/docs/version.json`
+仍然返回 **0.13.0**（`age: 11557`，`cf-cache-status: HIT`）。
+
+而 `DATA_URLS` 的第一项恰好就是它，`remoteVersion()` 又是「按顺序取第一个成功的」——
+于是 App 拿到一个**比当前版本还旧**的号，`compareVersions("0.13.0", "0.14.0")` 小于 0，
+判定「已是最新」，新版永远推不出去。
+
+同一个 URL 列表还在供 `dashboard-data.json`，所以通知数据也可能晚半天（最长 12 小时）。
+
+三处一起改：
+
+1. `remoteVersion()` 不再「取第一个」，改为**遍历所有镜像取最大版本号**——
+   任何一个镜像拿到新版就算数，单一 CDN 的缓存策略再也决定不了更新体系。
+2. `DATA_URLS` 按**新鲜度**重排：githack（`max-age=60`）→ statically → github.io（600s）→ jsDelivr（垫底）。
+   旧数据总好过没有，所以 jsDelivr 不删，只降级。
+3. 所有出站请求加 `bust(url)`：按 5 分钟取整的 `?v=` 参数 + `Cache-Control: no-cache` + `useCaches = false`。
+   （实测 jsDelivr 不认 query，但对 githack / github.io 有效；配合前两条才是完整的）
+
+顺带把设置页的「已是最新」改成同时显示远端取到的版本号：
+`已是最新（远端 v0.15.0 · 检查于 17:20:03）`。下次再有人说不推送，这一行就能直接分辨是
+「远端给的就是旧号」还是「比较逻辑错了」。
+
+一次性操作：对 jsDelivr 调了 `purge.jsdelivr.net`，purge 后它立刻返回 0.15.0（已实测）。
+
 ## v0.15.0 — 2026-10-31
 
 ### 云端抓取成功率从 45% 拉到 90%，并且不再被一轮卡住拖死整个调度

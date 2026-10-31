@@ -41,15 +41,48 @@ data class Snapshot(
     val bySource: List<SourceStat>,
 )
 
-/** 数据源候选：github.io 在国内经常不通，所以镜像排在前面，最后用它垫底。 */
+/**
+ * 数据源候选，**按新鲜度排**，可达性垫底。
+ *
+ * 顺序为什么这么定（2026-10-31 实测）：
+ *   · raw.githack —— `cache-control: max-age=60`，一分钟就换新，是唯一接近实时的镜像
+ *   · statically  —— 走 Cloudflare，时效性尚可
+ *   · github.io   —— `max-age=600`，但国内经常连不上
+ *   · jsDelivr    —— 最快最稳，但 `@main` 分支别名的响应头是
+ *                    `max-age=604800, s-maxage=43200`（7 天 / 12 小时）：
+ *                    实测 0.15.0 发布 3 小时后它还在返 0.13.0，而旧版顺序把它放第一位，
+ *                    于是「检查更新」拿到比当前还旧的号 → 判"已是最新" → 新版永远推不出去；
+ *                    通知数据也跟着晚了半天。所以它降为兜底。
+ *
+ * 真正的兜底逻辑在 [refresh]：按顺序试，第一个能解析的就用 —— 前面都挂了才轮到 jsDelivr 的旧数据，
+ * 旧数据总好过没有。
+ */
 val DATA_URLS = listOf(
-    "https://cdn.jsdelivr.net/gh/Yang-Yin734/notice-radar@main/docs/dashboard-data.json",
-    "https://cdn.statically.io/gh/Yang-Yin734/notice-radar/main/docs/dashboard-data.json",
     "https://raw.githack.com/Yang-Yin734/notice-radar/main/docs/dashboard-data.json",
+    "https://cdn.statically.io/gh/Yang-Yin734/notice-radar/main/docs/dashboard-data.json",
     "https://yang-yin734.github.io/notice-radar/dashboard-data.json",
+    "https://cdn.jsdelivr.net/gh/Yang-Yin734/notice-radar@main/docs/dashboard-data.json",
 )
 
 val VERSION_URLS = DATA_URLS.map { it.substringBefore("dashboard-data.json") + "version.json" }
+
+/**
+ * 给镜像 URL 加一个按分钟取整的穿透参数。
+ *
+ * 为什么必须有：jsDelivr 对 `@main` 分支别名的响应头是
+ * `cache-control: public, max-age=604800, s-maxage=43200`（7 天 / 12 小时），
+ * 实测 0.15.0 发布 3 小时后，它仍在返回 0.13.0。而 DATA_URLS 的第一项就是它，
+ * 于是「检查更新」拿到一个**比当前还旧**的版本号，compareVersions 判为"不更新"，
+ * 新版永远推不出去；`dashboard-data.json` 同样被缓存到 12 小时前的样子。
+ *
+ * 参数按 [slotMinutes] 取整而不是用毫秒：同一时段内多个请求仍命中同一份 CDN 缓存
+ * （手机在弱网下会重试，不想每次都打穿），跨过时段才换新。
+ */
+internal fun bust(url: String, slotMinutes: Int = 5): String {
+    val slot = System.currentTimeMillis() / (slotMinutes * 60_000L)
+    val sep = if (url.contains('?')) '&' else '?'
+    return "$url${sep}v=$slot"
+}
 
 const val REPO_SLUG = "Yang-Yin734/notice-radar"
 
@@ -275,6 +308,11 @@ object Net {
             // 只在自己声明了、且响应确实带 Content-Encoding: gzip 时才解压，避免解错。
             setRequestProperty("Accept-Encoding", "gzip")
             setRequestProperty("User-Agent", "notice-radar-app")
+            // 配合 bust() 使用：让中间层知道我们要现成的。有的 CDN 认这个头，有的只认 query。
+            setRequestProperty("Cache-Control", "no-cache")
+            // Android 的 HttpURLConnection 默认会走 OkHttp 的 HTTP 缓存时，用 no-cache 会被它拦住；
+            // 这里显式声明按响应头走，不做本地强缓存。
+            useCaches = false
         }
         val raw = conn.inputStream
         val gzipped = conn.contentEncoding?.contains("gzip", ignoreCase = true) == true
@@ -319,7 +357,7 @@ class Store(private val ctx: Context) {
     /** 按镜像顺序拉数据，返回（快照, 来源标签）或 null（全失败）。 */
     fun refresh(): Pair<Snapshot, String>? {
         for (url in DATA_URLS) {
-            val raw = Net.get(url) ?: continue
+            val raw = Net.get(bust(url)) ?: continue
             val snap = Json.parseSnapshot(raw) ?: continue
             val label = labelOf(url)
             cache(raw, label)
@@ -352,7 +390,7 @@ class Store(private val ctx: Context) {
     /** 学校目录：先按 DATA_URLS 的镜像顺序试，全失败就退回**内置目录**（离线也要能选校） */
     fun fetchSchoolIndex(): List<SchoolInfo> {
         for (url in schoolUrls("index.json")) {
-            val raw = Net.get(url) ?: continue
+            val raw = Net.get(bust(url)) ?: continue
             val list = parseSchoolIndex(raw)
             if (list.isNotEmpty()) return list
         }
@@ -403,7 +441,7 @@ class Store(private val ctx: Context) {
     fun refreshSchool(file: String): Pair<Snapshot, String>? {
         if (file.isEmpty()) return null
         for (url in schoolUrls(file)) {
-            val raw = Net.get(url) ?: continue
+            val raw = Net.get(bust(url)) ?: continue
             val snap = Json.parseSnapshot(raw) ?: continue
             val label = labelOf(url)
             cacheSchool(file, raw, label)
@@ -418,17 +456,26 @@ class Store(private val ctx: Context) {
     private fun schoolUrls(file: String): List<String> =
         DATA_URLS.map { it.substringBefore("dashboard-data.json") + "data/schools/" + file }
 
+    /**
+     * 所有镜像里**最新**的版本号（全都取不到才返回 null）。
+     *
+     * 原先是「按顺序取第一个成功的」—— 于是 jsDelivr 的 12 小时缓存直接决定了
+     * 整个更新体系：它返 0.13.0，用户装 0.14.0，compareVersions 判"已是最新"，
+     * 0.15.0 发出去也没人收到提示。改成取最大值后，任何一个镜像拿到新版就算数。
+     */
     fun remoteVersion(): String? {
+        var best: String? = null
         for (url in VERSION_URLS) {
-            val raw = Net.get(url) ?: continue
+            val raw = Net.get(bust(url)) ?: continue
             val v = try {
                 JSONObject(raw).optString("version")
             } catch (e: Exception) {
                 ""
             }
-            if (v.isNotEmpty()) return v
+            if (v.isEmpty()) continue
+            if (best == null || compareVersions(v, best) > 0) best = v
         }
-        return null
+        return best
     }
 
     fun appVersion(): String = try {

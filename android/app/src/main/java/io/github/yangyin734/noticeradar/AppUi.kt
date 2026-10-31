@@ -1692,7 +1692,9 @@ private fun SettingsScreen(
                                 remote == null -> "连不上版本服务器（离线也能正常用）"
                                 // 必须按数字比较：字符串比较会把 0.10.3 当成比 0.8.0 旧（老 bug）
                                 compareVersions(remote, store.appVersion()) > 0 -> "发现新版本 v$remote"
-                                else -> "已是最新（检查时间 ${SimpleDateFormat("HH:mm:ss", Locale.US).format(Date())}）"
+                                // 把远端取到的版本号一起显示：万一哪天又说"不推送"，
+                                // 这一行就能直接看出是"远端给的就是旧号"还是"比较逻辑错了"
+                                else -> "已是最新（远端 v$remote · 检查于 ${SimpleDateFormat("HH:mm:ss", Locale.US).format(Date())}）"
                             }
                         }
                     }
