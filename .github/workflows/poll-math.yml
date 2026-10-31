@@ -56,7 +56,23 @@ jobs:
           git fetch origin main
           git merge -X ours --no-edit origin/main || { echo "::warning::同步失败，继续（提交时会再试）"; git merge --abort || true; }
 
+      # 国内出口优先：本机 run-daily.ps1 -Push 或境内部署跑完会写 data/poller.json，
+      # 20 分钟内刚跑过就让路，避免同一批通知被两边各推一次。
+      - name: 境内节点刚跑过就让路
+        id: outlet
+        run: |
+          node -e "
+            const fs = require('fs');
+            let at = 0;
+            try { at = Date.parse(JSON.parse(fs.readFileSync('data/poller.json', 'utf8')).at || ''); } catch (e) {}
+            const mins = at ? Math.round((Date.now() - at) / 60000) : -1;
+            const fresh = mins >= 0 && mins < 20;
+            console.log('境内节点最后跑过：' + (mins < 0 ? '没有记录' : mins + ' 分钟前') + (fresh ? ' → 本轮让路' : ' → 本轮照常抓取'));
+            fs.appendFileSync(process.env.GITHUB_OUTPUT, 'skip=' + (fresh ? 'yes' : 'no') + '\n');
+          "
+
       - name: 准备虚拟显示器与浏览器
+        if: steps.outlet.outputs.skip != 'yes'
         run: |
           # runner 自带 Chrome；xvfb 若缺失则装上
           if ! command -v xvfb-run >/dev/null 2>&1; then
@@ -73,6 +89,7 @@ jobs:
           xvfb-run --help >/dev/null && echo "xvfb-run 可用"
 
       - name: 抓学院通知并推送（真实浏览器窗口跑在虚拟显示器里）
+        if: steps.outlet.outputs.skip != 'yes'
         env:
           NOTICE_RADAR_WEBHOOK: ${{ secrets.NOTICE_RADAR_WEBHOOK }}
           SMTP_URL: ${{ secrets.SMTP_URL }}
@@ -85,6 +102,7 @@ jobs:
         run: xvfb-run -a node src/cli.ts doctor --config=config/schools/uestc-math.yaml --allow-browser || true
 
       - name: 重建通知归档仪表盘（GitHub Pages）
+        if: steps.outlet.outputs.skip != 'yes'
         run: node src/cli.ts dashboard
 
       - name: 配置状态推送密钥
@@ -104,6 +122,7 @@ jobs:
           echo "已改用部署密钥推送"
 
       - name: 提交状态（下次只报新增）+ 仪表盘
+        if: steps.outlet.outputs.skip != 'yes'
         run: |
           git config user.name "notice-radar-bot"
           git config user.email "notice-radar-bot@users.noreply.github.com"
