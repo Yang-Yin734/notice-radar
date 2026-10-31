@@ -3,7 +3,7 @@
  "name": "西安交通大学",
  "province": "陕西省",
  "city": "西安市",
- "generatedAt": "2026-10-31T05:40:30.466Z",
+ "generatedAt": "2026-10-31T06:15:57.041Z",
  "total": 14,
  "bySource": [
   {
@@ -74,6 +74,7 @@
    "tag": null,
    "alsoIn": [],
    "firstSeenAt": "2026-10-19T10:00:27.131Z",
+   "deadline": "2026-12-07",
    "unit": "教务处"
   },
   {
@@ -87,6 +88,7 @@
    "tag": null,
    "alsoIn": [],
    "firstSeenAt": "2026-10-16T10:02:11.984Z",
+   "deadline": "2026-11-30",
    "unit": "教务处"
   },
   {
@@ -100,6 +102,7 @@
    "tag": null,
    "alsoIn": [],
    "firstSeenAt": "2026-10-15T10:02:42.019Z",
+   "deadline": "2026-10-31",
    "unit": "教务处"
   },
   {
@@ -113,6 +116,7 @@
    "tag": null,
    "alsoIn": [],
    "firstSeenAt": "2026-10-09T09:14:09.993Z",
+   "deadline": "2026-09-01",
    "unit": "教务处"
   },
   {
@@ -191,6 +195,7 @@
    "tag": null,
    "alsoIn": [],
    "firstSeenAt": "2026-10-04T06:04:28.338Z",
+   "deadline": "2026-10-23",
    "unit": "教务处"
   },
   {
@@ -204,6 +209,7 @@
    "tag": null,
    "alsoIn": [],
    "firstSeenAt": "2026-10-04T06:04:28.338Z",
+   "deadline": "2026-11-22",
    "unit": "教务处"
   }
  ]

@@ -3,7 +3,7 @@
  "name": "中山大学",
  "province": "广东省",
  "city": "广州市",
- "generatedAt": "2026-10-31T05:40:30.466Z",
+ "generatedAt": "2026-10-31T06:15:57.041Z",
  "total": 3,
  "bySource": [
   {
@@ -34,6 +34,7 @@
    "tag": "通知通告",
    "alsoIn": [],
    "firstSeenAt": "2026-10-03T16:50:39.366Z",
+   "deadline": "2026-09-30",
    "unit": "教务部"
   },
   {
@@ -60,6 +61,7 @@
    "tag": "通知通告",
    "alsoIn": [],
    "firstSeenAt": "2026-10-03T16:50:39.366Z",
+   "deadline": "2026-09-28",
    "unit": "教务部"
   }
  ]

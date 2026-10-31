@@ -3,7 +3,7 @@
  "name": "天津大学",
  "province": "天津市",
  "city": "",
- "generatedAt": "2026-10-31T05:40:30.466Z",
+ "generatedAt": "2026-10-31T06:15:57.041Z",
  "total": 4,
  "bySource": [
   {
@@ -34,6 +34,7 @@
    "tag": null,
    "alsoIn": [],
    "firstSeenAt": "2026-10-03T17:07:59.243Z",
+   "deadline": "2026-09-24",
    "unit": "本科生院"
   },
   {
@@ -60,6 +61,7 @@
    "tag": null,
    "alsoIn": [],
    "firstSeenAt": "2026-10-03T17:07:59.243Z",
+   "deadline": "2026-03-25",
    "unit": "本科生院"
   },
   {

@@ -3,7 +3,7 @@
  "name": "西北工业大学",
  "province": "陕西省",
  "city": "西安市",
- "generatedAt": "2026-10-31T05:40:30.466Z",
+ "generatedAt": "2026-10-31T06:15:57.041Z",
  "total": 22,
  "bySource": [
   {
@@ -104,6 +104,7 @@
    "tag": null,
    "alsoIn": [],
    "firstSeenAt": "2026-10-20T03:18:42.679Z",
+   "deadline": "2026-12-15",
    "unit": "教务部"
   },
   {
@@ -182,6 +183,7 @@
    "tag": null,
    "alsoIn": [],
    "firstSeenAt": "2026-10-04T06:15:55.247Z",
+   "deadline": "2027-02-02",
    "unit": "教务部"
   },
   {
@@ -208,6 +210,7 @@
    "tag": null,
    "alsoIn": [],
    "firstSeenAt": "2026-10-04T06:15:55.247Z",
+   "deadline": "2026-09-28",
    "unit": "教务部"
   },
   {
@@ -273,6 +276,7 @@
    "tag": null,
    "alsoIn": [],
    "firstSeenAt": "2026-10-04T06:15:55.247Z",
+   "deadline": "2026-10-07",
    "unit": "教务部"
   },
   {
@@ -299,6 +303,7 @@
    "tag": null,
    "alsoIn": [],
    "firstSeenAt": "2026-10-04T06:15:55.247Z",
+   "deadline": "2026-10-08",
    "unit": "教务部"
   },
   {
@@ -312,6 +317,7 @@
    "tag": null,
    "alsoIn": [],
    "firstSeenAt": "2026-10-04T06:15:55.247Z",
+   "deadline": "2026-11-22",
    "unit": "教务部"
   }
  ]
