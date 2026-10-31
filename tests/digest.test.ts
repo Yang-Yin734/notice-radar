@@ -13,12 +13,14 @@ import {
 } from '../src/core/digest.ts';
 import type { Notice } from '../src/types.ts';
 
+// 标题默认随 id 变化：归档按「内容核 + 日期」合并同一件事，
+// 共用同一标题的测试条目会被正确合并，测不到各自要测的东西。
 const notice = (over: Partial<Notice>): Notice => ({
   id: 'id1',
   sourceId: 'jwc',
   sourceName: '教务处',
   school: 'uestc',
-  title: '关于选课的通知',
+  title: `关于第${over.id ?? 'id1'}号事项的通知`,
   url: 'https://x.edu.cn/1',
   date: '2026-09-02',
   tag: null,

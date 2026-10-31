@@ -70,8 +70,12 @@ jobs:
           # 境内学校站点在境外 runner 上偶发整体不可达（跨境网络抖动，实测约每 3 次 1 次）。
           # 单源失败不影响退出码，只有全部源都失败才返回非零，所以重试放在这一层。
           # 6 次 + 逐步拉长间隔：尽量"抖过去"，让通知晚到一点而不是丢掉（状态没写，成功那轮会补发）。
+          # --timeout=15000：跨境链路常是"连上了但迟迟不回"，默认 40s 会让整轮撞上 15 分钟的 job 上限，
+          #   砍到 15s 让这种源快速失败进重试，而不是把后面所有源一起拖死。
+          # --concurrency=4：4 个 worker 并行领号，整轮耗时从"30 源 × 平均耗时"压到约 1/4；
+          #   源之间仍保留 1500ms 间隔（首轮按 worker 序号错开），对学校站点保持客气。
           for attempt in 1 2 3 4 5 6; do
-            if node src/cli.ts run --json=data/latest.json --delay=1500; then
+            if node src/cli.ts run --json=data/latest.json --delay=1500 --timeout=15000 --concurrency=4; then
               echo "outcome=ok" >> "$GITHUB_OUTPUT"
               exit 0
             fi

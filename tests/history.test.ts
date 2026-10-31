@@ -6,12 +6,15 @@ import path from 'node:path';
 import { appendHistory, countByDay, countBySource, emptyHistory, loadHistory, renderStats, saveHistory, summarize } from '../src/core/history.ts';
 import type { Notice } from '../src/types.ts';
 
+// 标题默认随 id 变化：归档现在会按「内容核 + 日期」合并同一件事，
+// 若所有测试条目共用同一个标题，它们会被正确地并成一条，测试就测不到原本要测的东西。
+// 需要验证合并行为的用例，显式传 title/date 即可。
 const notice = (over: Partial<Notice>): Notice => ({
   id: 'id1',
   sourceId: 's1',
   sourceName: '教务处',
   school: 'uestc',
-  title: '关于选课的通知',
+  title: `关于第${over.id ?? 'id1'}号事项的通知`,
   url: 'https://x.edu.cn/1',
   date: '2026-09-02',
   tag: null,

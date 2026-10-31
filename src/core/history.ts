@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import type { Notice } from '../types.ts';
 import { notifiable } from './tiers.ts';
+import { contentCore, sameEvent } from './normalize.ts';
 
 /**
  * 历史归档：state.json 只记"见过哪些 ID"（为了去重），不保存内容。
@@ -66,21 +67,59 @@ export function saveHistory(history: History, file: string = DEFAULT_HISTORY_FIL
   fs.writeFileSync(file, `${JSON.stringify(history, null, 2)}\n`, 'utf8');
 }
 
-/** 追加新通知（按 id 去重），按日期倒序排列，并裁到上限。返回新增条数。 */
+/**
+ * 追加新通知，并裁到上限。返回新增条数与"合并进已有条目"的条数。
+ *
+ * 两道去重：
+ *   1. 按 id —— 同一源重复抓到同一条
+ *   2. 按内容 —— 同一件事从另一个栏目抓到（`sameEvent`）
+ *
+ * 第 2 条是 2026-10 修的重复展示问题：归档原来只按 id 判重，而 id 含 sourceId，
+ * 于是「成电讲坛 | Jack Dongarra」在 news-notice 与 news-academic 各存一条
+ * （实测线上 386 条归档里就有这种成对条目）。用户看到的就是"同一条通知
+ * 带着两个不同的来源标签"，推送那边也会分别报一次。
+ *
+ * 合并时不丢信息：新来源追加到 alsoIn，界面仍能显示"它还在哪些栏目挂着"。
+ */
 export function appendHistory(
   history: History,
   notices: Notice[],
   options: { at?: string; cap?: number } = {},
-): { history: History; added: number } {
+): { history: History; added: number; merged: number } {
   const at = options.at ?? new Date().toISOString();
   const cap = options.cap ?? DEFAULT_CAP;
   const known = new Set(history.items.map((i) => i.id));
 
+  // 内容核 -> 已有条目（同核可能有多条：隔月重发的同名通知）
+  const buckets = new Map<string, HistoryItem[]>();
+  for (const item of history.items) {
+    const core = contentCore(item.title);
+    const list = buckets.get(core);
+    if (list) list.push(item);
+    else buckets.set(core, [item]);
+  }
+
   let added = 0;
+  let merged = 0;
   for (const notice of notices) {
     if (known.has(notice.id)) continue;
     known.add(notice.id);
-    history.items.push({ ...notice, firstSeenAt: at });
+
+    const core = contentCore(notice.title);
+    const twin = (buckets.get(core) ?? []).find((item) => sameEvent(item, notice));
+    if (twin) {
+      const others = twin.alsoIn ?? [];
+      if (notice.sourceName !== twin.sourceName && !others.includes(notice.sourceName)) others.push(notice.sourceName);
+      twin.alsoIn = others;
+      merged++;
+      continue;
+    }
+
+    const fresh: HistoryItem = { ...notice, firstSeenAt: at };
+    history.items.push(fresh);
+    const list = buckets.get(core);
+    if (list) list.push(fresh);
+    else buckets.set(core, [fresh]);
     added++;
   }
 
@@ -90,7 +129,7 @@ export function appendHistory(
 
   history.updatedAt = at;
   history.version = 1;
-  return { history, added };
+  return { history, added, merged };
 }
 
 export interface SourceStat {
