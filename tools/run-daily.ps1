@@ -1,4 +1,4 @@
-# 每天早上由 Windows 计划任务调用：抓取 + 推送 + 提交状态。
+﻿# 每天早上由 Windows 计划任务调用：抓取 + 推送 + 提交状态。
 #
 # ⚠️ 本文件必须保存为「UTF-8 with BOM」。Windows PowerShell 5.1 读无 BOM 的 UTF-8 脚本时
 #    会按系统 OEM 代码页（简中是 GBK）解码，中文注释会让解析直接报错。
@@ -9,9 +9,18 @@
 #   2) 同步成功 → 跑全部 6 个源（含学院；学院源需要可见浏览器窗口）
 #      同步失败（代理没开/网络不通）→ 只跑学院 2 个源
 #      —— 因为本地与云端各记一份"已见"状态，不同步就跑全量会让同一条通知推两次
-#   3) 把状态变更提交到本地仓库（不推送）
+#   3) 把状态变更提交到本地仓库
 #
-# 手动试跑：powershell -NoProfile -ExecutionPolicy Bypass -File tools\run-daily.ps1
+# 加 -Push 时（推荐用法）：把 data/ 与 docs/ 一并推回 main。本机在国内，
+#   抓取成功率远高于 GitHub runner 的跨境访问（同一个源：本机 200ms，runner 40s 超时），
+#   推回后网页与应用立刻看到国内出口抓到的内容；同时写 data/poller.json，
+#   云端 poll.yml 看到它就知道"刚有人跑过"，本轮让路，避免同一条通知推两遍。
+#
+# 手动试跑：powershell -NoProfile -ExecutionPolicy Bypass -File tools\run-daily.ps1 -Push
+
+param(
+  [switch]$Push
+)
 
 $ErrorActionPreference = 'Continue'
 $repo = Split-Path -Parent $PSScriptRoot
@@ -87,7 +96,8 @@ if (-not (Test-Path $node)) {
 git checkout -- data/state.json 2>&1 | Out-Null
 # --autostash：工作区有未提交改动时也能 pull（否则 rebase 直接拒绝：
 # "cannot pull with rebase: You have unstaged changes"），拉完自动还原改动
-git pull --rebase --autostash --quiet 2>&1 | Out-Null
+# 直连 GitHub（约 2026-10 起本机直连稳定；gitconfig 里若写着代理，代理没开时反而连不上）
+git -c http.proxy= -c https.proxy= pull --rebase --autostash --quiet 2>&1 | Out-Null
 $config = 'config/schools/uestc-math.yaml'
 if ($LASTEXITCODE -eq 0) {
   $config = 'config/schools/uestc.yaml'
@@ -103,12 +113,37 @@ $code = $LASTEXITCODE
 Add-Content -LiteralPath $log -Value $output -Encoding UTF8
 Write-Log "配置 $config，退出码 $code"
 
-# 3) 状态变更提交到本地（不推送）：保持工作区干净，免得下次 pull 被本地改动挡住
-git add data/state.json 2>&1 | Out-Null
+# 2.5) 只有要推回线上时才重建产物（网页 / 应用读的就是 docs/ 下面这些文件）
+if ($Push -and $code -eq 0) {
+  & $node (Join-Path $repo 'src\cli.ts') dashboard 2>&1 | Out-String | Add-Content -LiteralPath $log -Encoding UTF8
+  & $node (Join-Path $repo 'tools\build-schools.mjs') 2>&1 | Out-String | Add-Content -LiteralPath $log -Encoding UTF8
+  Write-Log '已重建 docs/index.html 与按校数据'
+}
+
+# 3) 记一笔"本机刚跑过"的时间戳，云端 poll.yml 读它决定是否让路
+$stamp = (Get-Date).ToUniversalTime().ToString('yyyy-MM-ddTHH:mm:ssZ')
+Set-Content -LiteralPath (Join-Path $repo 'data\poller.json') -Value ('{"at":"' + $stamp + '","where":"local"}') -Encoding utf8
+
+# 4) 提交状态变更；-Push 时再推回 main，让网页/应用与云端状态都跟上
+git add data docs 2>&1 | Out-Null
 git diff --cached --quiet 2>&1 | Out-Null
-if ($LASTEXITCODE -ne 0) {
-  git -c user.name='notice-radar-bot' -c user.email='notice-radar-bot@users.noreply.github.com' commit -q -m 'chore(state): 本机每日抓取 [skip ci]' 2>&1 | Out-Null
-  Write-Log '状态已本地提交（未推送）'
+if ($LASTEXITCODE -eq 0) {
+  Write-Log '状态无变化，跳过提交'
+} else {
+  git -c user.name='notice-radar-bot' -c user.email='notice-radar-bot@users.noreply.github.com' commit -q -m "chore(state): 本机抓取 $stamp [skip ci]" 2>&1 | Out-Null
+  if (-not $Push) {
+    Write-Log '状态已本地提交（未推送；加 -Push 才会推回 main）'
+  } else {
+    # 直连 GitHub：本机 gitconfig 里可能写着代理，代理没开时会导致 push 失败
+    git -c http.proxy= -c https.proxy= pull --rebase --autostash --quiet 2>&1 | Out-Null
+    git -c http.proxy= -c https.proxy= push --quiet 2>&1 | Out-Null
+    if ($LASTEXITCODE -eq 0) {
+      Write-Log '已推回 main（国内出口 → 线上）'
+    } else {
+      git rebase --abort 2>&1 | Out-Null
+      Write-Log '推送失败（检查 git 凭据与网络）；本地提交保留，下次跑会先 pull --rebase 再试'
+    }
+  }
 }
 
 Write-Log '==== 结束 ===='

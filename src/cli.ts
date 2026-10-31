@@ -16,7 +16,7 @@ import { dropLegacyKeys, loadRuns, ratesForSchool, recordRun, saveRuns, scopedKe
 import { renderDashboard } from './dashboard.ts';
 import { rateOfRows, renderDoctor, renderJson, renderMarkdown, renderRateReport, summarizeRate } from './core/report.ts';
 import type { SchoolRate } from './core/report.ts';
-import { collectOnlyIds, explainTier, immediateItems, notifiable, splitByTier } from './core/tiers.ts';
+import { classify, collectOnlyIds, explainTier, immediateItems, notifiable, splitByTier } from './core/tiers.ts';
 import {
   DEFAULT_ALERT_FILE,
   confirmByStreak,
@@ -887,7 +887,11 @@ async function cmdRun(flags: Flags): Promise<number> {
     // 同时归档到 history.json —— state 只记"见过哪些 ID"，历史才留下内容，供 Pages 仪表盘用
     const historyFile = path.join(path.dirname(flags.state), 'history.json');
     const history = loadHistory(historyFile);
-    const { added, merged } = appendHistory(history, filtered);
+    const { added, merged } = appendHistory(
+      history,
+      // 顺手把采集时的分级存进去：以后回看归档能知道"当时为什么推了/没推这条"
+      filtered.map((n) => ({ ...n, tier: classify(n, cfg.push) })),
+    );
     saveHistory(history, historyFile);
 
     console.log(`\n▸ 状态已更新：${flags.state}（下次只报新增）`);

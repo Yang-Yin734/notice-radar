@@ -3,7 +3,7 @@
  "name": "郑州大学",
  "province": "河南省",
  "city": "郑州市",
- "generatedAt": "2026-10-31T05:40:30.466Z",
+ "generatedAt": "2026-10-31T06:08:53.698Z",
  "total": 99,
  "bySource": [
   {
@@ -198,6 +198,7 @@
    "category": "教务",
    "alsoIn": [],
    "firstSeenAt": "2026-10-26T02:42:49.401Z",
+   "deadline": "2027-01-02",
    "unit": "教务部"
   },
   {
@@ -365,6 +366,7 @@
    "tag": null,
    "alsoIn": [],
    "firstSeenAt": "2026-10-19T10:00:36.097Z",
+   "deadline": "2026-10-31",
    "unit": "教务部"
   },
   {
@@ -583,6 +585,7 @@
    "tag": null,
    "alsoIn": [],
    "firstSeenAt": "2026-10-04T07:00:04.166Z",
+   "deadline": "2026-09-18",
    "unit": "教务部"
   },
   {
@@ -624,6 +627,7 @@
    "category": "研究生",
    "alsoIn": [],
    "firstSeenAt": "2026-10-21T10:57:47.397Z",
+   "deadline": "2026-09-17",
    "unit": "研究生院"
   },
   {
@@ -679,6 +683,7 @@
    "category": "研究生",
    "alsoIn": [],
    "firstSeenAt": "2026-10-21T10:57:47.397Z",
+   "deadline": "2026-10-15",
    "unit": "研究生院"
   },
   {
@@ -707,6 +712,7 @@
    "category": "研究生",
    "alsoIn": [],
    "firstSeenAt": "2026-10-21T10:57:47.397Z",
+   "deadline": "2026-08-31",
    "unit": "研究生院"
   },
   {
@@ -721,6 +727,7 @@
    "category": "研究生",
    "alsoIn": [],
    "firstSeenAt": "2026-10-21T10:57:47.397Z",
+   "deadline": "2026-09-06",
    "unit": "研究生院"
   },
   {
@@ -1043,6 +1050,7 @@
    "category": "研究生",
    "alsoIn": [],
    "firstSeenAt": "2026-10-21T10:57:47.397Z",
+   "deadline": "2026-06-08",
    "unit": "研究生院"
   },
   {
@@ -1071,6 +1079,7 @@
    "category": "研究生",
    "alsoIn": [],
    "firstSeenAt": "2026-10-21T10:57:47.397Z",
+   "deadline": "2026-06-05",
    "unit": "研究生院"
   },
   {
@@ -1141,6 +1150,7 @@
    "category": "人事",
    "alsoIn": [],
    "firstSeenAt": "2026-10-21T10:57:47.397Z",
+   "deadline": "2026-05-18",
    "unit": "人事部"
   },
   {

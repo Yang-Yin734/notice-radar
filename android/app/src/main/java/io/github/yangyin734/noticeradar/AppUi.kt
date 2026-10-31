@@ -1,7 +1,10 @@
 package io.github.yangyin734.noticeradar
 
+import android.Manifest
 import android.content.Intent
 import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
@@ -113,6 +116,18 @@ fun NoticeRadarApp(store: Store) {
     var darkOverride by remember { mutableStateOf(store.themeOverride) }
     // 首次使用提示：本次打开里点过"知道了"就收起
     var hintDone by remember { mutableStateOf(false) }
+    // 后台提醒开关。默认关，用户在设置里主动打开；关掉就撤掉 WorkManager 任务。
+    var notifyOn by remember { mutableStateOf(store.notifyEnabled) }
+    val notifyPerm = rememberLauncherForActivityResult(ActivityResultContracts.RequestPermission()) { granted ->
+        // 用户拒绝授权：开关跟着退回关闭，免得界面显示"已开启"却一条都收不到
+        if (!granted) {
+            notifyOn = false
+            store.notifyEnabled = false
+            NoticeNotify.schedule(context, false)
+        }
+    }
+    // 应用升级会换掉 WorkManager 里的旧任务：开关是开的就补排一次
+    LaunchedEffect(Unit) { if (store.notifyEnabled) NoticeNotify.schedule(context, true) }
     // 新版本提示：打开应用就检查一次（以前只在"设置 → 应用更新"里查，用户根本看不到）
     var updateVersion by remember { mutableStateOf<String?>(null) }
     // 选校：学校 id / 已勾选学院 / 学校目录。全部只在本机记忆（schoolId 为空 = 没主动选过）
@@ -358,6 +373,16 @@ fun NoticeRadarApp(store: Store) {
                                 store.saveSchoolUnits(next)
                             },
                             onSwitchSchool = { school -> switchSchool(school) },
+                            notifyOn = notifyOn,
+                            onToggleNotify = {
+                                val next = !notifyOn
+                                notifyOn = next
+                                store.notifyEnabled = next
+                                NoticeNotify.schedule(context, next)
+                                if (next && !NoticeNotify.canPost(context)) {
+                                    notifyPerm.launch(Manifest.permission.POST_NOTIFICATIONS)
+                                }
+                            },
                             onClearRead = { read = mutableSetOf(); store.saveRead(emptySet()) },
                             onClearFav = { fav = mutableSetOf(); store.saveFav(emptySet()) },
                             onRefreshData = {
@@ -609,16 +634,54 @@ private fun NoticeList(
     val all = snapshot?.items ?: emptyList()
     val sources = snapshot?.bySource ?: emptyList()
 
+    // 「按截止」是列表的排序口径，不是来源筛选：来源 tab 说的是"换一页报纸"，
+    // 这个说的是"这一页按还剩几天排"。开关状态不落盘——它是临时视角，不是偏好。
+    var dueOrder by remember { mutableStateOf(false) }
+
+    // 距截止还有几天（北京自然日）。null = 这条没有截止日。
+    fun dueDays(deadline: String?): Int? {
+        if (deadline.isNullOrBlank() || deadline.length < 10) return null
+        val target = ymdToMidnight(deadline) ?: return null
+        val now = Calendar.getInstance(java.util.TimeZone.getTimeZone("Asia/Shanghai"))
+        val today = Calendar.getInstance(java.util.TimeZone.getTimeZone("Asia/Shanghai")).apply {
+            clear()
+            set(now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DAY_OF_MONTH))
+        }.timeInMillis
+        return Math.round((target - today).toDouble() / 86_400_000.0).toInt()
+    }
+
+    // 分组头说的是"还剩多久"，不是"哪天发的"。与网页版同一套话术。
+    fun dueHead(days: Int): String = when {
+        days < 0 -> "刚过期"
+        days == 0 -> "今天截止"
+        days == 1 -> "明天截止"
+        days <= 7 -> "一周内截止"
+        else -> "再往后"
+    }
+
     // 过滤规则全在 filterNotices（纯函数，有 JVM 单测钉住"选了学校却没勾学院 = 什么都不显示"）
     val filtered = remember(all, query, sourceFilter, favOnly, fav, schoolId, units) {
         filterNotices(all, query, sourceFilter, favOnly, fav, schoolId, units)
     }
 
-    val rows = remember(filtered) {
+    val rows = remember(filtered, dueOrder) {
         val out = mutableListOf<Entry>()
-        filtered.groupBy { it.date.ifEmpty { "日期未知" } }.forEach { (date, list) ->
-            out += Entry.Day(date, list.size)
-            list.forEach { out += Entry.Item(it) }
+        if (dueOrder) {
+            // 只剩"没到期、或刚过期一周内"的，按剩余天数从紧到松
+            filtered
+                .mapNotNull { n -> dueDays(n.deadline)?.let { d -> n to d } }
+                .filter { it.second >= -7 }
+                .sortedBy { it.second }
+                .groupBy { dueHead(it.second) }
+                .forEach { (head, list) ->
+                    out += Entry.Day(head, list.size)
+                    list.forEach { out += Entry.Item(it.first) }
+                }
+        } else {
+            filtered.groupBy { it.date.ifEmpty { "日期未知" } }.forEach { (date, list) ->
+                out += Entry.Day(date, list.size)
+                list.forEach { out += Entry.Item(it) }
+            }
         }
         out
     }
@@ -666,6 +729,12 @@ private fun NoticeList(
                             onSourceFilter(s.sourceId)
                         }
                     }
+                    // 排在来源之后、语义上另立一格：它不换报纸，只换排序口径
+                    NavTab(
+                        text = if (dueOrder) "✓ 按截止" else "按截止",
+                        count = filtered.count { dueDays(it.deadline) != null },
+                        active = dueOrder,
+                    ) { dueOrder = !dueOrder }
                 }
                 Box(Modifier.fillMaxWidth().height(Hairline).background(AppColors.line))
             }
@@ -679,6 +748,7 @@ private fun NoticeList(
                     Text(
                         when {
                             schoolId.isNotEmpty() && units.isEmpty() -> "还没勾选学院"
+                            dueOrder -> "没有临近截止的办事通知"
                             favOnly -> "收藏夹是空的"
                             else -> "没有匹配的通知"
                         },
@@ -689,6 +759,7 @@ private fun NoticeList(
                     Text(
                         when {
                             schoolId.isNotEmpty() && units.isEmpty() -> "在「设置 · 学校 / 学院」里勾选你关心的学院"
+                            dueOrder -> "只有标题像办事公告、正文里又写明日期的才进得来"
                             favOnly -> "在通知卡片右上角点星标就能收藏"
                             else -> "换个关键词，或清掉来源筛选"
                         },
@@ -718,7 +789,8 @@ private fun NoticeList(
                                 modifier = Modifier.fillMaxWidth().padding(bottom = 7.dp),
                             ) {
                                 Text(
-                                    dayLabel(row.date),
+                                    // 按截止视图里 row.date 直接就是"今天截止"这类档位文案
+                                    if (dueOrder) row.date else dayLabel(row.date),
                                     style = Type.label,
                                     fontWeight = FontWeight.SemiBold,
                                     color = AppColors.ink,
@@ -1543,6 +1615,8 @@ private fun SettingsScreen(
     onNeedIndex: () -> Unit,
     onUnitsChange: (Set<String>) -> Unit,
     onSwitchSchool: (SchoolInfo) -> Unit,
+    notifyOn: Boolean,
+    onToggleNotify: () -> Unit,
     onClearRead: () -> Unit,
     onClearFav: () -> Unit,
     onRefreshData: () -> Unit,
@@ -1572,6 +1646,30 @@ private fun SettingsScreen(
                 onUnitsChange = onUnitsChange,
                 onSwitchSchool = onSwitchSchool,
             )
+        }
+
+        // 后台提醒（WorkManager 定时拉取 + 系统通知）
+        item {
+            SettingsSection("后台提醒") {
+                Text(
+                    if (notifyOn) "已开启：系统大约每半小时检查一次，有新通知就弹一条提示。"
+                    else "关闭中：只有你自己打开应用时，才知道有新通知。",
+                    style = Type.label,
+                    color = AppColors.ink2,
+                    lineHeight = 20.sp,
+                )
+                Spacer(Modifier.height(Space.s))
+                Text(
+                    "系统的省电策略会把它往后挪，时间不精确；想立刻看到就回上一节点「立即刷新」。",
+                    style = Type.micro,
+                    color = AppColors.muted,
+                    lineHeight = 18.sp,
+                )
+                Spacer(Modifier.height(Space.m))
+                ActionButton(if (notifyOn) "关闭提醒" else "开启提醒", enabled = true, primary = !notifyOn) {
+                    onToggleNotify()
+                }
+            }
         }
 
         // 应用更新

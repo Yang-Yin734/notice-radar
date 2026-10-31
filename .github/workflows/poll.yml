@@ -57,8 +57,26 @@ jobs:
           git fetch origin main
           git merge -X ours --no-edit origin/main || { echo "::warning::同步失败，继续（提交时会再试）"; git merge --abort || true; }
 
+      # 国内出口优先：本机 `tools\run-daily.ps1 -Push` 或境内部署（deploy/）抓到东西后会推回 main，
+      # 并在 data/poller.json 记下时间戳。20 分钟内刚有人跑过，说明通知已经从国内发出去了，
+      # 本轮的跨境抓取只会白耗掉 15 分钟超时、还可能重复推一次 —— 直接让路。
+      # 本机停机超过 20 分钟，这里就自动接管，不需要人工切换。
+      - name: 境内节点刚跑过就让路
+        id: outlet
+        run: |
+          node -e "
+            const fs = require('fs');
+            let at = 0;
+            try { at = Date.parse(JSON.parse(fs.readFileSync('data/poller.json', 'utf8')).at || ''); } catch (e) {}
+            const mins = at ? Math.round((Date.now() - at) / 60000) : -1;
+            const fresh = mins >= 0 && mins < 20;
+            console.log('境内节点最后跑过：' + (mins < 0 ? '没有记录' : mins + ' 分钟前') + (fresh ? ' → 本轮让路' : ' → 本轮照常抓取'));
+            fs.appendFileSync(process.env.GITHUB_OUTPUT, 'skip=' + (fresh ? 'yes' : 'no') + '\n');
+          "
+
       - name: 抓取并推送
         id: fetch
+        if: steps.outlet.outputs.skip != 'yes'
         env:
           # 推送凭据（可选）：在想用这个仓库的人自己的 Settings → Secrets 里配。
           # 不配也没有远端通道，通知照常进归档/仪表盘，只是不会主动发出去。
@@ -90,6 +108,7 @@ jobs:
           exit 0
 
       - name: 故障判定（连续 3 次全失败才报红）
+        if: steps.outlet.outputs.skip != 'yes'
         run: node tools/health.ts --outcome=${{ steps.fetch.outputs.outcome }}
 
       - name: 抓取其它学校（只采集不通知）
@@ -100,7 +119,7 @@ jobs:
         # 为什么用 always()：主抓取失败**不代表**别的学校抓不到 —— 电子科技大学在教育网，
         # 另外几所在商用网，实测出现过"uestc 5 个源全挂、西南财经大学照常 10 条"的情况。
         # 这几所都是 collectOnly：抓不到只记 warning，不影响主链路、不影响 CI 结论。
-        if: always()
+        if: always() && steps.outlet.outputs.skip != 'yes'
         run: |
           shopt -s nullglob
           for cfg in config/schools/*.yaml; do
@@ -117,6 +136,7 @@ jobs:
         run: node src/cli.ts doctor --delay=1500 || true
 
       - name: 重建通知归档仪表盘（GitHub Pages）
+        if: steps.outlet.outputs.skip != 'yes'
         run: |
           node src/cli.ts dashboard
           # 同时重建"学校目录 + 按校拆分的数据"（网页/应用的选校功能读它）
@@ -126,7 +146,7 @@ jobs:
         # main 受规则集保护（必须走 PR），但定时抓取要把 data/ 与 docs/ 写回 main。
         # 解决办法：用一把「部署密钥」推送，它在保护规则里是白名单成员。
         # 没有配 STATE_DEPLOY_KEY 时保持原样（用 GITHUB_TOKEN），不影响已有部署。
-        if: always()
+        if: always() && steps.outlet.outputs.skip != 'yes'
         env:
           STATE_DEPLOY_KEY: ${{ secrets.STATE_DEPLOY_KEY }}
         run: |
@@ -148,7 +168,7 @@ jobs:
         # 带上 always() 后：报红那一轮会把计数与 reported 落盘，后续轮次自动静默到恢复；
         # 顺带把失败轮的 data/runs.json 也留下（自适应阈值要靠它算成功率）。
         # 抓取失败时 data/state.json 本来就不会被写，所以这里不会提交"半个状态"。
-        if: always()
+        if: always() && steps.outlet.outputs.skip != 'yes'
         run: |
           git config user.name "notice-radar-bot"
           git config user.email "notice-radar-bot@users.noreply.github.com"
