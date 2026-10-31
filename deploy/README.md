@@ -149,6 +149,14 @@ sudo -u radar bash /opt/notice-radar/deploy/verify.sh --rounds 2
 所以：**通知交给这台机器，Actions 改成"只更新数据、不发通知"**。
 两个 workflow 的文件头已经有提示块，照它改两处即可。
 
+> **2026-10-31 起，这一步多数情况可以省了。**
+> 本机（`tools\run-daily.ps1 -Push`）或这台机器跑完会把时间戳写进 `data/poller.json`
+> 并推回 main；`poll.yml` 开头读到"20 分钟内刚跑过"就让路，后面的抓取步全部跳过
+> （那轮日志里会打印「境内节点最后跑过：N 分钟前 → 本轮让路」）。
+> 两边共用同一份 `data/state.json`，所以也不会重复推送；
+> 节点停机超过 20 分钟，Actions 自己接管，不需要人工切换。
+> 下面的手动改法仍然有效，适合"想彻底不跑 Actions 抓取"的场景。
+
 ### 6.1 `.github/workflows/poll.yml`
 
 ```diff
