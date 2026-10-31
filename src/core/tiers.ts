@@ -1,6 +1,6 @@
 import type { PushConfig } from './config.ts';
 import type { Notice } from '../types.ts';
-import { extractDeadline, isUrgentDeadline } from './deadline.ts';
+import { isUrgentDeadline, resolveDeadline } from './deadline.ts';
 
 /**
  * 通知分级：把新通知分成「立刻推」「进日报」「静音」三档。
@@ -41,7 +41,7 @@ export function classify(notice: Notice, push: PushConfig, now: Date = new Date(
   const text = `${notice.title} ${notice.tag ?? ''}`;
   if (matchKeyword(text, push.mute)) return 'mute';
   if (matchKeyword(text, push.urgent)) return 'urgent';
-  if (isUrgentDeadline(extractDeadline(notice.title, now))) return 'urgent';
+  if (isUrgentDeadline(resolveDeadline(notice, now))) return 'urgent';
   return 'digest';
 }
 
@@ -63,7 +63,7 @@ export function explainTier(notice: Notice, push: PushConfig, now: Date = new Da
   const text = `${notice.title} ${notice.tag ?? ''}`;
   const hit = matchKeyword(text, push.urgent);
   if (hit) return `命中关键词「${hit}」`;
-  const deadline = extractDeadline(notice.title, now);
+  const deadline = resolveDeadline(notice, now);
   if (isUrgentDeadline(deadline)) return `临近截止（${deadline?.date}）`;
   return '常规通知';
 }

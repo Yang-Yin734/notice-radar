@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { extractDeadline, isUrgentDeadline, renderDeadline } from '../src/core/deadline.ts';
+import { extractDeadline, extractDeadlineFromBody, isActionableTitle, isUrgentDeadline, renderDeadline, resolveDeadline } from '../src/core/deadline.ts';
 
 // 固定"现在"：北京时间 2026-10-01 10:00（= UTC 2026-10-01T02:00Z）
 const NOW = new Date('2026-10-01T02:00:00Z');
@@ -63,4 +63,45 @@ test('deadline：只有 7 天内到期才算急事（用于自动分级）', () 
   assert.equal(isUrgentDeadline(extractDeadline('9月30日前', NOW)), false, '已过期不再算急事');
   assert.equal(isUrgentDeadline(extractDeadline('10月20日前', NOW)), false);
   assert.equal(isUrgentDeadline(null), false);
+});
+
+// ---------------------------------------------------------------- 正文抽取
+// 这些写法全部来自 uestc 详情页的真实正文：注意「9 月 4 日」中间有空格、
+// 区间用「时」+「至」而不是冒号，都是标题版正则覆盖不到的形式。
+
+const BODY_CASES: [string, string][] = [
+  ['一、退课时间：10月26日12时至10月30日12时。', '2026-10-30'],
+  ['报名截止时间：11月1日，逾期不再受理。', '2026-11-01'],
+  ['补选课安排 9 月 4 日至 5 日，每天 9:00-17:00。', '2026-09-05'],
+  ['重新学习报名：8 月31日9:00至9月4日17:00。', '2026-09-04'],
+];
+
+test('deadline：正文里的时间区间取结束日（标题里抽不到的那批）', () => {
+  for (const [body, expected] of BODY_CASES) {
+    assert.equal(extractDeadlineFromBody(body, NOW)?.date, expected, body);
+  }
+});
+
+test('deadline：正文里的「前/截止」写法', () => {
+  assert.equal(extractDeadlineFromBody('请于10月12日前将材料交至教务处。', NOW)?.date, '2026-10-12');
+});
+
+test('deadline：正文没有日期就不猜', () => {
+  assert.equal(extractDeadlineFromBody('本次讲座由张老师主讲，欢迎参加。', NOW), null);
+  assert.equal(extractDeadlineFromBody('', NOW), null);
+});
+
+test('deadline：只有办事型标题才值得去抓正文', () => {
+  assert.equal(isActionableTitle('关于2026-2027-1学期中期退课及补选课的通知'), true);
+  assert.equal(isActionableTitle('电子科技大学2027届系列双选会报名公告'), true);
+  assert.equal(isActionableTitle('成电讲坛 | 潘永信院士学术报告'), false);
+  assert.equal(isActionableTitle('关于开展2026~2027学年本科生学籍电子注册的通知'), true);
+});
+
+test('deadline：优先用落库的截止日，剩余天数现算（相对量存不住）', () => {
+  assert.equal(resolveDeadline({ title: '某通知', deadline: '2026-10-08' }, NOW)?.date, '2026-10-08');
+  assert.equal(resolveDeadline({ title: '某通知', deadline: '2026-10-08' }, NOW)?.daysLeft, 7);
+  // 没有落库值就回退到标题
+  assert.equal(resolveDeadline({ title: '请于10月8日前报名' }, NOW)?.date, '2026-10-08');
+  assert.equal(resolveDeadline({ title: '讲座通知' }, NOW), null);
 });

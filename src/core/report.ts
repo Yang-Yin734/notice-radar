@@ -1,5 +1,5 @@
 import type { Notice, SourceResult } from '../types.ts';
-import { extractDeadline, renderDeadline } from './deadline.ts';
+import { renderDeadline, resolveDeadline } from './deadline.ts';
 import { renderRate, type SourceRate } from './runs.ts';
 
 export interface ReportOptions {
@@ -50,8 +50,8 @@ export function renderMarkdown(results: SourceResult[], fresh: Notice[], options
     for (const n of items.slice(0, maxPerSource)) {
       const date = n.date ?? '日期未知';
       const tag = n.tag ? `\`${n.tag}\` ` : '';
-      // 标题里自带截止日就标出"还剩几天"（issue #4）
-      const due = renderDeadline(extractDeadline(n.title));
+      // 优先用落库的截止日（正文里抓的），没有再回退到标题（issue #4）
+      const due = renderDeadline(resolveDeadline(n));
       const dueText = due ? `**${due}** ` : '';
       const also = n.alsoIn && n.alsoIn.length > 0 ? `　<sub>另见：${n.alsoIn.join('、')}</sub>` : '';
       lines.push(`- **${date}** ${tag}${dueText}[${n.title}](${n.url})${also}`);
