@@ -59,6 +59,8 @@ dependencies {
     implementation 'androidx.activity:activity-compose:1.10.0'
     implementation 'androidx.core:core-ktx:1.15.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.8.7'
+    // 后台提醒：WorkManager 定期拉数据 + 系统通知（不引 Firebase，仍然零服务器）
+    implementation 'androidx.work:work-runtime-ktx:2.10.0'
 
     // 单元测试（版本号比较、推送结果解析这类纯逻辑必须有测试：它们出错会让用户看到错误的结论）
     testImplementation 'junit:junit:4.13.2'

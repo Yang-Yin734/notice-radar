@@ -450,6 +450,16 @@ class Store(private val ctx: Context) {
     fun saveRead(ids: Set<String>) = prefs.edit().putStringSet("read", HashSet(ids)).apply()
     fun saveFav(ids: Set<String>) = prefs.edit().putStringSet("fav", HashSet(ids)).apply()
 
+    // ---------- 后台提醒 ----------
+    /** 后台提醒开关。默认关：装上就先安安静静，要不要闹钟由用户在设置里决定。 */
+    var notifyEnabled: Boolean
+        get() = prefs.getBoolean("notifyEnabled", false)
+        set(value) = prefs.edit().putBoolean("notifyEnabled", value).apply()
+
+    /** 已经弹过系统通知的条目 id。与"已读"分开记：看过不等于被提醒过，反之亦然。 */
+    fun notifiedIds(): MutableSet<String> = HashSet(prefs.getStringSet("notified", emptySet()) ?: emptySet())
+    fun saveNotified(ids: Set<String>) = prefs.edit().putStringSet("notified", HashSet(ids)).apply()
+
     // ---------- 主题 ----------
     /** null = 跟随系统 */
     var themeOverride: Boolean?
