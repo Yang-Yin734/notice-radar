@@ -3,7 +3,7 @@
  "name": "华东师范大学",
  "province": "上海市",
  "city": "",
- "generatedAt": "2026-10-31T05:40:30.466Z",
+ "generatedAt": "2026-10-31T06:08:53.698Z",
  "total": 13,
  "bySource": [
   {
@@ -47,6 +47,7 @@
    "tag": null,
    "alsoIn": [],
    "firstSeenAt": "2026-10-21T08:17:14.020Z",
+   "deadline": "2027-02-20",
    "unit": "本科生院"
   },
   {
@@ -60,6 +61,7 @@
    "tag": null,
    "alsoIn": [],
    "firstSeenAt": "2026-10-13T14:55:08.711Z",
+   "deadline": "2027-01-29",
    "unit": "本科生院"
   },
   {
@@ -125,6 +127,7 @@
    "tag": null,
    "alsoIn": [],
    "firstSeenAt": "2026-10-21T08:17:14.020Z",
+   "deadline": "2027-02-20",
    "unit": "本科生院"
   },
   {
@@ -138,6 +141,7 @@
    "tag": null,
    "alsoIn": [],
    "firstSeenAt": "2026-10-04T06:59:36.935Z",
+   "deadline": "2027-02-20",
    "unit": "本科生院"
   },
   {
@@ -190,6 +194,7 @@
    "tag": null,
    "alsoIn": [],
    "firstSeenAt": "2026-10-04T06:59:36.935Z",
+   "deadline": "2026-09-28",
    "unit": "本科生院"
   }
  ]

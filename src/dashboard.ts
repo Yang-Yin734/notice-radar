@@ -440,12 +440,15 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
   var KEY_READ = 'notice-radar:read', KEY_FAV = 'notice-radar:fav', KEY_THEME = 'notice-radar:theme';
   // 选校功能：记住"选了哪所学校、勾了哪些学院"（都只在本机）
   var KEY_SCHOOL = 'notice-radar:school', KEY_UNITS = 'notice-radar:units';
+  var KEY_ORDER = 'notice-radar:order';
   var state = {
     items: BOOT.items.slice(), view: 'list', filter: 'all', source: 'all', query: '',
     read: new Set(lsRead(KEY_READ)), fav: new Set(lsRead(KEY_FAV)),
     // school=null 表示"没主动选过"→ 继续显示内置/默认学校的数据（老用户不受影响）
     school: lsRead(KEY_SCHOOL)[0] || null,
     units: lsRead(KEY_UNITS),
+    // 列表顺序：date = 按发布日分组（默认）；due = 只看临近截止的，按剩余天数升序
+    order: (function () { try { return localStorage.getItem(KEY_ORDER) === 'due' ? 'due' : 'date'; } catch (e) { return 'date'; } })(),
     pendingSchool: null
   };
 
@@ -508,7 +511,7 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
 
   function visible() {
     var q = state.query.trim().toLowerCase();
-    return state.items.filter(function (it) {
+    var out = state.items.filter(function (it) {
       if (state.filter === 'fav' && !state.fav.has(it.id)) return false;
       if (state.source !== 'all' && it.sourceId !== state.source) return false;
       // 主动选过学校之后：
@@ -521,6 +524,11 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
       if (!q) return true;
       return (it.title + ' ' + (it.tag || '') + ' ' + it.sourceName).toLowerCase().indexOf(q) >= 0;
     });
+    if (state.order !== 'due') return out;
+    // 按截止看：只留"还没过期或刚过期一周内"的，按剩余天数从紧到松
+    return out
+      .filter(function (it) { var d = daysLeftOf(it); return d !== null && d >= -7; })
+      .sort(function (a, b) { return daysLeftOf(a) - daysLeftOf(b); });
   }
 
   function renderChips() {
@@ -531,7 +539,10 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
     document.getElementById('chips').innerHTML = rows.map(function (r) {
       return '<button class="chip' + (state.source === r[0] ? ' active' : '') + '" data-source="' + esc(r[0]) + '">' +
         esc(r[1]) + ' <b>' + r[2] + '</b></button>';
-    }).join('');
+    }).join('') +
+      // 末尾多一个"按截止"：不改变来源筛选，只切换列表的排序口径
+      '<button class="chip' + (state.order === 'due' ? ' active' : '') + '" data-order="due">' +
+        (state.order === 'due' ? '✓ 按截止' : '按截止') + '</button>';
   }
 
   function renderList() {
@@ -546,11 +557,21 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
       return;
     }
     var groups = new Map();
-    items.forEach(function (it) {
-      var day = it.date || '日期未知';
-      if (!groups.has(day)) groups.set(day, []);
-      groups.get(day).push(it);
-    });
+    if (state.order === 'due') {
+      // 按截止看时不按发布日分组——分组头要说的是"还剩多久"，不是"哪天发的"
+      items.forEach(function (it) {
+        var d = daysLeftOf(it);
+        var head = d < 0 ? '刚过期' : d === 0 ? '今天截止' : d === 1 ? '明天截止' : d <= 7 ? '一周内截止' : '再往后';
+        if (!groups.has(head)) groups.set(head, []);
+        groups.get(head).push(it);
+      });
+    } else {
+      items.forEach(function (it) {
+        var day = it.date || '日期未知';
+        if (!groups.has(day)) groups.set(day, []);
+        groups.get(day).push(it);
+      });
+    }
     var html = '';
     groups.forEach(function (list, day) {
       html += '<section class="group"><h2>' + esc(day) + '<span class="n">' + list.length + ' 条</span></h2><div class="list">';
@@ -679,6 +700,12 @@ export function renderDashboard(history: History, options: DashboardOptions = {}
   });
   document.getElementById('chips').addEventListener('click', function (e) {
     var chip = e.target.closest('.chip'); if (!chip) return;
+    if (chip.dataset.order) {
+      state.order = state.order === 'due' ? 'date' : 'due';
+      try { localStorage.setItem(KEY_ORDER, state.order); } catch (err) {}
+      renderChips(); renderList(); showView('list');
+      return;
+    }
     state.source = chip.dataset.source;
     if (state.filter === 'fav') state.filter = 'all';
     renderChips(); renderList(); showView('list');

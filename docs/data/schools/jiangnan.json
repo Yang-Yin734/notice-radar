@@ -3,7 +3,7 @@
  "name": "江南大学",
  "province": "江苏省",
  "city": "无锡市",
- "generatedAt": "2026-10-31T05:40:30.466Z",
+ "generatedAt": "2026-10-31T06:08:53.698Z",
  "total": 9,
  "bySource": [
   {
@@ -60,6 +60,7 @@
    "tag": null,
    "alsoIn": [],
    "firstSeenAt": "2026-10-04T06:15:51.343Z",
+   "deadline": "2026-09-14",
    "unit": "教务处"
   },
   {
@@ -99,6 +100,7 @@
    "tag": null,
    "alsoIn": [],
    "firstSeenAt": "2026-10-04T06:15:51.343Z",
+   "deadline": "2026-07-13",
    "unit": "教务处"
   },
   {
