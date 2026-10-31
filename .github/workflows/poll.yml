@@ -141,8 +141,21 @@ jobs:
             exit 0
           fi
           echo "▸ 补抓失败的源：$ids"
-          node src/cli.ts run --only="$ids" --delay=1500 --timeout=30000 --concurrency=2 || \
-            echo "::warning::补抓后仍有失败（$ids），下一轮再试"
+          # 补两轮：08:55 那轮实测 3 个失败源补抓一轮救回 2 个（news-notice / news-academic），
+          # 说明"第一次失败"多半是这一跳的瞬时抖动，而不是站点不可达。
+          # 3 个源 × 30s 超时 × 2 轮最坏 3 分钟，正常只多花十几秒。
+          for round in 1 2; do
+            if node src/cli.ts run --only="$ids" --delay=1500 --timeout=30000 --concurrency=2; then
+              echo "▸ 第 ${round} 轮补抓全部成功"
+              break
+            fi
+            if [ "$round" -lt 2 ]; then
+              echo "::warning::第 ${round} 轮补抓仍有失败，5 秒后再试"
+              sleep 5
+            else
+              echo "::warning::补抓两轮后仍有失败（$ids），下一轮再试"
+            fi
+          done
 
       - name: 抓取其它学校（只采集不通知）
         # 全国名单里陆续接入的学校：各自的预设里都标了 collectOnly ——
@@ -160,15 +173,26 @@ jobs:
               *uestc.yaml|*uestc-math.yaml) continue ;;   # 主链路已经抓过
             esac
             echo "▸ 其它学校：$cfg"
-            # collectOnly 的源：单次、12s 超时、不重试。
+            # collectOnly 的源：12s 超时，最多试 2 次。
             #
-            # 依据是实测：同一 runner 出口对同一站点的可达性是**稳定属性** ——
-            # 郑大 6/6 全 200，厦门大学与西安电子连试 3 次全是 fetch failed。
-            # 所以重试买不到成功率，只买到时间：3 次重试 + 退避会把这一步
-            # 从 2 分钟拖到 6 分钟，整轮撞上 10 分钟 job 上限，然后被下一轮顶掉
-            # （cancel-in-progress: true）—— 结果是"每一轮都没跑完"。
-            # 12s 也够：这些源多是单页列表，快校 1–2 秒返回，慢校 12 秒放弃。
-            if ! node src/cli.ts run --config="$cfg" --delay=0 --timeout=12000 --concurrency=2; then
+            # 这里踩过一个坑，值得记下来：上一版根据"厦门大学、西安电子连试 3 次都失败"
+            # 判定"同一出口对同一站点的可达性是稳定属性、重试买不到成功率"，于是改成单次不重试。
+            # 结果 08:55 那轮 xidian 一次就 200 —— 出口是抽样的，可达性是概率不是属性。
+            # 同一轮内也一样：主链路 jwc-important / news-notice / news-academic 三个源第一次全失败，
+            # 「补抓」再试一次，news-notice 与 news-academic 都回来了（3 个救回 2 个）。
+            # 所以重试确实有效，只是要限次数，别把整轮拖到 10 分钟 job 上限被下一轮顶掉。
+            # 12s × 2 次 × 19 校最坏不到 8 分钟，实际快校 1–2 秒返回，整步 1–3 分钟。
+            ok=no
+            for attempt in 1 2; do
+              if node src/cli.ts run --config="$cfg" --delay=0 --timeout=12000 --concurrency=2; then
+                ok=yes
+                break
+              fi
+              if [ "$attempt" -lt 2 ]; then
+                sleep 5
+              fi
+            done
+            if [ "$ok" = no ]; then
               echo "::warning::$cfg 抓取失败（collectOnly，不影响主链路；下一轮还会再试）"
             fi
           done
