@@ -293,7 +293,7 @@ radr rate --min=0.8                # 低于 80% 就以退出码 1 结束（给 C
 | 运行位置 | 怎么跑 | 时间 |
 |---|---|---|
 | GitHub Actions | `poll-math.yml`：给 runner 挂虚拟显示器（Xvfb）跑真实（非无头）Chrome | **每天北京 08:00** |
-| 你的电脑 | `tools/run-daily.ps1`（计划任务）| **每天 09:00**，兜底补漏 |
+| 你的电脑 | `tools/run-daily.ps1 -Push`（计划任务，每天一次）| 开机时补漏；高频任务只用 `-HttpOnly` 跑教务处，不碰学院 |
 
 **为什么云端能跑**：不是伪造 UA、也没有隐藏 `navigator.webdriver`——就是启动一个**真的、非无头的** Chrome，只不过它的"屏幕"是 Xvfb 提供的虚拟显示器。站点拒绝的是"无头"这个特征，而这里根本没有无头。
 
@@ -301,28 +301,31 @@ radr rate --min=0.8                # 低于 80% 就以退出码 1 结束（给 C
 
 > 如果你的学校站点连真实浏览器都不放行（换了更强的检测），那就只能靠本机跑 + 班级群兜底了 —— 本项目不接受为了让脚本通过而去逆向挑战算法或伪造指纹的 PR。
 
-## 本机每天自动跑（云端之外的兜底）
+## 本机跑（国内出口）
 
-学院通知云端已经在 08:00 抓了，本机这个任务排在 **09:00**，作用是**兜底**：云端那轮挂了（网络抖动、或没配 secret）时，它补上。
+**为什么要在本机跑**：GitHub 的 runner 在境外，抓国内学校站点历史成功率只有 **44%**（uestc 教务处五个源 15–25%，而且会超时 40 秒）；同一份配置在本机是 **100%**、响应 200ms。这不是选择器问题，是出口问题。
 
-| 文件 | 作用 |
-|---|---|
-| `tools/run-daily.ps1` | 计划任务入口：同步状态 → 抓取 → 写日志 → 提交状态 |
-| `config/schools/uestc.yaml` | 全量预设（6 个源，含学院）—— 同步成功时用它 |
-| `config/schools/uestc-math.yaml` | 只含学院两个源 —— 同步失败时的降级预设 |
+`tools/run-daily.ps1` 一次跑完：同步云端状态 → 抓取 → 重建网页 → 写 `data/poller.json` → 提交并推回 main。推回之后网页与应用立刻看到国内出口抓到的内容，而云端 `poll` 读到 `poller.json` 会主动让路（20 分钟窗口），不会重复通知。
 
-**它每天怎么决策**（这一步是关键，直接决定你会不会收到重复推送）：
+| 用法 | 命令 | 实测占用（2026-10-31，本机） |
+|---|---|---|
+| 高频主力（推荐） | `run-daily.ps1 -HttpOnly -Push` | **2.1 秒 / 107 MB / 1 个进程** —— 只跑教务处 5 个纯 HTTP 源 |
+| 全量（含学院） | `run-daily.ps1 -Push` | 14.3 秒 / node 111 MB，**整棵进程树峰值 1068 MB / 18 个进程**（Chromium，跑完即退，空闲不占内存） |
+
+学院源（数学学院）被 WAF 挡着、要真的浏览器窗口，所以拆开跑：高频只跑教务处，学院源每天一两次全量就够。
+
+**它怎么决定抓哪些源**（这一步直接决定你会不会收到重复推送）：
 
 ```
-git pull 同步云端状态 ──成功──► 跑全部 6 个源（本地状态与云端一致，不会重复推）
+git pull 同步云端状态 ──成功──► 加 -HttpOnly 就只跑教务处 5 源，否则跑全部源
         │
-        └──失败（代理没开）──► 只跑学院 2 个源（仍不会与云端重复推）
+        └──失败（网络不通）──► 只跑学院 2 源（云端几乎抓不动这几个源，撞车概率最低）
 ```
 
-本地和云端各记一份"已见通知"状态，所以**不同步就跑全量 = 同一条通知推两次**。降级成"只跑学院"就避开了这个陷阱。
+本地和云端各记一份"已见通知"状态，所以**不同步就跑全量 = 同一条通知推两次**。降级成"只跑学院"就是为了避开这个陷阱。
 
-> 如果你根本不想开电脑也照收通知，那这个任务可以删掉（云端 08:00 已经覆盖学院）：
-> `Unregister-ScheduledTask -TaskName 'notice-radar-daily' -Confirm:$false`
+> 本机离线超过 20 分钟，云端 poll 自动接管：退化成跨境抓取（成功率 44%），但状态只在成功时写入、成功那轮会补抓全量列表，所以**只是慢，不会漏**。
+> 根本不想开电脑：把这个任务删掉即可 —— `Unregister-ScheduledTask -TaskName 'notice-radar-local' -Confirm:$false`。
 
 ## 完全不用 GitHub：在本机（或国内机器）跑
 
@@ -355,11 +358,26 @@ powershell -NoProfile -ExecutionPolicy Bypass -File tools\install-local-task.ps1
 | `-DataDir D:\radar-data` | 状态与日志目录（默认 `%USERPROFILE%\notice-radar-data`） |
 | `-SkipMath` | 不注册学院（WAF）源的每日任务 |
 | `-AllowBrowser` | 让主任务也抓"需要浏览器"的源（会短暂弹窗，默认关） |
+| `-PushBack` | 改用**抓完推回 main**模式（走 `tools/run-daily.ps1`）：状态在仓库内 `data/`，每次跑 commit + push，网页与应用立刻看到国内出口的内容 |
+| `-HttpOnly` | 仅配合 `-PushBack`：只跑教务处 5 个纯 HTTP 源（2 秒 / 107 MB），适合 10–30 分钟一次的高频 |
 | `-Uninstall` | 卸载这两个计划任务 |
+
+**电脑要一直开着用？用低占用那条命令**：
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File tools\install-local-task.ps1 -PushBack -HttpOnly -IntervalMinutes 30
+```
+
+注册出来的任务每 30 分钟跑一次 `run-daily.ps1 -HttpOnly -Push`：**2 秒、107 MB、1 个进程**，跑完完全退出 —— 没有常驻服务，空闲不占任何内存，只有计划任务到点拉起。抓完自动 commit 并推回 main，网页 / 应用 / 云端三边看到的是同一份国内出口数据。
+
+为什么不带 `-HttpOnly`：学院源要开 Chromium，整棵进程树峰值约 1 GB、18 个进程，只在跑的那 14 秒存在 —— 8 GB 内存的机器上会被你感觉到。学院源另建一条低频任务即可（`run-daily.ps1 -Push`，每天一次）。
+
+> 每次 push 都会触发一次 GitHub Pages 构建，而 Pages 有「每小时 10 次」的软限制。30 分钟间隔是 2 次/小时，安全；改成 5 分钟会撞限额，Pages 反而更新不及时。
 
 ```powershell
 # 看结果 / 手动跑一次 / 卸载
-Get-Content "$env:USERPROFILE\notice-radar-data\run.log" -Tail 40
+Get-Content logs\daily.log -Tail 40                                  # -PushBack 模式：日志在仓库里
+Get-Content "$env:USERPROFILE\notice-radar-data\run.log" -Tail 40    # 独立模式：日志在仓库外
 Start-ScheduledTask -TaskName notice-radar-local
 powershell -File tools\install-local-task.ps1 -Uninstall
 ```

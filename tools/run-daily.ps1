@@ -17,9 +17,23 @@
 #   云端 poll.yml 看到它就知道"刚有人跑过"，本轮让路，避免同一条通知推两遍。
 #
 # 手动试跑：powershell -NoProfile -ExecutionPolicy Bypass -File tools\run-daily.ps1 -Push
+#
+# 加 -HttpOnly 时：只跑教务处 5 个纯 HTTP 源，不启动浏览器（2 秒 / 107 MB）。
+#   适合 10–30 分钟一次的高频任务 —— 办事类通知（选课、报名、缴费、评教）全在这几个源里。
+#   学院源（数学学院，WAF 挡着要真浏览器）用不带 -HttpOnly 的全量跑，每天一两次就够。
+#   推荐的两条计划任务：
+#     主力 → run-daily.ps1 -HttpOnly -Push   每 15 分钟
+#     补充 → run-daily.ps1 -Push             每天 09:00（或你睡前）
 
 param(
-  [switch]$Push
+  # 推回 main：写完 data/ 与 docs/ 后推上去，网页与应用、以及云端的"已见"状态都以远端为准
+  [switch]$Push,
+
+  # 只跑教务处那几个纯 HTTP 源，不启动浏览器。
+  # 实测（2026-10-31）：全量 7 源要开浏览器 → 14 秒、整棵进程树峰值约 1 GB、18 个进程；
+  # 只跑 5 个 HTTP 源 → 2 秒、node 峰值 107 MB、1 个进程，跑完不留任何常驻。
+  # 所以高频（10–30 分钟）用它，学院源（数学学院，有 WAF，要浏览器）改成每天一两次跑全量。
+  [switch]$HttpOnly
 )
 
 $ErrorActionPreference = 'Continue'
@@ -98,20 +112,30 @@ git checkout -- data/state.json 2>&1 | Out-Null
 # "cannot pull with rebase: You have unstaged changes"），拉完自动还原改动
 # 直连 GitHub（约 2026-10 起本机直连稳定；gitconfig 里若写着代理，代理没开时反而连不上）
 git -c http.proxy= -c https.proxy= pull --rebase --autostash --quiet 2>&1 | Out-Null
-$config = 'config/schools/uestc-math.yaml'
-if ($LASTEXITCODE -eq 0) {
-  $config = 'config/schools/uestc.yaml'
-  Write-Log '已同步云端状态 → 本次跑全部源'
-} else {
+$synced = $LASTEXITCODE -eq 0
+if (-not $synced) {
   git rebase --abort 2>&1 | Out-Null   # 避免把仓库留在 rebase 中途
+}
+
+# 选源：状态同步成功才敢跑全量（本地与云端各记一份"已见"，不同步会重复推送）；
+# 同步失败时退到只跑学院源 —— 那几个源云端几乎抓不动（跨境超时），撞车概率最低。
+if (-not $synced) {
+  $runArgs = @('run', '--config=config/schools/uestc-math.yaml', '--allow-browser')
   Write-Log '同步云端状态失败（代理没开或网络不通）→ 本次只跑学院源，避免与云端重复推送'
+} elseif ($HttpOnly) {
+  # 教务处 5 个源：一次 2 秒、107 MB。--only 收的是不带学校前缀的短 id
+  $runArgs = @('run', '--only=jwc-important,jwc-student,news-notice,news-academic,gr-notice', '--delay=1500', '--timeout=15000', '--concurrency=4')
+  Write-Log '已同步云端状态 → 本次只跑教务处纯 HTTP 源（--HttpOnly，不启浏览器）'
+} else {
+  $runArgs = @('run', '--config=config/schools/uestc.yaml', '--allow-browser')
+  Write-Log '已同步云端状态 → 本次跑全部源'
 }
 
 # 2) 抓取 + 推送
-$output = & $node (Join-Path $repo 'src\cli.ts') run "--config=$config" --allow-browser 2>&1 | Out-String
+$output = & $node (Join-Path $repo 'src\cli.ts') @runArgs 2>&1 | Out-String
 $code = $LASTEXITCODE
 Add-Content -LiteralPath $log -Value $output -Encoding UTF8
-Write-Log "配置 $config，退出码 $code"
+Write-Log "抓取完成，退出码 $code"
 
 # 2.5) 只有要推回线上时才重建产物（网页 / 应用读的就是 docs/ 下面这些文件）
 if ($Push -and $code -eq 0) {

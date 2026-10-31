@@ -1,4 +1,4 @@
-# 不走 GitHub：在本机（Windows 计划任务）定时抓取 + 推送。
+﻿# 不走 GitHub：在本机（Windows 计划任务）定时抓取 + 推送。
 #
 # 与 tools/run-daily.ps1 的区别：那个是"云端兜底"，会 git pull 同步云端状态（因此依赖 GitHub）。
 # 这个脚本让本机**完全独立**：状态放在仓库外的独立目录，不碰 git，也就不需要 GitHub。
@@ -11,6 +11,12 @@
 #   -DataDir <路径>         状态/日志目录（默认 %USERPROFILE%\notice-radar-data）
 #   -AllowBrowser           让主任务也抓"需要浏览器"的源（会短暂弹出浏览器窗口，默认关）
 #   -SkipMath               不注册学院（WAF）源的每日任务
+#   -PushBack               改用"本机抓完推回 main"模式（走 tools/run-daily.ps1）：
+#                           状态在仓库内 data/，每次跑会 commit + push，
+#                           网页/应用立刻看到国内出口抓到的内容，云端 poll 会让路。
+#                           此模式下只注册一个主任务，不再注册学院源任务。
+#   -HttpOnly               仅配合 -PushBack：只跑教务处 5 个纯 HTTP 源（2 秒 / 107 MB），
+#                           适合 10–30 分钟一次的高频。不带它则跑全部源（要浏览器，峰值约 1 GB）。
 #   -Uninstall              卸载这两个计划任务
 #
 # ⚠️ 与云端同时跑会**重复推送**同一条通知（两边各记一份"已见"状态）。
@@ -20,6 +26,8 @@ param(
   [string]$DataDir = (Join-Path $env:USERPROFILE 'notice-radar-data'),
   [switch]$AllowBrowser,
   [switch]$SkipMath,
+  [switch]$PushBack,
+  [switch]$HttpOnly,
   [switch]$Uninstall
 )
 
@@ -73,6 +81,41 @@ if (-not (Test-Path (Join-Path $repo 'node_modules'))) {
   Pop-Location
 }
 Write-Host '✓ 依赖就绪'
+
+# 3.5) -PushBack：改走 tools/run-daily.ps1，抓完推回 main。
+# 与下面的"完全独立"模式互斥 —— 那个不碰 git，抓到的内容到不了线上；这个反过来，
+# 状态与产物都在仓库内 data/、docs/，每次跑 commit 一次并推回 main。
+if ($PushBack) {
+  $runDaily = Join-Path $repo 'tools/run-daily.ps1'
+  if (-not (Test-Path $runDaily)) { throw "找不到 $runDaily（本项目的国内出口脚本）" }
+
+  $argList = '-Push'
+  if ($HttpOnly) { $argList = '-HttpOnly -Push' }
+  $modeText = '只跑教务处纯 HTTP 源（实测约 2 秒 / 107 MB）'
+  if (-not $HttpOnly) { $modeText = '跑全部源，含学院（要浏览器，实测约 14 秒 / 峰值约 1 GB）' }
+
+  # 计划任务直接调仓库里的 run-daily.ps1 —— 不生成中间脚本，逻辑只有一份
+  $ps = Join-Path $env:SystemRoot 'System32\WindowsPowerShell\v1.0\powershell.exe'
+  $action = New-ScheduledTaskAction -Execute $ps -Argument "-NoProfile -ExecutionPolicy Bypass -File `"$runDaily`" $argList" -WorkingDirectory $repo
+  $trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(2) -RepetitionInterval (New-TimeSpan -Minutes $IntervalMinutes)
+  $settings = New-ScheduledTaskSettingsSet -StartWhenAvailable -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -ExecutionTimeLimit (New-TimeSpan -Minutes 20)
+  Register-ScheduledTask -TaskName $taskMain -Action $action -Trigger $trigger -Settings $settings -Force | Out-Null
+
+  Write-Host ''
+  Write-Host "✓ 已注册：$taskMain（每 $IntervalMinutes 分钟，$modeText）"
+  Write-Host '  状态与产物在仓库内 data/、docs/，每次跑 commit 并推回 main。'
+  Write-Host '  云端 poll 读到 data/poller.json 会主动让路（20 分钟窗口），不会重复通知。'
+  Write-Host '  本机离线超过 20 分钟，云端自动接管（慢一些，但不漏）。'
+  if ($HttpOnly) {
+    Write-Host ''
+    Write-Host '  学院源（数学学院，要有浏览器）建议再建一条每天一次的低频任务：'
+    Write-Host "    powershell -NoProfile -ExecutionPolicy Bypass -File `"$runDaily`" -Push"
+  }
+  Write-Host ''
+  Write-Host "  想立刻试跑一次：powershell -NoProfile -ExecutionPolicy Bypass -File `"$runDaily`" $argList"
+  Write-Host "  卸载：powershell -NoProfile -ExecutionPolicy Bypass -File tools\install-local-task.ps1 -Uninstall"
+  exit 0
+}
 
 # 4) 状态目录放在仓库外：完全不碰 git，因此不依赖 GitHub
 New-Item -ItemType Directory -Force -Path $DataDir | Out-Null
